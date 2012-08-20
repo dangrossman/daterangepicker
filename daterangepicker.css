@@ -1,3 +1,7 @@
+.daterangepicker.dropdown-menu {
+	max-width: none;
+}
+
 .daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
 	float: left;
 	margin: 4px;
