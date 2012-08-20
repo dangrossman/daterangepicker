@@ -7,7 +7,7 @@
  * @website: http://www.improvely.com/
  */
 !function($) {
-  
+
   var DateRangePicker = function(element, options, cb) {
 
     //state
@@ -16,6 +16,7 @@
     this.ranges = {};
     this.opens = 'right';
     this.cb = function() { };
+    this.format = 'MM/dd/yyyy';
 
     this.leftCalendar = {
       month: Date.today().set({day: 1, month: this.startDate.getMonth(), year: this.startDate.getFullYear()}),
@@ -71,9 +72,12 @@
 
       }
 
+      if (typeof options.format == 'string')
+        this.format = options.format
+
       if (typeof options.opens == 'string')
         this.opens = options.opens;
-      
+
     }
 
     if (this.opens == 'right') {
@@ -99,12 +103,12 @@
     this.container.find('.ranges').on('click', 'button', $.proxy(this.clickApply, this));
 
     this.container.find('.calendar').on('click', 'td', $.proxy(this.clickDate, this));
-    this.container.find('.calendar').on('mouseenter', 'td', $.proxy(this.enterDate, this));    
-    this.container.find('.calendar').on('mouseleave', 'td', $.proxy(this.updateView, this));    
+    this.container.find('.calendar').on('mouseenter', 'td', $.proxy(this.enterDate, this));
+    this.container.find('.calendar').on('mouseleave', 'td', $.proxy(this.updateView, this));
 
     this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
-    this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));    
-    this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));    
+    this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
+    this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
 
     this.updateView();
     this.updateCalendars();
@@ -124,8 +128,8 @@
       this.leftCalendar.month.set({month: this.startDate.getMonth(), year: this.startDate.getFullYear()});
       this.rightCalendar.month.set({month: this.endDate.getMonth(), year: this.endDate.getFullYear()});
 
-      this.container.find('input[name=daterangepicker_start]').val(this.startDate.toString('MM/dd/yyyy'));
-      this.container.find('input[name=daterangepicker_end]').val(this.endDate.toString('MM/dd/yyyy'));
+      this.container.find('input[name=daterangepicker_start]').val(this.startDate.toString(this.format));
+      this.container.find('input[name=daterangepicker_end]').val(this.endDate.toString(this.format));
 
       if (this.startDate.equals(this.endDate) || this.startDate.isBefore(this.endDate)) {
         this.container.find('button').removeAttr('disabled');
@@ -138,24 +142,24 @@
       this.updateView();
 
       if (this.element.is('input')) {
-        this.element.val(this.startDate.toString('MM/dd/yyyy') + ' - ' + this.endDate.toString('MM/dd/yyyy'));
+        this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
       }
       this.cb(this.startDate, this.endDate);
     },
-    
+
     move: function() {
       if (this.opens == 'left') {
         this.container.css({
           top: this.element.offset().top + this.element.outerHeight(),
           right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
           left: 'auto'
-        });  
+        });
       } else {
         this.container.css({
           top: this.element.offset().top + this.element.outerHeight(),
           left: this.element.offset().left,
           right: 'auto'
-        });          
+        });
       }
     },
 
@@ -173,7 +177,7 @@
 
     hide: function(e) {
       this.container.hide();
-      $(document).off('mousedown', this.hide);  
+      $(document).off('mousedown', this.hide);
     },
 
     enterRange: function(e) {
@@ -182,8 +186,8 @@
         this.updateView();
       } else {
         var dates = this.ranges[label];
-        this.container.find('input[name=daterangepicker_start]').val(dates[0].toString('MM/dd/yyyy'));
-        this.container.find('input[name=daterangepicker_end]').val(dates[1].toString('MM/dd/yyyy'));
+        this.container.find('input[name=daterangepicker_start]').val(dates[0].toString(this.format));
+        this.container.find('input[name=daterangepicker_end]').val(dates[1].toString(this.format));
       }
     },
 
@@ -228,16 +232,16 @@
     },
 
     enterDate: function(e) {
-        
+
       var title = $(e.target).attr('title');
       var row = title.substr(1,1);
       var col = title.substr(3,1);
       var cal = $(e.target).parents('.calendar');
 
       if (cal.hasClass('left')) {
-        this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].toString('MM/dd/yyyy'));
+        this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].toString(this.format));
       } else {
-        this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].toString('MM/dd/yyyy'));
+        this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].toString(this.format));
       }
 
     },
@@ -270,7 +274,7 @@
     clickApply: function(e) {
       this.notify();
       this.hide();
-    },    
+    },
 
     updateCalendars: function() {
 
@@ -300,7 +304,7 @@
 
       //populate the calendar with date objects
       var startDay = daysInLastMonth - dayOfWeek + 1;
-      if (dayOfWeek == 0) 
+      if (dayOfWeek == 0)
         startDay = daysInLastMonth - 6;
 
       var curDate = Date.today().set({ day: startDay, month: lastMonth, year: lastYear });
@@ -349,7 +353,7 @@
     }
 
   };
-  
+
   DRPTemplate =   '<div class="daterangepicker dropdown-menu">' +
             '<div class="calendar left"></div>' +
             '<div class="calendar right"></div>' +
