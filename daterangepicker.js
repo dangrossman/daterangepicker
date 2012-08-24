@@ -84,7 +84,6 @@
         //the date range picker
         this.container = $(DRPTemplate).appendTo('body');
 
-
         if (hasOptions) {
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
@@ -157,7 +156,7 @@
 
         this.updateView();
         this.updateCalendars();
-        this.notify();
+
     };
 
     DateRangePicker.prototype = {
