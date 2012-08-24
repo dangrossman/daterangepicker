@@ -15,6 +15,7 @@
         //state
         this.startDate = Date.today();
         this.endDate = Date.today();
+        this.changed = false;
         this.ranges = {};
         this.opens = 'right';
         this.cb = function () { };
@@ -83,6 +84,7 @@
 
         //the date range picker
         this.container = $(DRPTemplate).appendTo('body');
+
 
         if (hasOptions) {
             if (typeof options.ranges == 'object') {
@@ -234,12 +236,17 @@
                 e.preventDefault();
             }
 
+            this.changed = false;
+
             $(document).on('mousedown', $.proxy(this.hide, this));
         },
 
         hide: function (e) {
             this.container.hide();
             $(document).off('mousedown', this.hide);
+
+            if (this.changed)
+                this.notify();
         },
 
         enterRange: function (e) {
@@ -267,7 +274,8 @@
                 this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
                 this.updateCalendars();
 
-                this.notify();
+                this.changed = true;
+
                 this.container.find('.calendar').hide();
                 this.hide();
             }
@@ -326,15 +334,14 @@
 
             if (startDate.equals(endDate) || startDate.isBefore(endDate)) {
                 $(e.target).addClass('active');
+                if (!startDate.equals(this.startDate) || !endDate.equals(this.endDate))
+                    this.changed = true;
                 this.startDate = startDate;
                 this.endDate = endDate;
             }
-
-            this.notify();
         },
 
         clickApply: function (e) {
-            this.notify();
             this.hide();
         },
 
