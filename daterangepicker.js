@@ -9,6 +9,8 @@
 !function ($) {
 
     var DateRangePicker = function (element, options, cb) {
+        var hasOptions = typeof options == 'object'
+        var localeObject;
 
         //state
         this.startDate = Date.today();
@@ -17,6 +19,15 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.locale = {
+            applyLabel:"Apply",
+            fromLabel:"From",
+            toLabel:"To",
+            customRangeLabel:"Custom Range",
+            daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa']
+        };
+
+        localeObject = this.locale;
 
         this.leftCalendar = {
             month: Date.today().set({ day: 1, month: this.startDate.getMonth(), year: this.startDate.getFullYear() }),
@@ -44,10 +55,37 @@
             this.element.on('click', $.proxy(this.show, this));
         }
 
+        if (hasOptions) {
+            if(typeof options.locale == 'object') {
+                $.each(localeObject, function (property, value) {
+                    localeObject[property] = options.locale[property] || value;
+                });
+            }
+        }
+
+        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
+                '<div class="calendar left"></div>' +
+                '<div class="calendar right"></div>' +
+                '<div class="ranges">' +
+                  '<div class="range_inputs">' +
+                    '<div style="float: left">' +
+                      '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
+                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+                    '</div>' +
+                    '<div style="float: left; padding-left: 12px">' +
+                      '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
+                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+                    '</div>' +
+                    '<button class="btn btn-small btn-success" disabled="disabled">' + this.locale.applyLabel + '</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+
         //the date range picker
         this.container = $(DRPTemplate).appendTo('body');
 
-        if (typeof options == 'object') {
+
+        if (hasOptions) {
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
 
@@ -66,7 +104,7 @@
                 for (var range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
-                list += '<li>Custom Range</li>';
+                list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
@@ -207,7 +245,7 @@
 
         enterRange: function (e) {
             var label = e.target.innerHTML;
-            if (label == "Custom Range") {
+            if (label == this.locale.customRangeLabel) {
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
@@ -218,7 +256,7 @@
 
         clickRange: function (e) {
             var label = e.target.innerHTML;
-            if (label == "Custom Range") {
+            if (label == this.locale.customRangeLabel) {
                 this.container.find('.calendar').show();
             } else {
                 var dates = this.ranges[label];
@@ -354,7 +392,13 @@
             html += '<th colspan="5">' + calendar[1][1].toString("MMMM yyyy") + '</th>';
             html += '<th class="next"><i class="icon-arrow-right"></i></th>';
             html += '</tr>';
-            html += '<tr><th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th></tr>';
+            html += '<tr>';
+
+            $.each(this.locale.daysOfWeek, function (index, dayOfWeek) {
+                html += '<th>' + dayOfWeek + '</th>';
+            });
+
+            html += '</tr>';
             html += '</thead>';
             html += '<tbody>';
 
@@ -378,24 +422,6 @@
         }
 
     };
-
-    DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-            '<div class="calendar left"></div>' +
-            '<div class="calendar right"></div>' +
-            '<div class="ranges">' +
-              '<div class="range_inputs">' +
-                '<div style="float: left">' +
-                  '<label for="daterangepicker_start">From</label>' +
-                  '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
-                '</div>' +
-                '<div style="float: left; padding-left: 12px">' +
-                  '<label for="daterangepicker_end">To</label>' +
-                  '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
-                '</div>' +
-                '<button class="btn btn-small btn-success" disabled="disabled">Apply</button>' +
-              '</div>' +
-            '</div>' +
-          '</div>';
 
     $.fn.daterangepicker = function (options, cb) { new DateRangePicker(this, options, cb); };
 
