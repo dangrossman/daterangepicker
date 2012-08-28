@@ -25,7 +25,8 @@
             fromLabel:"From",
             toLabel:"To",
             customRangeLabel:"Custom Range",
-            daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa']
+            daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+            monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         };
 
         localeObject = this.locale;
@@ -395,7 +396,7 @@
             html += '<thead>';
             html += '<tr>';
             html += '<th class="prev"><i class="icon-arrow-left"></i></th>';
-            html += '<th colspan="5">' + calendar[1][1].toString("MMMM yyyy") + '</th>';
+            html += '<th colspan="5">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
             html += '<th class="next"><i class="icon-arrow-right"></i></th>';
             html += '</tr>';
             html += '<tr>';
