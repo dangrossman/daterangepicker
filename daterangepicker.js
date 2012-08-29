@@ -20,6 +20,7 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.firstDay = 0;
         this.locale = {
             applyLabel:"Apply",
             fromLabel:"From",
@@ -120,6 +121,15 @@
             if (typeof options.endDate == 'string')
                 this.endDate = Date.parse(options.endDate, this.format);
 
+            // update day names order to firstDay
+            if (typeof options.firstDay == 'number') {
+                this.firstDay = options.firstDay;
+                var iterator = options.firstDay;
+                while (iterator > 0) {
+                    options.locale.daysOfWeek.push(options.locale.daysOfWeek.shift());
+                    iterator--;
+                }
+            }
 
             if (typeof options.opens == 'string')
                 this.opens = options.opens;
@@ -373,7 +383,7 @@
             }
 
             //populate the calendar with date objects
-            var startDay = daysInLastMonth - dayOfWeek + 1;
+            var startDay = daysInLastMonth - dayOfWeek + this.firstDay + 1;
             if (dayOfWeek == 0)
                 startDay = daysInLastMonth - 6;
 
