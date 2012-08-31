@@ -20,14 +20,14 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
-        this.firstDay = 0;
         this.locale = {
             applyLabel:"Apply",
             fromLabel:"From",
             toLabel:"To",
             customRangeLabel:"Custom Range",
             daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-            monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+            monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            firstDay:0
         };
 
         localeObject = this.locale;
@@ -122,11 +122,11 @@
                 this.endDate = Date.parse(options.endDate, this.format);
 
             // update day names order to firstDay
-            if (typeof options.firstDay == 'number') {
-                this.firstDay = options.firstDay;
-                var iterator = options.firstDay;
+            if (typeof options.locale.firstDay == 'number') {
+                this.locale.firstDay = options.locale.firstDay;
+                var iterator = options.locale.firstDay;
                 while (iterator > 0) {
-                    options.locale.daysOfWeek.push(options.locale.daysOfWeek.shift());
+                    this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
                     iterator--;
                 }
             }
@@ -383,9 +383,9 @@
             }
 
             //populate the calendar with date objects
-            var startDay = daysInLastMonth - dayOfWeek + this.firstDay + 1;
+            var startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
             if (dayOfWeek == 0)
-                startDay = daysInLastMonth - 6;
+                startDay = daysInLastMonth - 6 + this.locale.firstDay;
 
             var curDate = Date.today().set({ day: startDay, month: lastMonth, year: lastYear });
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = curDate.clone().add(1).day()) {
