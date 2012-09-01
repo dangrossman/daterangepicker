@@ -122,12 +122,14 @@
                 this.endDate = Date.parse(options.endDate, this.format);
 
             // update day names order to firstDay
-            if (typeof options.locale.firstDay == 'number') {
-                this.locale.firstDay = options.locale.firstDay;
-                var iterator = options.locale.firstDay;
-                while (iterator > 0) {
-                    this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
-                    iterator--;
+            if (typeof options.locale == 'object') {
+                if (typeof options.locale.firstDay == 'number') {
+                    this.locale.firstDay = options.locale.firstDay;
+                    var iterator = options.locale.firstDay;
+                    while (iterator > 0) {
+                        this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                        iterator--;
+                    }
                 }
             }
 
