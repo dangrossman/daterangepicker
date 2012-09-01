@@ -432,7 +432,8 @@
     $.fn.daterangepicker = function (options, cb) {
       this.each(function() {
         var el = $(this);
-        el.data('daterangepicker', new DateRangePicker(el, options, cb));
+        if (!el.data('daterangepicker'))
+          el.data('daterangepicker', new DateRangePicker(el, options, cb));
       });
       return this;
     };
