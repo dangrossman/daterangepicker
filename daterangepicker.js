@@ -430,7 +430,9 @@
     };
 
     $.fn.daterangepicker = function (options, cb) {
-      new DateRangePicker(this, options, cb);
+      this.each(function() {
+        new DateRangePicker($(this), options, cb);
+      });
       return this;
     };
 
