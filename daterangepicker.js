@@ -8,18 +8,22 @@
 */
 !function ($) {
 
+    function equals(date1, date2) {
+        return (date1 < date2) ? false : (date1 > date2) ? false : true;
+    }
+
     var DateRangePicker = function (element, options, cb) {
         var hasOptions = typeof options == 'object'
         var localeObject;
 
         //state
-        this.startDate = Date.today();
-        this.endDate = Date.today();
+        this.startDate = moment().startOf('day');
+        this.endDate = moment().startOf('day');
         this.changed = false;
         this.ranges = {};
         this.opens = 'right';
         this.cb = function () { };
-        this.format = 'MM/dd/yyyy';
+        this.format = 'MM/DD/YYYY';
         this.locale = {
             applyLabel:"Apply",
             fromLabel:"From",
@@ -31,12 +35,12 @@
         localeObject = this.locale;
 
         this.leftCalendar = {
-            month: Date.today().set({ day: 1, month: this.startDate.getMonth(), year: this.startDate.getFullYear() }),
+            month: moment(this.startDate).startOf('month'),
             calendar: Array()
         };
 
         this.rightCalendar = {
-            month: Date.today().set({ day: 1, month: this.endDate.getMonth(), year: this.endDate.getFullYear() }),
+            month: moment(this.endDate).startOf('month'),
             calendar: Array()
         };
 
@@ -98,7 +102,7 @@
                     if (typeof end == 'string')
                         end = Date.parse(end);
 
-                    this.ranges[range] = [start, end];
+                    this.ranges[range] = [moment(start).startOf('day'), moment(end).startOf('day')];
                 }
 
                 var list = '<ul>';
@@ -114,10 +118,10 @@
                 this.format = options.format;
 
             if (typeof options.startDate == 'string')
-                this.startDate = Date.parse(options.startDate, this.format);
+                this.startDate = moment(Date.parse(options.startDate, this.format));
 
             if (typeof options.endDate == 'string')
-                this.endDate = Date.parse(options.endDate, this.format);
+                this.endDate = moment(Date.parse(options.endDate, this.format));
 
 
             if (typeof options.opens == 'string')
@@ -171,13 +175,13 @@
         },
 
         updateView: function () {
-            this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
-            this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+            this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
+            this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
 
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.toString(this.format));
-            this.container.find('input[name=daterangepicker_end]').val(this.endDate.toString(this.format));
+            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
+            this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
 
-            if (this.startDate.equals(this.endDate) || this.startDate.isBefore(this.endDate)) {
+            if (equals(this.startDate, this.endDate) || this.startDate < this.endDate) {
                 this.container.find('button').removeAttr('disabled');
             } else {
                 this.container.find('button').attr('disabled', 'disabled');
@@ -188,17 +192,17 @@
             if (!this.element.is('input')) return;
 
             var dateString = this.element.val().split(" - ");
-            var start = Date.parseExact(dateString[0], this.format);
-            var end = Date.parseExact(dateString[1], this.format);
+            var start = moment(Date.parseExact(dateString[0], this.format));
+            var end = moment(Date.parseExact(dateString[1], this.format));
 
             if (start == null || end == null) return;
-            if (end.isBefore(start)) return;
+            if (end < start) return;
 
             this.startDate = start;
             this.endDate = end;
 
             this.updateView();
-            this.cb(this.startDate, this.endDate);
+            this.cb(this.startDate.toDate(), this.endDate.toDate());
             this.updateCalendars();
         },
 
@@ -206,9 +210,9 @@
             this.updateView();
 
             if (this.element.is('input')) {
-                this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
+                this.element.val(this.startDate.format(this.format) + ' - ' + this.endDate.format(this.format));
             }
-            this.cb(this.startDate, this.endDate);
+            this.cb(this.startDate.toDate(), this.endDate.toDate());
         },
 
         move: function () {
@@ -255,8 +259,8 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].toString(this.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].toString(this.format));
+                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.format));
+                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.format));
             }
         },
 
@@ -270,8 +274,8 @@
                 this.startDate = dates[0];
                 this.endDate = dates[1];
 
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+                this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
+                this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
                 this.updateCalendars();
 
                 this.changed = true;
@@ -284,9 +288,9 @@
         clickPrev: function (e) {
             var cal = $(e.target).parents('.calendar');
             if (cal.hasClass('left')) {
-                this.leftCalendar.month.add({ months: -1 });
+                this.leftCalendar.month.subtract('months', 1);
             } else {
-                this.rightCalendar.month.add({ months: -1 });
+                this.rightCalendar.month.subtract('months', 1);
             }
             this.updateCalendars();
         },
@@ -294,9 +298,9 @@
         clickNext: function (e) {
             var cal = $(e.target).parents('.calendar');
             if (cal.hasClass('left')) {
-                this.leftCalendar.month.add({ months: 1 });
+                this.leftCalendar.month.add('months', 1);
             } else {
-                this.rightCalendar.month.add({ months: 1 });
+                this.rightCalendar.month.add('months', 1);
             }
             this.updateCalendars();
         },
@@ -309,9 +313,9 @@
             var cal = $(e.target).parents('.calendar');
 
             if (cal.hasClass('left')) {
-                this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].toString(this.format));
+                this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
             } else {
-                this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].toString(this.format));
+                this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
             }
 
         },
@@ -332,9 +336,9 @@
 
             cal.find('td').removeClass('active');
 
-            if (startDate.equals(endDate) || startDate.isBefore(endDate)) {
+            if (equals(startDate, endDate) || startDate < endDate) {
                 $(e.target).addClass('active');
-                if (!startDate.equals(this.startDate) || !endDate.equals(this.endDate))
+                if (!equals(startDate, this.startDate) || !equals(endDate, this.endDate))
                     this.changed = true;
                 this.startDate = startDate;
                 this.endDate = endDate;
@@ -347,8 +351,8 @@
 
         updateCalendars: function () {
 
-            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.getMonth(), this.leftCalendar.month.getFullYear());
-            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.getMonth(), this.rightCalendar.month.getFullYear());
+            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year());
+            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year());
             this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate));
             this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate));
 
@@ -356,14 +360,14 @@
 
         buildCalendar: function (month, year) {
 
-            var firstDay = Date.today().set({ day: 1, month: month, year: year });
-            var lastMonth = firstDay.clone().add(-1).day().getMonth();
-            var lastYear = firstDay.clone().add(-1).day().getFullYear();
+            var firstDay = moment(new Date(year, month));
+            var lastMonth = moment(firstDay).subtract('days', 1).month();
+            var lastYear = moment(firstDay).subtract('days', 1).year();
 
-            var daysInMonth = Date.getDaysInMonth(year, month);
-            var daysInLastMonth = Date.getDaysInMonth(lastYear, lastMonth);
+            var daysInMonth = firstDay.daysInMonth();
+            var daysInLastMonth = moment(new Date(lastYear, lastMonth)).daysInMonth();
 
-            var dayOfWeek = firstDay.getDay();
+            var dayOfWeek = firstDay.day();
 
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = Array();
@@ -376,8 +380,8 @@
             if (dayOfWeek == 0)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = Date.today().set({ day: startDay, month: lastMonth, year: lastYear });
-            for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = curDate.clone().add(1).day()) {
+            var curDate = moment(new Date(lastYear, lastMonth, startDay));
+            for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('days', 1)) {
                 if (i > 0 && col % 7 == 0) {
                     col = 0;
                     row++;
@@ -395,7 +399,7 @@
             html += '<thead>';
             html += '<tr>';
             html += '<th class="prev"><i class="icon-arrow-left"></i></th>';
-            html += '<th colspan="5">' + calendar[1][1].toString("MMMM yyyy") + '</th>';
+            html += '<th colspan="5">' + calendar[1][1].format("MMMM YYYY") + '</th>';
             html += '<th class="next"><i class="icon-arrow-right"></i></th>';
             html += '</tr>';
             html += '<tr>';
@@ -411,11 +415,11 @@
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
                 for (var col = 0; col < 7; col++) {
-                    var cname = (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
-                    if (calendar[row][col].equals(selected))
+                    var cname = (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
+                    if (equals(calendar[row][col], selected))
                         cname = 'active';
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
+                    html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].date() + '</td>';
                 }
                 html += '</tr>';
             }
