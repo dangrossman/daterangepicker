@@ -39,5 +39,5 @@ $(document).ready(function() {
 This code is made available under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0), 
 the same as Twitter Bootstrap.
 
-Date.js is included in this repository for convenience. It is available under the 
+Moment.js is included in this repository for convenience. It is available under the 
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
