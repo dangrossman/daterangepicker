@@ -75,7 +75,7 @@
                       '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<div style="float: left; padding-left: 12px">' +
+                    '<div style="float: left; padding-left: 11px">' +
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
