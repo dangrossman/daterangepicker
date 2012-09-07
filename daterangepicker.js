@@ -417,7 +417,6 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
-
             if (!minDate || minDate < calendar[1][1])
             {
                 html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
@@ -426,10 +425,7 @@
             {
                  html += '<th></th>';
             }
-
             html += '<th colspan="5">' + calendar[1][1].toString("MMMM yyyy") + '</th>';
-
-           
             if (!maxDate || maxDate > calendar[1][1])
             {
                 html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
