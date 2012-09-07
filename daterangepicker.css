@@ -147,8 +147,11 @@
 .daterangepicker td.off {
   color: #999;
 }
+.daterangepicker td.disabled {
+  color: #ececec;
+}
 
-.daterangepicker td:hover, .daterangepicker th:hover {
+.daterangepicker td.available:hover, .daterangepicker th.available:hover {
   background: #eee;
 }
 
