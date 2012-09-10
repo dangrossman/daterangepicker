@@ -15,13 +15,13 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 ## Usage
 
 This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/), 
-[Datejs](http://www.datejs.com/) and [jQuery](http://jquery.com/).
+[Momentjs](http://www.momentjs.com/) and [jQuery](http://jquery.com/).
 
 Basic usage:
 
 ```
 <script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="date.js"></script>
+<script type="text/javascript" src="moment.js"></script>
 <script type="text/javascript" src="daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
@@ -39,5 +39,5 @@ $(document).ready(function() {
 This code is made available under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0), 
 the same as Twitter Bootstrap.
 
-Date.js is included in this repository for convenience. It is available under the 
+Moment.js is included in this repository for convenience. It is available under the 
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
