@@ -89,30 +89,7 @@
         //the date range picker
         this.container = $(DRPTemplate).appendTo('body');
 
-
         if (hasOptions) {
-            if (typeof options.ranges == 'object') {
-                for (var range in options.ranges) {
-
-                    var start = options.ranges[range][0];
-                    var end = options.ranges[range][1];
-
-                    if (typeof start == 'string')
-                        start = Date.parse(start);
-                    if (typeof end == 'string')
-                        end = Date.parse(end);
-
-                    this.ranges[range] = [start, end];
-                }
-
-                var list = '<ul>';
-                for (var range in this.ranges) {
-                    list += '<li>' + range + '</li>';
-                }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
-                list += '</ul>';
-                this.container.find('.ranges').prepend(list);
-            }
 
             if (typeof options.format == 'string')
                 this.format = options.format;
@@ -128,6 +105,60 @@
 
             if (typeof options.maxDate == 'string')
                 this.maxDate = Date.parse(options.maxDate, this.format);
+
+
+            if (typeof options.startDate == 'object')
+                this.startDate = options.startDate;
+
+            if (typeof options.endDate == 'object')
+                this.endDate = options.endDate;
+
+            if (typeof options.minDate == 'object')
+                this.minDate = options.minDate;
+
+            if (typeof options.maxDate == 'object')
+                this.maxDate = options.maxDate;
+
+            if (typeof options.ranges == 'object') {
+                for (var range in options.ranges) {
+
+                    var start = options.ranges[range][0];
+                    var end = options.ranges[range][1];
+
+                    if (typeof start == 'string')
+                        start = Date.parse(start);
+
+                    if (typeof end == 'string')
+                        end = Date.parse(end);
+
+                    // If we have a min/max date set, bound this range
+                    // to it, but only if it would otherwise fall
+                    // outside of the min/max.
+                    if (this.minDate && start < this.minDate)
+                        start = this.minDate;
+
+                    if (this.maxDate && end > this.maxDate)
+                        end = this.maxDate;
+
+                    // If the end of the range is before the minimum (if min is set) OR
+                    // the start of the range is after the max (also if set) don't display this
+                    // range option.
+                    if ((this.minDate && end < this.minDate) || (this.maxDate && start > this.maxDate))
+                    {
+                        continue;
+                    }
+
+                    this.ranges[range] = [start, end];
+                }
+
+                var list = '<ul>';
+                for (var range in this.ranges) {
+                    list += '<li>' + range + '</li>';
+                }
+                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                list += '</ul>';
+                this.container.find('.ranges').prepend(list);
+            }
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -413,7 +444,6 @@
         },
 
         renderCalendar: function (calendar, selected, minDate, maxDate) {
-
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
@@ -451,6 +481,9 @@
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
+
+                    // Normalise the time so the comparison won't fail
+                    selected.setHours(0,0,0,0);
 
                     if ( (minDate && calendar[row][col] < minDate) || (maxDate && calendar[row][col] > maxDate))
                     {
