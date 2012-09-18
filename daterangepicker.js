@@ -15,6 +15,8 @@
         //state
         this.startDate = Date.today();
         this.endDate = Date.today();
+        this.minDate = false;
+        this.maxDate = false;
         this.changed = false;
         this.ranges = {};
         this.opens = 'right';
@@ -87,8 +89,36 @@
         //the date range picker
         this.container = $(DRPTemplate).appendTo('body');
 
-
         if (hasOptions) {
+
+            if (typeof options.format == 'string')
+                this.format = options.format;
+
+            if (typeof options.startDate == 'string')
+                this.startDate = Date.parse(options.startDate, this.format);
+
+            if (typeof options.endDate == 'string')
+                this.endDate = Date.parse(options.endDate, this.format);
+
+            if (typeof options.minDate == 'string')
+                this.minDate = Date.parse(options.minDate, this.format);
+
+            if (typeof options.maxDate == 'string')
+                this.maxDate = Date.parse(options.maxDate, this.format);
+
+
+            if (typeof options.startDate == 'object')
+                this.startDate = options.startDate;
+
+            if (typeof options.endDate == 'object')
+                this.endDate = options.endDate;
+
+            if (typeof options.minDate == 'object')
+                this.minDate = options.minDate;
+
+            if (typeof options.maxDate == 'object')
+                this.maxDate = options.maxDate;
+
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
 
@@ -97,8 +127,26 @@
 
                     if (typeof start == 'string')
                         start = Date.parse(start);
+
                     if (typeof end == 'string')
                         end = Date.parse(end);
+
+                    // If we have a min/max date set, bound this range
+                    // to it, but only if it would otherwise fall
+                    // outside of the min/max.
+                    if (this.minDate && start < this.minDate)
+                        start = this.minDate;
+
+                    if (this.maxDate && end > this.maxDate)
+                        end = this.maxDate;
+
+                    // If the end of the range is before the minimum (if min is set) OR
+                    // the start of the range is after the max (also if set) don't display this
+                    // range option.
+                    if ((this.minDate && end < this.minDate) || (this.maxDate && start > this.maxDate))
+                    {
+                        continue;
+                    }
 
                     this.ranges[range] = [start, end];
                 }
@@ -111,15 +159,6 @@
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
-
-            if (typeof options.format == 'string')
-                this.format = options.format;
-
-            if (typeof options.startDate == 'string')
-                this.startDate = Date.parse(options.startDate, this.format);
-
-            if (typeof options.endDate == 'string')
-                this.endDate = Date.parse(options.endDate, this.format);
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -159,9 +198,9 @@
         this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
         this.container.find('.ranges').on('click', 'button', $.proxy(this.clickApply, this));
 
-        this.container.find('.calendar').on('click', 'td', $.proxy(this.clickDate, this));
-        this.container.find('.calendar').on('mouseenter', 'td', $.proxy(this.enterDate, this));
-        this.container.find('.calendar').on('mouseleave', 'td', $.proxy(this.updateView, this));
+        this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
+        this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
+        this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateView, this));
 
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
@@ -352,6 +391,10 @@
                 this.startDate = startDate;
                 this.endDate = endDate;
             }
+
+            this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
+            this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+            this.updateCalendars();
         },
 
         clickApply: function (e) {
@@ -359,12 +402,10 @@
         },
 
         updateCalendars: function () {
-
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.getMonth(), this.leftCalendar.month.getFullYear());
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.getMonth(), this.rightCalendar.month.getFullYear());
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate));
-
+            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.endDate));
+            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
         },
 
         buildCalendar: function (month, year) {
@@ -402,14 +443,28 @@
 
         },
 
-        renderCalendar: function (calendar, selected) {
-
+        renderCalendar: function (calendar, selected, minDate, maxDate) {
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
-            html += '<th class="prev"><i class="icon-arrow-left"></i></th>';
+            if (!minDate || minDate < calendar[1][1])
+            {
+                html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
+            }
+            else
+            {
+                 html += '<th></th>';
+            }
             html += '<th colspan="5">' + calendar[1][1].toString("MMMM yyyy") + '</th>';
-            html += '<th class="next"><i class="icon-arrow-right"></i></th>';
+            if (!maxDate || maxDate > calendar[1][1])
+            {
+                html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
+            }
+            else
+            {
+                 html += '<th></th>';
+            }
+
             html += '</tr>';
             html += '<tr>';
 
@@ -424,9 +479,21 @@
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
                 for (var col = 0; col < 7; col++) {
-                    var cname = (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
-                    if (calendar[row][col].equals(selected))
-                        cname = 'active';
+                    var cname = 'available ';
+                    cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
+
+                    // Normalise the time so the comparison won't fail
+                    selected.setHours(0,0,0,0);
+
+                    if ( (minDate && calendar[row][col] < minDate) || (maxDate && calendar[row][col] > maxDate))
+                    {
+                        cname = 'off disabled';
+                    }
+                    else if (calendar[row][col].equals(selected))
+                    {
+                        cname += 'active';
+                    }
+                    
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
