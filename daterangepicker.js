@@ -429,7 +429,6 @@
             var startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
             if (startDay > daysInLastMonth)
                 startDay -= 7;
-            console.log("Start date: " + lastMonth + '/' + startDay + '/' + lastYear);
 
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
