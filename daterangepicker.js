@@ -427,8 +427,12 @@
 
             //populate the calendar with date objects
             var startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
-            if (dayOfWeek == 0)
-                startDay = daysInLastMonth - 6 + this.locale.firstDay;
+            if (startDay > daysInLastMonth)
+                startDay -= 7;
+            console.log("Start date: " + lastMonth + '/' + startDay + '/' + lastYear);
+
+            if (dayOfWeek == this.locale.firstDay)
+                startDay = daysInLastMonth - 6;
 
             var curDate = Date.today().set({ day: startDay, month: lastMonth, year: lastYear });
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = curDate.clone().add(1).day()) {
