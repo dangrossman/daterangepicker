@@ -33,6 +33,15 @@ $(document).ready(function() {
 </script>
 ```
 
+Additional options allow:
+* Setting initial start and end dates for the calendars
+* Bounding the minimum and maximum selectable dates
+* Overriding all labels in the interface with localized text
+* Starting the calendar week on any day of week
+* Overriding the direction the dropdown expands (left/right of element it's attached to)
+* Setting the date format string for parsing string inputs
+
+Syntax for all the options can be found in the examples.html file.
 
 ## License
 
