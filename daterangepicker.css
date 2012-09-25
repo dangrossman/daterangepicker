@@ -148,7 +148,7 @@
   color: #999;
 }
 .daterangepicker td.disabled {
-  color: #ececec;
+  color: #999;
 }
 
 .daterangepicker td.available:hover, .daterangepicker th.available:hover {
