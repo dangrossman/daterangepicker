@@ -34,6 +34,7 @@ $(document).ready(function() {
 ```
 
 Additional options allow:
+* Custom callback handler called when the date range selection is made
 * Setting initial start and end dates for the calendars
 * Bounding the minimum and maximum selectable dates
 * Overriding all labels in the interface with localized text
