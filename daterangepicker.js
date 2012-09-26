@@ -399,6 +399,7 @@
 
         clickApply: function (e) {
             this.hide();
+            this.notify();
         },
 
         updateCalendars: function () {
