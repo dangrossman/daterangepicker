@@ -297,8 +297,10 @@
             this.container.hide();
             $(document).off('mousedown', this.hide);
 
-            if (this.changed)
+            if (this.changed) {
+                this.changed = false;
                 this.notify();
+            }
         },
 
         enterRange: function (e) {
