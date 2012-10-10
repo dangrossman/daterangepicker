@@ -15,12 +15,14 @@
         //state
         this.startDate = Date.today();
         this.endDate = Date.today();
+        this.prepopulateDisplay = false;
         this.minDate = false;
         this.maxDate = false;
         this.changed = false;
         this.ranges = {};
         this.opens = 'right';
         this.cb = function () { };
+        this.validate = function(start, end) { return true; };
         this.format = 'MM/dd/yyyy';
         this.locale = {
             applyLabel:"Apply",
@@ -100,6 +102,9 @@
             if (typeof options.endDate == 'string')
                 this.endDate = Date.parse(options.endDate, this.format);
 
+            if (typeof options.prepopulateDisplay == 'boolean')
+                this.prepopulateDisplay = options.prepopulateDisplay;
+            
             if (typeof options.minDate == 'string')
                 this.minDate = Date.parse(options.minDate, this.format);
 
@@ -190,6 +195,9 @@
         if (typeof cb == 'function')
             this.cb = cb;
 
+        if (typeof options.validate == 'function')
+            this.validate = options.validate;
+
         this.container.addClass('opens' + this.opens);
 
         //event listeners
@@ -211,6 +219,11 @@
         this.updateView();
         this.updateCalendars();
 
+        /*
+         * If both start and end date are passed in
+         */
+        if (this.prepopulateDisplay && typeof options.startDate == 'string' && typeof options.endDate == 'string')
+            this.notify();
     };
 
     DateRangePicker.prototype = {
@@ -297,8 +310,13 @@
             this.container.hide();
             $(document).off('mousedown', this.hide);
 
-            if (this.changed)
-                this.notify();
+            if (this.changed) {
+                this.changed = false;
+
+                if (this.validate(this.startDate, this.endDate)) {
+                    this.notify();
+                }
+            }
         },
 
         enterRange: function (e) {
@@ -319,14 +337,16 @@
             } else {
                 var dates = this.ranges[label];
 
-                this.startDate = dates[0];
-                this.endDate = dates[1];
+                if (this.validate(dates[0], dates[1])) {
+                    this.startDate = dates[0];
+                    this.endDate = dates[1];
 
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
-                this.updateCalendars();
+                    this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
+                    this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+                    this.updateCalendars();
 
-                this.changed = true;
+                    this.changed = true;
+                }
 
                 this.container.find('.calendar').hide();
                 this.hide();
