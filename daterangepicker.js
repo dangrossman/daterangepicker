@@ -356,7 +356,6 @@
 
         enterDate: function (e) {
             var el    = $(e.target)
-            var title = el.attr('title');
             var row   = el.data('row');
             var col   = el.data('col');
             var cal   = el.closest('.calendar');
@@ -373,7 +372,6 @@
 
         clickDate: function (e) {
             var el    = $(e.target)
-            var title = el.attr('title');
             var row   = el.data('row');
             var col   = el.data('col');
             var cal   = el.closest('.calendar');
