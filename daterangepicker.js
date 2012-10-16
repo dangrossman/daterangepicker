@@ -335,7 +335,7 @@
         },
 
         clickPrev: function (e) {
-            var cal = $(e.target).parents('.calendar');
+            var cal = $(e.target).closest('.calendar');
             if (cal.hasClass('left')) {
                 this.leftCalendar.month.subtract('months', 1);
             } else {
@@ -345,7 +345,7 @@
         },
 
         clickNext: function (e) {
-            var cal = $(e.target).parents('.calendar');
+            var cal = $(e.target).closest('.calendar');
             if (cal.hasClass('left')) {
                 this.leftCalendar.month.add('months', 1);
             } else {
@@ -355,10 +355,11 @@
         },
 
         enterDate: function (e) {
-            var title = $(e.target).attr('title');
-            var row = title.substr(1, 1);
-            var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
+            var el    = $(e.target)
+            var title = el.attr('title');
+            var row   = el.data('row');
+            var col   = el.data('col');
+            var cal   = el.closest('.calendar');
 
             if (cal.hasClass('left')) {
                 this.container.find('input[name=daterangepicker_start]')
@@ -371,10 +372,11 @@
         },
 
         clickDate: function (e) {
-            var title = $(e.target).attr('title');
-            var row = title.substr(1, 1);
-            var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
+            var el    = $(e.target)
+            var title = el.attr('title');
+            var row   = el.data('row');
+            var col   = el.data('col');
+            var cal   = el.closest('.calendar');
 
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
@@ -396,7 +398,7 @@
 
             this.leftCalendar.month.month(this.startDate.month())
                                    .year(this.startDate.year());
-            this.rightCalendar.month.month(this.endDate.getMonth())
+            this.rightCalendar.month.month(this.endDate.month())
                                     .year(this.endDate.year());
             this.updateCalendars();
         },
@@ -502,7 +504,7 @@
                     }
 
                     var title = calendar[row][col].format(this.format);
-                    html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname + '" title="' + title + '" data-row="' + row + '" data-col="'+ col +'">' + calendar[row][col].date() + '</td>';
                 }
                 html += '</tr>';
             }
