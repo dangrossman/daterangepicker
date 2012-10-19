@@ -52,12 +52,12 @@
 
         if (this.element.is('input')) {
             this.element.on({
-                click: $.proxy(this.show, this),
-                focus: $.proxy(this.show, this),
-                blur: $.proxy(this.hide, this)
+                'click.daterangepicker': $.proxy(this.show, this),
+                'focus.daterangepicker': $.proxy(this.show, this),
+                'blur.daterangepicker': $.proxy(this.hide, this)
             });
         } else {
-            this.element.on('click', $.proxy(this.show, this));
+            this.element.on('click.daterangepicker', $.proxy(this.show, this));
         }
 
         if (hasOptions) {
@@ -192,7 +192,7 @@
 
         this.container.addClass('opens' + this.opens);
 
-        //event listeners
+        //event listeners - removed when the container is removed
         this.container.on('mousedown', $.proxy(this.mousedown, this));
         this.container.find('.calendar').on('click', '.prev', $.proxy(this.clickPrev, this));
         this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
@@ -206,7 +206,7 @@
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
 
-        this.element.on('keyup', $.proxy(this.updateFromControl, this));
+        this.element.on('keyup.daterangepicker', $.proxy(this.updateFromControl, this));
 
         this.updateView();
         this.updateCalendars();
@@ -508,6 +508,13 @@
 
             return html;
 
+        },
+
+        remove : function () {
+            this.hide();
+            this.container.remove();
+            this.element.off('.daterangepicker');
+            this.element.removeData('daterangepicker');
         }
 
     };
@@ -515,8 +522,11 @@
     $.fn.daterangepicker = function (options, cb) {
       this.each(function() {
         var el = $(this);
-        if (!el.data('daterangepicker'))
+        if (!el.data('daterangepicker') && options.remove !== true) {
           el.data('daterangepicker', new DateRangePicker(el, options, cb));
+        } else if (el.data('daterangepicker') && options.remove === true) {
+          el.data('daterangepicker').remove();
+        }
       });
       return this;
     };
