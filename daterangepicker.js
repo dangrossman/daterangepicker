@@ -276,11 +276,14 @@
             if (this.element.is('input')) {
                 if (this.extraChoice) {
                     this.element.val(this.extraChoice);
-                    this.cb(null, null, this.extraChoice);
                 } else {
                     this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
-                    this.cb(this.startDate, this.endDate);
                 }
+            }
+            if (this.extraChoice) {
+                this.cb(null, null, this.extraChoice);
+            } else {
+                this.cb(this.startDate, this.endDate);
             }
         },
 
