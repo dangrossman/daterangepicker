@@ -18,6 +18,8 @@
         this.minDate = false;
         this.maxDate = false;
         this.changed = false;
+        this.extraChoice = null;
+        this.extraChoices = {};
         this.ranges = {};
         this.opens = 'right';
         this.cb = function () { };
@@ -151,13 +153,23 @@
                     this.ranges[range] = [start, end];
                 }
 
-                var list = '<ul>';
+                var list = '<ul class="range_choices">';
                 for (var range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
                 list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
+            }
+
+            if (typeof options.extraChoices == 'object') {
+                var list = '<ul class="extra_choices">';
+                for (var choice in options.extraChoices) {
+                    list += '<li>' + choice + '</li>';
+                }
+                list += '</ul>';
+                this.container.find('.ranges').prepend(list);
+                this.extraChoices = options.extraChoices;
             }
 
             // update day names order to firstDay
@@ -202,9 +214,13 @@
         this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
         this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateView, this));
 
-        this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
-        this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
-        this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
+        this.container.find('.ranges').on('click', '.range_choices li', $.proxy(this.clickRange, this));
+        this.container.find('.ranges').on('mouseenter', '.range_choices li', $.proxy(this.enterRange, this));
+        this.container.find('.ranges').on('mouseleave', '.range_choices li', $.proxy(this.updateView, this));
+
+        this.container.find('.ranges').on('click', '.extra_choices li', $.proxy(this.clickExtraChoice, this));
+        this.container.find('.ranges').on('mouseenter', '.extra_choices li', $.proxy(this.enterExtraChoice, this));
+        this.container.find('.ranges').on('mouseleave', '.extra_choices li', $.proxy(this.updateView, this));
 
         this.element.on('keyup', $.proxy(this.updateFromControl, this));
 
@@ -258,9 +274,14 @@
             this.updateView();
 
             if (this.element.is('input')) {
-                this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
+                if (this.extraChoice) {
+                    this.element.val(this.extraChoice);
+                    this.cb(null, null, this.extraChoice);
+                } else {
+                    this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
+                    this.cb(this.startDate, this.endDate);
+                }
             }
-            this.cb(this.startDate, this.endDate);
         },
 
         move: function () {
@@ -324,6 +345,8 @@
                 this.startDate = dates[0];
                 this.endDate = dates[1];
 
+                this.extraChoice = null;
+
                 this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
                 this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
                 this.updateCalendars();
@@ -333,6 +356,18 @@
                 this.container.find('.calendar').hide();
                 this.hide();
             }
+        },
+
+        enterExtraChoice: function(e) {
+        },
+
+        clickExtraChoice: function(e) {
+            var label = e.target.innerHTML;
+            var value = this.extraChoices[label];
+            this.changed = true;
+            this.extraChoice = value;
+            this.container.find('.calendar').hide();
+            this.hide();
         },
 
         clickPrev: function (e) {
@@ -498,7 +533,7 @@
                     {
                         cname += 'active';
                     }
-                    
+
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
