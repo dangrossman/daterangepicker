@@ -89,14 +89,9 @@
                 '</div>' +
               '</div>';
 
-        var selector = (hasOptions && options.parentEl) || this.parentEl;
+        this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         //the date range picker
-        this.container = $(DRPTemplate).appendTo(selector);
-
-        this.offsetTweak = {
-            left: -1 * $(selector).offset().left,
-            top: -1 * $(selector).offset().top
-        };
+        this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         if (hasOptions) {
 
@@ -273,16 +268,20 @@
         },
 
         move: function () {
+            var parentOffset = {
+                top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+                left: this.parentEl.offset().left - this.parentEl.scrollLeft(),
+            };
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() + this.offsetTweak.top,
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - this.offsetTweak.left,
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
                     left: 'auto'
                 });
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() + this.offsetTweak.top,
-                    left: this.element.offset().left + this.offsetTweak.left,
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
             }
