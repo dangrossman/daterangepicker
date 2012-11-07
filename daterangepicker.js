@@ -44,6 +44,9 @@
             calendar: Array()
         };
 
+        // by default, the daterangepicker element is placed at the bottom of HTML body
+        this.parentEl = 'body';
+
         //element that triggered the date range picker
         this.element = $(element);
 
@@ -86,8 +89,14 @@
                 '</div>' +
               '</div>';
 
+        var selector = (hasOptions && options.parentEl) || this.parentEl;
         //the date range picker
-        this.container = $(DRPTemplate).appendTo('body');
+        this.container = $(DRPTemplate).appendTo(selector);
+
+        this.offsetTweak = {
+            left: -1 * $(selector).offset().left,
+            top: -1 * $(selector).offset().top
+        };
 
         if (hasOptions) {
 
@@ -266,14 +275,14 @@
         move: function () {
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
+                    top: this.element.offset().top + this.element.outerHeight() + this.offsetTweak.top,
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - this.offsetTweak.left,
                     left: 'auto'
                 });
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    left: this.element.offset().left,
+                    top: this.element.offset().top + this.element.outerHeight() + this.offsetTweak.top,
+                    left: this.element.offset().left + this.offsetTweak.left,
                     right: 'auto'
                 });
             }
