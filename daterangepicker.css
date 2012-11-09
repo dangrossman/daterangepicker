@@ -21,6 +21,10 @@
   float: left;
 }
 
+.daterangepicker .ranges .range_inputs>div:nth-child(2) {
+  padding-left: 11px;
+}
+
 .daterangepicker .calendar {
   display: none;
   max-width: 230px;
