@@ -17,6 +17,10 @@
   text-align: left;
 }
 
+.daterangepicker .ranges .range_inputs>div {
+  float: left;
+}
+
 .daterangepicker .calendar {
   display: none;
   max-width: 230px;
