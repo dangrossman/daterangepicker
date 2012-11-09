@@ -194,10 +194,11 @@
             options.buttonClasses = [options.buttonClasses];
         }
 
-        if (typeof options.buttonClasses == 'array') {
-            $.each(options.buttonClasses, function (cl) {
-                this.container.find('button').addClass(cl);
-            }
+        if (typeof options.buttonClasses == 'object') {
+            var c = this.container;
+            $.each(options.buttonClasses, function (idx, val) {
+                c.find('button').addClass(val);
+            });
         }
 
         this.container.addClass('opens' + this.opens);
