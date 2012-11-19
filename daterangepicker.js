@@ -22,6 +22,7 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.separator = ' - ';
         this.locale = {
             applyLabel:"Apply",
             fromLabel:"From",
@@ -106,6 +107,8 @@
             if (typeof options.maxDate == 'string')
                 this.maxDate = Date.parse(options.maxDate, this.format);
 
+            if (typeof options.separator == 'string')
+                this.separator = options.separator;
 
             if (typeof options.startDate == 'object')
                 this.startDate = options.startDate;
@@ -239,7 +242,7 @@
         updateFromControl: function () {
             if (!this.element.is('input')) return;
 
-            var dateString = this.element.val().split(" - ");
+            var dateString = this.element.val().split(this.separator);
             var start = Date.parseExact(dateString[0], this.format);
             var end = Date.parseExact(dateString[1], this.format);
 
@@ -258,7 +261,7 @@
             this.updateView();
 
             if (this.element.is('input')) {
-                this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
+                this.element.val(this.startDate.toString(this.format) + this.separator + this.endDate.toString(this.format));
             }
             this.cb(this.startDate, this.endDate);
         },
