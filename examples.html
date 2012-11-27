@@ -88,7 +88,42 @@
 					</script>
 
 				</div>
+                <h4>Max Date Range Example</h4>
+				<div class="well">
+                    <p>This example only allows dates to be a max of a month apart. </p>
+                    <p>If the end date is more than a month past the start date when selecting the start date, the end date is set to a months time</p>
+                    <p>If the start date is more than a month before the end date when selecting the end date, the start date is set to a month ago</p>
+                    <p>Uses the date.js <a href="http://code.google.com/p/datejs/wiki/APIDocumentation#add">config settings</a><br />
+                        <code>
+                        $('#booking').daterangepicker(
+                                {
+                                    dateRange: { months: 1 }
+                                });
+                       </code>
+                    </p>
+					<form class="form-horizontal">
+					  <fieldset>
+					    <div class="control-group">
+					      <label class="control-label" for="reservation">Booking dates:</label>
+					      <div class="controls">
+					        <div class="input-prepend">
+					          <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="booking" id="booking" />
+					        </div>
+					      </div>
+					    </div>
+					  </fieldset>
+					</form>
 
+					<script type="text/javascript">
+					    $(document).ready(function () {
+					        $('#booking').daterangepicker(
+                                {
+                                    dateRange: { months: 1 }
+                                });
+					    });
+					</script>
+
+				</div>
 			</div>
 		</div>
 
