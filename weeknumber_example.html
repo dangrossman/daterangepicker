@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+	<head>
+		<meta charset="UTF-8" />
+		<title>A date range picker for Twitter Bootstrap</title>
+		<link rel="stylesheet" type="text/css" media="all" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+		<script type="text/javascript" src="date.js"></script>
+		<script type="text/javascript" src="daterangepicker.js"></script>
+	</head>
+	<body>
+
+		<div class="container">
+			<div class="span12">
+
+				<h4>Show Weeknumbers Example</h4>
+				<div class="well">
+
+					<form class="form-horizontal">
+					  <fieldset>
+					    <div class="control-group">
+					      <label class="control-label" for="reservation">Reservation dates:</label>
+					      <div class="controls">
+					        <div class="input-prepend">
+					          <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="reservation" />
+					        </div>
+					      </div>
+					    </div>
+					  </fieldset>
+					</form>
+
+					<script type="text/javascript">
+					$(document).ready(function() {
+						$('#reservation').daterangepicker({
+						  showWeekNumbers: true
+						});
+					});
+					</script>
+
+				</div>
+
+			</div>
+		</div>
+
+	</body>
+</html>

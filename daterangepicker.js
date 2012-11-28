@@ -22,10 +22,12 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.showWeekNumbers = false;
         this.locale = {
             applyLabel:"Apply",
             fromLabel:"From",
             toLabel:"To",
+            weekLabel: "W",
             customRangeLabel:"Custom Range",
             daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
             monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -174,6 +176,10 @@
 
             if (typeof options.opens == 'string')
                 this.opens = options.opens;
+
+            if (typeof options.showWeekNumbers == 'boolean') {
+                this.showWeekNumbers = options.showWeekNumbers;
+            }
         }
 
         if (this.opens == 'right') {
@@ -452,6 +458,11 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
+            
+            // add empty cell for week number
+            if (this.showWeekNumbers)
+                html += '<th></th>';
+            
             if (!minDate || minDate < calendar[1][1])
             {
                 html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
@@ -472,6 +483,10 @@
 
             html += '</tr>';
             html += '<tr>';
+            
+            // add week number label
+            if (this.showWeekNumbers)
+                html += '<th class="week">' + this.locale.weekLabel + '</th>';
 
             $.each(this.locale.daysOfWeek, function (index, dayOfWeek) {
                 html += '<th>' + dayOfWeek + '</th>';
@@ -483,6 +498,11 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
+                
+                // add week number
+                if (this.showWeekNumbers)
+                    html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
+                
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
