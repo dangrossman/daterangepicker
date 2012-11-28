@@ -46,6 +46,9 @@
             calendar: Array()
         };
 
+        // by default, the daterangepicker element is placed at the bottom of HTML body
+        this.parentEl = 'body';
+
         //element that triggered the date range picker
         this.element = $(element);
 
@@ -88,8 +91,9 @@
                 '</div>' +
               '</div>';
 
+        this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         //the date range picker
-        this.container = $(DRPTemplate).appendTo('body');
+        this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         if (hasOptions) {
 
@@ -270,16 +274,20 @@
         },
 
         move: function () {
+            var parentOffset = {
+                top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+                left: this.parentEl.offset().left - this.parentEl.scrollLeft(),
+            };
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
                     left: 'auto'
                 });
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    left: this.element.offset().left,
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
             }
