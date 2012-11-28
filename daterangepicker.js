@@ -1,5 +1,5 @@
 /**
-* @version: 1.0
+* @version: 1.0.1
 * @author: Dan Grossman http://www.dangrossman.info/
 * @date: 2012-08-20
 * @copyright: Copyright (c) 2012 Dan Grossman. All rights reserved.
@@ -78,15 +78,15 @@
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
-                    '<div style="float: left">' +
+                    '<div>' +
                       '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<div style="float: left; padding-left: 11px">' +
+                    '<div>' +
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<button class="btn btn-small btn-success" disabled="disabled">' + this.locale.applyLabel + '</button>' +
+                    '<button class="btn btn-small" disabled="disabled">' + this.locale.applyLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -199,6 +199,17 @@
 
         if (typeof cb == 'function')
             this.cb = cb;
+
+        if (typeof options.buttonClasses == 'string') {
+            options.buttonClasses = [options.buttonClasses];
+        }
+
+        if (typeof options.buttonClasses == 'object') {
+            var c = this.container;
+            $.each(options.buttonClasses, function (idx, val) {
+                c.find('button').addClass(val);
+            });
+        }
 
         this.container.addClass('opens' + this.opens);
 
