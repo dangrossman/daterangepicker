@@ -60,8 +60,7 @@
         if (this.element.is('input')) {
             this.element.on({
                 click: $.proxy(this.show, this),
-                focus: $.proxy(this.show, this),
-                blur: $.proxy(this.hide, this)
+                focus: $.proxy(this.show, this)
             });
         } else {
             this.element.on('click', $.proxy(this.show, this));
@@ -499,7 +498,7 @@
             {
                  html += '<th></th>';
             }
-            html += '<th colspan="5">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
+            html += '<th colspan="5" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
             if (!maxDate || maxDate > calendar[1][1])
             {
                 html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
