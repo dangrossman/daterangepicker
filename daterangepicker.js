@@ -1,5 +1,5 @@
 /**
-* @version: 1.0
+* @version: 1.0.1
 * @author: Dan Grossman http://www.dangrossman.info/
 * @date: 2012-08-20
 * @copyright: Copyright (c) 2012 Dan Grossman. All rights reserved.
@@ -22,14 +22,18 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.separator = ' - ';
+        this.showWeekNumbers = false;
+        this.buttonClasses = ['btn-success'];
         this.locale = {
-            applyLabel:"Apply",
-            fromLabel:"From",
-            toLabel:"To",
-            customRangeLabel:"Custom Range",
-            daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-            monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            firstDay:0
+            applyLabel: 'Apply',
+            fromLabel: 'From',
+            toLabel: 'To',
+            weekLabel: 'W',
+            customRangeLabel: 'Custom Range',
+            daysOfWeek: Date.CultureInfo.shortestDayNames,
+            monthNames: Date.CultureInfo.monthNames,
+            firstDay: 0
         };
 
         localeObject = this.locale;
@@ -44,6 +48,9 @@
             calendar: Array()
         };
 
+        // by default, the daterangepicker element is placed at the bottom of HTML body
+        this.parentEl = 'body';
+
         //element that triggered the date range picker
         this.element = $(element);
 
@@ -53,8 +60,7 @@
         if (this.element.is('input')) {
             this.element.on({
                 click: $.proxy(this.show, this),
-                focus: $.proxy(this.show, this),
-                blur: $.proxy(this.hide, this)
+                focus: $.proxy(this.show, this)
             });
         } else {
             this.element.on('click', $.proxy(this.show, this));
@@ -73,26 +79,30 @@
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
-                    '<div style="float: left">' +
+                    '<div>' +
                       '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<div style="float: left; padding-left: 11px">' +
+                    '<div>' +
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<button class="btn btn-small btn-success" disabled="disabled">' + this.locale.applyLabel + '</button>' +
+                    '<button class="btn btn-small" disabled="disabled">' + this.locale.applyLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
 
+        this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         //the date range picker
-        this.container = $(DRPTemplate).appendTo('body');
+        this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         if (hasOptions) {
 
             if (typeof options.format == 'string')
                 this.format = options.format;
+
+            if (typeof options.separator == 'string')
+                this.separator = options.separator;
 
             if (typeof options.startDate == 'string')
                 this.startDate = Date.parse(options.startDate, this.format);
@@ -174,7 +184,26 @@
 
             if (typeof options.opens == 'string')
                 this.opens = options.opens;
+
+            if (typeof options.showWeekNumbers == 'boolean') {
+                this.showWeekNumbers = options.showWeekNumbers;
+            }
+
+            if (typeof options.buttonClasses == 'string') {
+                this.buttonClasses = [options.buttonClasses];
+            }
+
+            if (typeof options.buttonClasses == 'object') {
+                this.buttonClasses = options.buttonClasses;
+            }
+
         }
+
+        //apply CSS classes to buttons
+        var c = this.container;
+        $.each(this.buttonClasses, function (idx, val) {
+            c.find('button').addClass(val);
+        });
 
         if (this.opens == 'right') {
             //swap calendar positions
@@ -239,7 +268,7 @@
         updateFromControl: function () {
             if (!this.element.is('input')) return;
 
-            var dateString = this.element.val().split(" - ");
+            var dateString = this.element.val().split(this.separator);
             var start = Date.parseExact(dateString[0], this.format);
             var end = Date.parseExact(dateString[1], this.format);
 
@@ -258,22 +287,26 @@
             this.updateView();
 
             if (this.element.is('input')) {
-                this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
+                this.element.val(this.startDate.toString(this.format) + this.separator + this.endDate.toString(this.format));
             }
             this.cb(this.startDate, this.endDate);
         },
 
         move: function () {
+            var parentOffset = {
+                top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+                left: this.parentEl.offset().left - this.parentEl.scrollLeft()
+            };
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
                     left: 'auto'
                 });
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    left: this.element.offset().left,
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
             }
@@ -452,6 +485,11 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
+            
+            // add empty cell for week number
+            if (this.showWeekNumbers)
+                html += '<th></th>';
+            
             if (!minDate || minDate < calendar[1][1])
             {
                 html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
@@ -460,7 +498,7 @@
             {
                  html += '<th></th>';
             }
-            html += '<th colspan="5">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
+            html += '<th colspan="5" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
             if (!maxDate || maxDate > calendar[1][1])
             {
                 html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
@@ -472,6 +510,10 @@
 
             html += '</tr>';
             html += '<tr>';
+            
+            // add week number label
+            if (this.showWeekNumbers)
+                html += '<th class="week">' + this.locale.weekLabel + '</th>';
 
             $.each(this.locale.daysOfWeek, function (index, dayOfWeek) {
                 html += '<th>' + dayOfWeek + '</th>';
@@ -483,6 +525,11 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
+                
+                // add week number
+                if (this.showWeekNumbers)
+                    html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
+                
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
