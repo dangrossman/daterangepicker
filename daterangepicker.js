@@ -23,6 +23,7 @@
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
         this.showWeekNumbers = false;
+        this.buttonClasses = ['btn-success'];
         this.locale = {
             applyLabel:"Apply",
             fromLabel:"From",
@@ -184,7 +185,22 @@
             if (typeof options.showWeekNumbers == 'boolean') {
                 this.showWeekNumbers = options.showWeekNumbers;
             }
+
+            if (typeof options.buttonClasses == 'string') {
+                this.buttonClasses = [options.buttonClasses];
+            }
+
+            if (typeof options.buttonClasses == 'object') {
+                this.buttonClasses = options.buttonClasses;
+            }
+
         }
+
+        //apply CSS classes to buttons
+        var c = this.container;
+        $.each(this.buttonClasses, function (idx, val) {
+            c.find('button').addClass(val);
+        });
 
         if (this.opens == 'right') {
             //swap calendar positions
@@ -199,17 +215,6 @@
 
         if (typeof cb == 'function')
             this.cb = cb;
-
-        if (typeof options.buttonClasses == 'string') {
-            options.buttonClasses = [options.buttonClasses];
-        }
-
-        if (typeof options.buttonClasses == 'object') {
-            var c = this.container;
-            $.each(options.buttonClasses, function (idx, val) {
-                c.find('button').addClass(val);
-            });
-        }
 
         this.container.addClass('opens' + this.opens);
 
