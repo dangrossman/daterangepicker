@@ -17,13 +17,23 @@
   text-align: left;
 }
 
+.daterangepicker .ranges .range_inputs>div {
+  float: left;
+}
+
+.daterangepicker .ranges .range_inputs>div:nth-child(2) {
+  padding-left: 11px;
+}
+
 .daterangepicker .calendar {
   display: none;
   max-width: 230px;
 }
 
 .daterangepicker .calendar th, .daterangepicker .calendar td {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;  
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .daterangepicker .ranges label {
@@ -170,4 +180,9 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.daterangepicker td.week, .daterangepicker th.week {
+    font-size: 80%;
+    color: #ccc;
 }

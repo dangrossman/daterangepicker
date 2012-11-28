@@ -1,131 +1,98 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
-	<head>
-		<meta charset="UTF-8" />
-		<title>A date range picker for Twitter Bootstrap</title>
-		<link rel="stylesheet" type="text/css" media="all" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
-		<link rel="stylesheet/less" type="text/css" media="all" href="daterangepicker.less" />
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-		<script type="text/javascript" src="date.js"></script>
-		<script type="text/javascript" src="less.js"></script>
-		<script type="text/javascript" src="daterangepicker.js"></script>
-	</head>
-	<body>
+   <head>
+      <meta charset="UTF-8" />
+      <title>A date range picker for Twitter Bootstrap</title>
+      <link rel="stylesheet" type="text/css" media="all" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+      <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+      <script type="text/javascript" src="date.js"></script>
+      <script type="text/javascript" src="daterangepicker.js"></script>
+   </head>
+   <body>
         
-		<div class="container">
-			<div class="span12">
+      <div class="container">
+         <div class="span12">
 
-				<h4>Simple Example</h4>
-				<div class="well">
+            <h4>Simple Example</h4>
+            <div class="well">
 
-					<form class="form-horizontal">
-					  <fieldset>
-					    <div class="control-group">
-					      <label class="control-label" for="reservation">Reservation dates:</label>
-					      <div class="controls">
-					        <div class="input-prepend">
-					          <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="reservation" />
-					        </div>
-					      </div>
-					    </div>
-					  </fieldset>
-					</form>
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="reservation">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="reservation" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
 
-					<script type="text/javascript">
-					$(document).ready(function() {
-						$('#reservation').daterangepicker();
-					});
-					</script>
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reservation').daterangepicker();
+               });
+               </script>
 
-				</div>
+            </div>
 
-				<h4>Options Usage Example</h4>
+            <h4>Options Usage Example</h4>
 
-				<div class="well">
+            <div class="well">
 
-				    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-				        <i class="icon-calendar icon-large"></i>
-				        <span></span> <b class="caret" style="margin-top: 8px"></b>
-				    </div>
+               <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="icon-calendar icon-large"></i>
+                  <span></span> <b class="caret" style="margin-top: 8px"></b>
+               </div>
 
-					<script type="text/javascript">
-					$(document).ready(function() {
-						$('#reportrange').daterangepicker(
-							{
-								ranges: {
-									'Today': ['today', 'today'],
-									'Yesterday': ['yesterday', 'yesterday'],
-									'Last 7 Days': [Date.today().add({ days: -6 }), 'today'],
-									'Last 30 Days': [Date.today().add({ days: -29 }), 'today'],
-									'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-									'Last Month': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })]
-								},
-								opens: 'left',
-								format: 'MM/dd/yyyy',
-								startDate: Date.today().add({ days: -29 }),
-								endDate: Date.today(),
-								minDate: '01/01/2012',
-								maxDate: '12/31/2013',
-						        	locale: {
-						            		applyLabel: 'Submit',
-						           		fromLabel: 'From',
-						            		toLabel: 'To',
-						            		customRangeLabel: 'Custom Range',
-						            		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-						            		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-						            		firstDay: 1
-						        	}
-							}, 
-							function(start, end) {
-								$('#reportrange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
-							}
-						);
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reportrange').daterangepicker(
+                     {
+                        ranges: {
+                           'Today': ['today', 'today'],
+                           'Yesterday': ['yesterday', 'yesterday'],
+                           'Last 7 Days': [Date.today().add({ days: -6 }), 'today'],
+                           'Last 30 Days': [Date.today().add({ days: -29 }), 'today'],
+                           'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
+                           'Last Month': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })]
+                        },
+                        opens: 'left',
+                        format: 'MM/dd/yyyy',
+                        separator: ' to ',
+                        startDate: Date.today().add({ days: -29 }),
+                        endDate: Date.today(),
+                        minDate: '01/01/2012',
+                        maxDate: '12/31/2013',
+                        locale: {
+                            applyLabel: 'Submit',
+                            fromLabel: 'From',
+                            toLabel: 'To',
+                            customRangeLabel: 'Custom Range',
+                            daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                            firstDay: 1
+                        },
+                        showWeekNumbers: true,
+                        buttonClasses: ['btn-danger']
+                     }, 
+                     function(start, end) {
+                        $('#reportrange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+                     }
+                  );
 
-						//Set the initial state of the picker label
-						$('#reportrange span').html(Date.today().add({ days: -29 }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
+                  //Set the initial state of the picker label
+                  $('#reportrange span').html(Date.today().add({ days: -29 }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
 
-					});
-					</script>
+               });
+               </script>
 
-				</div>
-                <h4>Max Date Range Example</h4>
-				<div class="well">
-                    <p>This example only allows dates to be a max of a month apart. </p>
-                    <p>If the end date is more than a month past the start date when selecting the start date, the end date is set to a months time</p>
-                    <p>If the start date is more than a month before the end date when selecting the end date, the start date is set to a month ago</p>
-                    <p>Uses the date.js <a href="http://code.google.com/p/datejs/wiki/APIDocumentation#add">config settings</a><br />
-                        <code>
-                        $('#booking').daterangepicker(
-                                {
-                                    dateRange: { months: 1 }
-                                });
-                       </code>
-                    </p>
-					<form class="form-horizontal">
-					  <fieldset>
-					    <div class="control-group">
-					      <label class="control-label" for="reservation">Booking dates:</label>
-					      <div class="controls">
-					        <div class="input-prepend">
-					          <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="booking" id="booking" />
-					        </div>
-					      </div>
-					    </div>
-					  </fieldset>
-					</form>
+            </div>
 
-					<script type="text/javascript">
-					    $(document).ready(function () {
-					        $('#booking').daterangepicker(
-                                {
-                                    dateRange: { months: 1 }
-                                });
-					    });
-					</script>
+         </div>
+      </div>
 
-				</div>
-			</div>
-		</div>
-
-	</body>
+   </body>
 </html>

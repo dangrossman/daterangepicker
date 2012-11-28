@@ -1,7 +1,7 @@
 // import the bootstrap variables, on a live system you are better including this file in the bootstrap.less
 @import "variables.less"; 
 
-.daterangepicker  {	
+.daterangepicker {	
 	@background: lighten(@bodyBackground, 10%);
 	position: absolute;
     background: @background;
@@ -14,12 +14,12 @@
     border-radius: 4px;
 	z-index: @zindexModal + 10;
 
-    .dropdown-menu  {
+    .dropdown-menu {
         max-width: none;
     }
 
-	&.opensleft  {
-	    &:before  {
+	&.opensleft {
+	    &:before {
             position: absolute;
             top: -7px;
             right: 9px;
@@ -30,7 +30,7 @@
 			border-bottom-color: rgba(0, 0, 0, 0.2);
             content: '';
         }
-		&:after  {
+		&:after {
             position: absolute;
             top: -6px;
             right: 10px;
@@ -40,14 +40,14 @@
             border-left: 6px solid transparent;
             content: '';
         }
-		.ranges, .calendar  {
+		.ranges, .calendar {
 		    float: left;
 		    margin: 4px;
 		}
     }
 
-	&.opensright  {
-	    &:before  {
+	&.opensright {
+	    &:before {
             position: absolute;
             top: -7px;
             left: 9px;
@@ -59,7 +59,7 @@
             content: '';
         }
 
-        &:after  {
+        &:after {
             position: absolute;
             top: -6px;
             left: 10px;
@@ -69,17 +69,17 @@
             border-left: 6px solid transparent;
             content: '';
         }
-		.ranges, .calendar  {
+		.ranges, .calendar {
 		    float: right;
 		    margin: 4px;
 		}
     }
 
-	.ranges  {
+	.ranges {
         width: 160px;
         text-align: left;
 
-		label  {
+		label {
             color: @textColor;
             font-size: 11px;
             margin-bottom: 2px;
@@ -87,17 +87,17 @@
             text-shadow: 1px 1px 0 darken(@textColor, 40%);
         }
 
-        input  {
+        input {
             font-size: 11px;
         }
 
-        ul  {
+        ul {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        li  {
+        li {
             font-size: 11px;
             background: @background;
             border: 1px solid @background;
@@ -110,14 +110,14 @@
             cursor: pointer;
         }
 
-        .li.active,  li:hover  {
+        .li.active,  li:hover {
             background: lighten(@background, 30%);
             border: 1px solid @linkColor;
             color: @linkColorHover;
         }
     }
 	
-	.calendar  {	
+	.calendar {	
         display: none;
         max-width: 230px;
         border: 1px solid @tableBorder;
@@ -125,15 +125,15 @@
         border-radius: 4px;
         background: @tableBackground;
 
-		th, td  {
+		th, td {
             font-family: @baseFontFamily;  
         }
     }	   
 
-    table  {
+    table {
         width: 100%;
         margin: 0;
-		td, th  {
+		td, th {
             text-align: center;
             width: 20px;
             height: 20px;
@@ -143,12 +143,12 @@
             cursor: pointer;
             white-space: nowrap;
 			color: @textColor;
-            &.available:hover  {
+            &.available:hover {
                 background: @grayLighter;
             }			
         }
 
-        td.active, td.active:hover  {
+        td.active, td.active:hover {
 			@activeBackground: lighten(@background, 60%);
             background-color: @activeBackground;
             background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
@@ -166,12 +166,17 @@
             text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
         }
 
-        td.off  {
+        td.off {
             color: @grayLight;
         }
 
-        td.disabled  {
+        td.disabled {
             color: @grayLight;
         }
+
+		
     }
+
+	
+
 }
