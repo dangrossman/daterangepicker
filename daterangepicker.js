@@ -22,6 +22,7 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.separator = ' - ';
         this.showWeekNumbers = false;
         this.buttonClasses = ['btn-success'];
         this.locale = {
@@ -100,6 +101,9 @@
 
             if (typeof options.format == 'string')
                 this.format = options.format;
+
+            if (typeof options.separator == 'string')
+                this.separator = options.separator;
 
             if (typeof options.startDate == 'string')
                 this.startDate = Date.parse(options.startDate, this.format);
@@ -265,7 +269,7 @@
         updateFromControl: function () {
             if (!this.element.is('input')) return;
 
-            var dateString = this.element.val().split(" - ");
+            var dateString = this.element.val().split(this.separator);
             var start = Date.parseExact(dateString[0], this.format);
             var end = Date.parseExact(dateString[1], this.format);
 
@@ -284,7 +288,7 @@
             this.updateView();
 
             if (this.element.is('input')) {
-                this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
+                this.element.val(this.startDate.toString(this.format) + this.separator + this.endDate.toString(this.format));
             }
             this.cb(this.startDate, this.endDate);
         },

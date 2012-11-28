@@ -61,6 +61,7 @@
 								},
 								opens: 'left',
 								format: 'MM/dd/yyyy',
+                                separator: ' to ',
 								startDate: Date.today().add({ days: -29 }),
 								endDate: Date.today(),
 								minDate: '01/01/2012',
@@ -74,7 +75,8 @@
 				            		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 				            		firstDay: 1,
 					        	},
-                                showWeekNumbers: true
+                                showWeekNumbers: true,
+                                buttonClasses: ['btn-danger']
 							}, 
 							function(start, end) {
 								$('#reportrange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
