@@ -19,6 +19,7 @@
         this.maxDate = false;
         this.changed = false;
         this.ranges = {};
+        this.dateRange = false;
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
@@ -67,7 +68,7 @@
         }
 
         if (hasOptions) {
-            if(typeof options.locale == 'object') {
+            if (typeof options.locale == 'object') {
                 $.each(localeObject, function (property, value) {
                     localeObject[property] = options.locale[property] || value;
                 });
@@ -97,6 +98,10 @@
         this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         if (hasOptions) {
+
+
+            if (typeof options.dateRange == 'object')
+                this.dateRange = options.dateRange;
 
             if (typeof options.format == 'string')
                 this.format = options.format;
@@ -412,9 +417,29 @@
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
                 endDate = this.endDate;
+
+                if (typeof this.dateRange == 'object') {
+                    var maxDate = new Date(startDate).add(this.dateRange);
+                    if (endDate.isAfter(maxDate)) {
+                        endDate = maxDate;
+                    }
+                }
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
+
+                if (typeof this.dateRange == 'object') {
+                    var negConfig = {
+                        days: 0 - this.dateRange.days,
+                        months: 0 - this.dateRange.months,
+                        years: 0 - this.dateRange.years
+                    };
+
+                    var minDate = new Date(endDate).add(negConfig);
+                    if (startDate.isBefore(minDate)) {
+                        startDate = minDate;
+                    }
+                }
             }
 
             cal.find('td').removeClass('active');
@@ -426,6 +451,7 @@
                 this.startDate = startDate;
                 this.endDate = endDate;
             }
+
 
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
             this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
@@ -535,7 +561,7 @@
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
 
                     // Normalise the time so the comparison won't fail
-                    selected.setHours(0,0,0,0);
+                    selected.setHours(0, 0, 0, 0);
 
                     if ( (minDate && calendar[row][col] < minDate) || (maxDate && calendar[row][col] > maxDate))
                     {
@@ -545,7 +571,7 @@
                     {
                         cname += 'active';
                     }
-                    
+
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
@@ -562,12 +588,12 @@
     };
 
     $.fn.daterangepicker = function (options, cb) {
-      this.each(function() {
-        var el = $(this);
-        if (!el.data('daterangepicker'))
-          el.data('daterangepicker', new DateRangePicker(el, options, cb));
-      });
-      return this;
+        this.each(function () {
+            var el = $(this);
+            if (!el.data('daterangepicker'))
+                el.data('daterangepicker', new DateRangePicker(el, options, cb));
+        });
+        return this;
     };
 
-} (window.jQuery);
+}(window.jQuery);
