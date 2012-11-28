@@ -26,14 +26,14 @@
         this.showWeekNumbers = false;
         this.buttonClasses = ['btn-success'];
         this.locale = {
-            applyLabel:"Apply",
-            fromLabel:"From",
-            toLabel:"To",
-            weekLabel: "W",
-            customRangeLabel:"Custom Range",
-            daysOfWeek:['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-            monthNames:['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            firstDay:0
+            applyLabel: 'Apply',
+            fromLabel: 'From',
+            toLabel: 'To',
+            weekLabel: 'W',
+            customRangeLabel: 'Custom Range',
+            daysOfWeek: Date.CultureInfo.shortestDayNames,
+            monthNames: Date.CultureInfo.monthNames,
+            firstDay: 0
         };
 
         localeObject = this.locale;
@@ -296,7 +296,7 @@
         move: function () {
             var parentOffset = {
                 top: this.parentEl.offset().top - this.parentEl.scrollTop(),
-                left: this.parentEl.offset().left - this.parentEl.scrollLeft(),
+                left: this.parentEl.offset().left - this.parentEl.scrollLeft()
             };
             if (this.opens == 'left') {
                 this.container.css({
