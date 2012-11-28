@@ -19,6 +19,7 @@
         this.maxDate = false;
         this.changed = false;
         this.ranges = {};
+        this.dateLimit = false;
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
@@ -169,6 +170,9 @@
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
+            
+            if (typeof options.dateLimit == 'object')
+                this.dateLimit = options.dateLimit;
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -412,9 +416,26 @@
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
                 endDate = this.endDate;
+                if (typeof this.dateLimit == 'object') {
+                    var maxDate = new Date(startDate).add(this.dateLimit);
+                    if (endDate.isAfter(maxDate)) {
+                        endDate = maxDate;
+                    }
+                }
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
+                if (typeof this.dateLimit == 'object') {
+                    var negConfig = {
+                        days: 0 - this.dateLimit.days,
+                        months: 0 - this.dateLimit.months,
+                        years: 0 - this.dateLimit.years
+                    };
+                    var minDate = new Date(endDate).add(negConfig);
+                    if (startDate.isBefore(minDate)) {
+                        startDate = minDate;
+                    }
+                }
             }
 
             cal.find('td').removeClass('active');
