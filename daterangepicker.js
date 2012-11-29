@@ -19,6 +19,7 @@
         this.maxDate = false;
         this.changed = false;
         this.ranges = {};
+        this.rangesActive = true;
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
@@ -541,9 +542,9 @@
                     {
                         cname = 'off disabled';
                     }
-                    else if (calendar[row][col].equals(selected))
+                    else if ((calendar[row][col].equals(selected)) || (this.rangesActive && !minDate && calendar[row][col] >= selected) || (this.rangesActive && minDate && calendar[row][col] <= selected))
                     {
-                        cname += 'active';
+                        cname += ' active';
                     }
                     
                     var title = 'r' + row + 'c' + col;
