@@ -46,8 +46,7 @@ Syntax for all the options can be found in the examples.html file.
 
 ## License
 
-This code is made available under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0), 
-the same as Twitter Bootstrap. Date.js is included in this repository for convenience. It is available under the 
+This code is made available under the same license as Twitter Bootstrap. Date.js is included in this repository for convenience. It is available under the 
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 --
