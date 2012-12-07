@@ -400,14 +400,12 @@
 		},
 
 		clickNextYear: function (e) {
-			console.log('before', this.leftCalendar.month);
 			var cal = $(e.target).parents('.calendar');
 			if (cal.hasClass('left')) {
 				this.leftCalendar.month.add({ years: +1 });
 			} else {
 				this.rightCalendar.month.add({ years: +1 });
 			}
-			console.log('after', this.leftCalendar.month);
 			this.updateCalendars();
 		},
 
