@@ -9,7 +9,7 @@
 !function ($) {
 
     var DateRangePicker = function (element, options, cb) {
-        var hasOptions = typeof options == 'object'
+        var hasOptions = typeof options == 'object';
         var localeObject;
 
         //state
@@ -40,12 +40,12 @@
 
         this.leftCalendar = {
             month: Date.today().set({ day: 1, month: this.startDate.getMonth(), year: this.startDate.getFullYear() }),
-            calendar: Array()
+            calendar: new Array()
         };
 
         this.rightCalendar = {
             month: Date.today().set({ day: 1, month: this.endDate.getMonth(), year: this.endDate.getFullYear() }),
-            calendar: Array()
+            calendar: new Array()
         };
 
         // by default, the daterangepicker element is placed at the bottom of HTML body
@@ -224,7 +224,9 @@
         //event listeners
         this.container.on('mousedown', $.proxy(this.mousedown, this));
         this.container.find('.calendar').on('click', '.prev', $.proxy(this.clickPrev, this));
+		this.container.find('.calendar').on('click', '.prevYear', $.proxy(this.clickPrevYear, this));
         this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
+		this.container.find('.calendar').on('click', '.nextYear', $.proxy(this.clickNextYear, this));
         this.container.find('.ranges').on('click', 'button', $.proxy(this.clickApply, this));
 
         this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
@@ -378,6 +380,16 @@
             this.updateCalendars();
         },
 
+		clickPrevYear: function (e) {
+			var cal = $(e.target).parents('.calendar');
+			if (cal.hasClass('left')) {
+				this.leftCalendar.month.add({ years: -1 });
+			} else {
+				this.rightCalendar.month.add({ years: -1 });
+			}
+			this.updateCalendars();
+		},
+
         clickNext: function (e) {
             var cal = $(e.target).parents('.calendar');
             if (cal.hasClass('left')) {
@@ -387,6 +399,18 @@
             }
             this.updateCalendars();
         },
+
+		clickNextYear: function (e) {
+			console.log('before', this.leftCalendar.month);
+			var cal = $(e.target).parents('.calendar');
+			if (cal.hasClass('left')) {
+				this.leftCalendar.month.add({ years: +1 });
+			} else {
+				this.rightCalendar.month.add({ years: +1 });
+			}
+			console.log('after', this.leftCalendar.month);
+			this.updateCalendars();
+		},
 
         enterDate: function (e) {
 
@@ -455,9 +479,9 @@
             var dayOfWeek = firstDay.getDay();
 
             //initialize a 6 rows x 7 columns array for the calendar
-            var calendar = Array();
-            for (var i = 0; i < 6; i++) {
-                calendar[i] = Array();
+            var calendar = new Array();
+            for (i = 0; i < 6; i++) {
+                calendar[i] = new Array();
             }
 
             //populate the calendar with date objects
@@ -485,32 +509,36 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
-            
+
             // add empty cell for week number
             if (this.showWeekNumbers)
                 html += '<th></th>';
-            
+
             if (!minDate || minDate < calendar[1][1])
             {
+				html += '<th class="prevYear available"><i class="icon-arrow-left"></i></th>';
                 html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
             }
             else
             {
-                 html += '<th></th>';
+				html += '<th></th>';
+                html += '<th></th>';
             }
-            html += '<th colspan="5" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
+            html += '<th colspan="3" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
             if (!maxDate || maxDate > calendar[1][1])
             {
                 html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
+				html += '<th class="nextYear available"><i class="icon-arrow-right"></i></th>';
             }
             else
             {
-                 html += '<th></th>';
+                html += '<th></th>';
+				html += '<th></th>';
             }
 
             html += '</tr>';
             html += '<tr>';
-            
+
             // add week number label
             if (this.showWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
@@ -525,11 +553,11 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
-                
+
                 // add week number
                 if (this.showWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
-                
+
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
@@ -545,7 +573,7 @@
                     {
                         cname += 'active';
                     }
-                    
+
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
