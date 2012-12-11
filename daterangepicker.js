@@ -95,6 +95,8 @@
 
         if (hasOptions) {
 
+            this.options = options;
+
             if (typeof options.format == 'string')
                 this.format = options.format;
 
@@ -263,12 +265,23 @@
         },
 
         notify: function () {
+            // validate
+            if (this.startDate.toString() === 'Invalid Date') {
+                alert('The start date is invalid.');
+                this.startDate = this.options.startDate;
+                return;
+            } else if (this.endDate.toString() === 'Invalid Date') {
+                alert('The end date is invalid.');
+                this.endDate = this.options.endDate;
+                return;
+            }
+
             this.updateView();
 
             if (this.element.is('input')) {
                 this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
             }
-
+            
             this.cb(this.startDate, this.endDate, this.label);
         },
 
