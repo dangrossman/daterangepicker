@@ -84,7 +84,7 @@
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end"/>' +
                     '</div>' +
-                    '<button class="btn btn-small btn-success" disabled="disabled">' + this.locale.applyLabel + '</button>' +
+                    '<button class="btn btn-small btn-success">' + this.locale.applyLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -197,8 +197,6 @@
         this.container.addClass('opens' + this.opens);
 
         //event listeners
-        this.container.find('.range_inputs input').on('click', $.proxy(this.inputMousedown, this));
-
         this.container.on('mousedown', $.proxy(this.mousedown, this));
         this.container.find('.calendar').on('click', '.prev', $.proxy(this.clickPrev, this));
         this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
@@ -210,6 +208,7 @@
 
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.range_inputs input').on('input', $.proxy(this.changeRange, this));
+        this.container.find('.range_inputs input').on('keydown', $.proxy(this.submitOnEnter, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
 
@@ -225,16 +224,11 @@
         constructor: DateRangePicker,
 
         mousedown: function (e) {
-            e.stopPropagation();
-            e.preventDefault();
+            if (!e || !e.target || e.target.tagName !== 'INPUT') {
+                e.stopPropagation();
+                e.preventDefault();
+            }
         },
-
-        inputMousedown: function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-            $(e.target).focus();
-        },
-
 
         updateView: function () {
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
@@ -244,9 +238,9 @@
             this.container.find('input[name=daterangepicker_end]').val(this.endDate.toString(this.format));
 
             if (this.startDate.equals(this.endDate) || this.startDate.isBefore(this.endDate)) {
-                this.container.find('button').removeAttr('disabled');
+                //this.container.find('button').removeAttr('disabled');
             } else {
-                this.container.find('button').attr('disabled', 'disabled');
+                //this.container.find('button').attr('disabled', 'disabled');
             }
         },
 
@@ -313,12 +307,14 @@
         },
 
         hide: function (e) {
-            this.container.hide();
-            $(document).off('mousedown', this.hide);
+            if (!e || !e.target || e.target.tagName !== 'INPUT') {
+                this.container.hide();
+                $(document).off('mousedown', this.hide);
 
-            if (this.changed) {
-                this.changed = false;
-                this.notify();
+                if (this.changed) {
+                    this.changed = false;
+                    this.notify();
+                }
             }
         },
 
@@ -326,12 +322,12 @@
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
+                this.label = label;
             } else {
                 var dates = this.ranges[label];
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].toString(this.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].toString(this.format));
             }
-            this.label = label;
         },
 
         clickRange: function (e) {
@@ -364,9 +360,17 @@
             } else {
                 this.endDate = new Date(el.val());
             }
-            this.label == this.locale.customRangeLabel;
+            this.label = this.locale.customRangeLabel;
+
+            this.container.find('button').removeAttr('disabled');
 
             this.changed = true;
+        },
+
+        submitOnEnter: function(e) {
+            if (e.keyCode === 13) {
+                this.hide();
+            }
         },
 
         clickPrev: function (e) {
