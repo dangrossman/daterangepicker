@@ -375,7 +375,7 @@
             }
             this.label = this.locale.customRangeLabel;
 
-            this.container.find('button').removeAttr('disabled');
+            //this.container.find('button').removeAttr('disabled');
 
             this.changed = true;
         },
@@ -543,9 +543,10 @@
 
                     if ( (minDate && calendar[row][col] < minDate) || (maxDate && calendar[row][col] > maxDate))
                     {
-                        cname = 'off disabled';
+                        //cname = 'off disabled';
                     }
-                    else if (calendar[row][col].equals(selected))
+                    //else if (calendar[row][col].equals(selected))
+                    if (calendar[row][col].equals(selected))
                     {
                         cname += 'active';
                     }
