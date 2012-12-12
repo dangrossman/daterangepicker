@@ -60,7 +60,7 @@
                 blur: $.proxy(this.hide, this)
             });
         } else {
-            this.element.on('click', $.proxy(this.show, this));
+            this.element.on('click', $.proxy(this.toggle, this));
         }
 
         if (hasOptions) {
@@ -321,6 +321,16 @@
                     left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
+            }
+        },
+
+        toggle: function () {
+            if (!this.visible) {
+                this.show();
+                this.visible = true;
+            } else {
+                this.hide();
+                this.visible = false;
             }
         },
 
