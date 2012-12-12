@@ -99,11 +99,15 @@
             if (typeof options.format == 'string')
                 this.format = options.format;
 
-            if (typeof options.startDate == 'string')
+            if (typeof options.startDate == 'string') {
                 this.startDate = Date.parse(options.startDate, this.format);
+                this.previousStartDate = this.startDate;
+            }
 
-            if (typeof options.endDate == 'string')
+            if (typeof options.endDate == 'string') {
                 this.endDate = Date.parse(options.endDate, this.format);
+                this.previousEndDate = this.EndDate;
+            }
 
             if (typeof options.minDate == 'string')
                 this.minDate = Date.parse(options.minDate, this.format);
@@ -112,11 +116,15 @@
                 this.maxDate = Date.parse(options.maxDate, this.format);
 
 
-            if (typeof options.startDate == 'object')
+            if (typeof options.startDate == 'object') {
                 this.startDate = options.startDate;
+                this.previousStartDate = this.startDate;
+            }
 
-            if (typeof options.endDate == 'object')
+            if (typeof options.endDate == 'object') {
                 this.endDate = options.endDate;
+                this.previousEndDate = this.endDate;
+            }
 
             if (typeof options.minDate == 'object')
                 this.minDate = options.minDate;
@@ -270,11 +278,15 @@
                 alert('The start date is invalid.');
                 this.startDate = this.options.startDate;
                 return;
-            } else if (this.endDate.toString() === 'Invalid Date') {
+            } 
+            if (this.endDate.toString() === 'Invalid Date') {
                 alert('The end date is invalid.');
                 this.endDate = this.options.endDate;
                 return;
             }
+
+            this.previousStartDate = this.startDate;
+            this.previousEndDate = this.endDate;
 
             this.updateView();
 
@@ -282,6 +294,7 @@
                 this.element.val(this.startDate.toString(this.format) + ' - ' + this.endDate.toString(this.format));
             }
             
+            this.hide();
             this.cb(this.startDate, this.endDate, this.label);
         },
 
@@ -324,10 +337,9 @@
                 this.container.hide();
                 $(document).off('mousedown', this.hide);
 
-                if (this.changed) {
-                    this.changed = false;
-                    this.notify();
-                }
+                if (this.previousStartDate) this.startDate = this.previousStartDate;
+                if (this.previousEndDate) this.endDate = this.previousEndDate;
+                this.updateCalendars();
             }
         },
 
@@ -361,7 +373,7 @@
                 this.changed = true;
 
                 this.container.find('.calendar').hide();
-                this.hide();
+                this.notify();
             }
         },
 
@@ -386,7 +398,7 @@
 
         submitOnEnter: function(e) {
             if (e.keyCode === 13) {
-                this.hide();
+                this.notify();
             }
         },
 
@@ -453,7 +465,7 @@
         },
 
         clickApply: function (e) {
-            this.hide();
+            this.notify();
         },
 
         updateCalendars: function () {
