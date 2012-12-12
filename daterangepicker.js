@@ -324,14 +324,14 @@
             }
         },
 
-        toggle: function () {
+        toggle: function (e) {
             if (!this.visible) {
                 this.show();
                 this.visible = true;
             } else {
                 this.hide();
-                this.visible = false;
             }
+            e.stopPropagation();
         },
 
         show: function (e) {
@@ -345,7 +345,14 @@
 
             this.changed = false;
 
-            $(document).on('mousedown', $.proxy(this.hide, this));
+            $(document).on('mousedown', $.proxy(this.handleBlur, this));
+        },
+
+        handleBlur: function(e) {
+            var el = $(e.target);
+            if (el[0] !== this.element[0] && el.parents().index(this.element) === -1) {
+                this.hide();
+            }
         },
 
         hide: function (e) {
@@ -356,6 +363,7 @@
                 if (this.previousStartDate) this.startDate = this.previousStartDate;
                 if (this.previousEndDate) this.endDate = this.previousEndDate;
                 this.updateCalendars();
+                this.visible = false;
             }
         },
 
