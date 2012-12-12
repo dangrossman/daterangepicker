@@ -201,7 +201,7 @@
         this.container.on('mousedown', $.proxy(this.mousedown, this));
         this.container.find('.calendar').on('click', '.prev', $.proxy(this.clickPrev, this));
         this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
-        this.container.find('.ranges').on('click', 'button', $.proxy(this.clickApply, this));
+        this.container.find('.range_inputs').on('click', 'button', $.proxy(this.clickApply, this));
 
         this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
         this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
@@ -368,20 +368,20 @@
         changeRange: function (e) {
             var el = $(e.target);
 
-            if (el.attr('name') === 'daterangepicker_start') {
-                this.startDate = new Date(el.val());
-            } else {
-                this.endDate = new Date(el.val());
+            var date = new Date(el.val());
+
+            if (el.attr('name') === 'daterangepicker_start' && date.toString() !== 'Invalid Date') {
+                this.startDate = date;
+            } else if (date.toString() !== 'Invalid Date') {
+                this.endDate = date;
             }
             this.label = this.locale.customRangeLabel;
 
             this.changed = true;
 
-            if (this.startDate.toString() !== 'Invalid Date' && this.endDate.toString() !== 'Invalid Date') {
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
-                this.updateCalendars();
-            }
+            this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
+            this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+            this.updateCalendars();
         },
 
         submitOnEnter: function(e) {
@@ -411,7 +411,6 @@
         },
 
         enterDate: function (e) {
-
             var title = $(e.target).attr('title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
@@ -422,7 +421,6 @@
             } else {
                 this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].toString(this.format));
             }
-
         },
 
         clickDate: function (e) {
