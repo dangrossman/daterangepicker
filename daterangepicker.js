@@ -375,9 +375,13 @@
             }
             this.label = this.locale.customRangeLabel;
 
-            //this.container.find('button').removeAttr('disabled');
-
             this.changed = true;
+
+            if (this.startDate.toString() !== 'Invalid Date' && this.endDate.toString() !== 'Invalid Date') {
+                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
+                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+                this.updateCalendars();
+            }
         },
 
         submitOnEnter: function(e) {
