@@ -74,18 +74,17 @@
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left"></div>' +
                 '<div class="calendar right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div style="float: left">' +
-                      '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start"/>' +
-                    '</div>' +
-                    '<div style="float: left; padding-left: 11px">' +
-                      '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end"/>' +
-                    '</div>' +
-                    '<button class="btn btn-small btn-success">' + this.locale.applyLabel + '</button>' +
+                '<div class="ranges"></div>' +
+                '<div class="range_inputs">' +
+                  '<div style="float: left">' +
+                    '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
+                    '<input class="input-mini" type="text" name="daterangepicker_start"/>' +
                   '</div>' +
+                  '<div style="float: left; padding-left: 11px">' +
+                    '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
+                    '<input class="input-mini" type="text" name="daterangepicker_end"/>' +
+                  '</div>' +
+                  '<button class="btn btn-small btn-success">' + this.locale.applyLabel + '</button>' +
                 '</div>' +
               '</div>';
 
@@ -161,7 +160,7 @@
                 for (var range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                //list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
@@ -244,6 +243,7 @@
             } else {
                 //this.container.find('button').attr('disabled', 'disabled');
             }
+            this.container.find('.calendar').show();
         },
 
         updateFromControl: function () {
@@ -437,17 +437,17 @@
 
             cal.find('td').removeClass('active');
 
-            if (startDate.equals(endDate) || startDate.isBefore(endDate)) {
-                $(e.target).addClass('active');
-                if (!startDate.equals(this.startDate) || !endDate.equals(this.endDate))
-                    this.changed = true;
-                this.startDate = startDate;
-                this.endDate = endDate;
-            }
+            $(e.target).addClass('active');
+            if (!startDate.equals(this.startDate) || !endDate.equals(this.endDate))
+                this.changed = true;
+            this.startDate = startDate;
+            this.endDate = endDate;
 
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
             this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
             this.updateCalendars();
+
+            this.label = this.locale.customRangeLabel;
         },
 
         clickApply: function (e) {
