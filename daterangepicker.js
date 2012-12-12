@@ -285,6 +285,12 @@
                 return;
             }
 
+            if (this.endDate.isBefore(this.startDate)) {
+                var tmpDate = this.endDate;
+                this.endDate = this.startDate;
+                this.startDate = tmpDate;
+            }
+
             this.previousStartDate = this.startDate;
             this.previousEndDate = this.endDate;
 
@@ -423,7 +429,7 @@
         },
 
         enterDate: function (e) {
-            var title = $(e.target).attr('title');
+            var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -436,7 +442,7 @@
         },
 
         clickDate: function (e) {
-            var title = $(e.target).attr('title');
+            var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -566,7 +572,7 @@
                     }
                     
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
+                    html += '<td class="' + cname + '" data-title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
                 html += '</tr>';
             }
