@@ -351,7 +351,7 @@
         handleBlur: function(e) {
             var el = $(e.target);
             if (el[0] !== this.element[0] && el.parents().index(this.element) === -1) {
-                this.hide();
+                this.hide(e);
             }
         },
 
