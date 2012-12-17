@@ -446,9 +446,6 @@
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
             this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
             this.updateCalendars();
-            if (cal.hasClass('right')) {
-              this.hide();
-            }
         },
 
         clickApply: function (e) {

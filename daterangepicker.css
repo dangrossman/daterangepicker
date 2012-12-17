@@ -165,6 +165,13 @@
   background: #eee;
 }
 
+.daterangepicker td.in-range {
+  background: #f5f5f5;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+
 .daterangepicker td.active, .daterangepicker td.active:hover {
   background-color: #006dcc;
   background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
