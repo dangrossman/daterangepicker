@@ -30,9 +30,7 @@
             applyLabel: 'Apply',
             clearLabel:"Clear",
             fromLabel: 'From',
-            fromCalLabel:"From",
             toLabel: 'To',
-            toCalLabel:"To",
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
             daysOfWeek: Date.CultureInfo.shortestDayNames,
@@ -442,7 +440,7 @@
                 $(e.target).addClass('active');
                 this.changed = true;
                 this.startDate = startDate;
-                this.endDate = startDate.clone().add(2).days();
+                this.endDate = startDate.clone().add(1).days();
             }
 
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
@@ -466,8 +464,8 @@
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.getMonth(), this.leftCalendar.month.getFullYear());
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.getMonth(), this.rightCalendar.month.getFullYear());
-            this.container.find('.calendar.left').html('<b class="calendar-label">' + this.locale.fromCalLabel + '</b>' + this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html('<b class="calendar-label">' + this.locale.toCalLabel + '</b>' + this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
+            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
             this.element.trigger('updated',this);
         },
 
