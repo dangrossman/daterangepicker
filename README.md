@@ -10,7 +10,7 @@ and end date from. Optionally, you can provide a list of date ranges the user ca
 of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
-[Live demo &amp; option usage examples](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)
+[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)
 
 ## Usage
 
@@ -40,14 +40,28 @@ Additional options allow:
 * Overriding all labels in the interface with localized text
 * Starting the calendar week on any day of week
 * Overriding the direction the dropdown expands (left/right of element it's attached to)
-* Setting the date format string for parsing string inputs
+* Setting the date format string for parsing and printing dates
+* Showing week numbers
 
 Syntax for all the options can be found in the examples.html file.
 
 ## License
 
-This code is made available under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0), 
-the same as Twitter Bootstrap.
-
-Date.js is included in this repository for convenience. It is available under the 
+This code is made available under the same license as Twitter Bootstrap. Date.js is included in this repository for convenience. It is available under the 
 [MIT license](http://www.opensource.org/licenses/mit-license.php).
+
+--
+
+Copyright 2012 Dan Grossman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
