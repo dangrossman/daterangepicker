@@ -167,6 +167,8 @@
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
+            
+            
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -238,6 +240,8 @@
 
         this.updateView();
         this.updateCalendars();
+        
+        
 
     };
 
@@ -597,7 +601,13 @@
         var el = $(this);
         if (!el.data('daterangepicker'))
           el.data('daterangepicker', new DateRangePicker(el, options, cb));
+          if ( options.onLoad && typeof(options.onLoad) == "function"){
+            	options.onLoad(el.data('daterangepicker'));
+          }
       });
+      
+      
+      
       return this;
     };
 
