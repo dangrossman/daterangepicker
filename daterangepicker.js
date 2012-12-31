@@ -22,7 +22,7 @@
         this.ranges = {};
         this.opens = 'right';
         this.cb = function () { };
-        this.format = 'MM/dd/yyyy';
+        this.format = 'd';
         this.separator = ' - ';
         this.showWeekNumbers = false;
         this.buttonClasses = ['btn-success'];
@@ -160,10 +160,21 @@
                 }
 
                 var list = '<ul>';
+    			var customRange = true;
                 for (var range in this.ranges) {
-                    list += '<li>' + range + '</li>';
+                    if(this.ranges[range][0].toString(this.format) == this.startDate.toString(this.format) && this.ranges[range][1].toString(this.format) == this.endDate.toString(this.format))
+    				{
+						list += '<li class="active">' + range + '</li>';
+						customRange = false;
+					}	
+					else
+                    	list += '<li>' + range + '</li>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                
+                if(customRange)
+                    list += '<li class="active">' + this.locale.customRangeLabel + '</li>';
+				else
+                    list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
