@@ -37,6 +37,11 @@
             monthNames: Date.CultureInfo.monthNames,
             firstDay: 0
         };
+        this.isShown = false;
+        this.elementShow = $.noop;
+        this.elementShown = $.noop;
+        this.elementHide = $.noop;
+        this.elementHidden = $.noop;
 
         localeObject = this.locale;
 
@@ -195,6 +200,22 @@
                 this.buttonClasses = options.buttonClasses;
             }
 
+            if (typeof options.show == 'function') {
+                this.elementShow = options.show;
+            }
+
+            if (typeof options.shown == 'function') {
+                this.elementShow = options.shown;
+            }
+
+            if (typeof options.hide == 'function') {
+                this.elementHide = options.hide;
+            }
+
+            if (typeof options.hidden == 'function') {
+                this.elementHidden = options.hidden;
+            }
+
         }
 
         //apply CSS classes to buttons
@@ -313,8 +334,10 @@
         },
 
         show: function (e) {
-            debug.info(e)
-            this.element.trigger('show',{target:e.target,picker:this});
+            if (this.isShown) return;
+            this.isShown = true;
+
+            this.elementShow();
             this.container.show();
             this.move();
 
@@ -324,14 +347,16 @@
             }
 
             this.changed = false;
-
-            this.element.trigger('shown',{target:e.target,picker:this});
+            this.elementShown();
 
             $(document).on('mousedown', $.proxy(this.hide, this));
         },
 
         hide: function (e) {
-            this.element.trigger('hide',{target:e.target,picker:this});
+            if (!this.isShown) return;
+            this.isShown = false;
+
+            this.elementHide();
             this.container.hide();
             $(document).off('mousedown', this.hide);
 
@@ -339,7 +364,8 @@
                 this.changed = false;
                 this.notify();
             }
-            this.element.trigger('hidden',{target:e.target,picker:this});
+
+            this.elementHidden();
         },
 
         enterRange: function (e) {
@@ -606,4 +632,3 @@
     };
 
 } (window.jQuery);
-
