@@ -1,11 +1,11 @@
 /**
-* @version: 1.0.1
-* @author: Dan Grossman http://www.dangrossman.info/
-* @date: 2012-08-20
-* @copyright: Copyright (c) 2012 Dan Grossman. All rights reserved.
-* @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
-* @website: http://www.improvely.com/
-*/
+ * @version: 1.0.1
+ * @author: Dan Grossman http://www.dangrossman.info/
+ * @date: 2012-08-20
+ * @copyright: Copyright (c) 2012 Dan Grossman. All rights reserved.
+ * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
+ * @website: http://www.improvely.com/
+ */
 !function ($) {
 
     var DateRangePicker = function (element, options, cb) {
@@ -74,23 +74,23 @@
         }
 
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input" style="float: left">' +
-                      '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
-                      '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<button class="btn btn-small btn-success applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
-                    '<button class="btn btn-small clearBtn">' + this.locale.clearLabel + '</button>' +
-                  '</div>' +
-                '</div>' +
-              '</div>';
+            '<div class="calendar left"></div>' +
+            '<div class="calendar right"></div>' +
+            '<div class="ranges">' +
+            '<div class="range_inputs">' +
+            '<div class="daterangepicker_start_input" style="float: left">' +
+            '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
+            '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+            '</div>' +
+            '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
+            '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
+            '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+            '</div>' +
+            '<button class="btn btn-small btn-success applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
+            '<button class="btn btn-small clearBtn">' + this.locale.clearLabel + '</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>';
 
         this.container = $(DRPTemplate).appendTo('body');
 
@@ -284,7 +284,7 @@
 
         notify: function () {
             if (!this.cleared) {
-              this.updateView();
+                this.updateView();
             }
 
             if (this.element.is('input')) {
@@ -313,6 +313,8 @@
         },
 
         show: function (e) {
+            debug.info(e)
+            this.element.trigger('show',{target:e.target,picker:this});
             this.container.show();
             this.move();
 
@@ -322,13 +324,14 @@
             }
 
             this.changed = false;
-            
+
             this.element.trigger('shown',{target:e.target,picker:this});
 
             $(document).on('mousedown', $.proxy(this.hide, this));
         },
 
         hide: function (e) {
+            this.element.trigger('hide',{target:e.target,picker:this});
             this.container.hide();
             $(document).off('mousedown', this.hide);
 
@@ -336,6 +339,7 @@
                 this.changed = false;
                 this.notify();
             }
+            this.element.trigger('hidden',{target:e.target,picker:this});
         },
 
         enterRange: function (e) {
@@ -366,7 +370,7 @@
                 this.changed = true;
 
                 this.container.find('.calendar').hide();
-                this.hide();
+                this.hide(e);
             }
         },
 
@@ -415,15 +419,15 @@
                 startDate = this.leftCalendar.calendar[row][col];
                 endDate = this.endDate;
                 this.element.trigger('clicked',{
-                  dir: 'left',
-                  picker: this
+                    dir: 'left',
+                    picker: this
                 });
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
                 this.element.trigger('clicked',{
-                  dir: 'right',
-                  picker: this
+                    dir: 'right',
+                    picker: this
                 });
             }
 
@@ -449,13 +453,13 @@
         },
 
         clickApply: function (e) {
-            this.hide();
+            this.hide(e);
         },
 
         clickClear: function (e) {
             this.changed = true;
             this.cleared = true;
-            this.hide();
+            this.hide(e);
         },
 
         updateCalendars: function () {
@@ -508,18 +512,18 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
-            
+
             // add empty cell for week number
             if (this.showWeekNumbers)
                 html += '<th></th>';
-            
+
             if (!minDate || minDate < calendar[1][1])
             {
                 html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
             }
             else
             {
-                 html += '<th></th>';
+                html += '<th></th>';
             }
             html += '<th colspan="5" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
             if (!maxDate || maxDate > calendar[1][1])
@@ -528,12 +532,12 @@
             }
             else
             {
-                 html += '<th></th>';
+                html += '<th></th>';
             }
 
             html += '</tr>';
             html += '<tr>';
-            
+
             // add week number label
             if (this.showWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
@@ -548,11 +552,11 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
-                
+
                 // add week number
                 if (this.showWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
-                
+
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
@@ -576,7 +580,7 @@
                         if (calendar[row][col].equals(this.startDate)) { cname += ' start-date '; }
                         if (calendar[row][col].equals(this.endDate)) { cname += ' end-date '; }
                     }
-                    
+
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname.replace(/\s+/g,' ').replace(/^\s?(.*?)\s?$/,'$1') + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
@@ -593,12 +597,13 @@
     };
 
     $.fn.daterangepicker = function (options, cb) {
-      this.each(function() {
-        var el = $(this);
-        if (!el.data('daterangepicker'))
-          el.data('daterangepicker', new DateRangePicker(el, options, cb));
-      });
-      return this;
+        this.each(function() {
+            var el = $(this);
+            if (!el.data('daterangepicker'))
+                el.data('daterangepicker', new DateRangePicker(el, options, cb));
+        });
+        return this;
     };
 
 } (window.jQuery);
+
