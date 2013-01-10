@@ -313,7 +313,8 @@
         },
 
         show: function (e) {
-            this.container.show().trigger('show');
+            this.element.trigger('show',{target:e.target,picker:this});
+            this.container.show();
             this.move();
 
             if (e) {
@@ -329,13 +330,15 @@
         },
 
         hide: function (e) {
-            this.container.hide().trigger('hidden');
+            this.element.trigger('hide',{target:e.target,picker:this});
+            this.container.hide();
             $(document).off('mousedown', this.hide);
 
             if (this.changed) {
                 this.changed = false;
                 this.notify();
             }
+            this.element.trigger('hidden',{target:e.target,picker:this});
         },
 
         enterRange: function (e) {
