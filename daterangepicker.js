@@ -313,7 +313,7 @@
         },
 
         show: function (e) {
-            this.container.show();
+            this.container.show().trigger('show');
             this.move();
 
             if (e) {
@@ -329,7 +329,7 @@
         },
 
         hide: function (e) {
-            this.container.hide();
+            this.container.hide().trigger('hidden');
             $(document).off('mousedown', this.hide);
 
             if (this.changed) {
