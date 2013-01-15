@@ -54,7 +54,7 @@
         this.element = $(element);
 
         if (this.element.hasClass('pull-right'))
-            this.opens = 'left';
+            options.opens = 'left';
 
         if (this.element.is('input')) {
             this.element.on({
