@@ -1,0 +1,282 @@
+@import 'variables.less';
+@import 'mixins.less';
+
+// --------------------------------------------------
+// Datepicker (cleaned up to use bootstrap mixins)
+// --------------------------------------------------
+.daterangepicker  {	
+  @background: lighten(@bodyBackground, 10%);
+	position: absolute;
+  background: @background;
+  top: 100px;
+  left: 20px;
+  padding: 4px;
+  margin-top: 1px;
+  .border-radius(4px);
+	z-index: @zindexModal + 10;
+
+  .dropdown-menu  {
+    max-width: none;
+  }
+
+	&.opensleft  {
+	  &:before  {
+      position: absolute;
+      top: -7px;
+      right: 9px;
+      display: inline-block;
+      border-right: 7px solid transparent;
+			border-bottom: 7px solid #ccc;
+      border-left: 7px solid transparent;
+			border-bottom-color: rgba(0, 0, 0, 0.2);
+      content: '';
+    }
+		&:after  {
+      position: absolute;
+      top: -6px;
+      right: 10px;
+      display: inline-block;
+      border-right: 6px solid transparent;
+			border-bottom: 6px solid @background;
+      border-left: 6px solid transparent;
+      content: '';
+    }
+    .ranges, .calendar  {
+      float: left;
+      margin: 4px;
+		}
+  }
+
+	&.opensright  {
+    &:before  {
+      position: absolute;
+      top: -7px;
+      left: 9px;
+      display: inline-block;
+      border-right: 7px solid transparent;
+      border-bottom: 7px solid #ccc;
+      border-left: 7px solid transparent;
+      border-bottom-color: rgba(0, 0, 0, 0.2);
+      content: '';
+    }
+
+    &:after  {
+      position: absolute;
+      top: -6px;
+      left: 10px;
+      display: inline-block;
+      border-right: 6px solid transparent;
+      border-bottom: 6px solid @background;
+      border-left: 6px solid transparent;
+      content: '';
+    }
+		.ranges, .calendar  {
+      float: right;
+      margin: 4px;
+		}
+  }
+  
+  &.openstopleft, &.openstopright {
+    .box-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+    top: auto;
+    &:before  {
+      top: auto;
+      bottom: -7px;
+      border-top: 7px solid #ccc;
+      border-top-color: rgba(0, 0, 0, 0.2);
+      border-bottom: none;
+    }
+    &:after  {
+      top: auto;
+      bottom: -6px;
+      border-top: 6px solid @background;
+      border-bottom: none;
+    }
+  }
+
+	.ranges  {
+    width: 160px;
+    text-align: left;
+
+		label  {
+      color: @textColor;
+      font-size: 11px;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 0 darken(@textColor, 40%);
+    }
+
+    input  {
+      font-size: 11px;
+    }
+
+		.range_inputs>div  {
+      float: left;
+      &:nth-child(2)  {
+        padding-left: 11px;
+			}
+		}
+
+		
+    ul  {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li  {
+        font-size: 13px;
+        background: darken(@background, 3%);
+        border: 1px solid darken(@background, 3%);
+        color: @linkColor;
+        padding: 3px 12px;
+        margin-bottom: 8px;
+        .border-radius(5px);
+        cursor: pointer;
+        &.active, &:hover  {
+          background: @btnPrimaryBackground;
+          border: 1px solid @btnPrimaryBackground;
+          color: #fff;
+        }
+      }
+    }
+    
+  }
+	
+  .calendar  {	
+    display: none;
+    max-width: 230px;
+    border: 1px solid @tableBorder;
+    padding: 4px;
+    .border-radius(4px);
+    background: @tableBackground;
+
+    th, td  {
+      font-family: @baseFontFamily;
+      white-space: nowrap;
+      text-align: center;
+    }
+  }	   
+
+  table  {
+    width: 100%;
+    margin: 0;
+    td, th  {
+      text-align: center;
+      width: 20px;
+      height: 20px;
+      .border-radius(4px);
+      cursor: pointer;
+      white-space: nowrap;
+      color: @textColor;
+      &.available:hover  {
+        background: @grayLighter;
+      }		
+      &.week  {
+        font-size: 80%;
+        color: #ccc;
+      }			
+    }
+    
+    td.active, td.active:hover  {
+      .gradientBar(@btnPrimaryBackground, @btnPrimaryBackgroundHighlight);
+      .reset-filter();
+    }
+
+    td.in-range {
+      .border-radius(0);
+      background: mix(@btnPrimaryBackground, #FFFFFF, 20%);
+      &:hover {
+        background: mix(@btnPrimaryBackground, #FFFFFF, 10%);
+      }
+    }
+    
+    td.active, td.in-range {
+      &.start-date {
+        .border-left-radius(4px);
+        .border-right-radius(0);
+      }
+      &.end-date {
+        .border-left-radius(0);
+        .border-right-radius(4px);
+      }
+      &.start-date.end-date {
+        .border-radius(4px);
+      }
+    }
+
+    td.off  {
+      color: @grayLight;
+    }
+
+    td.disabled  {
+      color: @grayLight;
+    }
+		
+  }
+  
+  &.compact {
+    @radius: 2px; // Radius to use in compact mode
+    
+    padding: 2px;
+    .border-radius(@radius);
+    &.opensleft, &.opensright {
+      .ranges, .calendar {
+        margin: 2px;
+      }
+    }
+    .calendar {
+      padding: 2px;
+      .border-radius(@radius);
+      th, td {
+        width: 14px;
+        height: 18px;
+        padding: 0 3px;
+      }
+    }
+    .calendar, .ranges ul li,
+    .ranges input {
+      font-size: 10px;
+    }
+    .ranges ul li {
+      .border-radius(@radius);
+      padding: 1px 5px;
+      margin-bottom: 4px;
+    }
+    .ranges label {
+      font-size: 10px; margin-bottom: 0;
+    }
+    .range_inputs>div:nth-child(2) {
+      padding-left: 6px;
+    }
+    .ranges input {
+      padding: 0 2px;
+      margin-bottom: 4px;
+      .border-radius(@radius);
+    }
+    .ranges .btn {
+      padding: 0 5px;
+      .border-radius(@radius);
+    }
+    table {
+      td, th {
+        .border-radius(@radius);
+      }
+      th.prev, th.next {
+        i {
+          margin-top: 0;
+        }
+      }
+      td {
+        &.in-range {
+          .border-radius(0); // For specificity
+        }
+        &.active.start-date {
+          .border-radius(@radius 0 0 @radius);
+        }
+        &.active.end-date {
+          .border-radius(0 @radius @radius 0);
+        }
+      }
+    }
+  }
+
+}

@@ -54,15 +54,15 @@
         this.element = $(element);
 
         if (this.element.hasClass('pull-right'))
-            this.opens = 'left';
+            this.opens = (this.opens == 'topright') ? 'topleft' : 'left';
 
         if (this.element.is('input')) {
             this.element.on({
-                click: $.proxy(this.show, this),
-                focus: $.proxy(this.show, this)
+                'click.daterangepicker': $.proxy(this.show, this),
+                'focus.daterangepicker': $.proxy(this.show, this)
             });
         } else {
-            this.element.on('click', $.proxy(this.show, this));
+            this.element.on('click.daterangepicker', $.proxy(this.show, this));
         }
 
         if (hasOptions) {
@@ -78,11 +78,11 @@
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input" style="float: left">' +
+                    '<div class="daterangepicker_start_input">' +
                       '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
+                    '<div class="daterangepicker_end_input">' +
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
@@ -95,6 +95,9 @@
         this.container = $(DRPTemplate).appendTo('body');
 
         if (hasOptions) {
+
+            if (typeof options.compact == 'boolean' && options.compact)
+                this.container.addClass('compact');
 
             if (typeof options.format == 'string')
                 this.format = options.format;
@@ -163,7 +166,10 @@
                 for (var range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                
+                if (this.locale.customRangeLabel != 'none')
+                    list += '<li>' + this.locale.customRangeLabel + '</li>';
+
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
@@ -203,7 +209,7 @@
             c.find('button').addClass(val);
         });
 
-        if (this.opens == 'right') {
+        if (this.opens == 'topright' || this.opens == 'right') {
             //swap calendar positions
             var left = this.container.find('.calendar.left');
             var right = this.container.find('.calendar.right');
@@ -211,13 +217,16 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined')
-            this.container.find('.calendar').show();
+        if (typeof options == 'undefined' || typeof options.ranges == 'undefined' || this.locale.customRangeLabel == 'none')
+            this.container.find('.calendar').show(); this.move();
 
         if (typeof cb == 'function')
             this.cb = cb;
 
         this.container.addClass('opens' + this.opens);
+
+        if (this.opens == 'topleft' || this.opens == 'topright')
+            this.container.addClass('opens' + this.opens.replace('top',''));
 
         //event listeners
         this.container.on('mousedown', $.proxy(this.mousedown, this));
@@ -234,7 +243,7 @@
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
 
-        this.element.on('keyup', $.proxy(this.updateFromControl, this));
+        this.element.on('keyup.daterangepicker', $.proxy(this.updateFromControl, this));
 
         this.updateView();
         this.updateCalendars();
@@ -297,18 +306,26 @@
         },
 
         move: function () {
-            if (this.opens == 'left') {
+            if (this.opens == 'left' || this.opens == 'topleft') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
                     right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
                     left: 'auto'
                 });
+                if (this.opens == 'left') {
+                  this.container.css({ top: this.element.offset().top + this.element.outerHeight() });
+                } else {
+                  this.container.css({ top: this.element.offset().top - this.container.outerHeight() - 7 /* 7 for balloon arrow */ });
+                }
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
                     left: this.element.offset().left,
                     right: 'auto'
                 });
+                if (this.opens == 'right') {
+                  this.container.css({ top: this.element.offset().top + this.element.outerHeight() });
+                } else {
+                  this.container.css({ top: this.element.offset().top - this.container.outerHeight() - 7 /* 7 for balloon arrow */ });
+                }
             }
         },
 
