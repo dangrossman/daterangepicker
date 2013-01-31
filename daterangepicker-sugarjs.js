@@ -551,7 +551,7 @@
 
                 // add week number
                 if (this.showWeekNumbers)
-                    html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
+                    html += '<td class="week">' + calendar[row][0].getISOWeek() + '</td>';
 
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
