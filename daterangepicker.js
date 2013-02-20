@@ -26,6 +26,8 @@
         this.separator = ' - ';
         this.showWeekNumbers = false;
         this.buttonClasses = ['btn-success'];
+        this.applyClass = 'btn btn-small btn-success';
+        this.clearClass = 'btn btn-small';
         this.locale = {
             applyLabel: 'Apply',
             clearLabel:"Clear",
@@ -71,6 +73,14 @@
                     localeObject[property] = options.locale[property] || value;
                 });
             }
+
+            if (options.applyClass) {
+                this.applyClass = options.applyClass;
+            }
+
+            if (options.clearClass) {
+                this.clearClass = options.clearClass;
+            }
         }
 
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
@@ -86,8 +96,8 @@
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<button class="btn btn-small btn-success applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
-                    '<button class="btn btn-small clearBtn">' + this.locale.clearLabel + '</button>' +
+                    '<button class="' + this.applyClass + ' applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
+                    '<button class="' + this.clearClass + ' clearBtn">' + this.locale.clearLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
