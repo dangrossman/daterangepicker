@@ -193,3 +193,16 @@
     font-size: 80%;
     color: #ccc;
 }
+
+.daterangepicker select.monthselect, .daterangepicker select.yearselect {
+  font-size: 12px;
+  padding:1px;
+  width:48%;
+  height:auto;
+  margin:0;
+  cursor:default;
+}
+
+.daterangepicker select.monthselect {
+	margin-right:2%;
+}
