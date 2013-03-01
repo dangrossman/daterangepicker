@@ -90,6 +90,39 @@
                </script>
 
             </div>
+			
+            <h4>Month/Year Dropdowns</h4>
+
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="reservation">Date range:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="daterange" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#daterange').daterangepicker(
+                     {
+                        minDate: '01/01/2010',
+                        maxDate: '12/31/2013',
+						showDropdowns: true
+                     }
+                  );
+
+               });
+               </script>
+
+            </div>
 
          </div>
       </div>
