@@ -114,12 +114,24 @@
             if (typeof options.maxDate == 'string')
                 this.maxDate = Date.parse(options.maxDate, this.format);
 
-
             if (typeof options.startDate == 'object')
                 this.startDate = options.startDate;
 
             if (typeof options.endDate == 'object')
                 this.endDate = options.endDate;
+				
+			//try parse date if in input
+			if(!this.startDate && !this.endDate) {
+				if($(this.element).is('input[type=text]')) {
+					var val = $(this.element).val();
+					var split = this.element.split(this.separator);
+					
+					if(split.length == 2) {
+						this.startDate = Date.parse(split[0]);
+						this.endDate = Date.parse(split[1]);
+					}
+				}
+			}
 
             if (typeof options.minDate == 'object')
                 this.minDate = options.minDate;
