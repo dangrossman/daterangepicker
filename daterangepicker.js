@@ -114,7 +114,6 @@
             if (typeof options.maxDate == 'string')
                 this.maxDate = Date.parse(options.maxDate, this.format);
 
-
             if (typeof options.startDate == 'object')
                 this.startDate = options.startDate;
 
