@@ -36,12 +36,14 @@ $(document).ready(function() {
 Additional options allow:
 * Custom callback handler called when the date range selection is made
 * Setting initial start and end dates for the calendars
-* Bounding the minimum and maximum selectable dates
 * Overriding all labels in the interface with localized text
+* Bounding the minimum and maximum selectable dates
 * Starting the calendar week on any day of week
 * Overriding the direction the dropdown expands (left/right of element it's attached to)
 * Setting the date format string for parsing and printing dates
 * Showing week numbers
+* Maximum selectable range (i.e. 3 days, 1 week, 12 months)
+* Month and year dropdowns
 
 Syntax for all the options can be found in the examples.html file.
 
