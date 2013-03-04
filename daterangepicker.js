@@ -542,7 +542,21 @@
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.getMonth(), this.rightCalendar.month.getFullYear());
             this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
             this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
-            this.element.trigger('updated',this);
+
+            this.container.find('.ranges li').removeClass('active');
+            var customRange = true;
+            var i = 0;
+            for (var range in this.ranges) {
+                if (this.startDate.equals(this.ranges[range][0]) && this.endDate.equals(this.ranges[range][1])) {
+                    customRange = false;
+                    this.container.find('.ranges li:eq(' + i + ')').addClass('active');
+                }
+                i++;
+            }
+            if (customRange)
+                this.container.find('.ranges li:last').addClass('active');
+
+            this.element.trigger('updated', this);
         },
 
         buildCalendar: function (month, year) {
