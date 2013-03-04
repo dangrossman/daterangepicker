@@ -21,6 +21,7 @@
         this.cleared = false;
 		this.showDropdowns = false;
         this.ranges = {};
+        this.dateLimit = false;
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
@@ -180,6 +181,9 @@
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
+            
+            if (typeof options.dateLimit == 'object')
+                this.dateLimit = options.dateLimit;
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -437,14 +441,32 @@
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
                 endDate = this.endDate;
-                this.element.trigger('clicked',{
+                if (typeof this.dateLimit == 'object') {
+                    var maxDate = new Date(startDate).add(this.dateLimit);
+                    console.log("maxDate is " + maxDate);
+                    if (endDate.isAfter(maxDate)) {
+                        endDate = maxDate;
+                    }
+                }
+                this.element.trigger('clicked', {
                   dir: 'left',
                   picker: this
                 });
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
-                this.element.trigger('clicked',{
+                if (typeof this.dateLimit == 'object') {
+                    var negConfig = {
+                        days: 0 - this.dateLimit.days,
+                        months: 0 - this.dateLimit.months,
+                        years: 0 - this.dateLimit.years
+                    };
+                    var minDate = new Date(endDate).add(negConfig);
+                    if (startDate.isBefore(minDate)) {
+                        startDate = minDate;
+                    }
+                }                
+                this.element.trigger('clicked', {
                   dir: 'right',
                   picker: this
                 });
@@ -458,8 +480,7 @@
                     this.changed = true;
                 this.startDate = startDate;
                 this.endDate = endDate;
-            }
-            else if (startDate.isAfter(endDate)) {
+            } else if (startDate.isAfter(endDate)) {
                 $(e.target).addClass('active');
                 this.changed = true;
                 this.startDate = startDate;
