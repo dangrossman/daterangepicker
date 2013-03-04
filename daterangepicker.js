@@ -19,6 +19,7 @@
         this.maxDate = false;
         this.changed = false;
         this.cleared = false;
+		this.showDropdowns = false;
         this.ranges = {};
         this.opens = 'right';
         this.cb = function () { };
@@ -193,6 +194,10 @@
             if (typeof options.buttonClasses == 'object') {
                 this.buttonClasses = options.buttonClasses;
             }
+			
+            if (typeof options.showDropdowns == 'boolean') {
+                this.showDropdowns = options.showDropdowns;
+            }
 
         }
 
@@ -232,6 +237,9 @@
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
+		
+        this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateYear, this));
+        this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonth, this));
 
         this.element.on('keyup', $.proxy(this.updateFromControl, this));
 
@@ -244,9 +252,12 @@
 
         constructor: DateRangePicker,
 
-        mousedown: function (e) {
+        mousedown: function (e) {		
             e.stopPropagation();
-            e.preventDefault();
+			
+			//allow select list to function normally
+			if(!this.showDropdowns || $(e.target).not('select').length)
+				e.preventDefault();
         },
 
         updateView: function () {
@@ -456,6 +467,32 @@
             this.cleared = true;
             this.hide();
         },
+		
+		updateYear: function(e) {
+			var year = parseInt($(e.target).val());
+			var isLeft = $(e.target).closest('.calendar').hasClass('left');
+			
+			if(isLeft) {
+				this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: year });
+			} else { 
+				this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: year });
+			}
+			
+            this.updateCalendars();
+		},
+		
+		updateMonth: function(e) {
+			var month = parseInt($(e.target).val());
+			var isLeft = $(e.target).closest('.calendar').hasClass('left');
+			
+			if(isLeft) {
+				this.leftCalendar.month.set({ month: month, year: this.startDate.getFullYear() });
+			} else {
+				this.rightCalendar.month.set({ month: month, year: this.endDate.getFullYear() });
+			}
+			
+            this.updateCalendars();
+		},
 
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.getMonth(), this.leftCalendar.month.getFullYear());
@@ -502,6 +539,37 @@
             return calendar;
 
         },
+		
+		renderDropdowns: function (selected, minDate, maxDate) {						
+			var currentMonth = selected.getMonth();
+			var monthHtml = '<select class="monthselect">';
+			var inMinYear = false;
+			var inMaxYear = false;
+			
+			for (var m = 0; m < 12; m++) {
+				if ((!inMinYear || m >= minDate.getMonth()) && (!inMaxYear || m <= maxDate.getMonth())) {
+					monthHtml += "<option value='" + m + "'" +
+						(m === currentMonth ? " selected='selected'" : "") +
+						">" + this.locale.monthNames[m] + "</option>";
+				}
+			}
+			monthHtml += "</select>";
+			
+			var currentYear = selected.getFullYear();
+			var maxYear = (maxDate && maxDate.getFullYear()) || (currentYear + 5);
+			var minYear = (minDate && minDate.getFullYear()) || (currentYear - 50); 
+			var yearHtml = '<select class="yearselect">'
+			
+			for(var y = minYear; y <= maxYear; y++) {
+				yearHtml += '<option value="' + y + '"' +
+						(y === currentYear ? ' selected="selected"' : '') +
+						'>' + y + '</option>';
+			}
+			
+			yearHtml += '</select>';
+			
+			return monthHtml + yearHtml;
+		},
 
         renderCalendar: function (calendar, selected, minDate, maxDate) {
             var html = '<table class="table-condensed">';
@@ -520,7 +588,14 @@
             {
                  html += '<th></th>';
             }
-            html += '<th colspan="5" style="width: auto">' + this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy") + '</th>';
+			
+			var dateHtml = this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy");
+			
+			if(this.showDropdowns) {
+				dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate);
+			}
+			
+            html += '<th colspan="5" style="width: auto">' + dateHtml + '</th>';
             if (!maxDate || maxDate > calendar[1][1])
             {
                 html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
