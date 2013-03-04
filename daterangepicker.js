@@ -1,7 +1,7 @@
 /**
-* @version: 1.0.1
+* @version: 1.1
 * @author: Dan Grossman http://www.dangrossman.info/
-* @date: 2012-08-20
+* @date: 2013-03-04
 * @copyright: Copyright (c) 2012 Dan Grossman. All rights reserved.
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
