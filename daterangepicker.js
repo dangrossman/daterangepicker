@@ -9,7 +9,7 @@
 !function ($) {
 
     var DateRangePicker = function (element, options, cb) {
-        var hasOptions = typeof options == 'object'
+        var hasOptions = typeof options == 'object';
         var localeObject;
 
         //state
@@ -53,6 +53,19 @@
 
         //element that triggered the date range picker
         this.element = $(element);
+
+        //try parse date if in text input
+        if (!hasOptions || (typeof options.startDate == 'undefined' && typeof options.endDate == 'undefined')) {
+            if ($(this.element).is('input[type=text]')) {
+                var val = $(this.element).val();
+                var split = val.split(this.separator);
+                
+                if(split.length == 2) {
+                    this.startDate = Date.parseExact(split[0], this.format);
+                    this.endDate = Date.parseExact(split[1], this.format);
+                }
+            }
+        }
 
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
