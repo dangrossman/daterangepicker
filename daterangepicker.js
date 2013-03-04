@@ -453,7 +453,6 @@
                 endDate = this.endDate;
                 if (typeof this.dateLimit == 'object') {
                     var maxDate = new Date(startDate).add(this.dateLimit);
-                    console.log("maxDate is " + maxDate);
                     if (endDate.isAfter(maxDate)) {
                         endDate = maxDate;
                     }
