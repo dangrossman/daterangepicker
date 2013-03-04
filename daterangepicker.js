@@ -103,17 +103,16 @@
                 this.separator = options.separator;
 
             if (typeof options.startDate == 'string')
-                this.startDate = Date.parse(options.startDate, this.format);
+                this.startDate = Date.parseExact(options.startDate, this.format);
 
             if (typeof options.endDate == 'string')
-                this.endDate = Date.parse(options.endDate, this.format);
+                this.endDate = Date.parseExact(options.endDate, this.format);
 
             if (typeof options.minDate == 'string')
-                this.minDate = Date.parse(options.minDate, this.format);
+                this.minDate = Date.parseExact(options.minDate, this.format);
 
             if (typeof options.maxDate == 'string')
-                this.maxDate = Date.parse(options.maxDate, this.format);
-
+                this.maxDate = Date.parseExact(options.maxDate, this.format);
 
             if (typeof options.startDate == 'object')
                 this.startDate = options.startDate;
