@@ -23,7 +23,7 @@
                     <label class="control-label" for="reservation">Reservation dates:</label>
                     <div class="controls">
                      <div class="input-prepend">
-                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="reservation" />
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="reservation" value="03/18/2013 - 03/23/2013" />
                      </div>
                     </div>
                   </div>
@@ -76,7 +76,8 @@
                             firstDay: 1
                         },
                         showWeekNumbers: true,
-                        buttonClasses: ['btn-danger']
+                        buttonClasses: ['btn-danger'],
+                        dateLimit: false
                      }, 
                      function(start, end) {
                         $('#reportrange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
@@ -90,6 +91,67 @@
                </script>
 
             </div>
+			
+            <h4>Month/Year Dropdowns</h4>
+
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="reservation">Date range:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="daterange" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#daterange').daterangepicker(
+                     {
+                        minDate: '01/01/2010',
+                        maxDate: '12/31/2015',
+						            showDropdowns: true
+                     }
+                  );
+
+               });
+               </script>
+
+            </div>
+
+            <h4>Range Limit Example</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="reservation">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="limited" value="03/18/2013 - 03/21/2013" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#limited').daterangepicker(
+                    {
+                      dateLimit: { days: 3 }
+                    });
+               });
+               </script>
+
+            </div>
+
 
          </div>
       </div>

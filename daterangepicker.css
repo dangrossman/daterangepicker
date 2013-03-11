@@ -157,6 +157,7 @@
 .daterangepicker td.off {
   color: #999;
 }
+
 .daterangepicker td.disabled {
   color: #999;
 }
@@ -190,6 +191,23 @@
 }
 
 .daterangepicker td.week, .daterangepicker th.week {
-    font-size: 80%;
-    color: #ccc;
+  font-size: 80%;
+  color: #ccc;
+}
+
+.daterangepicker select.monthselect, .daterangepicker select.yearselect {
+  font-size: 12px;
+  padding: 1px;
+  height: auto;
+  margin: 0;
+  cursor: default;
+}
+
+.daterangepicker select.monthselect {
+  margin-right: 2%;
+  width: 56%;
+}
+
+.daterangepicker select.yearselect {
+  width: 40%;
 }

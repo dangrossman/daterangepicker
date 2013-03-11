@@ -1,16 +1,17 @@
 # Date Range Picker for Twitter Bootstrap
 
-![Improvely.com](http://www.dangrossman.info/wp-content/themes/2012/daterangepicker.png)
+![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
 This date range picker component for Twitter Bootstrap creates a dropdown menu from which a user can 
-select a range of dates. It was created for the reporting UI at [Improvely](http://www.improvely.com).
+select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
+which needed a way to select date ranges for reports.
 
 If invoked with no options, it will present two calendars to choose a start 
 and end date from. Optionally, you can provide a list of date ranges the user can select from instead 
 of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
-[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)
+**[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)**
 
 ## Usage
 
@@ -36,12 +37,14 @@ $(document).ready(function() {
 Additional options allow:
 * Custom callback handler called when the date range selection is made
 * Setting initial start and end dates for the calendars
-* Bounding the minimum and maximum selectable dates
 * Overriding all labels in the interface with localized text
+* Bounding the minimum and maximum selectable dates
 * Starting the calendar week on any day of week
 * Overriding the direction the dropdown expands (left/right of element it's attached to)
 * Setting the date format string for parsing and printing dates
 * Showing week numbers
+* Maximum selectable range (i.e. 3 days, 1 week, 12 months)
+* Month and year dropdowns
 
 Syntax for all the options can be found in the examples.html file.
 
