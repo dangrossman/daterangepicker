@@ -229,8 +229,10 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined')
+        if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
+            this.move();
+        }
 
         if (typeof cb == 'function')
             this.cb = cb;
@@ -264,7 +266,7 @@
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
-        
+
         this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateYear, this));
         this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonth, this));
 
@@ -334,18 +336,37 @@
         },
 
         move: function () {
+            var minWidth = $(this.container).find('.ranges').outerWidth();
+            if ( $(this.container).find('.calendar').is(':visible') ) {
+                var padding = 24; // FIXME: this works for the default styling, but isn't flexible
+                minWidth += $(this.container).find('.calendar').outerWidth() * 2 + padding;
+            }
             if (this.opens == 'left') {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight(),
                     right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto'
+                    left: 'auto',
+                    'min-width': minWidth
                 });
+                if (this.container.offset().left < 0) {
+                    this.container.css({
+                        right: 'auto',
+                        left: 9
+                    });
+                }
             } else {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight(),
                     left: this.element.offset().left,
-                    right: 'auto'
+                    right: 'auto',
+                    'min-width': minWidth
                 });
+                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                    this.container.css({
+                        left: 'auto',
+                        right: 0
+                    });
+                }
             }
         },
 
@@ -390,6 +411,7 @@
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.container.find('.calendar').show();
+                this.move();
             } else {
                 var dates = this.ranges[label];
 
@@ -403,6 +425,7 @@
                 this.changed = true;
 
                 this.container.find('.calendar').hide();
+                this.move();
                 this.hide();
             }
         },
