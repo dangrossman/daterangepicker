@@ -143,6 +143,7 @@
 
                     var start = options.ranges[range][0];
                     var end = options.ranges[range][1];
+                    var selection = options.ranges[range][2];
 
                     if (typeof start == 'string')
                         start = Date.parse(start);
@@ -167,14 +168,18 @@
                         continue;
                     }
 
-                    this.ranges[range] = [start, end];
+                    this.ranges[range] = [start, end, selection];
                 }
 
                 var list = '<ul>';
                 for (var range in this.ranges) {
-                    list += '<li>' + range + '</li>';
+                    if (this.ranges[range][2]) {
+                        list += '<li data-selection='+this.ranges[range][2]+'>' + range + '</li>';
+                    } else {
+                        list += '<li>' + range + '</li>';
+                    }
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                list += '<li data-selection="custom">' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
