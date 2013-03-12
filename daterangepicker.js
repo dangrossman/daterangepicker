@@ -380,6 +380,9 @@
             this.elementShow();
             this.container.show();
             this.move();
+			
+			if (this.showCalendar)
+				this.container.find('.calendar').show();
 
             if (e) {
                 e.stopPropagation();
