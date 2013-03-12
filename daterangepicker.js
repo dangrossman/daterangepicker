@@ -315,7 +315,7 @@
             this.endDate = end;
 
             this.updateView();
-            this.cb(this.startDate, this.endDate);
+            this.cb(this.startDate, this.endDate, this.event);
             this.updateCalendars();
         },
 
@@ -330,7 +330,7 @@
             var arg1 = (this.cleared ? null : this.startDate),
                 arg2 = (this.cleared ? null : this.endDate);
             this.cleared = false;
-            this.cb(arg1,arg2);
+            this.cb(arg1, arg2, this.event);
         },
 
         move: function () {
@@ -387,6 +387,7 @@
         },
 
         clickRange: function (e) {
+            this.event = e;
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.container.find('.calendar').show();
@@ -502,6 +503,7 @@
         },
 
         clickApply: function (e) {
+            $("li[data-selection='custom']").click();
             this.hide();
         },
 
