@@ -20,6 +20,7 @@
         this.changed = false;
         this.cleared = false;
         this.showDropdowns = false;
+		this.showCalendar = false;
         this.ranges = {};
         this.dateLimit = false;
         this.opens = 'right';
@@ -113,6 +114,8 @@
 
         if (hasOptions) {
 
+			this.showCalendar = (options.showCalendar) ? options.showCalendar || this.showCalendar;
+			
             if (typeof options.format == 'string')
                 this.format = options.format;
 
@@ -250,7 +253,7 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined')
+        if (typeof options == 'undefined' || typeof options.ranges == 'undefined' || this.showCalendar)
             this.container.find('.calendar').show();
 
         if (typeof cb == 'function')
