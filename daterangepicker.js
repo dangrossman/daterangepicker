@@ -114,7 +114,7 @@
 
         if (hasOptions) {
 
-			this.showCalendar = (options.showCalendar) ? options.showCalendar || this.showCalendar;
+			this.showCalendar = options.showCalendar || this.showCalendar;
 			
             if (typeof options.format == 'string')
                 this.format = options.format;
