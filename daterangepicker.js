@@ -514,26 +514,16 @@
         updateYear: function(e) {
             var year = parseInt($(e.target).val());
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            
-            if(isLeft) {
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: year });
-            } else { 
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: year });
-            }
-            
+            var calendar = isLeft ? this.leftCalendar : this.rightCalendar;
+            calendar.month.set({ month: calendar.month.getMonth(), year: year});
             this.updateCalendars();
         },
         
         updateMonth: function(e) {
             var month = parseInt($(e.target).val());
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            
-            if(isLeft) {
-                this.leftCalendar.month.set({ month: month, year: this.startDate.getFullYear() });
-            } else {
-                this.rightCalendar.month.set({ month: month, year: this.endDate.getFullYear() });
-            }
-            
+            var calendar = isLeft ? this.leftCalendar : this.rightCalendar;
+            calendar.month.set({ month: month, year: calendar.month.getFullYear()});
             this.updateCalendars();
         },
 
