@@ -20,6 +20,7 @@
         this.changed = false;
         this.cleared = false;
         this.showDropdowns = false;
+        this.dropdownAdjusts = false;
         this.ranges = {};
         this.dateLimit = false;
         this.opens = 'right';
@@ -211,6 +212,10 @@
             
             if (typeof options.showDropdowns == 'boolean') {
                 this.showDropdowns = options.showDropdowns;
+            }
+
+            if (typeof options.dropdownAdjusts == 'boolean') {
+                this.dropdownAdjusts = options.dropdownAdjusts;
             }
 
         }
@@ -516,6 +521,10 @@
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
             var calendar = isLeft ? this.leftCalendar : this.rightCalendar;
             calendar.month.set({ month: calendar.month.getMonth(), year: year});
+            if (this.dropdownAdjusts) {
+              this[isLeft ? 'startDate' : 'endDate'].set({year:year});
+              this.changed = true;
+            }
             this.updateCalendars();
         },
         
@@ -524,6 +533,10 @@
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
             var calendar = isLeft ? this.leftCalendar : this.rightCalendar;
             calendar.month.set({ month: month, year: calendar.month.getFullYear()});
+            if (this.dropdownAdjusts) {
+              this[isLeft ? 'startDate' : 'endDate'].set({month:month});
+              this.changed = true;
+            }
             this.updateCalendars();
         },
 
