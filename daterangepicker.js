@@ -516,9 +516,9 @@
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
 
             if(isLeft) {
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: year });
+                this.leftCalendar.month.set({ month: this.leftCalendar.month.getMonth(), year: year });
             } else {
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: year });
+                this.rightCalendar.month.set({ month: this.rightCalendar.month.getMonth(), year: year });
             }
 
             this.updateCalendars();
@@ -529,9 +529,9 @@
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
 
             if(isLeft) {
-                this.leftCalendar.month.set({ month: month, year: this.startDate.getFullYear() });
+                this.leftCalendar.month.set({ month: month, year: this.leftCalendar.month.getFullYear() });
             } else {
-                this.rightCalendar.month.set({ month: month, year: this.endDate.getFullYear() });
+                this.rightCalendar.month.set({ month: month, year: this.rightCalendar.month.getFullYear() });
             }
 
             this.updateCalendars();
