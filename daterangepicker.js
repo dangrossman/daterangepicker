@@ -178,7 +178,7 @@
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
             }
-            
+
             if (typeof options.dateLimit == 'object')
                 this.dateLimit = options.dateLimit;
 
@@ -208,7 +208,7 @@
             if (typeof options.buttonClasses == 'object') {
                 this.buttonClasses = options.buttonClasses;
             }
-            
+
             if (typeof options.showDropdowns == 'boolean') {
                 this.showDropdowns = options.showDropdowns;
             }
@@ -242,13 +242,13 @@
             if ($(this.element).is('input[type=text]')) {
                 var val = $(this.element).val();
                 var split = val.split(this.separator);
-                
+
                 if(split.length == 2) {
                     this.startDate = Date.parseExact(split[0], this.format);
                     this.endDate = Date.parseExact(split[1], this.format);
                 }
             }
-        }        
+        }
 
         //event listeners
         this.container.on('mousedown', $.proxy(this.mousedown, this));
@@ -264,7 +264,7 @@
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
-        
+
         this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateYear, this));
         this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonth, this));
 
@@ -279,9 +279,9 @@
 
         constructor: DateRangePicker,
 
-        mousedown: function (e) {        
+        mousedown: function (e) {
             e.stopPropagation();
-            
+
             //allow select list to function normally
             if(!this.showDropdowns || $(e.target).not('select').length)
                 e.preventDefault();
@@ -359,7 +359,7 @@
             }
 
             this.changed = false;
-            
+
             this.element.trigger('shown',{target:e.target,picker:this});
 
             $(document).on('mousedown', $.proxy(this.hide, this));
@@ -474,7 +474,7 @@
                     if (startDate.isBefore(minDate)) {
                         startDate = minDate;
                     }
-                }                
+                }
                 this.element.trigger('clicked', {
                   dir: 'right',
                   picker: this
@@ -510,30 +510,30 @@
             this.cleared = true;
             this.hide();
         },
-        
+
         updateYear: function(e) {
             var year = parseInt($(e.target).val());
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            
+
             if(isLeft) {
                 this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: year });
-            } else { 
+            } else {
                 this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: year });
             }
-            
+
             this.updateCalendars();
         },
-        
+
         updateMonth: function(e) {
             var month = parseInt($(e.target).val());
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            
+
             if(isLeft) {
                 this.leftCalendar.month.set({ month: month, year: this.startDate.getFullYear() });
             } else {
                 this.rightCalendar.month.set({ month: month, year: this.endDate.getFullYear() });
             }
-            
+
             this.updateCalendars();
         },
 
@@ -596,13 +596,13 @@
             return calendar;
 
         },
-        
-        renderDropdowns: function (selected, minDate, maxDate) {                        
+
+        renderDropdowns: function (selected, minDate, maxDate) {
             var currentMonth = selected.getMonth();
             var monthHtml = '<select class="monthselect">';
             var inMinYear = false;
             var inMaxYear = false;
-            
+
             for (var m = 0; m < 12; m++) {
                 if ((!inMinYear || m >= minDate.getMonth()) && (!inMaxYear || m <= maxDate.getMonth())) {
                     monthHtml += "<option value='" + m + "'" +
@@ -611,20 +611,20 @@
                 }
             }
             monthHtml += "</select>";
-            
+
             var currentYear = selected.getFullYear();
             var maxYear = (maxDate && maxDate.getFullYear()) || (currentYear + 5);
-            var minYear = (minDate && minDate.getFullYear()) || (currentYear - 50); 
+            var minYear = (minDate && minDate.getFullYear()) || (currentYear - 50);
             var yearHtml = '<select class="yearselect">'
-            
+
             for (var y = minYear; y <= maxYear; y++) {
                 yearHtml += '<option value="' + y + '"' +
                     (y === currentYear ? ' selected="selected"' : '') +
                     '>' + y + '</option>';
             }
-            
+
             yearHtml += '</select>';
-            
+
             return monthHtml + yearHtml;
         },
 
@@ -632,23 +632,23 @@
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
-            
+
             // add empty cell for week number
             if (this.showWeekNumbers)
                 html += '<th></th>';
-            
+
             if (!minDate || minDate < calendar[1][1]) {
                 html += '<th class="prev available"><i class="icon-arrow-left"></i></th>';
             } else {
                 html += '<th></th>';
             }
-            
+
             var dateHtml = this.locale.monthNames[calendar[1][1].getMonth()] + calendar[1][1].toString(" yyyy");
-            
+
             if (this.showDropdowns) {
                 dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate);
             }
-            
+
             html += '<th colspan="5" style="width: auto">' + dateHtml + '</th>';
             if (!maxDate || maxDate > calendar[1][1]) {
                 html += '<th class="next available"><i class="icon-arrow-right"></i></th>';
@@ -658,7 +658,7 @@
 
             html += '</tr>';
             html += '<tr>';
-            
+
             // add week number label
             if (this.showWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
@@ -673,11 +673,11 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
-                
+
                 // add week number
                 if (this.showWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].getWeek() + '</td>';
-                
+
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].getMonth() == calendar[1][1].getMonth()) ? '' : 'off';
@@ -696,7 +696,7 @@
                         if (calendar[row][col].equals(this.startDate)) { cname += ' start-date '; }
                         if (calendar[row][col].equals(this.endDate)) { cname += ' end-date '; }
                     }
-                    
+
                     var title = 'r' + row + 'c' + col;
                     html += '<td class="' + cname.replace(/\s+/g,' ').replace(/^\s?(.*?)\s?$/,'$1') + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
