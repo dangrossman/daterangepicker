@@ -47,6 +47,7 @@
         this.elementShown = $.noop;
         this.elementHide = $.noop;
         this.elementHidden = $.noop;
+		this.activeRangeLabel = null;
 
         localeObject = this.locale;
 
@@ -593,6 +594,8 @@
             }
             if (customRange)
                 this.container.find('.ranges li:last').addClass('active');
+				
+			this.activeRangeLabel = this.container.find('.ranges .active').text();
 
             this.element.trigger('updated', this);
         },
