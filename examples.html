@@ -6,7 +6,7 @@
       <link rel="stylesheet" type="text/css" media="all" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
       <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-      <script type="text/javascript" src="date.js"></script>
+      <script type="text/javascript" src="moment.js"></script>
       <script type="text/javascript" src="daterangepicker.js"></script>
    </head>
    <body>
@@ -52,18 +52,18 @@
                   $('#reportrange').daterangepicker(
                      {
                         ranges: {
-                           'Today': ['today', 'today'],
-                           'Yesterday': ['yesterday', 'yesterday'],
-                           'Last 7 Days': [Date.today().add({ days: -6 }), 'today'],
-                           'Last 30 Days': [Date.today().add({ days: -29 }), 'today'],
-                           'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-                           'Last Month': [Date.today().moveToFirstDayOfMonth().add({ months: -1 }), Date.today().moveToFirstDayOfMonth().add({ days: -1 })]
+                           'Today': [moment().startOf('day'), moment().endOf('day')],
+                           'Yesterday': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
+                           'Last 7 Days': [moment().startOf('day').subtract('days', 6), moment().endOf('day')],
+                           'Last 30 Days': [moment().startOf('day').subtract('days', 29), moment().endOf('day')],
+                           'This Month': [moment().startOf('month'), moment().endOf('month')],
+                           'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
                         },
                         opens: 'left',
-                        format: 'MM/dd/yyyy',
+                        format: 'MM/DD/YYYY',
                         separator: ' to ',
-                        startDate: Date.today().add({ days: -29 }),
-                        endDate: Date.today(),
+                        startDate: moment().startOf('day').subtract('days', 29),
+                        endDate: moment().startOf('day'),
                         minDate: '01/01/2012',
                         maxDate: '12/31/2013',
                         locale: {
@@ -78,14 +78,14 @@
                         showWeekNumbers: true,
                         buttonClasses: ['btn-danger'],
                         dateLimit: false
-                     }, 
+                     },
                      function(start, end) {
-                        $('#reportrange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+                        $('#reportrange span').html(start.format('MMMM d, YYYY') + ' - ' + end.format('MMMM d, YYYY'));
                      }
                   );
 
                   //Set the initial state of the picker label
-                  $('#reportrange span').html(Date.today().add({ days: -29 }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
+                  $('#reportrange span').html(moment().startOf('day').subtract('days', 29).format('MMMM d, YYYY') + ' - ' + moment().startOf('day').format('MMMM d, YYYY'));
 
                });
                </script>
