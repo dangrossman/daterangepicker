@@ -494,7 +494,7 @@
                 $(e.target).addClass('active');
                 this.changed = true;
                 this.startDate = startDate;
-                this.endDate = moment(startDate).add('day', 1);
+                this.endDate = moment(startDate).add('day', 1).endOf('day');
             }
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
