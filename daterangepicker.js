@@ -21,7 +21,9 @@
         this.cleared = false;
         this.showDropdowns = false;
         this.showTime = false;
-        this.minuteIncrement = 30;
+        this.minHour = false;
+        this.maxHour = false;
+        this.minuteIncrement = 1;
         this.ranges = {};
         this.dateLimit = false;
         this.opens = 'right';
@@ -193,24 +195,47 @@
             if (typeof options.opens == 'string')
                 this.opens = options.opens;
 
-            if (typeof options.showWeekNumbers == 'boolean') {
+            if (typeof options.showWeekNumbers == 'boolean')
                 this.showWeekNumbers = options.showWeekNumbers;
-            }
 
-            if (typeof options.buttonClasses == 'string') {
+            if (typeof options.buttonClasses == 'string')
                 this.buttonClasses = [options.buttonClasses];
-            }
 
-            if (typeof options.buttonClasses == 'object') {
+            if (typeof options.buttonClasses == 'object')
                 this.buttonClasses = options.buttonClasses;
-            }
             
-            if (typeof options.showDropdowns == 'boolean') {
+            if (typeof options.showDropdowns == 'boolean')
                 this.showDropdowns = options.showDropdowns;
-            }
 
             if (typeof options.showTime == 'boolean') {
                 this.showTime = options.showTime;
+
+                if (typeof options.minHour == 'number') {
+                    if(options.minHour >= 0 && options.minHour <= 23) {
+                        this.minHour = options.minHour;
+                    }
+                    else {
+                        throw new Error('Invalid options.minHour.');
+                    }
+                }
+                    
+                if (typeof options.maxHour == 'number') {
+                    if(options.maxHour >= this.minHour && options.maxHour <= 23) {
+                        this.maxHour = options.maxHour;
+                    }
+                    else {
+                        throw new Error('Invalid options.maxHour.');
+                    }
+                }
+
+                if (typeof options.minuteIncrement == 'number') {
+                    if(60 % options.minuteIncrement == 0) {
+                        this.minuteIncrement = options.minuteIncrement;
+                    }
+                    else {
+                        throw new Error('Invalid options.minuteIncrement: Please specify an increment that is divisible by 60.');
+                    }
+                }
             }
         }
 
@@ -282,8 +307,10 @@
 
                 var $hours = $('.hourselect', $timePickerTemplate);
                 var $minutes = $('.minuteselect', $timePickerTemplate);
+                var minHour = this.minHour ? this.minHour : 0;
+                var maxHour = this.maxHour ? this.maxHour : 23;
 
-                for(var i = 0; i < 24; i++) {
+                for(var i = minHour; i <= maxHour; i++) {
                     $hours.append('<option value="' + i + '">' + this.padInteger(i) + '</option>');
                 }
 
