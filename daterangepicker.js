@@ -15,6 +15,7 @@
         //state
         this.startDate = Date.today();
         this.endDate = Date.today();
+        this.isDefined = null;
         this.minDate = false;
         this.maxDate = false;
         this.changed = false;
@@ -141,6 +142,11 @@
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
 
+                    if (options.ranges[range] == true || options.ranges[range] == false){
+                        this.ranges[range] = options.ranges[range];
+                        continue;
+                    }
+
                     var start = options.ranges[range][0];
                     var end = options.ranges[range][1];
 
@@ -244,8 +250,14 @@
                 var split = val.split(this.separator);
                 
                 if(split.length == 2) {
-                    this.startDate = Date.parseExact(split[0], this.format);
-                    this.endDate = Date.parseExact(split[1], this.format);
+                    if (split[1] == 't' || split[1] == 'f'){
+                        this.isDefined = split[1] == 'true'? true:false;
+                        this.startDate = null;
+                        this.endDate = null;
+                    }else{
+                        this.startDate = Date.parseExact(split[0], this.format);
+                        this.endDate = Date.parseExact(split[1], this.format);
+                    }
                 }
             }
         }        
@@ -288,6 +300,11 @@
         },
 
         updateView: function () {
+            if (this.isDefined != null){
+                this.container.find('input[name=daterangepicker_start]').val('');
+                this.container.find('input[name=daterangepicker_end]').val('');
+                return
+            }
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
             this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
 
@@ -305,17 +322,22 @@
             if (!this.element.is('input')) return;
 
             var dateString = this.element.val().split(this.separator);
-            var start = Date.parseExact(dateString[0], this.format);
-            var end = Date.parseExact(dateString[1], this.format);
+            if (dateString[1] == 'true' || dateString[1] == 'false'){
+                this.isDefined = dateString[1] == 'true'? true:false;
+                this.startDate = null;
+                this.endDate = null;
+            } else {
+                var start = Date.parseExact(dateString[0], this.format);
+                var end = Date.parseExact(dateString[1], this.format);
 
-            if (start == null || end == null) return;
-            if (end.isBefore(start)) return;
+                if (start == null || end == null) return;
+                if (end.isBefore(start)) return;
 
-            this.startDate = start;
-            this.endDate = end;
-
+                this.startDate = start;
+                this.endDate = end;
+            }
             this.updateView();
-            this.cb(this.startDate, this.endDate);
+            this.cb(this.startDate, this.endDate, this.isDefined);
             this.updateCalendars();
         },
 
@@ -325,12 +347,16 @@
             }
 
             if (this.element.is('input')) {
-                this.element.val(this.cleared ? '' : this.startDate.toString(this.format) + this.separator + this.endDate.toString(this.format));
+                if (this.isDefined != null){
+                    this.element.val(this.isDefined);
+                }else{
+                    this.element.val(this.cleared ? '' : this.startDate.toString(this.format) + this.separator + this.endDate.toString(this.format));
+                }
             }
             var arg1 = (this.cleared ? null : this.startDate),
                 arg2 = (this.cleared ? null : this.endDate);
             this.cleared = false;
-            this.cb(arg1,arg2);
+            this.cb(arg1,arg2,this.isDefined);
         },
 
         move: function () {
@@ -381,8 +407,13 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].toString(this.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].toString(this.format));
+                if (dates != true && dates != false){
+                    this.container.find('input[name=daterangepicker_start]').val(dates[0].toString(this.format));
+                    this.container.find('input[name=daterangepicker_end]').val(dates[1].toString(this.format));
+                } else{
+                    this.container.find('input[name=daterangepicker_start]').val('');
+                    this.container.find('input[name=daterangepicker_end]').val('');
+                }
             }
         },
 
@@ -392,12 +423,18 @@
                 this.container.find('.calendar').show();
             } else {
                 var dates = this.ranges[label];
+                if (dates == true || dates == false){
+                    this.isDefined = dates;
+                    this.startDate = null;
+                    this.endDate = null;
+                } else {
+                    this.isDefined = null;
+                    this.startDate = dates[0];
+                    this.endDate = dates[1];
 
-                this.startDate = dates[0];
-                this.endDate = dates[1];
-
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+                    this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
+                    this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
+                }
                 this.updateCalendars();
 
                 this.changed = true;
@@ -538,16 +575,20 @@
         },
 
         updateCalendars: function () {
-            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.getMonth(), this.leftCalendar.month.getFullYear());
-            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.getMonth(), this.rightCalendar.month.getFullYear());
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
-
+            if (this.isDefined == null){
+                this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.getMonth(), this.leftCalendar.month.getFullYear());
+                this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.getMonth(), this.rightCalendar.month.getFullYear());
+                this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
+                this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            }
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
             var i = 0;
             for (var range in this.ranges) {
-                if (this.startDate.equals(this.ranges[range][0]) && this.endDate.equals(this.ranges[range][1])) {
+                if (this.isDefined == this.ranges[range]){
+                    customRange = false;
+                    this.container.find('.ranges li:eq(' + i + ')').addClass('active');
+                } else if (this.startDate && this.endDate && this.startDate.equals(this.ranges[range][0]) && this.endDate.equals(this.ranges[range][1])) {
                     customRange = false;
                     this.container.find('.ranges li:eq(' + i + ')').addClass('active');
                 }
