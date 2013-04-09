@@ -47,12 +47,12 @@
 
         this.leftCalendar = {
             month: moment([this.startDate.year(), this.startDate.month(), 1]),
-            calendar: Array()
+            calendar: []
         };
 
         this.rightCalendar = {
             month: moment([this.endDate.year(), this.endDate.month(), 1]),
-            calendar: Array()
+            calendar: []
         };
 
         //element that triggered the date range picker
@@ -450,8 +450,8 @@
             var cal = $(e.target).parents('.calendar');
 
             if (cal.hasClass('left')) {
-                startDate = this.leftCalendar.calendar[row][col];
-                endDate = this.endDate;
+                var startDate = this.leftCalendar.calendar[row][col];
+                var endDate = this.endDate;
                 if (typeof this.dateLimit == 'object') {
                     var maxDate = moment(startDate).add(this.dateLimit);
                     if (endDate.isAfter(maxDate)) {
@@ -539,7 +539,7 @@
         },
 
         updateCalendars: function () {
-            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year());
+            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), 'right');
             this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
             this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
@@ -564,16 +564,16 @@
 
             var firstDay = moment([year, month, 1]);
             var lastMonth = moment(firstDay).subtract('month', 1).month();
-            var lastYear = moment(firstDay).year();
+            var lastYear = moment(firstDay).subtract('month', 1).year();
 
             var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
 
             var dayOfWeek = firstDay.day();
 
             //initialize a 6 rows x 7 columns array for the calendar
-            var calendar = Array();
+            var calendar = [];
             for (var i = 0; i < 6; i++) {
-                calendar[i] = Array();
+                calendar[i] = [];
             }
 
             //populate the calendar with date objects
@@ -589,6 +589,7 @@
             curDate = moment([lastYear, lastMonth, startDay]).endOf('day');
           } else {
             curDate = moment([lastYear, lastMonth, startDay]);
+              console.log(curDate.toDate())
           }
           for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('day', 1)) {
                 if (i > 0 && col % 7 == 0) {
