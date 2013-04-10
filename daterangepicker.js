@@ -589,7 +589,6 @@
             curDate = moment([lastYear, lastMonth, startDay]).endOf('day');
           } else {
             curDate = moment([lastYear, lastMonth, startDay]);
-              console.log(curDate.toDate())
           }
           for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('day', 1)) {
                 if (i > 0 && col % 7 == 0) {
