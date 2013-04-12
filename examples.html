@@ -152,6 +152,65 @@
 
             </div>
 
+            <h4>Date Time Example</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="date-time">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="date-time" id="date-time" class="input-xlarge" value="03/18/2013 09:00 - 03/23/2013 17:00" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#date-time').daterangepicker(
+                    {
+                      format: 'MM/dd/yyyy HH:mm',
+                      showTime : true,
+                      minHour : 9,
+                      maxHour : 17,
+                      minuteIncrement : 20
+                    });
+               });
+               </script>
+
+            </div>
+            
+            <h4>Date Time Example (12 hour clock)</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="date-time">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="date-time-12" id="date-time-12" class="input-xxlarge" value="03/18/2013 9:00 AM - 03/23/2013 5:00 PM" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#date-time-12').daterangepicker(
+                    {
+                      format: 'MM/dd/yyyy h:mm tt',
+                      showTime : true,
+                      minuteIncrement : 5
+                    });
+               });
+               </script>
+
+            </div>
 
          </div>
       </div>

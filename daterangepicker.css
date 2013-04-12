@@ -74,10 +74,17 @@
 }
 
 .daterangepicker .calendar {
+  background: #fff;
+}
+
+.daterangepicker .calendar-holder {
   border: 1px solid #ddd;
   padding: 4px;
   border-radius: 4px;
-  background: #fff;
+}
+
+.daterangepicker .calendar-time {
+  margin-top: 8px;
 }
 
 .daterangepicker {
