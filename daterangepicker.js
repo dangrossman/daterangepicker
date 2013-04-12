@@ -234,7 +234,7 @@
                         this.minuteIncrement = options.minuteIncrement;
                     }
                     else {
-                        throw new Error('Invalid options.minuteIncrement: Please specify an increment that is divisible by 60.');
+                        throw new Error('Invalid options.minuteIncrement: Please specify an increment that 60 is divisible by.');
                     }
                 }
 
