@@ -29,6 +29,7 @@
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/dd/yyyy';
+        this.isUsing12hrClock = false;
         this.separator = ' - ';
         this.showWeekNumbers = false;
         this.buttonClasses = ['btn-success'];
@@ -236,30 +237,10 @@
                         throw new Error('Invalid options.minuteIncrement: Please specify an increment that is divisible by 60.');
                     }
                 }
+
+                if (this.format.indexOf('tt') >= 0 && !(this.minHour || this.maxHour)) this.isUsing12hrClock = true;
             }
         }
-
-        this.leftCalendar = {
-            month: Date.today().set({ 
-                day: 1, 
-                month: this.startDate.getMonth(), 
-                year: this.startDate.getFullYear(),
-                hour: this.startDate.getHours(),
-                minute: this.startDate.getMinutes()
-            }),
-            calendar: Array()
-        };
-
-        this.rightCalendar = {
-            month: Date.today().set({ 
-                day: 1, 
-                month: this.endDate.getMonth(), 
-                year: this.endDate.getFullYear(),
-                hour: this.endDate.getHours(),
-                minute: this.endDate.getMinutes()
-            }),
-            calendar: Array()
-        };
 
         //apply CSS classes to buttons
         var c = this.container;
@@ -296,57 +277,52 @@
             }
         }    
 
-        if (this.showTime) {
-            function createTimePicker(id, date) {
-                var $timePickerTemplate = $('<div class="form-inline calendar-time">' +
-                    '<select name="calendar-hour-' + id + '" class="span1 hourselect">' +
-                    '</select> ' +
-                    '<select name="calendar-minute-' + id + '" class="span1 minuteselect">' +
-                    '</select>' +
-                '</div>');
+        this.leftCalendar = {
+            month: Date.today().set({ 
+                day: 1, 
+                month: this.startDate.getMonth(), 
+                year: this.startDate.getFullYear(),
+                hour: this.startDate.getHours(),
+                minute: this.startDate.getMinutes()
+            }),
+            calendar: Array()
+        };
 
-                var $hours = $('.hourselect', $timePickerTemplate);
-                var $minutes = $('.minuteselect', $timePickerTemplate);
-                var minHour = this.minHour ? this.minHour : 0;
-                var maxHour = this.maxHour ? this.maxHour : 23;
-
-                for(var i = minHour; i <= maxHour; i++) {
-                    $hours.append('<option value="' + i + '">' + this.padInteger(i) + '</option>');
-                }
-
-                for(var i = 0; i < 60; i += this.minuteIncrement) {
-                    $minutes.append('<option value="' + i + '">' + this.padInteger(i) + '</option>');
-                }
-
-                $hours.val(date.getHours());
-                $minutes.val(date.getMinutes());
-
-                return $timePickerTemplate;
-            };
-
-            this.container.find('.calendar.left').append(createTimePicker.apply(this, ['left', this.startDate]));
-            this.container.find('.calendar.right').append(createTimePicker.apply(this, ['right', this.endDate]));
-        }    
+        this.rightCalendar = {
+            month: Date.today().set({ 
+                day: 1, 
+                month: this.endDate.getMonth(), 
+                year: this.endDate.getFullYear(),
+                hour: this.endDate.getHours(),
+                minute: this.endDate.getMinutes()
+            }),
+            calendar: Array()
+        };
 
         //event listeners
         this.container.on('mousedown', $.proxy(this.mousedown, this));
-        this.container.find('.calendar').on('click', '.prev', $.proxy(this.clickPrev, this));
-        this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
-        this.container.find('.ranges').on('click', 'button.applyBtn', $.proxy(this.clickApply, this));
-        this.container.find('.ranges').on('click', 'button.clearBtn', $.proxy(this.clickClear, this));
 
-        this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
-        this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
-        this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateView, this));
+        this.container.find('.calendar')
+            .on('click', '.prev', $.proxy(this.clickPrev, this))
+            .on('click', '.next', $.proxy(this.clickNext, this))
+            .on('click', 'td.available', $.proxy(this.clickDate, this))
+            .on('mouseenter', 'td.available', $.proxy(this.enterDate, this))
+            .on('mouseleave', 'td.available', $.proxy(this.updateView, this))
+            .on('change', 'select.yearselect', $.proxy(this.updateYear, this))
+            .on('change', 'select.monthselect', $.proxy(this.updateMonth, this))
+            .on('change', 'select.hourselect, select.minuteselect, select.ampmselect', $.proxy(this.updateTime, this));
 
-        this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
-        this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
-        this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
-        
-        this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateYear, this));
-        this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonth, this));
-        this.container.find('.calendar').on('change', 'select.hourselect', $.proxy(this.updateHour, this));
-        this.container.find('.calendar').on('change', 'select.minuteselect', $.proxy(this.updateMinute, this));
+        this.container.find('.ranges')
+            .on('click', 'button.applyBtn', $.proxy(this.clickApply, this))
+            .on('click', 'button.clearBtn', $.proxy(this.clickClear, this))
+            .on('click', 'li', $.proxy(this.clickRange, this))
+            .on('mouseenter', 'li', $.proxy(this.enterRange, this))
+            .on('mouseleave', 'li', $.proxy(this.updateView, this));
+
+        if(this.showTime) {
+            this.container.find('.calendar.left').append(this.renderTimePicker.apply(this, ['left', this.startDate]));
+            this.container.find('.calendar.right').append(this.renderTimePicker.apply(this, ['right', this.endDate]));                
+        }  
 
         this.element.on('keyup', $.proxy(this.updateFromControl, this));
 
@@ -591,38 +567,30 @@
             this.hide();
         },
 
-        updateHour: function(e) {
-            var hour = parseInt($(e.target).val());
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
+        updateTime: function(e) {
+            var $calendar = $(e.target).closest('.calendar');
+            var hour = parseInt($('.hourselect', $calendar).val());
+            var minute = parseInt($('.minuteselect', $calendar).val());
+            var isLeft = $calendar.hasClass('left');
+
+            if(this.isUsing12hrClock) {
+                var ampm = $('.ampmselect', $calendar).val();
+                var date =Date.parse(hour + ':' + minute + ampm);
+
+                hour = date.getHours();
+            }
+
+            var time = {  hour: hour, minute: minute };
 
             if(isLeft) {
-                this.leftCalendar.month.set({ hour: hour });
-                this.startDate.set({ hour: hour });
+                this.leftCalendar.month.set(time);
+                this.startDate.set(time);
             } else { 
-                this.rightCalendar.month.set({ hour: hour });
-                this.endDate.set({ hour: hour });
+                this.rightCalendar.month.set(time);
+                this.endDate.set(time);
             }
 
             this.changed = true;
-
-            this.updateView();
-            this.updateCalendars();
-        },
-
-        updateMinute: function(e) {
-            var minute = parseInt($(e.target).val());
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            
-            if(isLeft) {
-                this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear(), hour: this.startDate.getHours(), minute: minute });
-                this.startDate.set({ minute: minute });
-            } else { 
-                this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear(), hour: this.endDate.getHours(), minute: minute });
-                this.endDate.set({ minute: minute });
-            }
-            
-            this.changed = true;
-
             this.updateView();
             this.updateCalendars();
         },
@@ -844,10 +812,63 @@
 
         },
 
+        renderTimePicker : function(id, date) {
+            var $timePickerTemplate = $('<div class="form-inline calendar-time">' +
+                '<select name="calendar-hour-' + id + '" class="span1 hourselect">' +
+                '</select> ' +
+                '<select name="calendar-minute-' + id + '" class="span1 minuteselect">' +
+                '</select> ' +
+            '</div>');
+
+            var $hours = $('.hourselect', $timePickerTemplate);
+            var $minutes = $('.minuteselect', $timePickerTemplate);
+
+            if(this.isUsing12hrClock) {
+                for(var i = 1; i <= 12; i++) {
+                    $hours.append('<option value="' + i + '">' + i + '</option>');
+                }
+
+                var $ampm = $('<select name="calendar-ampm-' + id + '" class="span1 ampmselect">' +
+                    '<option>AM</option>' +
+                    '<option>PM</option>' +
+                '</select>');
+
+                $timePickerTemplate.append($ampm);
+                $ampm.val(date.getHours() >= 12 ? 'PM' : 'AM');
+
+                $hours.val(this.format12Hour(date.getHours()));
+            }
+            else {
+                var minHour = this.minHour ? this.minHour : 0;
+                var maxHour = this.maxHour ? this.maxHour : 23;
+
+                for(var i = minHour; i <= maxHour; i++) {
+                    $hours.append('<option value="' + i + '">' + this.padInteger(i) + '</option>');
+                }
+
+                $hours.val(date.getHours());
+            }
+
+            for(var i = 0; i < 60; i += this.minuteIncrement) {
+                $minutes.append('<option value="' + i + '">' + this.padInteger(i) + '</option>');
+            } 
+            
+            $minutes.val(date.getMinutes());
+
+            return $timePickerTemplate;
+        },
+
         padInteger : function(num, pad) {
             var num = '' + num;
             var pad = pad || '00';
             return pad.substring(0, pad.length - num.length) + num;
+        },
+
+        format12Hour : function(hour) {
+          hour = hour % 12;
+          hour = hour ? hour : 12;
+
+          return hour;
         }
     };
 
