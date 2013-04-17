@@ -27,7 +27,7 @@
         this.format = 'MM/dd/yyyy';
         this.separator = ' - ';
         this.showWeekNumbers = false;
-        this.buttonClasses = ['btn-success'];
+        this.buttonClasses = ['btn'];
         this.applyClass = 'btn btn-small btn-success';
         this.clearClass = 'btn btn-small';
         this.locale = {
