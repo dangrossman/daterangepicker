@@ -116,8 +116,14 @@
             if (typeof options.startDate == 'string')
                 this.startDate = Date.parseExact(options.startDate, this.format);
 
+            if (typeof options.startDate == 'object')
+                this.startDate = options.startDate;
+
             if (typeof options.endDate == 'string')
                 this.endDate = Date.parseExact(options.endDate, this.format);
+
+            if (typeof options.endDate == 'object')
+                this.endDate = options.endDate;
 
             if (typeof options.minDate == 'string')
                 this.minDate = Date.parseExact(options.minDate, this.format);
@@ -125,17 +131,44 @@
             if (typeof options.maxDate == 'string')
                 this.maxDate = Date.parseExact(options.maxDate, this.format);
 
-            if (typeof options.startDate == 'object')
-                this.startDate = options.startDate;
-
-            if (typeof options.endDate == 'object')
-                this.endDate = options.endDate;
-
             if (typeof options.minDate == 'object')
                 this.minDate = options.minDate;
 
             if (typeof options.maxDate == 'object')
                 this.maxDate = options.maxDate;
+
+            if (typeof options.showTime == 'boolean') {
+                this.showTime = options.showTime;
+
+                if (typeof options.minHour == 'number') {
+                    if(options.minHour >= 0 && options.minHour <= 23) {
+                        this.minHour = options.minHour;
+                    }
+                    else {
+                        throw new Error('Invalid options.minHour.');
+                    }
+                }
+                    
+                if (typeof options.maxHour == 'number') {
+                    if(options.maxHour >= this.minHour && options.maxHour <= 23) {
+                        this.maxHour = options.maxHour;
+                    }
+                    else {
+                        throw new Error('Invalid options.maxHour.');
+                    }
+                }
+
+                if (typeof options.minuteIncrement == 'number') {
+                    if(60 % options.minuteIncrement == 0) {
+                        this.minuteIncrement = options.minuteIncrement;
+                    }
+                    else {
+                        throw new Error('Invalid options.minuteIncrement: Please specify an increment that 60 is divisible by.');
+                    }
+                }
+
+                if (this.format.indexOf('tt') >= 0 && !(this.minHour || this.maxHour)) this.isUsing12hrClock = true;
+            }
 
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
@@ -207,39 +240,6 @@
             
             if (typeof options.showDropdowns == 'boolean')
                 this.showDropdowns = options.showDropdowns;
-
-            if (typeof options.showTime == 'boolean') {
-                this.showTime = options.showTime;
-
-                if (typeof options.minHour == 'number') {
-                    if(options.minHour >= 0 && options.minHour <= 23) {
-                        this.minHour = options.minHour;
-                    }
-                    else {
-                        throw new Error('Invalid options.minHour.');
-                    }
-                }
-                    
-                if (typeof options.maxHour == 'number') {
-                    if(options.maxHour >= this.minHour && options.maxHour <= 23) {
-                        this.maxHour = options.maxHour;
-                    }
-                    else {
-                        throw new Error('Invalid options.maxHour.');
-                    }
-                }
-
-                if (typeof options.minuteIncrement == 'number') {
-                    if(60 % options.minuteIncrement == 0) {
-                        this.minuteIncrement = options.minuteIncrement;
-                    }
-                    else {
-                        throw new Error('Invalid options.minuteIncrement: Please specify an increment that 60 is divisible by.');
-                    }
-                }
-
-                if (this.format.indexOf('tt') >= 0 && !(this.minHour || this.maxHour)) this.isUsing12hrClock = true;
-            }
         }
 
         //apply CSS classes to buttons
@@ -275,8 +275,18 @@
                     this.endDate = Date.parseExact(split[1], this.format);
                 }
             }
-        }    
+        }
 
+        if(this.showTime) {
+            // Adjust dates to match closest minute increment
+            this.startDate.set({ minute: this.getClosestMinute(this.startDate) })
+            this.endDate.set({ minute: this.getClosestMinute(this.endDate) });
+
+            // Append time pickers
+            this.container.find('.calendar.left').append(this.renderTimePicker('left', this.startDate));
+            this.container.find('.calendar.right').append(this.renderTimePicker('right', this.endDate));                
+        }  
+        
         this.leftCalendar = {
             month: Date.today().set({ 
                 day: 1, 
@@ -318,11 +328,6 @@
             .on('click', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter', 'li', $.proxy(this.enterRange, this))
             .on('mouseleave', 'li', $.proxy(this.updateView, this));
-
-        if(this.showTime) {
-            this.container.find('.calendar.left').append(this.renderTimePicker.apply(this, ['left', this.startDate]));
-            this.container.find('.calendar.right').append(this.renderTimePicker.apply(this, ['right', this.endDate]));                
-        }  
 
         this.element.on('keyup', $.proxy(this.updateFromControl, this));
 
@@ -858,17 +863,31 @@
             return $timePickerTemplate;
         },
 
+        getClosestMinute : function(date) {
+            var closest = null;
+            var minute = date.getMinutes();
+
+            for(var i = 0; i < 60; i += this.minuteIncrement) {
+                if (closest == null || Math.abs(i - minute) < Math.abs(closest - minute)) {
+                    closest = i;
+                }
+            }
+
+            return closest;
+        },
+
         padInteger : function(num, pad) {
             var num = '' + num;
             var pad = pad || '00';
+
             return pad.substring(0, pad.length - num.length) + num;
         },
 
         format12Hour : function(hour) {
-          hour = hour % 12;
-          hour = hour ? hour : 12;
+            hour = hour % 12;
+            hour = hour ? hour : 12;
 
-          return hour;
+            return hour;
         }
     };
 
