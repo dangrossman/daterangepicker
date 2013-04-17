@@ -502,6 +502,7 @@
         },
 
         clickApply: function (e) {
+            this.changed = true;
             this.hide();
         },
 
