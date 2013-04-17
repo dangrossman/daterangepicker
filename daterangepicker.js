@@ -748,4 +748,20 @@
       return this;
     };
 
+    $(window).on('load', function () {
+        $('[data-spy="daterangepicker"]').each(function () {
+            var $spy = $(this),
+            data = $spy.data();
+
+            data.opens = data.opens || 'right';
+            data.format = data.format || 'MM/dd/yyyy';
+            data.separator = data.separator || ' - ';
+            data.startDate = Date.parse(data.startDate) || Date.today();
+            data.endDate = Date.parse(data.endDate) || Date.today();
+            data.minDate = Date.parse(data.minDate) || null;
+            data.maxDate = Date.parse(data.maxDate) || null;
+            data.showWeekNumbers = (/^true$/i).test(data.showWeekNumbers);
+            $spy.daterangepicker(data);
+        });
+    });
 } (window.jQuery);
