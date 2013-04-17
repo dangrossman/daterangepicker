@@ -429,7 +429,7 @@
 
         enterDate: function (e) {
 
-            var title = $(e.target).attr('title');
+            var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -443,7 +443,7 @@
         },
 
         clickDate: function (e) {
-            var title = $(e.target).attr('title');
+            var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -699,7 +699,7 @@
                     }
                     
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname.replace(/\s+/g,' ').replace(/^\s?(.*?)\s?$/,'$1') + '" title="' + title + '">' + calendar[row][col].getDate() + '</td>';
+                    html += '<td class="' + cname.replace(/\s+/g,' ').replace(/^\s?(.*?)\s?$/,'$1') + '" data-title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
                 html += '</tr>';
             }
