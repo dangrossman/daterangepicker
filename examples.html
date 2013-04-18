@@ -52,18 +52,18 @@
                   $('#reportrange').daterangepicker(
                      {
                         ranges: {
-                           'Today': [moment().startOf('day'), moment().endOf('day')],
-                           'Yesterday': [moment().subtract('days', 1).startOf('day'), moment().subtract('days', 1).endOf('day')],
-                           'Last 7 Days': [moment().startOf('day').subtract('days', 6), moment().endOf('day')],
-                           'Last 30 Days': [moment().startOf('day').subtract('days', 29), moment().endOf('day')],
+                           'Today': [new Date(), new Date()],
+                           'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                           'Last 7 Days': [moment().subtract('days', 6), new Date()],
+                           'Last 30 Days': [moment().subtract('days', 29), new Date()],
                            'This Month': [moment().startOf('month'), moment().endOf('month')],
-                           'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                           'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1)]
                         },
                         opens: 'left',
                         format: 'MM/DD/YYYY',
                         separator: ' to ',
-                        startDate: moment().startOf('day').subtract('days', 29),
-                        endDate: moment().startOf('day'),
+                        startDate: moment().subtract('days', 29),
+                        endDate: new Date(),
                         minDate: '01/01/2012',
                         maxDate: '12/31/2013',
                         locale: {
@@ -85,7 +85,7 @@
                   );
 
                   //Set the initial state of the picker label
-                  $('#reportrange span').html(moment().startOf('day').subtract('days', 29).format('MMMM d, YYYY') + ' - ' + moment().startOf('day').format('MMMM d, YYYY'));
+                  $('#reportrange span').html(moment().subtract('days', 29).format('MMMM d, YYYY') + ' - ' + moment().format('MMMM d, YYYY'));
 
                });
                </script>

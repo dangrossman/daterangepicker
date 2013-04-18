@@ -11,7 +11,7 @@ and end date from. Optionally, you can provide a list of date ranges the user ca
 of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
-**[View a demo](examples.html)**
+**[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)**
 
 ## Usage
 
