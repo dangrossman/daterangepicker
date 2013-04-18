@@ -1,8 +1,7 @@
 /**
-* @version: 1.0
+* @version: 1.1
 * @author: Dan Grossman http://www.dangrossman.info/
-* @author: David CHAU https://github.com/davidchau/bootstrap-daterangepicker/blob/master/daterangepicker.js
-* @date: 2013-04-03
+* @date: 2013-03-04
 * @copyright: Copyright (c) 2012 Dan Grossman. All rights reserved.
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
@@ -21,6 +20,7 @@
         this.changed = false;
         this.cleared = false;
         this.showDropdowns = false;
+        this.dropdownAdjusts = false;
         this.ranges = {};
         this.dateLimit = false;
         this.opens = 'right';
@@ -28,7 +28,7 @@
         this.format = 'MM/DD/YYYY';
         this.separator = ' - ';
         this.showWeekNumbers = false;
-        this.buttonClasses = ['btn-success'];
+        this.buttonClasses = ['btn'];
         this.applyClass = 'btn btn-small btn-success';
         this.clearClass = 'btn btn-small';
         this.locale = {
@@ -214,6 +214,10 @@
                 this.showDropdowns = options.showDropdowns;
             }
 
+            if (typeof options.dropdownAdjusts == 'boolean') {
+                this.dropdownAdjusts = options.dropdownAdjusts;
+            }
+
         }
 
         //apply CSS classes to buttons
@@ -230,8 +234,10 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined')
+        if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
+            this.move();
+        }
 
         if (typeof cb == 'function')
             this.cb = cb;
@@ -336,18 +342,37 @@
         },
 
         move: function () {
+            var minWidth = $(this.container).find('.ranges').outerWidth();
+            if ( $(this.container).find('.calendar').is(':visible') ) {
+                var padding = 24; // FIXME: this works for the default styling, but isn't flexible
+                minWidth += $(this.container).find('.calendar').outerWidth() * 2 + padding;
+            }
             if (this.opens == 'left') {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight(),
                     right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto'
+                    left: 'auto',
+                    'min-width': minWidth
                 });
+                if (this.container.offset().left < 0) {
+                    this.container.css({
+                        right: 'auto',
+                        left: 9
+                    });
+                }
             } else {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight(),
                     left: this.element.offset().left,
-                    right: 'auto'
+                    right: 'auto',
+                    'min-width': minWidth
                 });
+                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                    this.container.css({
+                        left: 'auto',
+                        right: 0
+                    });
+                }
             }
         },
 
@@ -392,6 +417,7 @@
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.container.find('.calendar').show();
+                this.move();
             } else {
                 var dates = this.ranges[label];
 
@@ -403,7 +429,9 @@
                 this.updateCalendars();
 
                 this.changed = true;
+
                 this.container.find('.calendar').hide();
+                this.move();
                 this.hide();
             }
         },
@@ -430,7 +458,7 @@
 
         enterDate: function (e) {
 
-            var title = $(e.target).attr('title');
+            var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -444,7 +472,7 @@
         },
 
         clickDate: function (e) {
-            var title = $(e.target).attr('title');
+            var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
@@ -534,7 +562,6 @@
             } else {
                 this.rightCalendar.month.month(month).year(this.endDate.year());
             }
-
             this.updateCalendars();
         },
 
@@ -627,9 +654,9 @@
                     (y === currentYear ? ' selected="selected"' : '') +
                     '>' + y + '</option>';
             }
-
+            
             yearHtml += '</select>';
-
+            
             return monthHtml + yearHtml;
         },
 
@@ -679,6 +706,7 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
+                
                 // add week number
                 if (this.showWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].week() + '</td>';
@@ -700,7 +728,7 @@
                     }
 
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname.replace(/\s+/g,' ').replace(/^\s?(.*?)\s?$/,'$1') + '" title="' + title + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/\s+/g,' ').replace(/^\s?(.*?)\s?$/,'$1') + '" data-title="' + title + '">' + calendar[row][col].getDate() + '</td>';
                 }
                 html += '</tr>';
             }
