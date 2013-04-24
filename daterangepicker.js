@@ -139,11 +139,13 @@
             if (typeof options.maxDate == 'object')
                 this.maxDate = options.maxDate;
 
-            if (typeof options.ranges == 'object') {
-                for (var range in options.ranges) {
+            if (options.ranges instanceof Array) {
+                this.ranges = [];
 
-                    var start = options.ranges[range][0];
-                    var end = options.ranges[range][1];
+                for (var rangeNum=0; rangeNum<options.ranges.length; rangeNum++) {
+                    var start = options.ranges[rangeNum][0];
+                    var end = options.ranges[rangeNum][1];
+                    var name = options.ranges[rangeNum][2];
 
                     if (typeof start == 'string')
                         start = Date.parse(start);
@@ -168,16 +170,62 @@
                         continue;
                     }
 
-                    this.ranges[range] = [start, end];
+                    this.ranges.push([start, end, name]);
                 }
 
                 var list = '<ul>';
-                for (var range in this.ranges) {
-                    list += '<li>' + range + '</li>';
+
+                for (var rangeNum=0; rangeNum<this.ranges.length; rangeNum++) {
+                    list += '<li>' + this.ranges[rangeNum][2] + '</li>';
                 }
+
                 list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges').prepend(list);
+
+            } else {
+                if (typeof options.ranges == 'object') {
+                    for (var range in options.ranges) {
+
+                        var start = options.ranges[range][0];
+                        var end = options.ranges[range][1];
+
+                        if (typeof start == 'string')
+                            start = Date.parse(start);
+
+                        if (typeof end == 'string')
+                            end = Date.parse(end);
+
+                        // If we have a min/max date set, bound this range
+                        // to it, but only if it would otherwise fall
+                        // outside of the min/max.
+                        if (this.minDate && start < this.minDate)
+                            start = this.minDate;
+
+                        if (this.maxDate && end > this.maxDate)
+                            end = this.maxDate;
+
+                        // If the end of the range is before the minimum (if min is set) OR
+                        // the start of the range is after the max (also if set) don't display this
+                        // range option.
+                        if ((this.minDate && end < this.minDate) || (this.maxDate && start > this.maxDate))
+                        {
+                            continue;
+                        }
+
+                        this.ranges[range] = [start, end];
+                    }
+
+                    var list = '<ul>';
+
+                    for (var range in this.ranges) {
+                        list += '<li>' + range + '</li>';
+                    }
+
+                    list += '<li>' + this.locale.customRangeLabel + '</li>';
+                    list += '</ul>';
+                    this.container.find('.ranges').prepend(list);
+                }
             }
             
             if (typeof options.dateLimit == 'object')
@@ -401,12 +449,28 @@
             }
         },
 
+        getRangeByLabel: function(rangeLabel) {
+            if (this.ranges instanceof Array) {
+                for (var rangeNum=0; rangeNum<this.ranges.length; rangeNum++) {
+                    if (this.ranges[rangeNum][2] === rangeLabel) {
+                        return [this.ranges[rangeNum][0], this.ranges[rangeNum][1]]
+                    }
+                }
+            } else {
+                if (typeof this.ranges == 'object') {
+                    return this.ranges[rangeLabel]
+                } else {
+                    return null
+                }
+            }
+        },
+
         enterRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
             } else {
-                var dates = this.ranges[label];
+                var dates = this.getRangeByLabel(label);
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].toString(this.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].toString(this.format));
             }
@@ -418,7 +482,7 @@
                 this.container.find('.calendar').show();
                 this.move();
             } else {
-                var dates = this.ranges[label];
+                var dates = this.getRangeByLabel(label);
 
                 this.startDate = dates[0];
                 this.endDate = dates[1];
@@ -572,14 +636,26 @@
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
-            var i = 0;
-            for (var range in this.ranges) {
-                if (this.startDate.equals(this.ranges[range][0]) && this.endDate.equals(this.ranges[range][1])) {
-                    customRange = false;
-                    this.container.find('.ranges li:eq(' + i + ')').addClass('active');
+            if (this.ranges instanceof Array) {
+                for (var rangeNum=0; rangeNum<this.ranges.length; rangeNum++) {
+                    if (this.startDate.equals(this.ranges[rangeNum][0]) && this.endDate.equals(this.ranges[rangeNum][1])) {
+                        customRange = false;
+                        this.container.find('.ranges li:eq(' + rangeNum + ')').addClass('active');
+                    }
                 }
-                i++;
+            } else {
+                if (typeof this.ranges == 'object') {
+                    var i = 0;
+                    for (var range in this.ranges) {
+                        if (this.startDate.equals(this.ranges[range][0]) && this.endDate.equals(this.ranges[range][1])) {
+                            customRange = false;
+                            this.container.find('.ranges li:eq(' + i + ')').addClass('active');
+                        }
+                        i++;
+                    }
+                }
             }
+
             if (customRange)
                 this.container.find('.ranges li:last').addClass('active');
 
