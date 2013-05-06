@@ -57,7 +57,7 @@
                            'Last 7 Days': [moment().subtract('days', 6), new Date()],
                            'Last 30 Days': [moment().subtract('days', 29), new Date()],
                            'This Month': [moment().startOf('month'), moment().endOf('month')],
-                           'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1)]
+                           'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
                         },
                         opens: 'left',
                         format: 'MM/DD/YYYY',
@@ -80,12 +80,11 @@
                         dateLimit: false
                      },
                      function(start, end) {
-                        $('#reportrange span').html(start.format('MMMM d, YYYY') + ' - ' + end.format('MMMM d, YYYY'));
+                        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                      }
                   );
-
                   //Set the initial state of the picker label
-                  $('#reportrange span').html(moment().subtract('days', 29).format('MMMM d, YYYY') + ' - ' + moment().format('MMMM d, YYYY'));
+                  $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
 
                });
                </script>
