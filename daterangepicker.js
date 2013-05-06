@@ -226,14 +226,6 @@
             c.find('button').addClass(val);
         });
 
-        if (this.opens == 'right') {
-            //swap calendar positions
-            var left = this.container.find('.calendar.left');
-            var right = this.container.find('.calendar.right');
-            left.removeClass('left').addClass('right');
-            right.removeClass('right').addClass('left');
-        }
-
         if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
             this.move();
