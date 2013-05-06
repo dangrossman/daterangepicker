@@ -30,6 +30,16 @@
   max-width: 230px;
 }
 
+/* ranges + (calendar * 2) = 160 + (230 *2 ) = 620 */
+@media (max-width: 619px) {
+    .daterangepicker.dropdown-menu { max-width: 496px !important; }
+    .daterangepicker.opensleft .ranges { float: right !important; }
+}
+@media (max-width: 495px) {
+    .daterangepicker.dropdown-menu { max-width: 240px !important; }
+    .daterangepicker.opensright .ranges { float: left !important; }
+}
+
 .daterangepicker .calendar th, .daterangepicker .calendar td {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   white-space: nowrap;
