@@ -53,12 +53,12 @@ Syntax for all the options can be found in the examples.html file.
 
 ## License
 
-This code is made available under the same license as Twitter Bootstrap. Date.js is included in this repository for convenience. It is available under the 
-[MIT license](http://www.opensource.org/licenses/mit-license.php).
+This code is made available under the same license as Twitter Bootstrap. Moment.js is included in this repository 
+for convenience. It is available under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 --
 
-Copyright 2012 Dan Grossman
+Copyright 2012-2013 Dan Grossman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
