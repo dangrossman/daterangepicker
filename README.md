@@ -16,13 +16,13 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 ## Usage
 
 This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/), 
-[Datejs](http://www.datejs.com/) and [jQuery](http://jquery.com/).
+[Moment.js](http://momentjs.com/) and [jQuery](http://jquery.com/).
 
 Basic usage:
 
 ```
 <script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="date.js"></script>
+<script type="text/javascript" src="moment.js"></script>
 <script type="text/javascript" src="daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
