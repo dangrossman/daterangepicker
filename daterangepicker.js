@@ -31,6 +31,7 @@
         this.buttonClasses = ['btn'];
         this.applyClass = 'btn btn-small btn-success';
         this.clearClass = 'btn btn-small';
+        this.inline = false;
         this.locale = {
             applyLabel: 'Apply',
             clearLabel: "Clear",
@@ -42,33 +43,6 @@
             monthNames: moment()._lang._monthsShort,
             firstDay: 0
         };
-
-        localeObject = this.locale;
-
-        this.leftCalendar = {
-            month: moment([this.startDate.year(), this.startDate.month(), 1]),
-            calendar: []
-        };
-
-        this.rightCalendar = {
-            month: moment([this.endDate.year(), this.endDate.month(), 1]),
-            calendar: []
-        };
-
-        //element that triggered the date range picker
-        this.element = $(element);
-
-        if (this.element.hasClass('pull-right'))
-            this.opens = 'left';
-
-        if (this.element.is('input')) {
-            this.element.on({
-                click: $.proxy(this.show, this),
-                focus: $.proxy(this.show, this)
-            });
-        } else {
-            this.element.on('click', $.proxy(this.show, this));
-        }
 
         if (hasOptions) {
             if (typeof options.locale == 'object') {
@@ -84,36 +58,15 @@
             if (options.clearClass) {
                 this.clearClass = options.clearClass;
             }
-        }
 
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input" style="float: left">' +
-                      '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
-                      '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<button class="' + this.applyClass + ' applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
-                    '<button class="' + this.clearClass + ' clearBtn">' + this.locale.clearLabel + '</button>' +
-                  '</div>' +
-                '</div>' +
-              '</div>';
-
-        this.container = $(DRPTemplate).appendTo('body');
-
-        if (hasOptions) {
-
-            if (typeof options.format == 'string')
+                        if (typeof options.format == 'string')
                 this.format = options.format;
 
             if (typeof options.separator == 'string')
                 this.separator = options.separator;
+
+            if (typeof options.inline == 'string')
+                this.inline = options.inline.toLowerCase() == 'true';
 
             if (typeof options.startDate == 'string')
                 this.startDate = moment(options.startDate, this.format).startOf('day');
@@ -230,7 +183,59 @@
             if (typeof options.dropdownAdjusts == 'boolean') {
                 this.dropdownAdjusts = options.dropdownAdjusts;
             }
+        }
 
+        localeObject = this.locale;
+
+        this.leftCalendar = {
+            month: moment([this.startDate.year(), this.startDate.month(), 1]),
+            calendar: []
+        };
+
+        this.rightCalendar = {
+            month: moment([this.endDate.year(), this.endDate.month(), 1]),
+            calendar: []
+        };
+
+        //element that triggered the date range picker
+        this.element = $(element);
+
+        if (this.element.hasClass('pull-right'))
+            this.opens = 'left';
+
+        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
+                '<div class="calendar left"></div>' +
+                '<div class="calendar right"></div>' +
+                '<div class="ranges">' +
+                  '<div class="range_inputs">' +
+                    '<div class="daterangepicker_start_input" style="float: left">' +
+                      '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
+                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+                    '</div>' +
+                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
+                      '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
+                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+                    '</div>' +
+                    '<button class="' + this.applyClass + ' applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
+                    '<button class="' + this.clearClass + ' clearBtn">' + this.locale.clearLabel + '</button>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+        this.container = $(DRPTemplate).appendTo(this.element.parent());
+
+        if (!this.inline) {
+            if (this.element.is('input')) {
+                this.element.on({
+                    click: $.proxy(this.show, this),
+                    focus: $.proxy(this.show, this)
+                });
+            } else {
+                this.element.on('click', $.proxy(this.show, this));
+            }
+        }
+        else {
+            this.element.hide();
+            this.container.show();
         }
 
         //apply CSS classes to buttons
@@ -749,9 +754,7 @@
             html += '</table>';
 
             return html;
-
         }
-
     };
 
     $.fn.daterangepicker = function (options, cb) {
