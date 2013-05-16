@@ -430,6 +430,7 @@
         clickRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
+				this.updateFromControl();
                 this.container.find('.calendar').show();
                 this.move();
             } else {
