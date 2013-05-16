@@ -323,6 +323,7 @@
 
         updateFromControl: function () {
             if (!this.element.is('input')) return;
+            if (!this.element.val().length) return;
 
             var dateString = this.element.val().split(this.separator);
             var start = moment(dateString[0], this.format).startOf('day');
