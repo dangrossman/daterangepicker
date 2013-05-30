@@ -211,3 +211,72 @@
 .daterangepicker select.yearselect {
   width: 40%;
 }
+
+/*
+ * Beckon overrides
+ */
+.daterangepicker .calendar th, .daterangepicker .calendar td {
+    font-family: "proxima-nova","Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.daterangepicker .ranges label {
+    color: #302b1f;
+    font-size: 12px;
+}
+.daterangepicker .ranges li {
+    font-size: 12px;
+    background: #faf8f2;
+    border: 1px solid #d4d2cd;
+    color: #302b1f;
+    padding: 3px 10px;
+    margin-bottom: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+.daterangepicker .ranges li.active {
+    background: #ffb064;
+    border: 1px solid #fe8714;
+    color: #333;
+}
+.daterangepicker .ranges li:hover {
+    background: #ffe4af;
+    border: 1px solid #fe8714;
+    color: #333;
+}
+.daterangepicker .calendar {
+    border-radius: 0;
+}
+.daterangepicker {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.daterangepicker td, .daterangepicker th {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.daterangepicker th {
+    color: #706c64;
+}
+.daterangepicker td.in-range {
+    background: #ebf4f8;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+.daterangepicker td.in-range {
+    background: #fff3dc;
+}
+.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+    background: #ffe4af;
+}
+.daterangepicker td.active, .daterangepicker td.active:hover {
+    background-color: #ffb064;
+    background-image: none;
+    filter: none;
+    border-color: #fe8714;
+    color: #302b1f;
+}
