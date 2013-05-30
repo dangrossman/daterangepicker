@@ -13,16 +13,19 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 
 **[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)**
 
+**Note**: On May 6th, the date parsing library was switched from Date.js to moment.js. This change is 
+not backwards-compatible if you have specified custom date ranges.
+
 ## Usage
 
 This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/), 
-[Datejs](http://www.datejs.com/) and [jQuery](http://jquery.com/).
+[Moment.js](http://momentjs.com/) and [jQuery](http://jquery.com/).
 
 Basic usage:
 
 ```
 <script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="date.js"></script>
+<script type="text/javascript" src="moment.js"></script>
 <script type="text/javascript" src="daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
@@ -50,12 +53,12 @@ Syntax for all the options can be found in the examples.html file.
 
 ## License
 
-This code is made available under the same license as Twitter Bootstrap. Date.js is included in this repository for convenience. It is available under the 
-[MIT license](http://www.opensource.org/licenses/mit-license.php).
+This code is made available under the same license as Twitter Bootstrap. Moment.js is included in this repository 
+for convenience. It is available under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 --
 
-Copyright 2012 Dan Grossman
+Copyright 2012-2013 Dan Grossman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
