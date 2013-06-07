@@ -48,6 +48,7 @@ Additional options allow:
 * Showing week numbers
 * Maximum selectable range (i.e. 3 days, 1 week, 12 months)
 * Month and year dropdowns
+* hide the date range input fields
 
 Syntax for all the options can be found in the examples.html file.
 
