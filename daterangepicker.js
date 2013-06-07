@@ -84,6 +84,10 @@
             if (options.clearClass) {
                 this.clearClass = options.clearClass;
             }
+
+            if (options.hideDateRangeFields) {
+                this.hideDateRangeFields = options.hideDateRangeFields;
+            }
         }
 
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
@@ -91,11 +95,11 @@
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input" style="float: left">' +
+                    '<div class="daterangepicker_start_input" style="float: left' + (this.hideDateRangeFields ? '; display:none;' : '') + '">' +
                       '<label for="daterangepicker_start">' + this.locale.fromLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
+                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px' + (this.hideDateRangeFields ? '; display:none;' : '') + '">' +
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
