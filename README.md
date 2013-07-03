@@ -2,23 +2,23 @@
 
 ![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
-This date range picker component for Twitter Bootstrap creates a dropdown menu from which a user can 
-select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
+This date range picker component for Twitter Bootstrap creates a dropdown menu from which a user can
+select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com),
 which needed a way to select date ranges for reports.
 
-If invoked with no options, it will present two calendars to choose a start 
-and end date from. Optionally, you can provide a list of date ranges the user can select from instead 
-of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
+If invoked with no options, it will present two calendars to choose a start
+and end date from. Optionally, you can provide a list of date ranges the user can select from instead
+of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
 **[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)**
 
-**Note**: On May 6th, the date parsing library was switched from Date.js to moment.js. This change is 
+**Note**: On May 6th, the date parsing library was switched from Date.js to moment.js. This change is
 not backwards-compatible if you have specified custom date ranges.
 
 ## Usage
 
-This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/), 
+This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/),
 [Moment.js](http://momentjs.com/) and [jQuery](http://jquery.com/).
 
 Basic usage:
@@ -48,12 +48,13 @@ Additional options allow:
 * Showing week numbers
 * Maximum selectable range (i.e. 3 days, 1 week, 12 months)
 * Month and year dropdowns
+* Disable specific dates
 
 Syntax for all the options can be found in the examples.html file.
 
 ## License
 
-This code is made available under the same license as Twitter Bootstrap. Moment.js is included in this repository 
+This code is made available under the same license as Twitter Bootstrap. Moment.js is included in this repository
 for convenience. It is available under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 --
