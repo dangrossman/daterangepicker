@@ -43,6 +43,10 @@
             firstDay: 0
         };
 
+        // New options here
+        this.disabledDates = false; // containts list of disabled dates
+        this.disabledDatesClass = ''; // class will be added to disabledDates by option
+
         localeObject = this.locale;
 
         this.leftCalendar = {
@@ -207,6 +211,35 @@
                     }
                 }
             }
+
+            // My options here
+            if (typeof options.disabledDates == 'string')
+                this.disabledDates = [moment(options.disabledDates, this.format).format('YYYY-MM-DD')];
+
+            if (typeof options.disabledDates == 'object') {
+
+                this.disabledDates = [];
+
+                for (i in options.disabledDates) {
+                    if (typeof options.disabledDates[i] == 'string') {
+                        this.disabledDates.push(moment(options.disabledDates[i], this.format).format('YYYY-MM-DD'));
+                    }
+                }
+            }
+
+            if (typeof options.disabledDatesClass == 'string')
+                this.disabledDatesClass = options.disabledDatesClass;
+
+            // var tmpThing = moment('07/05/2013', this.format).startOf('day').toJSON();
+
+            // console.log('date range');
+            // console.log(this.dateRange);
+
+            // console.log('tmpThing');
+            // console.log(tmpThing);
+
+            // console.log('inArray');
+            // console.log($.inArray(tmpThing, this.dateRange));
 
             if (typeof options.opens == 'string')
                 this.opens = options.opens;
@@ -577,8 +610,8 @@
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), 'right');
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, this.disabledDates));
+            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate, this.disabledDates));
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -669,7 +702,7 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate) {
+        renderCalendar: function (calendar, selected, minDate, maxDate, disabledDates) {
 
             var html = '<table class="table-condensed">';
             html += '<thead>';
@@ -724,8 +757,13 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
+                    // console.log(calendar[row][col].toJSON());
+                    // console.log((typeof disabledDates == 'object' && $.inArray(calendar[row][col].format('YYYY-MM-DD'), disabledDates) >= 0));
+
                     if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
                         cname = ' off disabled ';
+                    } else if (typeof disabledDates == 'object' && $.inArray(calendar[row][col].format('YYYY-MM-DD'), disabledDates) >= 0) {
+                        cname = ' off disabled '+ this.disabledDatesClass + ' ';
                     } else if (calendar[row][col].isSame(selected)) {
                         cname += ' active ';
                         if (calendar[row][col].isSame(this.startDate)) {
