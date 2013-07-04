@@ -167,6 +167,15 @@
                  </fieldset>
                </form>
 
+               <dl>
+                 <dt>disabledDates</dt>
+                 <dd>A single date or list of dates. Will be disabled, therefore not selectable by the user.</dd>
+                 <dt>disableClass</dt>
+                 <dd>Extra class for 'disabled' dates, will be appended to default classes 'off' and 'disabled'.</dd>
+                 <dt>disabledInRange</dt>
+                 <dd>Allow or deny disabled dates in the range. Defaults to true (allows).</dd>
+               </dl>
+
                <script type="text/javascript">
                $(document).ready(function() {
                   $('#disabled-dates').daterangepicker({
