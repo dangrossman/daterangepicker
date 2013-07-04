@@ -526,21 +526,11 @@
                     }
                 }
 
-                console.log(this.disabledInRange);
-
                 // When disabledDates defined and startDate is not endDate
                 // then check if endDate doesn't overlap disabledDates
                 if (typeof this.disabledDates == 'object' && this.disabledInRange && !startDate.isSame(endDate)) {
 
-                    console.log('is the same');
-                    console.log(startDate.format('YYYY-MM-DD') == endDate.format('YYYY-MM-DD'));
-
                     var currentDate         = moment(startDate).endOf('day');
-                    var infLoopProtecion    = 0;
-
-                    console.log('Before correction - start & end date');
-                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
 
                     while (currentDate.isBefore(endDate)) {
 
@@ -551,12 +541,6 @@
                         }
 
                         currentDate = currentDate.add('days', 1);
-                        console.log(currentDate.format('YYYY-MM-DD'));
-
-                        //TODO: remove later
-                        if (++infLoopProtecion > 100) {
-                            break;
-                        }
                     }
 
                     // Correct here, since might go wrong below, because of
@@ -564,10 +548,6 @@
                     if (startDate.isAfter(endDate)) {
                         endDate = moment(startDate).endOf('day');
                     }
-
-                    console.log('After correction - start + end date');
-                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
                 }
                 this.element.trigger('clicked', {
                     dir: 'left',
@@ -586,11 +566,6 @@
                 if (typeof this.disabledDates == 'object' && this.disabledInRange && !startDate.isSame(endDate)) {
 
                     var currentDate         = moment(endDate).startOf('day');
-                    var infLoopProtecion    = 0;
-
-                    console.log('Before correction - start & end date');
-                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
 
                     while (currentDate.isAfter(startDate)) {
 
@@ -601,21 +576,7 @@
                         }
 
                         currentDate = currentDate.subtract('days', 1);
-                        console.log(currentDate.format('YYYY-MM-DD'));
-
-                        //TODO: remove later
-                        if (++infLoopProtecion > 100) {
-                            break;
-                        }
                     }
-
-                    if (startDate.isAfter(endDate)) {
-
-                    }
-
-                    console.log('After correction - start + end date');
-                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
-                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
                 }
 
                 this.element.trigger('clicked', {
