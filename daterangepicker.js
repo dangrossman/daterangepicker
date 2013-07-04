@@ -23,6 +23,9 @@
         this.dropdownAdjusts = false;
         this.ranges = {};
         this.dateLimit = false;
+        this.disabledDates = false;
+        this.disabledClass = '';
+        this.disabledInRange = true;
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/DD/YYYY';
@@ -42,10 +45,6 @@
             monthNames: moment()._lang._monthsShort,
             firstDay: 0
         };
-
-        // New options here
-        this.disabledDates = false; // containts list of disabled dates
-        this.disabledDatesClass = ''; // class will be added to disabledDates by option
 
         localeObject = this.locale;
 
@@ -200,22 +199,11 @@
             if (typeof options.dateLimit == 'object')
                 this.dateLimit = options.dateLimit;
 
-            // update day names order to firstDay
-            if (typeof options.locale == 'object') {
-                if (typeof options.locale.firstDay == 'number') {
-                    this.locale.firstDay = options.locale.firstDay;
-                    var iterator = options.locale.firstDay;
-                    while (iterator > 0) {
-                        this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
-                        iterator--;
-                    }
-                }
-            }
-
-            // My options here
+            // When string, assume single date
             if (typeof options.disabledDates == 'string')
                 this.disabledDates = [moment(options.disabledDates, this.format).format('YYYY-MM-DD')];
 
+            // When object, assume array of single dates
             if (typeof options.disabledDates == 'object') {
 
                 this.disabledDates = [];
@@ -227,19 +215,23 @@
                 }
             }
 
-            if (typeof options.disabledDatesClass == 'string')
-                this.disabledDatesClass = options.disabledDatesClass;
+            if (typeof options.disabledClass == 'string')
+                this.disabledClass = options.disabledClass;
 
-            // var tmpThing = moment('07/05/2013', this.format).startOf('day').toJSON();
+            if (typeof options.disabledInRange == 'object')
+                this.disabledInRange = options.disabledInRange;
 
-            // console.log('date range');
-            // console.log(this.dateRange);
-
-            // console.log('tmpThing');
-            // console.log(tmpThing);
-
-            // console.log('inArray');
-            // console.log($.inArray(tmpThing, this.dateRange));
+            // update day names order to firstDay
+            if (typeof options.locale == 'object') {
+                if (typeof options.locale.firstDay == 'number') {
+                    this.locale.firstDay = options.locale.firstDay;
+                    var iterator = options.locale.firstDay;
+                    while (iterator > 0) {
+                        this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                        iterator--;
+                    }
+                }
+            }
 
             if (typeof options.opens == 'string')
                 this.opens = options.opens;
@@ -533,6 +525,50 @@
                         endDate = maxDate;
                     }
                 }
+
+                console.log(this.disabledInRange);
+
+                // When disabledDates defined and startDate is not endDate
+                // then check if endDate doesn't overlap disabledDates
+                if (typeof this.disabledDates == 'object' && this.disabledInRange && !startDate.isSame(endDate)) {
+
+                    console.log('is the same');
+                    console.log(startDate.format('YYYY-MM-DD') == endDate.format('YYYY-MM-DD'));
+
+                    var currentDate         = moment(startDate).endOf('day');
+                    var infLoopProtecion    = 0;
+
+                    console.log('Before correction - start & end date');
+                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
+                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
+
+                    while (currentDate.isBefore(endDate)) {
+
+                        // If currentDate exists in disabledDates, set previous date as endDate
+                        if ($.inArray(currentDate.format('YYYY-MM-DD'), this.disabledDates) >= 0) {
+                            endDate = moment(currentDate.subtract('days', 1)).endOf('day');
+                            break;
+                        }
+
+                        currentDate = currentDate.add('days', 1);
+                        console.log(currentDate.format('YYYY-MM-DD'));
+
+                        //TODO: remove later
+                        if (++infLoopProtecion > 100) {
+                            break;
+                        }
+                    }
+
+                    // Correct here, since might go wrong below, because of
+                    // disabled dates
+                    if (startDate.isAfter(endDate)) {
+                        endDate = moment(startDate).endOf('day');
+                    }
+
+                    console.log('After correction - start + end date');
+                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
+                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
+                }
                 this.element.trigger('clicked', {
                     dir: 'left',
                     picker: this
@@ -546,6 +582,42 @@
                         startDate = minDate;
                     }
                 }
+
+                if (typeof this.disabledDates == 'object' && this.disabledInRange && !startDate.isSame(endDate)) {
+
+                    var currentDate         = moment(endDate).startOf('day');
+                    var infLoopProtecion    = 0;
+
+                    console.log('Before correction - start & end date');
+                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
+                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
+
+                    while (currentDate.isAfter(startDate)) {
+
+                        // If currentDate exists in disabledDates, set previous date as endDate
+                        if ($.inArray(currentDate.format('YYYY-MM-DD'), this.disabledDates) >= 0) {
+                            startDate = moment(currentDate.add('days', 1)).startOf('day');
+                            break;
+                        }
+
+                        currentDate = currentDate.subtract('days', 1);
+                        console.log(currentDate.format('YYYY-MM-DD'));
+
+                        //TODO: remove later
+                        if (++infLoopProtecion > 100) {
+                            break;
+                        }
+                    }
+
+                    if (startDate.isAfter(endDate)) {
+
+                    }
+
+                    console.log('After correction - start + end date');
+                    console.log(startDate.format('YYYY-MM-DD HH:mm:ss'));
+                    console.log(endDate.format('YYYY-MM-DD HH:mm:ss'));
+                }
+
                 this.element.trigger('clicked', {
                     dir: 'right',
                     picker: this
@@ -763,7 +835,7 @@
                     if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
                         cname = ' off disabled ';
                     } else if (typeof disabledDates == 'object' && $.inArray(calendar[row][col].format('YYYY-MM-DD'), disabledDates) >= 0) {
-                        cname = ' off disabled '+ this.disabledDatesClass + ' ';
+                        cname = ' off disabled '+ this.disabledClass + ' ';
                     } else if (calendar[row][col].isSame(selected)) {
                         cname += ' active ';
                         if (calendar[row][col].isSame(this.startDate)) {
