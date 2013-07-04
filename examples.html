@@ -90,7 +90,7 @@
                </script>
 
             </div>
-			
+
             <h4>Month/Year Dropdowns</h4>
 
             <div class="well">
@@ -151,6 +151,43 @@
 
             </div>
 
+            <h4>Disabled Dates Example</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="disabled-dates">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="disabled-dates" id="disabled-dates" value="07/01/2013 - 07/03/2013" />
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <dl>
+                 <dt>disabledDates</dt>
+                 <dd>A single date or list of dates. Will be disabled, therefore not selectable by the user.</dd>
+                 <dt>disableClass</dt>
+                 <dd>Extra class for 'disabled' dates, will be appended to default classes 'off' and 'disabled'.</dd>
+                 <dt>disabledInRange</dt>
+                 <dd>Allow or deny disabled dates in the range. Defaults to true (allows).</dd>
+               </dl>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#disabled-dates').daterangepicker({
+                    minDate: '06/01/2013',
+                    maxDate: '08/31/2013',
+                    disabledDates: ['07/04/2013','07/05/2013','07/06/2013','07/09/2013','07/11/2013','07/12/2013','07/13/2013','07/14/2013','07/23/2013'],
+                    disableClass: 'booked'
+                  });
+               });
+               </script>
+
+            </div>
 
          </div>
       </div>

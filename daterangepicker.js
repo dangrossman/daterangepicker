@@ -23,6 +23,9 @@
         this.dropdownAdjusts = false;
         this.ranges = {};
         this.dateLimit = false;
+        this.disabledDates = false;
+        this.disabledClass = '';
+        this.disabledInRange = true;
         this.opens = 'right';
         this.cb = function () { };
         this.format = 'MM/DD/YYYY';
@@ -195,6 +198,28 @@
 
             if (typeof options.dateLimit == 'object')
                 this.dateLimit = options.dateLimit;
+
+            // When string, assume single date
+            if (typeof options.disabledDates == 'string')
+                this.disabledDates = [moment(options.disabledDates, this.format).format('YYYY-MM-DD')];
+
+            // When object, assume array of single dates
+            if (typeof options.disabledDates == 'object') {
+
+                this.disabledDates = [];
+
+                for (i in options.disabledDates) {
+                    if (typeof options.disabledDates[i] == 'string') {
+                        this.disabledDates.push(moment(options.disabledDates[i], this.format).format('YYYY-MM-DD'));
+                    }
+                }
+            }
+
+            if (typeof options.disabledClass == 'string')
+                this.disabledClass = options.disabledClass;
+
+            if (typeof options.disabledInRange == 'object')
+                this.disabledInRange = options.disabledInRange;
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -500,6 +525,30 @@
                         endDate = maxDate;
                     }
                 }
+
+                // When disabledDates defined and startDate is not endDate
+                // then check if endDate doesn't overlap disabledDates
+                if (typeof this.disabledDates == 'object' && this.disabledInRange && !startDate.isSame(endDate)) {
+
+                    var currentDate         = moment(startDate).endOf('day');
+
+                    while (currentDate.isBefore(endDate)) {
+
+                        // If currentDate exists in disabledDates, set previous date as endDate
+                        if ($.inArray(currentDate.format('YYYY-MM-DD'), this.disabledDates) >= 0) {
+                            endDate = moment(currentDate.subtract('days', 1)).endOf('day');
+                            break;
+                        }
+
+                        currentDate = currentDate.add('days', 1);
+                    }
+
+                    // Correct here, since might go wrong below, because of
+                    // disabled dates
+                    if (startDate.isAfter(endDate)) {
+                        endDate = moment(startDate).endOf('day');
+                    }
+                }
                 this.element.trigger('clicked', {
                     dir: 'left',
                     picker: this
@@ -513,6 +562,23 @@
                         startDate = minDate;
                     }
                 }
+
+                if (typeof this.disabledDates == 'object' && this.disabledInRange && !startDate.isSame(endDate)) {
+
+                    var currentDate         = moment(endDate).startOf('day');
+
+                    while (currentDate.isAfter(startDate)) {
+
+                        // If currentDate exists in disabledDates, set previous date as endDate
+                        if ($.inArray(currentDate.format('YYYY-MM-DD'), this.disabledDates) >= 0) {
+                            startDate = moment(currentDate.add('days', 1)).startOf('day');
+                            break;
+                        }
+
+                        currentDate = currentDate.subtract('days', 1);
+                    }
+                }
+
                 this.element.trigger('clicked', {
                     dir: 'right',
                     picker: this
@@ -577,8 +643,8 @@
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), 'right');
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, this.disabledDates));
+            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate, this.disabledDates));
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -669,7 +735,7 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate) {
+        renderCalendar: function (calendar, selected, minDate, maxDate, disabledDates) {
 
             var html = '<table class="table-condensed">';
             html += '<thead>';
@@ -724,8 +790,13 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
+                    // console.log(calendar[row][col].toJSON());
+                    // console.log((typeof disabledDates == 'object' && $.inArray(calendar[row][col].format('YYYY-MM-DD'), disabledDates) >= 0));
+
                     if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
                         cname = ' off disabled ';
+                    } else if (typeof disabledDates == 'object' && $.inArray(calendar[row][col].format('YYYY-MM-DD'), disabledDates) >= 0) {
+                        cname = ' off disabled '+ this.disabledClass + ' ';
                     } else if (calendar[row][col].isSame(selected)) {
                         cname += ' active ';
                         if (calendar[row][col].isSame(this.startDate)) {
