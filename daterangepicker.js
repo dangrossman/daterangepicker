@@ -292,6 +292,9 @@
 
         this.updateView();
         this.updateCalendars();
+                
+        if (hasOptions && typeof options.startDate == 'object' && typeof options.endDate == 'object')
+            this.notify();
 
     };
 
