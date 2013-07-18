@@ -326,11 +326,14 @@
             if (!this.element.val().length) return;
 
             var dateString = this.element.val().split(this.separator);
-            var start = moment(dateString[0], this.format).startOf('day');
-
-            var end = moment(dateString[1], this.format).endOf('day');
+            var start = moment(''+dateString[0], this.format);
+            var end = moment(''+dateString[1], this.format);
 
             if (start == null || end == null) return;
+
+            start = start.startOf('day');
+            end = end.endOf('day');
+
             if (end.isBefore(start)) return;
 
             this.startDate = start;
