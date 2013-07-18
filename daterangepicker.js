@@ -326,8 +326,8 @@
             if (!this.element.val().length) return;
 
             var dateString = this.element.val().split(this.separator);
-            var start = moment(dateString[0], this.format);
-            var end = moment(dateString[1], this.format);
+            var start = moment(''+dateString[0], this.format);
+            var end = moment(''+dateString[1], this.format);
 
             if (start == null || end == null) return;
 
