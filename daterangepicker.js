@@ -228,14 +228,6 @@
             c.find('button').addClass(val);
         });
 
-        if (this.opens == 'right') {
-            //swap calendar positions
-            var left = this.container.find('.calendar.left');
-            var right = this.container.find('.calendar.right');
-            left.removeClass('left').addClass('right');
-            right.removeClass('right').addClass('left');
-        }
-
         if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
             this.move();
@@ -376,7 +368,7 @@
                     top: this.element.offset().top + this.element.outerHeight(),
                     right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
                     left: 'auto',
-                    'min-width': minWidth
+                    'width': minWidth
                 });
                 if (this.container.offset().left < 0) {
                     this.container.css({
@@ -389,7 +381,7 @@
                     top: this.element.offset().top + this.element.outerHeight(),
                     left: this.element.offset().left,
                     right: 'auto',
-                    'min-width': minWidth
+                    'width': minWidth
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
                     this.container.css({
