@@ -30,6 +30,10 @@
   max-width: 250px;
 }
 
+.daterangepicker.show-calendars .calendar {
+  display: block;
+}
+
 .daterangepicker .calendar th, .daterangepicker .calendar td {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   white-space: nowrap;

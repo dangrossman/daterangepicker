@@ -440,7 +440,7 @@
         clickRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
-                this.container.find('.calendar').show();
+                this.container.addClass('show-calendars');
                 this.move();
             } else {
                 var dates = this.ranges[label];
@@ -454,7 +454,7 @@
 
                 this.changed = true;
 
-                this.container.find('.calendar').hide();
+                this.container.removeClass('show-calendars');
                 this.move();
                 this.hide();
             }
