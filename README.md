@@ -92,8 +92,6 @@ $('input[name="daterange"]').daterangepicker(
 
 `locale`: (object) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars
 
-`cb`: (function) A callback function called when the selected start or end date changes; takes two parameters, which are the start and end moment/date objects
-
 ## License
 
 This code is made available under the same license as Twitter Bootstrap. Moment.js is included in this repository 
