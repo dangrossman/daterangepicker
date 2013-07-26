@@ -37,19 +37,60 @@ $(document).ready(function() {
 </script>
 ```
 
-Additional options allow:
-* Custom callback handler called when the date range selection is made
-* Setting initial start and end dates for the calendars
-* Overriding all labels in the interface with localized text
-* Bounding the minimum and maximum selectable dates
-* Starting the calendar week on any day of week
-* Overriding the direction the dropdown expands (left/right of element it's attached to)
-* Setting the date format string for parsing and printing dates
-* Showing week numbers
-* Maximum selectable range (i.e. 3 days, 1 week, 12 months)
-* Month and year dropdowns
+The constructor also takes an optional options object and callback function. The function will be called whenever 
+the selected date range has been changed by the user, and is passed the start and end dates (moment date objects) as 
+parameters.
 
-Syntax for all the options can be found in the examples.html file.
+````
+$('input[name="daterange"]').daterangepicker(
+  { 
+    format: 'YYYY-MM-DD',
+    startDate: '2013-01-01',
+    endDate: '2013-12-31'
+  },
+  function(start, end) {
+    alert("A date range was chosen");
+  }
+);
+````
+
+## Options Reference
+
+`startDate`: (Date object, moment object or string) The start of the initially selected date range
+
+`endDate`: (Date object, moment object or string) The end of the initially selected date range
+
+`minDate`: (Date object, moment object or string) The earliest date a user may select
+
+`maxDate`: (Date object, moment object or string) The latest date a user may select
+
+`dateLimit`: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months)
+
+`showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
+
+`showWeekNumbers`: (boolean) Show week numbers at the start of each week on the calendars
+
+`timePicker`: (boolean) Allow selection of dates with times, not just dates
+
+`timePickerIncrement`: (number) Increment of the minutes selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30)
+
+`timePicker12Hour`: (boolean) Use 12-hour instead of 24-hour times, adding an AM/PM select box
+
+`ranges`: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
+
+`opens`: (string: 'left'/'right') Whether the picker appears aligned to the left or to the right of the HTML element it's attached to
+
+`buttonClasses`: (array) CSS class names that will be added to all buttons in the picker
+
+`applyClass`: (string) CSS class name that will be added to the apply button
+
+`clearClass`: (string) CSS class name that will be added to the clear button
+
+`format`: (string) Date/time format string used by moment when parsing or displaying the selected dates
+
+`separator`: (string) Separator string to display between the start and end date when populating a text input the picker is attached to
+
+`locale`: (object) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars
 
 ## License
 
