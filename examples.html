@@ -14,7 +14,7 @@
       <div class="container">
          <div class="span12">
 
-            <h4>Simple Example</h4>
+            <h4>Simple Date Picker</h4>
             <div class="well">
 
                <form class="form-horizontal">
@@ -38,6 +38,35 @@
 
             </div>
 
+            <h4>Simple Date &amp; Time Picker</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="reservationtime">Reservation dates:</label>
+                    <div class="controls">
+                     <div class="input-prepend">
+                       <span class="add-on"><i class="icon-calendar"></i></span>
+                       <input type="text" name="reservation" id="reservationtime" value="03/18/2013 1:00 PM - 03/18/2013 1:30 PM"  class="span4"/>
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reservationtime').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    format: 'MM/DD/YYYY h:mm A'
+                  });
+               });
+               </script>
+
+            </div>            
+
             <h4>Options Usage Example</h4>
 
             <div class="well">
@@ -51,21 +80,30 @@
                $(document).ready(function() {
                   $('#reportrange').daterangepicker(
                      {
+                        startDate: moment().subtract('days', 29),
+                        endDate: moment(),
+                        minDate: '01/01/2012',
+                        maxDate: '12/31/2014',
+                        dateLimit: { days: 60 },
+                        showDropdowns: true,
+                        showWeekNumbers: true,
+                        timePicker: false,
+                        timePickerIncrement: 1,
+                        timePicker12Hour: true,
                         ranges: {
-                           'Today': [new Date(), new Date()],
+                           'Today': [moment(), moment()],
                            'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-                           'Last 7 Days': [moment().subtract('days', 6), new Date()],
-                           'Last 30 Days': [moment().subtract('days', 29), new Date()],
+                           'Last 7 Days': [moment().subtract('days', 6), moment()],
+                           'Last 30 Days': [moment().subtract('days', 29), moment()],
                            'This Month': [moment().startOf('month'), moment().endOf('month')],
                            'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
                         },
                         opens: 'left',
+                        buttonClasses: ['btn-danger'],
+                        applyClass: 'btn-small btn-success',
+                        clearClass: 'btn-small',
                         format: 'MM/DD/YYYY',
                         separator: ' to ',
-                        startDate: moment().subtract('days', 29),
-                        endDate: new Date(),
-                        minDate: '01/01/2012',
-                        maxDate: '12/31/2013',
                         locale: {
                             applyLabel: 'Submit',
                             fromLabel: 'From',
@@ -74,83 +112,18 @@
                             daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
                             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                             firstDay: 1
-                        },
-                        showWeekNumbers: true,
-                        buttonClasses: ['btn-danger'],
-                        dateLimit: false
+                        }
                      },
                      function(start, end) {
-                        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                      $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                      }
                   );
                   //Set the initial state of the picker label
                   $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
                });
                </script>
 
             </div>
-			
-            <h4>Month/Year Dropdowns</h4>
-
-            <div class="well">
-
-               <form class="form-horizontal">
-                 <fieldset>
-                  <div class="control-group">
-                    <label class="control-label" for="reservation">Date range:</label>
-                    <div class="controls">
-                     <div class="input-prepend">
-                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="daterange" />
-                     </div>
-                    </div>
-                  </div>
-                 </fieldset>
-               </form>
-
-
-               <script type="text/javascript">
-               $(document).ready(function() {
-                  $('#daterange').daterangepicker(
-                     {
-                        minDate: '01/01/2010',
-                        maxDate: '12/31/2015',
-						            showDropdowns: true
-                     }
-                  );
-
-               });
-               </script>
-
-            </div>
-
-            <h4>Range Limit Example</h4>
-            <div class="well">
-
-               <form class="form-horizontal">
-                 <fieldset>
-                  <div class="control-group">
-                    <label class="control-label" for="reservation">Reservation dates:</label>
-                    <div class="controls">
-                     <div class="input-prepend">
-                       <span class="add-on"><i class="icon-calendar"></i></span><input type="text" name="reservation" id="limited" value="03/18/2013 - 03/21/2013" />
-                     </div>
-                    </div>
-                  </div>
-                 </fieldset>
-               </form>
-
-               <script type="text/javascript">
-               $(document).ready(function() {
-                  $('#limited').daterangepicker(
-                    {
-                      dateLimit: { days: 3 }
-                    });
-               });
-               </script>
-
-            </div>
-
 
          </div>
       </div>

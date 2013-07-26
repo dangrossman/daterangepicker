@@ -27,7 +27,7 @@
 
 .daterangepicker .calendar {
   display: none;
-  max-width: 230px;
+  max-width: 250px;
 }
 
 .daterangepicker .calendar th, .daterangepicker .calendar td {
@@ -73,11 +73,17 @@
   color: #fff;
 }
 
-.daterangepicker .calendar {
+.daterangepicker .calendar-date {
   border: 1px solid #ddd;
   padding: 4px;
   border-radius: 4px;
   background: #fff;
+}
+
+.daterangepicker .calendar-time {
+  text-align: center;
+  margin: 8px auto 0 auto;
+  line-height: 30px;
 }
 
 .daterangepicker {
@@ -210,4 +216,9 @@
 
 .daterangepicker select.yearselect {
   width: 40%;
+}
+
+.daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.ampmselect {
+  width: 60px;
+  margin-bottom: 0;
 }
