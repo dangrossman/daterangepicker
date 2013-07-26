@@ -123,37 +123,17 @@
             if (typeof options.maxDate == 'string')
                 this.maxDate = moment(options.maxDate, this.format);
 
-            if (typeof options.startDate == 'object') {
-                if (options.startDate instanceof Date) {
-                    this.startDate = moment(options.startDate);
-                } else {
-                    this.startDate = options.startDate;
-                }
-            }
+            if (typeof options.startDate == 'object')
+                this.startDate = moment(options.startDate);
 
-            if (typeof options.endDate == 'object') {
-                if (options.endDate instanceof Date) {
-                    this.endDate = moment(options.endDate);
-                } else {
-                    this.endDate = options.endDate.startOf('day');
-                }
-            }
+            if (typeof options.endDate == 'object')
+                this.endDate = moment(options.endDate);
 
-            if (typeof options.minDate == 'object') {
-                if (options.minDate instanceof Date) {
-                    this.minDate = moment(options.minDate);
-                } else {
-                    this.minDate = options.minDate;
-                }
-            }
+            if (typeof options.minDate == 'object')
+                this.minDate = moment(options.minDate);
 
-            if (typeof options.maxDate == 'object') {
-                if (options.maxDate instanceof Date) {
-                    this.maxDate = moment(options.maxDate).startOf('day');
-                } else {
-                    this.maxDate = options.maxDate.startOf('day');
-                }
-            }
+            if (typeof options.maxDate == 'object')
+                this.maxDate = moment(options.maxDate);
 
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
