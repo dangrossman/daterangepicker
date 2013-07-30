@@ -2,7 +2,7 @@
 
 ![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
-This date range picker component for Twitter Bootstrap 2.x creates a dropdown menu from which a user can 
+This date range picker component for Twitter Bootstrap creates a dropdown menu from which a user can 
 select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
 which needed a way to select date ranges for reports.
 
@@ -15,8 +15,10 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 
 ## Usage
 
-This component relies on [Twitter Bootstrap 2.x](http://twitter.github.com/bootstrap/), 
+This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/), 
 [Moment.js](http://momentjs.com/) and [jQuery](http://jquery.com/).
+
+Separate stylesheets are included for use with Bootstrap 2 or Bootstrap 3.
 
 Basic usage:
 
@@ -25,7 +27,7 @@ Basic usage:
 <script type="text/javascript" src="moment.js"></script>
 <script type="text/javascript" src="daterangepicker.js"></script>
 <link rel="stylesheet" type="text/css" href="bootstrap.css" />
-<link rel="stylesheet" type="text/css" href="daterangepicker.css" />
+<link rel="stylesheet" type="text/css" href="daterangepicker-bs3.css" />
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -79,9 +81,9 @@ $('input[name="daterange"]').daterangepicker(
 
 `buttonClasses`: (array) CSS class names that will be added to all buttons in the picker
 
-`applyClass`: (string) CSS class name that will be added to the apply button
+`applyClass`: (string) CSS class string that will be added to the apply button
 
-`clearClass`: (string) CSS class name that will be added to the clear button
+`cancelClass`: (string) CSS class string that will be added to the cancel button
 
 `format`: (string) Date/time format string used by moment when parsing or displaying the selected dates
 

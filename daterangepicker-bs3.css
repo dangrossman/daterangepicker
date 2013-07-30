@@ -1,4 +1,14 @@
-.daterangepicker.dropdown-menu {
+/*!
+ * Stylesheet for the Date Range Picker, for use with Bootstrap 3.x
+ *
+ * Copyright 2013 Dan Grossman ( http://www.dangrossman.info )
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Built for http://www.improvely.com
+ */
+
+ .daterangepicker.dropdown-menu {
   max-width: none;
 }
 
@@ -27,25 +37,46 @@
 
 .daterangepicker .calendar {
   display: none;
-  max-width: 250px;
+  max-width: 270px;
 }
 
 .daterangepicker .calendar th, .daterangepicker .calendar td {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   white-space: nowrap;
   text-align: center;
+  min-width: 32px;
 }
 
 .daterangepicker .ranges label {
   color: #333;
+  display: block;
   font-size: 11px;
+  font-weight: normal;
+  height: 20px;
+  line-height: 20px;
   margin-bottom: 2px;
+  text-shadow: #fff 1px 1px 0px;
   text-transform: uppercase;
-  text-shadow: 1px 1px 0 #fff;
+  width: 74px;
 }
 
 .daterangepicker .ranges input {
   font-size: 11px;
+}
+
+.daterangepicker .ranges .input-mini {
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #555;
+  display: block;
+  font-size: 11px;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  margin: 0 0 10px 0;
+  padding: 0 6px;
+  width: 74px;
 }
 
 .daterangepicker .ranges ul {
@@ -180,20 +211,9 @@
 }
 
 .daterangepicker td.active, .daterangepicker td.active:hover {
-  background-color: #006dcc;
-  background-image: -moz-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -ms-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0088cc), to(#0044cc));
-  background-image: -webkit-linear-gradient(top, #0088cc, #0044cc);
-  background-image: -o-linear-gradient(top, #0088cc, #0044cc);
-  background-image: linear-gradient(top, #0088cc, #0044cc);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088cc', endColorstr='#0044cc', GradientType=0);
-  border-color: #0044cc #0044cc #002a80;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-color: #357ebd;
+  border-color: #3071a9;
   color: #fff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 
 .daterangepicker td.week, .daterangepicker th.week {
@@ -219,6 +239,6 @@
 }
 
 .daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.ampmselect {
-  width: 60px;
+  width: 50px;
   margin-bottom: 0;
 }
