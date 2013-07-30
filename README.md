@@ -48,7 +48,7 @@ $('input[name="daterange"]').daterangepicker(
     endDate: '2013-12-31'
   },
   function(start, end) {
-    alert("A date range was chosen");
+    alert('A date range was chosen: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
   }
 );
 ````
