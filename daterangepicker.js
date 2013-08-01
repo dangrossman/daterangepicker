@@ -246,7 +246,8 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
+        if (typeof options == 'undefined' || typeof options.ranges == 'undefined' 
+        || (typeof options.autoShow == 'boolean' && options.autoShow)) {
             this.container.find('.calendar').show();
             this.move();
         }
