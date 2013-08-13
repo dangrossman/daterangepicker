@@ -284,6 +284,9 @@
         this.container.find('.ranges').on('click', 'button.applyBtn', $.proxy(this.clickApply, this));
         this.container.find('.ranges').on('click', 'button.cancelBtn', $.proxy(this.clickCancel, this));
 
+        this.container.find('.ranges').on('click', '.daterangepicker_start_input', $.proxy(this.showCalendar, this));
+        this.container.find('.ranges').on('click', '.daterangepicker_end_input', $.proxy(this.showCalendar, this));
+
         this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
         this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
         this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateView, this));
@@ -424,11 +427,15 @@
             }
         },
 
+        showCalendar: function(){
+            this.container.find('.calendar').show();
+            this.move();
+        },
+
         clickRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
-                this.container.find('.calendar').show();
-                this.move();
+                this.showCalendar();
             } else {
                 var dates = this.ranges[label];
 
