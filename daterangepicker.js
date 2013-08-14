@@ -583,6 +583,8 @@
                 var ampm = cal.find('.ampmselect').val();
                 if (ampm == 'PM' && hour < 12)
                     hour += 12;
+                if (ampm == 'AM' && hour == 12)
+                    hour = 0;
             }
 
             if (isLeft) {
