@@ -25,7 +25,7 @@
         this.timePicker = false;
         this.timePickerIncrement = 30;
         this.timePicker12Hour = true;
-        this.ranges = {};        
+        this.ranges = {};
         this.opens = 'right';
 
         this.buttonClasses = ['btn', 'btn-small'];
@@ -294,6 +294,7 @@
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
+        this.container.find('.ranges').on('click', '.range_inputs div', $.proxy(this.showCalendar, this));
 
         this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateMonthYear, this));
         this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonthYear, this));
@@ -388,6 +389,11 @@
                     });
                 }
             }
+        },
+
+        showCalendar: function () {
+            this.container.find('.calendar').show();
+            this.move();
         },
 
         show: function (e) {
@@ -539,7 +545,7 @@
 
         clickApply: function (e) {
             if (this.element.is('input'))
-                this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));            
+                this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
             this.hide();
         },
 
@@ -599,7 +605,7 @@
                 var end = this.endDate;
                 end.hour(hour);
                 end.minute(minute);
-                this.endDate = end;              
+                this.endDate = end;
                 this.rightCalendar.month.hour(hour).minute(minute);
             }
 
