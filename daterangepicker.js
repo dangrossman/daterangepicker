@@ -396,8 +396,8 @@
                 e.preventDefault();
             }
 
-            this.oldStartDate = this.startDate;
-            this.oldEndDate = this.endDate;
+            this.oldStartDate = this.startDate.clone();
+            this.oldEndDate = this.endDate.clone();
 
             $(document).on('mousedown', $.proxy(this.hide, this));
             this.element.trigger('shown', {target: e.target, picker: this});
