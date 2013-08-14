@@ -549,9 +549,9 @@
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
 
             if (isLeft) {
-                this.leftCalendar.month.month(this.startDate.month()).year(year);
+                this.leftCalendar.month.year(year);
             } else {
-                this.rightCalendar.month.month(this.endDate.month()).year(year);
+                this.rightCalendar.month.year(year);
             }
 
             this.updateCalendars();
@@ -562,9 +562,9 @@
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
 
             if (isLeft) {
-                this.leftCalendar.month.month(month).year(this.startDate.year());
+                this.leftCalendar.month.month(month);
             } else {
-                this.rightCalendar.month.month(month).year(this.endDate.year());
+                this.rightCalendar.month.month(month);
             }
             this.updateCalendars();
         },
