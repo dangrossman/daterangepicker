@@ -360,8 +360,8 @@
             }
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
+                    top: this.element.offset().top + this.element.outerHeight(false),
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(false),
                     left: 'auto',
                     'min-width': minWidth
                 });
@@ -373,12 +373,12 @@
                 }
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
+                    top: this.element.offset().top + this.element.outerHeight(false),
                     left: this.element.offset().left,
                     right: 'auto',
                     'min-width': minWidth
                 });
-                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                if (this.container.offset().left + this.container.outerWidth(false) > $(window).width()) {
                     this.container.css({
                         left: 'auto',
                         right: 0
