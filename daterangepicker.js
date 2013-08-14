@@ -292,8 +292,8 @@
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
         this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
 
-        this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateYear, this));
-        this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonth, this));
+        this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateMonthYear, this));
+        this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonthYear, this));
 
         this.container.find('.calendar').on('change', 'select.hourselect', $.proxy(this.updateTime, this));
         this.container.find('.calendar').on('change', 'select.minuteselect', $.proxy(this.updateTime, this));
@@ -544,29 +544,26 @@
             this.hide();
         },
 
-        updateYear: function (e) {
-            var year = parseInt($(e.target).val());
+        updateMonthYear: function (e) {
+
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
+            var cal = this.container.find('.calendar.left');
+            if (!isLeft)
+                cal = this.container.find('.calendar.right');
+
+            var month = cal.find('.monthselect').val();
+            var year = cal.find('.yearselect').val();
+
+            console.log("Setting month to " + month + " and year to " + year);
 
             if (isLeft) {
-                this.leftCalendar.month.year(year);
+                this.leftCalendar.month.month(month).year(year);
             } else {
-                this.rightCalendar.month.year(year);
+                this.rightCalendar.month.month(month).year(year);
             }
 
             this.updateCalendars();
-        },
 
-        updateMonth: function (e) {
-            var month = parseInt($(e.target).val());
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
-
-            if (isLeft) {
-                this.leftCalendar.month.month(month);
-            } else {
-                this.rightCalendar.month.month(month);
-            }
-            this.updateCalendars();
         },
 
         updateTime: function(e) {
