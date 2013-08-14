@@ -284,8 +284,8 @@
         this.container.find('.ranges').on('click', 'button.applyBtn', $.proxy(this.clickApply, this));
         this.container.find('.ranges').on('click', 'button.cancelBtn', $.proxy(this.clickCancel, this));
 
-        this.container.find('.ranges').on('click', '.daterangepicker_start_input', $.proxy(this.showCalendar, this));
-        this.container.find('.ranges').on('click', '.daterangepicker_end_input', $.proxy(this.showCalendar, this));
+        this.container.find('.ranges').on('click', '.daterangepicker_start_input', $.proxy(this.showCalendars, this));
+        this.container.find('.ranges').on('click', '.daterangepicker_end_input', $.proxy(this.showCalendars, this));
 
         this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
         this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
@@ -427,7 +427,7 @@
             }
         },
 
-        showCalendar: function(){
+        showCalendars: function() {
             this.container.find('.calendar').show();
             this.move();
         },
@@ -435,7 +435,7 @@
         clickRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
-                this.showCalendar();
+                this.showCalendars();
             } else {
                 var dates = this.ranges[label];
 
@@ -560,8 +560,6 @@
 
             var month = cal.find('.monthselect').val();
             var year = cal.find('.yearselect').val();
-
-            console.log("Setting month to " + month + " and year to " + year);
 
             if (isLeft) {
                 this.leftCalendar.month.month(month).year(year);
