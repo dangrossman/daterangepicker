@@ -362,8 +362,8 @@
             }
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
+                    top: this.element.offset().top + this.element.outerHeight(true),
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(true),
                     left: 'auto',
                     'min-width': minWidth
                 });
@@ -375,12 +375,12 @@
                 }
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
+                    top: this.element.offset().top + this.element.outerHeight(true),
                     left: this.element.offset().left,
                     right: 'auto',
                     'min-width': minWidth
                 });
-                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                if (this.container.offset().left + this.container.outerWidth(true) > $(window).width()) {
                     this.container.css({
                         left: 'auto',
                         right: 0
