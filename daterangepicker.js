@@ -264,8 +264,8 @@
         }
 
         //state
-        this.oldStartDate = this.startDate;
-        this.oldEndDate = this.endDate;
+        this.oldStartDate = this.startDate.clone();
+        this.oldEndDate = this.endDate.clone();
 
         this.leftCalendar = {
             month: moment([this.startDate.year(), this.startDate.month(), 1, this.startDate.hour(), this.startDate.minute()]),
@@ -345,8 +345,7 @@
             this.startDate = start;
             this.endDate = end;
 
-            this.updateView();
-            this.cb(this.startDate, this.endDate);
+            this.notify();
             this.updateCalendars();
         },
 
@@ -399,9 +398,6 @@
                 e.preventDefault();
             }
 
-            this.oldStartDate = this.startDate.clone();
-            this.oldEndDate = this.endDate.clone();
-
             $(document).on('mousedown', $.proxy(this.hide, this));
             this.element.trigger('shown', {target: e.target, picker: this});
         },
@@ -411,6 +407,9 @@
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.notify();
+
+            this.oldStartDate = this.startDate.clone();
+            this.oldEndDate = this.endDate.clone();            
 
             $(document).off('mousedown', this.hide);
             this.element.trigger('hidden', { picker: this });
