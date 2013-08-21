@@ -25,7 +25,7 @@
         this.timePicker = false;
         this.timePickerIncrement = 30;
         this.timePicker12Hour = true;
-        this.ranges = {};        
+        this.ranges = {};
         this.opens = 'right';
 
         this.buttonClasses = ['btn', 'btn-small'];
@@ -409,7 +409,7 @@
                 this.notify();
 
             this.oldStartDate = this.startDate.clone();
-            this.oldEndDate = this.endDate.clone();            
+            this.oldEndDate = this.endDate.clone();
 
             $(document).off('mousedown', this.hide);
             this.element.trigger('hidden', { picker: this });
@@ -431,6 +431,11 @@
             this.move();
         },
 
+        updateInputText: function() {
+            if (this.element.is('input'))
+                this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
+        },
+
         clickRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
@@ -450,8 +455,7 @@
                 this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
                 this.updateCalendars();
 
-                if (this.element.is('input'))
-                    this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
+                this.updateInputText();
 
                 this.container.find('.calendar').hide();
                 this.hide();
@@ -537,8 +541,7 @@
         },
 
         clickApply: function (e) {
-            if (this.element.is('input'))
-                this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));            
+            this.updateInputText();
             this.hide();
         },
 
@@ -598,7 +601,7 @@
                 var end = this.endDate;
                 end.hour(hour);
                 end.minute(minute);
-                this.endDate = end;              
+                this.endDate = end;
                 this.rightCalendar.month.hour(hour).minute(minute);
             }
 
