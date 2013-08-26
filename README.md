@@ -85,6 +85,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `cancelClass`: (string) CSS class string that will be added to the cancel button
 
+`iconClass`: (string) CSS class string that will be applied to all icons
+
 `format`: (string) Date/time format string used by moment when parsing or displaying the selected dates
 
 `separator`: (string) Separator string to display between the start and end date when populating a text input the picker is attached to
