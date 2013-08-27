@@ -32,6 +32,7 @@
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
         this.iconClass = '';
+        this.selectClass = '';
 
         this.format = 'MM/DD/YYYY';
         this.separator = ' - ';
@@ -84,6 +85,10 @@
 
             if (options.iconClass) {
                 this.iconClass = options.iconClass;
+            }
+
+            if (options.selectClass) {
+                this.selectClass = options.selectClass;
             }
         }
 
@@ -681,7 +686,7 @@
 
         renderDropdowns: function (selected, minDate, maxDate) {
             var currentMonth = selected.month();
-            var monthHtml = '<select class="monthselect">';
+            var monthHtml = '<select class="' + this.selectClass + ' monthselect">';
             var inMinYear = false;
             var inMaxYear = false;
 
@@ -697,7 +702,7 @@
             var currentYear = selected.year();
             var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
             var minYear = (minDate && minDate.year()) || (currentYear - 50);
-            var yearHtml = '<select class="yearselect">'
+            var yearHtml = '<select class="' + this.selectClass + ' yearselect">'
 
             for (var y = minYear; y <= maxYear; y++) {
                 yearHtml += '<option value="' + y + '"' +
@@ -795,7 +800,7 @@
             if (this.timePicker) {
 
                 html += '<div class="calendar-time">';
-                html += '<select class="hourselect">';
+                html += '<select class="' + this.selectClass + ' hourselect">';
                 var start = 0;
                 var end = 23;
                 var selected_hour = selected.hour();
@@ -818,7 +823,7 @@
 
                 html += '</select> : ';
 
-                html += '<select class="minuteselect">';
+                html += '<select class="' + this.selectClass + ' minuteselect">';
 
                 for (var i = 0; i < 60; i += this.timePickerIncrement) {
                     var num = i;
@@ -834,7 +839,7 @@
                 html += '</select> ';
 
                 if (this.timePicker12Hour) {
-                    html += '<select class="ampmselect">';
+                    html += '<select class="' + this.selectClass + ' ampmselect">';
                     if (selected.hour() >= 12) {
                         html += '<option value="AM">AM</option><option value="PM" selected="selected">PM</option>';
                     } else {
