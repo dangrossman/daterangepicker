@@ -19,6 +19,7 @@
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
+        this.defaultRangeLength = 1;
 
         this.showDropdowns = false;
         this.showWeekNumbers = false;
@@ -532,7 +533,7 @@
             } else if (startDate.isAfter(endDate)) {
                 $(e.target).addClass('active');
                 this.startDate = startDate;
-                this.endDate = moment(startDate).add('day', 1).startOf('day');
+                this.endDate = moment(startDate).add('day', this.defaultRangeLength).startOf('day');
             }
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
