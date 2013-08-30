@@ -79,6 +79,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `opens`: (string: 'left'/'right') Whether the picker appears aligned to the left or to the right of the HTML element it's attached to
 
+`alwaysNotify`: (boolean) Whether to always notify the callback when saving, even if dates have not changed.  
+
 `autoShow`: (boolean) Whether to show the calendars even if ranges are specified 
 
 `buttonClasses`: (array) CSS class names that will be added to all buttons in the picker

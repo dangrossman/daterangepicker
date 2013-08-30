@@ -27,6 +27,7 @@
         this.timePicker12Hour = true;
         this.ranges = {};
         this.opens = 'right';
+        this.alwaysNotify = true;
 
         this.buttonClasses = ['btn', 'btn-small'];
         this.applyClass = 'btn-success';
@@ -225,6 +226,10 @@
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            if (typeof options.alwaysNotify == 'boolean') {
+                this.alwaysNotify = options.alwaysNotify;
+            }
+
         }
 
         if (!this.timePicker) {
@@ -416,7 +421,7 @@
         hide: function (e) {
             this.container.hide();
 
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (this.alwaysNotify || (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate)))
                 this.notify();
 
             this.oldStartDate = this.startDate.clone();
