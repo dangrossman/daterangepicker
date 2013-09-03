@@ -390,6 +390,11 @@
         },
 
         show: function (e) {
+            if (this.hideIntended){
+                this.hideIntended = false;
+                return;
+            }
+
             this.container.show();
             this.move();
 
@@ -403,6 +408,10 @@
         },
 
         hide: function (e) {
+            if (e && $(e.target).parents().andSelf().filter(this.element).length){
+                this.hideIntended = true;
+            }
+
             this.container.hide();
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
