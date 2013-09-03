@@ -80,6 +80,10 @@
             if (options.cancelClass) {
                 this.cancelClass = options.cancelClass;
             }
+
+            if (options.dayClass) {
+                this.dayClass = options.dayClass;
+            }
         }
 
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
@@ -778,7 +782,19 @@
                     }
 
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1') + '" data-title="' + title + '">' + calendar[row][col].date() + '</td>';
+                    if(this.dayClass){
+                    	if(typeof this.dayClass=='string')
+                    		cname+=' '+this.dayClass;
+                    	else if(typeof this.dayClass=='function')
+                    		cname=this.dayClass({
+                    			cname:cname,
+                    			row:row,
+                    			col:col,
+                    			calendar:calendar
+                    		}) || cname;
+                    }
+                    cname=cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1'); // compact whitespace and trim
+                    html += '<td class="' + cname + '" data-title="' + title + '">' + calendar[row][col].date() + '</td>';
                 }
                 html += '</tr>';
             }
