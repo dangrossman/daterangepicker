@@ -844,39 +844,17 @@
 
             return html;
 
-        },
-		updateDates: function (options) {
-			if (typeof options.startDate !== 'object') {
-				return;
-			}
-			if (typeof options.endDate !== 'object') {
-				return;
-			}
-			this.startDate = moment(options.startDate, this.format).startOf('day');
-			this.endDate = moment(options.endDate, this.format).endOf('day');
-			this.updateView();
-			this.updateCalendars();
-		}
+        }
+
     };
-	$.fn.daterangepicker = function (options, cb) {
-		this.each(function () {
-			var el = $(this);
-			if (!el.data('daterangepicker')) {
-				el.data('daterangepicker', new DateRangePicker(el, options, cb));
-			}
-			else {
-				if (typeof options == 'object') {
-					if (options.action !== undefined) {
-						switch (options.action) {
-							case 'update':
-								var dp = el.data('daterangepicker');
-								dp.updateDates(options);
-								break;
-						}
-					}
-				}
-			}
-		});
-		return this;
-	};
+
+    $.fn.daterangepicker = function (options, cb) {
+        this.each(function () {
+            var el = $(this);
+            if (!el.data('daterangepicker'))
+                el.data('daterangepicker', new DateRangePicker(el, options, cb));
+        });
+        return this;
+    };
+
 }(window.jQuery);
