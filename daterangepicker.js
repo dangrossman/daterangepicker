@@ -506,6 +506,7 @@
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
+            var pickType;
 
             if (cal.hasClass('left')) {
                 var startDate = this.leftCalendar.calendar[row][col];
@@ -516,6 +517,7 @@
                         endDate = maxDate;
                     }
                 }
+                pickType='rangeStart';
             } else {
                 var startDate = this.startDate;
                 var endDate = this.rightCalendar.calendar[row][col];
@@ -525,7 +527,9 @@
                         startDate = minDate;
                     }
                 }
+                pickType='rangeEnd';
             }
+            this.element.trigger('pickRange', {startDate:startDate, endDate:endDate, pickType:pickType, picker: this});
 
             cal.find('td').removeClass('active');
 
@@ -616,8 +620,8 @@
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, 'rangeStart'));
+            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate, 'rangeEnd'));
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -709,7 +713,7 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate) {
+        renderCalendar: function (calendar, selected, minDate, maxDate, calType) {
 
             var html = '<div class="calendar-date">';
             html += '<table class="table-condensed">';
@@ -790,7 +794,8 @@
                     			cname:cname,
                     			row:row,
                     			col:col,
-                    			calendar:calendar
+                    			calendar:calendar,
+                    			calendarType:calType
                     		}) || cname;
                     }
                     cname=cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1'); // compact whitespace and trim
