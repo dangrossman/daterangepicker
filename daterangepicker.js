@@ -560,7 +560,7 @@
             if (!isLeft)
                 cal = this.container.find('.calendar.right');
 
-            var month = cal.find('.monthselect').val();
+            var month = parseInt(cal.find('.monthselect').val());
             var year = cal.find('.yearselect').val();
 
             if (isLeft) {
