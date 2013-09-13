@@ -49,6 +49,9 @@
 
         this.cb = function () { };
 
+        // by default, the daterangepicker element is placed at the bottom of HTML body
+        this.parentEl = 'body';
+
         //element that triggered the date range picker
         this.element = $(element);
 
@@ -101,7 +104,9 @@
                 '</div>' +
               '</div>';
 
-        this.container = $(DRPTemplate).appendTo('body');
+        this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
+        //the date range picker
+        this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         if (hasOptions) {
 
@@ -355,17 +360,15 @@
         },
 
         move: function () {
-            var minWidth = $(this.container).find('.ranges').outerWidth();
-            if ($(this.container).find('.calendar').is(':visible')) {
-                var padding = 24; // FIXME: this works for the default styling, but isn't flexible
-                minWidth += $(this.container).find('.calendar').outerWidth() * 2 + padding;
-            }
+            var parentOffset = {
+                top: this.parentEl.offset().top - (this.parentEl.is('body') ? 0 : this.parentEl.scrollTop()),
+                left: this.parentEl.offset().left - (this.parentEl.is('body') ? 0 : this.parentEl.scrollLeft())
+            };
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto',
-                    'min-width': minWidth
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
+                    left: 'auto'
                 });
                 if (this.container.offset().left < 0) {
                     this.container.css({
@@ -375,10 +378,9 @@
                 }
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    left: this.element.offset().left,
-                    right: 'auto',
-                    'min-width': minWidth
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    left: this.element.offset().left - parentOffset.left,
+                    right: 'auto'
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
                     this.container.css({
