@@ -23,7 +23,7 @@
                     <label class="control-label" for="reservation">Reservation dates:</label>
                     <div class="controls">
                      <div class="input-prepend">
-                       <span class="add-on"><i class="glyphicon glyphicon-calendar icon-calendar"></i></span><input type="text" style="width: 200px" name="reservation" id="reservation" value="03/18/2013 - 03/23/2013" /> 
+                       <span class="add-on"><i class="glyphicon glyphicon-calendar icon-calendar"></i></span><input type="text" style="width: 200px" name="reservation" id="reservation" value="03/18/2013 - 03/23/2013" />
                      </div>
                     </div>
                   </div>
@@ -65,7 +65,7 @@
                });
                </script>
 
-            </div>            
+            </div>
 
             <h4>Options Usage Example</h4>
 
@@ -84,6 +84,7 @@
                         endDate: moment(),
                         minDate: '01/01/2012',
                         maxDate: '12/31/2014',
+                        defaultRangeLength: 2,
                         dateLimit: { days: 60 },
                         showDropdowns: true,
                         showWeekNumbers: true,
