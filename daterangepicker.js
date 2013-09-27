@@ -663,13 +663,14 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = moment([lastYear, lastMonth, startDay, hour, minute]);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute]);
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('day', 1)) {
                 if (i > 0 && col % 7 == 0) {
                     col = 0;
                     row++;
                 }
-                calendar[row][col] = curDate;
+                calendar[row][col] = curDate.clone().hour(hour);
+                curDate.hour(12);
             }
 
             return calendar;
