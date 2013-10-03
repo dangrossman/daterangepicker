@@ -594,13 +594,13 @@
             }
 
             if (isLeft) {
-                var start = this.startDate;
+                var start = this.startDate.clone();
                 start.hour(hour);
                 start.minute(minute);
                 this.startDate = start;
                 this.leftCalendar.month.hour(hour).minute(minute);
             } else {
-                var end = this.endDate;
+                var end = this.endDate.clone();
                 end.hour(hour);
                 end.minute(minute);
                 this.endDate = end;
