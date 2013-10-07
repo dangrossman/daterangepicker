@@ -311,6 +311,7 @@
 
         this.updateView();
         this.updateCalendars();
+        this.notify();
 
     };
 
