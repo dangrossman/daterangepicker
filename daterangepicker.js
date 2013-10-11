@@ -355,7 +355,10 @@
 
         notify: function () {
             this.updateView();
-            this.cb(this.startDate, this.endDate);
+            var args=[this.startDate, this.endDate];
+            if(this.__clickedRange)
+            	args.push(this.__clickedRange);
+            this.cb.apply(this, args);
         },
 
         move: function () {
@@ -462,7 +465,11 @@
                 this.updateInputText();
 
                 this.container.find('.calendar').hide();
+                
+                // let them know this (eventual) change is because of a range click
+                this.__clickedRange=label;
                 this.hide();
+                delete this.__clickedRange;
             }
         },
 
