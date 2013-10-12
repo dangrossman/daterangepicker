@@ -1,8 +1,8 @@
-# Date Range Picker for Twitter Bootstrap
+# Date Range Picker for Bootstrap
 
 ![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
-This date range picker component for Twitter Bootstrap creates a dropdown menu from which a user can 
+This date range picker component for Bootstrap creates a dropdown menu from which a user can
 select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
 which needed a way to select date ranges for reports.
 
@@ -15,7 +15,7 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 
 ## Usage
 
-This component relies on [Twitter Bootstrap](http://twitter.github.com/bootstrap/), 
+This component relies on [Bootstrap](http://getbootstrap.com),
 [Moment.js](http://momentjs.com/) and [jQuery](http://jquery.com/).
 
 Separate stylesheets are included for use with Bootstrap 2 or Bootstrap 3.
@@ -93,7 +93,7 @@ $('input[name="daterange"]').daterangepicker(
 
 ## License
 
-This code is made available under the same license as Twitter Bootstrap. Moment.js is included in this repository 
+This code is made available under the same license as Bootstrap. Moment.js is included in this repository
 for convenience. It is available under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
 
 --
