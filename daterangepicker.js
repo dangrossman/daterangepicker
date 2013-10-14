@@ -19,6 +19,7 @@
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
+        this.dateMinLimit = false;
 
         this.showDropdowns = false;
         this.showWeekNumbers = false;
@@ -117,28 +118,28 @@
                 this.separator = options.separator;
 
             if (typeof options.startDate == 'string')
-                this.startDate = moment(options.startDate, this.format);
+                this.startDate = moment(options.startDate, this.format).startOf('day');
 
             if (typeof options.endDate == 'string')
-                this.endDate = moment(options.endDate, this.format);
+                this.endDate = moment(options.endDate, this.format).startOf('day');
 
             if (typeof options.minDate == 'string')
-                this.minDate = moment(options.minDate, this.format);
+                this.minDate = moment(options.minDate, this.format).startOf('day');
 
             if (typeof options.maxDate == 'string')
-                this.maxDate = moment(options.maxDate, this.format);
+                this.maxDate = moment(options.maxDate, this.format).startOf('day');
 
             if (typeof options.startDate == 'object')
-                this.startDate = moment(options.startDate);
+                this.startDate = moment(options.startDate).startOf('day');
 
             if (typeof options.endDate == 'object')
-                this.endDate = moment(options.endDate);
+                this.endDate = moment(options.endDate).startOf('day');
 
             if (typeof options.minDate == 'object')
-                this.minDate = moment(options.minDate);
+                this.minDate = moment(options.minDate).startOf('day');
 
             if (typeof options.maxDate == 'object')
-                this.maxDate = moment(options.maxDate);
+                this.maxDate = moment(options.maxDate).startOf('day');
 
             if (typeof options.ranges == 'object') {
                 for (var range in options.ranges) {
@@ -176,6 +177,9 @@
 
             if (typeof options.dateLimit == 'object')
                 this.dateLimit = options.dateLimit;
+
+            if (typeof options.dateMinLimit == 'object')
+                this.dateMinLimit = options.dateMinLimit;
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -508,7 +512,22 @@
             if (cal.hasClass('left')) {
                 var startDate = this.leftCalendar.calendar[row][col];
                 var endDate = this.endDate;
-                if (typeof this.dateLimit == 'object') {
+                if (typeof this.dateMinLimit == 'object') {
+                    var maxNewDate = moment(startDate).add(this.dateMinLimit).startOf('day');
+                    if (typeof this.maxDate == 'object') {
+                        if (maxNewDate.isAfter(this.maxDate)) {
+                            endDate = this.maxDate
+                            startDate = moment(endDate).subtract(this.dateMinLimit).startOf('day');
+                        }
+                        else if (endDate.isBefore(maxNewDate)){
+                            endDate = maxNewDate;
+                        }
+                    }
+                    else if (endDate.isAfter(maxNewDate)) {
+                        endDate = maxNewDate;
+                    }
+                }
+                else if (typeof this.dateLimit == 'object') {
                     var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
                     if (endDate.isAfter(maxDate)) {
                         endDate = maxDate;
@@ -517,8 +536,23 @@
             } else {
                 var startDate = this.startDate;
                 var endDate = this.rightCalendar.calendar[row][col];
-                if (typeof this.dateLimit == 'object') {
-                    var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
+                if (typeof this.dateMinLimit == 'object') {
+                    var minNewDate = moment(endDate).subtract(this.dateMinLimit).startOf('day');
+                    if (typeof this.minDate == 'object') {
+                        if (minNewDate.isBefore(this.minDate)) {
+                            startDate = this.minDate
+                            endDate = moment(startDate).add(this.dateMinLimit).startOf('day');
+                        }
+                        else if (startDate.isAfter(minNewDate)){
+                            startDate = minNewDate;
+                        }
+                    }
+                    else if (startDate.isBefore(minNewDate)) {
+                        startDate = minNewDate;
+                    }
+                }
+                else if (typeof this.dateLimit == 'object') {
+                    var minDate = moment(endDate).subtract(this.dateMaxLimit).startOf('day');
                     if (startDate.isBefore(minDate)) {
                         startDate = minDate;
                     }
