@@ -347,10 +347,15 @@
             if (start == null || end == null) return;
             if (end.isBefore(start)) return;
 
+            this.oldStartDate = this.startDate.clone();
+            this.oldEndDate = this.endDate.clone();
+
             this.startDate = start;
             this.endDate = end;
 
-            this.notify();
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+                this.notify();
+
             this.updateCalendars();
         },
 
