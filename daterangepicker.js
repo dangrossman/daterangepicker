@@ -556,11 +556,13 @@
         },
 
         clickApply: function (e) {
+            this.element.trigger('clickApply');
             this.updateInputText();
             this.hide();
         },
 
         clickCancel: function (e) {
+            this.element.trigger('clickCancel');
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
             this.updateView();
