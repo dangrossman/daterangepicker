@@ -292,8 +292,10 @@
         this.container.find('.ranges').on('click', '.daterangepicker_start_input', $.proxy(this.showCalendars, this));
         this.container.find('.ranges').on('click', '.daterangepicker_end_input', $.proxy(this.showCalendars, this));
 
+        this.container.find('.ranges').on('change', 'input[name=daterangepicker_start], input[name=daterangepicker_end]', $.proxy(this.changeInputBox, this));
+        this.container.find('.ranges').on('keypress', 'input[name=daterangepicker_start], input[name=daterangepicker_end]', $.proxy(this.keypressInputText, this));
+
         this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
-        this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
         this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateView, this));
 
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
@@ -435,6 +437,7 @@
 
         showCalendars: function() {
             this.container.find('.calendar').show();
+            this.enableInputBoxes();
             this.move();
         },
 
@@ -443,13 +446,20 @@
                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
         },
 
+        updateInputBoxes: function() {
+            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
+            this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
+        },
+
         clickRange: function (e) {
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
+                this.enableInputBoxes();
             } else {
                 var dates = this.ranges[label];
 
+                this.disableInputBoxes();
                 this.startDate = dates[0];
                 this.endDate = dates[1];
 
@@ -489,19 +499,24 @@
             this.updateCalendars();
         },
 
-        enterDate: function (e) {
+        changeInputBox: function (e) {
+            var elm = $(e.target);
+            date = moment(elm.val(), this.format);
 
-            var title = $(e.target).attr('data-title');
-            var row = title.substr(1, 1);
-            var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
-
-            if (cal.hasClass('left')) {
-                this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
-            } else {
-                this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
+            if(date.isValid()) {
+                if(elm.attr('name') == 'daterangepicker_start') this.startDate = date;
+                else this.endDate = date;
             }
+            this.updateInputBoxes();
+            this.updateCalendars();
+        },
 
+        keypressInputText: function (e) {
+            if ( e.which == 13 ) {
+                this.changeInputBox(e);
+                this.clickApply();
+                e.preventDefault();
+            }
         },
 
         clickDate: function (e) {
@@ -544,6 +559,7 @@
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
+            this.updateInputBoxes();
             this.updateCalendars();
         },
 
@@ -558,6 +574,14 @@
             this.updateView();
             this.updateCalendars();
             this.hide();
+        },
+
+        enableInputBoxes: function () {
+            this.container.find('input[name=daterangepicker_start], input[name=daterangepicker_end]').removeAttr('disabled');
+        },
+
+        disableInputBoxes: function () {
+            this.container.find('input[name=daterangepicker_start], input[name=daterangepicker_end]').attr('disabled', 'disabled');
         },
 
         updateMonthYear: function (e) {
