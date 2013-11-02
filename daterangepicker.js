@@ -294,11 +294,11 @@
 
         this.container.find('.calendar').on('click', 'td.available', $.proxy(this.clickDate, this));
         this.container.find('.calendar').on('mouseenter', 'td.available', $.proxy(this.enterDate, this));
-        this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateView, this));
+        this.container.find('.calendar').on('mouseleave', 'td.available', $.proxy(this.updateFormInputs, this));
 
         this.container.find('.ranges').on('click', 'li', $.proxy(this.clickRange, this));
         this.container.find('.ranges').on('mouseenter', 'li', $.proxy(this.enterRange, this));
-        this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateView, this));
+        this.container.find('.ranges').on('mouseleave', 'li', $.proxy(this.updateFormInputs, this));
 
         this.container.find('.calendar').on('change', 'select.yearselect', $.proxy(this.updateMonthYear, this));
         this.container.find('.calendar').on('change', 'select.monthselect', $.proxy(this.updateMonthYear, this));
@@ -325,7 +325,10 @@
         updateView: function () {
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
+            this.updateFormInputs();
+        },
 
+        updateFormInputs: function () {
             this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
             this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
 
