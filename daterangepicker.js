@@ -186,9 +186,12 @@
                 if (typeof options.locale.firstDay == 'number') {
                     this.locale.firstDay = options.locale.firstDay;
                     var iterator = options.locale.firstDay;
-                    while (iterator > 0) {
-                        this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
-                        iterator--;
+                    if(iterator > 0){
+                    	this.locale.daysOfWeek=this.locale.daysOfWeek.slice(0);
+	                    do{
+	                        this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+	                        iterator--;
+	                    }while(iterator > 0);
                     }
                 }
             }
