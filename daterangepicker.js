@@ -546,11 +546,12 @@
             var cal = $(e.target).parents('.calendar');
 
             if (this.oneCalendar) {
-              var startDate, endDate,
+              var startDate, endDate, changedDate,
                   tmpDate = this.leftCalendar.calendar[row][col];
               if (Math.abs(tmpDate.valueOf() - this.startDate.valueOf()) <= Math.abs(tmpDate.valueOf() - this.endDate.valueOf())) {
                   startDate = tmpDate;
                   endDate = this.endDate;
+                  changedDate = startDate;
                   if (typeof this.dateLimit == 'object') {
                       var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
                       if (endDate.isAfter(maxDate)) {
@@ -560,6 +561,7 @@
               } else {
                   startDate = this.startDate;
                   endDate = tmpDate;
+                  changedDate = endDate;
                   if (typeof this.dateLimit == 'object') {
                       var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
                       if (startDate.isBefore(minDate)) {
@@ -601,8 +603,12 @@
                 this.endDate = moment(startDate).add('day', 1).startOf('day');
             }
 
-            this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
-            this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
+            if (this.oneCalendar) {
+                this.leftCalendar.month.month(changedDate.month()).year(changedDate.year())
+            } else {
+                this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
+                this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
+            }
             this.updateCalendars();
         },
 
