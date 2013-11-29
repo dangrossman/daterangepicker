@@ -10,7 +10,7 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "~1.10",
+    "jquery": "~2.0",
     "moment": "~2.1"
   }
 }
