@@ -438,8 +438,12 @@
         },
 
         updateInputText: function() {
-            if (this.element.is('input'))
+            if (this.element.is('input')) {
+                original_val = this.element.val();
                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
+                if (this.element.val() !== original_val)
+                  this.element.change();
+              }
         },
 
         clickRange: function (e) {
