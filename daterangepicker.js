@@ -180,6 +180,14 @@
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
                 if (typeof options.locale.firstDay == 'number') {
+
+                    // Create a copy of daysOfWeek to avoid modification of original
+                    // options object for reusability in multiple daterangepicker instances
+                    this.locale.daysOfWeek = [];
+                    for ( var i = 0; i < options.locale.daysOfWeek.length; i++) {
+                        this.locale.daysOfWeek.push(options.locale.daysOfWeek[i]);
+                    }
+
                     this.locale.firstDay = options.locale.firstDay;
                     var iterator = options.locale.firstDay;
                     while (iterator > 0) {
