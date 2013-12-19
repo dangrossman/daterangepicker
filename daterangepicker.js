@@ -49,6 +49,11 @@
 
         this.cb = function () { };
 
+        // events callbacks
+        this.events = {
+            update: undefined
+        };
+
         // by default, the daterangepicker element is placed at the bottom of HTML body
         this.parentEl = 'body';
 
@@ -82,6 +87,11 @@
 
             if (options.cancelClass) {
                 this.cancelClass = options.cancelClass;
+            }
+
+            // attach events
+            if(options.events) {
+                this.events = options.events
             }
         }
 
@@ -446,8 +456,15 @@
         },
 
         updateInputText: function() {
-            if (this.element.is('input'))
+            if (this.element.is('input')) {
                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
+
+                //triggers update event if there is any
+                if((typeof this.events.update) === 'function') {
+                    //in the callback we pass two args => startDate and endDate, both formatted
+                    this.events.update(this.startDate.format(this.format), this.endDate.format(this.format))
+                }
+            }
         },
 
         clickRange: function (e) {
