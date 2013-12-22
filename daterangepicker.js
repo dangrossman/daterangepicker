@@ -14,6 +14,8 @@
 
         //option defaults
 
+        this.inlineMod = false;
+
         this.startDate = moment().startOf('day');
         this.endDate = moment().startOf('day');
         this.minDate = false;
@@ -65,6 +67,7 @@
             });
         } else {
             this.element.on('click', $.proxy(this.show, this));
+            this.inlineMod = true;
         }
 
         localeObject = this.locale;
@@ -257,7 +260,11 @@
         if (typeof cb == 'function')
             this.cb = cb;
 
-        this.container.addClass('opens' + this.opens);
+        if (this.inlineMod) {
+            this.container.addClass('inline' + this.opens);
+        } else {
+            this.container.addClass('opens' + this.opens);
+        }
 
         //try parse date if in text input
         if (!hasOptions || (typeof options.startDate == 'undefined' && typeof options.endDate == 'undefined')) {
@@ -315,6 +322,9 @@
 
         this.updateView();
         this.updateCalendars();
+
+        if (this.inlineMod)
+            this.show();
 
     };
 
@@ -412,8 +422,10 @@
                 e.preventDefault();
             }
 
-            $(document).on('mousedown', $.proxy(this.hide, this));
-            this.element.trigger('shown', {target: e.target, picker: this});
+            if (!this.inlineMod) {
+                $(document).on('mousedown', $.proxy(this.hide, this));
+                this.element.trigger('shown', {target: e.target, picker: this});
+            }
         },
 
         hide: function (e) {
