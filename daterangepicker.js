@@ -15,6 +15,8 @@
         //option defaults
 
         this.inlineMod = false;
+        this.daterangepicker_start = null;
+        this.daterangepicker_end = null;
 
         this.startDate = moment().startOf('day');
         this.endDate = moment().startOf('day');
@@ -107,11 +109,27 @@
                 '</div>' +
               '</div>';
 
+        var inlineModTemplate =
+            '<div class="daterangepicker">' +
+                '<div class="calendar left"></div>' +
+                '<div class="calendar right"></div>' +
+            '</div>';
+
         this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         //the date range picker
-        this.container = $(DRPTemplate).appendTo(this.parentEl);
+        if (this.inlineMod) {
+            this.container = $(inlineModTemplate).appendTo(this.parentEl);
+        } else {
+            this.container = $(DRPTemplate).appendTo(this.parentEl);
+        }
 
         if (hasOptions) {
+
+            if (typeof options.daterangepicker_start == 'string')
+                this.daterangepicker_start = options.daterangepicker_start;
+
+            if (typeof options.daterangepicker_end == 'string')
+                this.daterangepicker_end = options.daterangepicker_end;
 
             if (typeof options.format == 'string')
                 this.format = options.format;
@@ -343,8 +361,16 @@
         },
 
         updateFormInputs: function () {
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
-            this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
+            if (this.daterangepicker_start != null) {
+                $(this.daterangepicker_start).val(this.startDate.format(this.format));
+            } else {
+                this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
+            }
+            if (this.daterangepicker_end != null) {
+                $(this.daterangepicker_end).val(this.endDate.format(this.format));
+            } else {
+                this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
+            }
 
             if (this.startDate.isSame(this.endDate) || this.startDate.isBefore(this.endDate)) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
@@ -447,8 +473,16 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.format));
+                if (this.daterangepicker_start != null) {
+                    $(this.daterangepicker_start).val(dates[0].format(this.format));
+                } else {
+                    this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.format));
+                }
+                if (this.daterangepicker_end != null) {
+                    $(this.daterangepicker_end).val(dates[1].format(this.format));
+                } else {
+                    this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.format));
+                }
             }
         },
 
@@ -516,11 +550,18 @@
             var cal = $(e.target).parents('.calendar');
 
             if (cal.hasClass('left')) {
-                this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
+                if (this.daterangepicker_start != null) {
+                    $(this.daterangepicker_start).val(this.leftCalendar.calendar[row][col].format(this.format));
+                } else {
+                    this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
+                }
             } else {
-                this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
+                if (this.daterangepicker_end != null) {
+                    $(this.daterangepicker_end).val(this.rightCalendar.calendar[row][col].format(this.format));
+                } else {
+                    this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
+                }
             }
-
         },
 
         clickDate: function (e) {
@@ -633,6 +674,12 @@
             }
 
             this.updateCalendars();
+
+            //update inputs
+            if (this.daterangepicker_start != null)
+                $(this.daterangepicker_start).val(this.startDate.format(this.format));
+            if (this.daterangepicker_end != null)
+                $(this.daterangepicker_end).val(this.endDate.format(this.format));
 
         },
 

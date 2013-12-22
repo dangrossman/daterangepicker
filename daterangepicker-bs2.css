@@ -13,12 +13,18 @@
   z-index: 3000;
 }
 
-.daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
+.daterangepicker.opensleft .ranges, 
+.daterangepicker.opensleft .calendar,
+.daterangepicker.inlineleft .ranges,
+.daterangepicker.inlineleft .calendar {
   float: left;
   margin: 4px;
 }
 
-.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar {
+.daterangepicker.opensright .ranges, 
+.daterangepicker.opensright .calendar,
+.daterangepicker.inlineright .ranges,
+.daterangepicker.inlineright .calendar {
   float: right;
   margin: 4px;
 }
