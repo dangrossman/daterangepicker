@@ -11,6 +11,6 @@
   ],
   "dependencies": {
     "jquery": "~1.10",
-    "moment": "~2.1"
+    "momentjs": "~2.1"
   }
 }
