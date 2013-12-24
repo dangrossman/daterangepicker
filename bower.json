@@ -7,7 +7,9 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "moment.js",
+    "moment.min.js"
   ],
   "dependencies": {
     "jquery": "~1.10",
