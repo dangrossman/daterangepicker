@@ -35,6 +35,10 @@
         this.format = 'MM/DD/YYYY';
         this.separator = ' - ';
 
+        //specialDates
+        this.specialDates = [];
+        this.specialDatesIcon = "icon-circle glyphicon glyphicon-ok-circle";
+
         this.locale = {
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
@@ -179,14 +183,6 @@
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
-
-                if (typeof options.locale.daysOfWeek == 'object') {
-
-                    // Create a copy of daysOfWeek to avoid modification of original
-                    // options object for reusability in multiple daterangepicker instances
-                    this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
-                }
-
                 if (typeof options.locale.firstDay == 'number') {
                     this.locale.firstDay = options.locale.firstDay;
                     var iterator = options.locale.firstDay;
@@ -228,6 +224,37 @@
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            if (typeof options.specialDatesIcon == 'string')
+                this.specialDatesIcon = options.specialDatesIcon;
+
+            if (Array.isArray(options.specialDates)){
+                //filter by minDate and maxDate and ensure array is made of moment objects
+                var capped = [];
+                var max = this.maxDate ? +this.maxDate : undefined;
+                var min = this.minDate ? +this.minDate : undefined;
+                if (max || min) {
+                    options.specialDates.forEach(function(element) {
+                        var special = moment(element);
+                        var epoc = +special;
+                        if ((max && epoc <= max) && (min && epoc >= min))
+                            capped.push(special);
+                    });
+                }
+                else
+                    capped = options.specialDates;
+
+                //Sort array by date
+                // Use valueOf for perf
+                this.specialDates = capped.sort(function(a, b) {
+                    var aEpoc = +a;
+                    var bEpoc = +b;
+                    if (aEpoc < bEpoc)
+                        return -1;
+                    else if (aEpoc > bEpoc)
+                        return 1;
+                    return 0;
+                });
+            }
         }
 
         if (!this.timePicker) {
@@ -722,6 +749,9 @@
         },
 
         renderCalendar: function (calendar, selected, minDate, maxDate) {
+            //specialDates
+            if (this.specialDates.length)
+                var specialFiltered = this.filterSpecialDates(calendar);
 
             var html = '<div class="calendar-date">';
             html += '<table class="table-condensed">';
@@ -775,16 +805,17 @@
 
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
+                    var currentDate = calendar[row][col].format('YYYYMMDD');
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
                     if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
                         cname = ' off disabled ';
-                    } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
+                    } else if (currentDate == selected.format('YYYYMMDD')) {
                         cname += ' active ';
-                        if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
+                        if (currentDate == this.startDate.format('YYYYMMDD')) {
                             cname += ' start-date ';
                         }
-                        if (calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
+                        if (currentDate == this.endDate.format('YYYYMMDD')) {
                             cname += ' end-date ';
                         }
                     } else if (calendar[row][col] >= this.startDate && calendar[row][col] <= this.endDate) {
@@ -793,8 +824,12 @@
                         if (calendar[row][col].isSame(this.endDate)) { cname += ' end-date '; }
                     }
 
+                    var content = calendar[row][col].date();
+                    if (specialFiltered.length && this.isDateSpecial(specialFiltered, calendar[row][col]))
+                        content = "<i class='" + this.specialDatesIcon + "'></i>" + content;
+
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1') + '" data-title="' + title + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1') + '" data-title="' + title + '">' + content + '</td>';
                 }
                 html += '</tr>';
             }
@@ -860,6 +895,41 @@
 
             return html;
 
+        },
+
+        filterSpecialDates: function(calendar) {
+            var start = +calendar[0][0];
+            var end = +calendar[5][6];
+            var startIdx = 0;
+            var endIdx = this.specialDates.length;
+            $.each(this.specialDates, function(idx, special) {
+                var date = +special;
+                if (start >= date) {
+                    startIdx = idx;
+                }
+                if (date >= end) {
+                    endIdx = idx;
+                    return false;//Array is sorted
+                }
+            });
+            return this.specialDates.slice(startIdx, endIdx);
+        },
+
+        isDateSpecial: function(haystack, needle) {
+            //Mutate the haystack to have less values to look after later
+            //needle must be a moment object
+            var found = false;
+            $.each(haystack, function(idx, special) {
+                if (needle.format("YYYYMMDD") == special.format("YYYYMMDD")) {
+                    while (idx > 0) {
+                        haystack.shift();
+                        idx--;
+                    }
+                    found = true;
+                    return false;
+                }
+            });
+            return found;
         }
 
     };
