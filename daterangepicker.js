@@ -16,6 +16,10 @@
 
         this.startDate = moment().startOf('day');
         this.endDate = moment().startOf('day');
+
+        this.originalStartDate = moment().startOf('day');
+        this.originalEndDate = moment().startOf('day');
+
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
@@ -31,6 +35,7 @@
         this.buttonClasses = ['btn', 'btn-small'];
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
+        this.resetClass = 'btn-default';
 
         this.format = 'MM/DD/YYYY';
         this.separator = ' - ';
@@ -38,6 +43,7 @@
         this.locale = {
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
+            resetLabel: 'Reset',
             fromLabel: 'From',
             toLabel: 'To',
             weekLabel: 'W',
@@ -83,6 +89,10 @@
             if (options.cancelClass) {
                 this.cancelClass = options.cancelClass;
             }
+
+            if (options.resetClass) {
+                this.resetClass = options.resetClass;
+            }
         }
 
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
@@ -100,6 +110,7 @@
                     '</div>' +
                     '<button class="' + this.applyClass + ' applyBtn" disabled="disabled">' + this.locale.applyLabel + '</button>&nbsp;' +
                     '<button class="' + this.cancelClass + ' cancelBtn">' + this.locale.cancelLabel + '</button>' +
+                    '<button class="' + this.resetClass + ' resetBtn">' + this.locale.resetLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -116,11 +127,15 @@
             if (typeof options.separator == 'string')
                 this.separator = options.separator;
 
-            if (typeof options.startDate == 'string')
+            if (typeof options.startDate == 'string') {
                 this.startDate = moment(options.startDate, this.format);
+                this.originalStartDate = moment(options.startDate, this.format);
+            }
 
-            if (typeof options.endDate == 'string')
+            if (typeof options.endDate == 'string') {
                 this.endDate = moment(options.endDate, this.format);
+                this.originalEndDate = moment(options.endDate, this.format);
+            }
 
             if (typeof options.minDate == 'string')
                 this.minDate = moment(options.minDate, this.format);
@@ -306,6 +321,7 @@
         this.container.find('.ranges')
             .on('click', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+            .on('click', 'button.resetBtn', $.proxy(this.clickReset, this))
             .on('click', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.showCalendars, this))
             .on('click', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter', 'li', $.proxy(this.enterRange, this))
@@ -567,6 +583,14 @@
             this.hide();
         },
 
+        clickReset: function (e) {
+            this.startDate = this.originalStartDate;
+            this.endDate = this.originalEndDate;
+            this.updateView();
+            this.updateCalendars();
+            this.hide();
+        },
+
         updateMonthYear: function (e) {
 
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
@@ -733,7 +757,7 @@
                 html += '<th></th>';
 
             if (!minDate || minDate.isBefore(calendar[1][1])) {
-                html += '<th class="prev available"><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
+                html += '<th class="prev available"><i class="icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -746,7 +770,7 @@
 
             html += '<th colspan="5" style="width: auto">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar[1][1])) {
-                html += '<th class="next available"><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
+                html += '<th class="next available"><i class="icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
             } else {
                 html += '<th></th>';
             }

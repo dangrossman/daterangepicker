@@ -1,6 +1,6 @@
 {
-  "name": "bootstrap-daterangepicker",
-  "version": "1.2.0",
+  "name": "bootstrap-daterangepicker-reset",
+  "version": "1.0.0",
   "main": "daterangepicker.js",
   "ignore": [
     "**/.*",
