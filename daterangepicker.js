@@ -46,6 +46,9 @@
             monthNames: moment()._lang._monthsShort.slice(),
             firstDay: 0
         };
+        
+        this.applyCallback = function(){};
+        this.cancelCallback = function(){};
 
         this.cb = function () { };
 
@@ -82,6 +85,14 @@
 
             if (options.cancelClass) {
                 this.cancelClass = options.cancelClass;
+            }
+            
+            if(options.applyCallback) {
+            	this.applyCallback = options.applyCallback;
+            }
+            
+            if(options.cancelCallback) {
+            	this.cancelCallback = options.cancelCallback;
             }
         }
 
@@ -557,6 +568,10 @@
         clickApply: function (e) {
             this.updateInputText();
             this.hide();
+            
+            if(typeof this.applyCallback == 'function'){
+            	this.applyCallback(this.startDate, this.endDate, e);
+            }
         },
 
         clickCancel: function (e) {
@@ -565,6 +580,10 @@
             this.updateView();
             this.updateCalendars();
             this.hide();
+            
+            if(typeof this.cancelCallback == 'function'){
+            	this.cancelCallback(this.startDate, this.endDate, e);
+            }
         },
 
         updateMonthYear: function (e) {
