@@ -404,6 +404,10 @@
         },
 
         show: function (e) {
+            if (this.preventShow) {
+                return;
+            }
+
             this.container.show();
             this.move();
 
@@ -427,6 +431,15 @@
 
             $(document).off('mousedown', this.hide);
             this.element.trigger('hidden', { picker: this });
+
+            this.preventShow = true;
+
+            var self = this;
+            $(document).one('mouseup', function() {
+                setTimeout(function() {
+                    self.preventShow = false;
+                })
+            });
         },
 
         enterRange: function (e) {
