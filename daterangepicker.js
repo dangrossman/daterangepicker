@@ -524,6 +524,7 @@
 
                 this.container.find('.calendar').hide();
                 this.hide();
+                this.element.trigger('apply', this);
             }
         },
 
