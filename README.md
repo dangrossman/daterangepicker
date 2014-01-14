@@ -11,6 +11,8 @@ and end date from. Optionally, you can provide a list of date ranges the user ca
 of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
+The component can also be used as a single date picker by setting the `singleDatePicker` option to `true`.
+
 **[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)**
 
 ## Usage
@@ -38,7 +40,7 @@ $(document).ready(function() {
 
 The constructor also takes an optional options object and callback function. The function will be called whenever 
 the selected date range has been changed by the user, and is passed the start and end dates (moment date objects) as 
-parameters.
+parameters. It will not fire if the picker is closed without any change to the selected dates.
 
 ````
 $('input[name="daterange"]').daterangepicker(
@@ -53,7 +55,7 @@ $('input[name="daterange"]').daterangepicker(
 );
 ````
 
-## Options Reference
+## Options
 
 `startDate`: (Date object, moment object or string) The start of the initially selected date range
 
@@ -91,6 +93,53 @@ $('input[name="daterange"]').daterangepicker(
 
 `locale`: (object) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars
 
+`singleDatePicker`: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
+
+## Functions
+
+Several functions are provided for updating the picker's option and state after initialization:
+
+`setOptions(object, function)`: This function has the same signature and purpose as the date range picker's constructor: it sets the picker's options to their defaults, overrides them with any values in an options object you provide, and sets the callback for selection changes to whatever function you provide
+
+`setStartDate(Date/moment/string)`: Sets the date range picker's currently selected start date to the provided date
+
+`setEndDate(Date/moment/string)`: Sets the date range picker's currently selected end date to the provided date
+
+## Events
+
+Several events are triggered on the element you attach the picker to, which you can listen for:
+
+`show`: Triggered when the picker is shown
+
+`hide`: Triggered when the picker is hide
+
+`apply`: Triggered when the apply button is clicked
+
+`cancel`: Triggered when the cancel button is clicked
+
+Some applications need a "clear" instead of a "cancel" functionality, which can be achieved by changing the button label and watching for the cancel event:
+
+````
+$('#daterange').daterangepicker({
+  locale: { cancelLabel: 'Clear' }  
+});
+
+$('#daterange').on('cancel', function(ev, picker) {
+  //do something, like clearing an input
+  $('#daterange').val('');
+});
+````
+
+While passing in a callback to the constructor is the easiest way to listen for changes in the selected date range, you can also do something every time the apply button is clicked even if the selection hasn't changed:
+
+````
+$('#daterange').daterangepicker();
+$('#daterange').on('apply', function(ev, picker) {
+  console.log(picker.startDate.format('YYYY-MM-DD'));
+  console.log(picker.endDate.format('YYYY-MM-DD'));
+});
+````
+
 ## License
 
 This code is made available under the same license as Bootstrap. Moment.js is included in this repository
@@ -98,7 +147,7 @@ for convenience. It is available under the [MIT license](http://www.opensource.o
 
 --
 
-Copyright 2012-2013 Dan Grossman
+Copyright 2012-2014 Dan Grossman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

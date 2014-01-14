@@ -41,6 +41,10 @@
   max-width: 250px;
 }
 
+.daterangepicker .calendar.single .calendar-date {
+  border: none;
+}
+
 .daterangepicker .calendar th, .daterangepicker .calendar td {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   white-space: nowrap;
