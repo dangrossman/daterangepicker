@@ -27,6 +27,7 @@
         this.timePicker12Hour = true;
         this.ranges = {};
         this.opens = 'right';
+        this.weekSelection = false;
 
         this.buttonClasses = ['btn', 'btn-small'];
         this.applyClass = 'btn-success';
@@ -179,14 +180,6 @@
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
-
-                if (typeof options.locale.daysOfWeek == 'object') {
-
-                    // Create a copy of daysOfWeek to avoid modification of original
-                    // options object for reusability in multiple daterangepicker instances
-                    this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
-                }
-
                 if (typeof options.locale.firstDay == 'number') {
                     this.locale.firstDay = options.locale.firstDay;
                     var iterator = options.locale.firstDay;
@@ -226,6 +219,10 @@
 
             if (typeof options.timePicker12Hour == 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
+            }
+
+            if (typeof options.weekSelection == 'boolean') {
+                this.weekSelection = options.weekSelection;
             }
 
         }
@@ -427,6 +424,8 @@
 
             $(document).off('mousedown', this.hide);
             this.element.trigger('hidden', { picker: this });
+            this.unHoverAllRow(this.container.find('.calendar.left'))
+            this.unHoverAllRow(this.container.find('.calendar.right'))
         },
 
         enterRange: function (e) {
@@ -497,7 +496,6 @@
         },
 
         enterDate: function (e) {
-
             var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
@@ -508,17 +506,25 @@
             } else {
                 this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
             }
+            if(this.weekSelection)
+                this.hoverWeekRow(cal, row)
 
         },
 
         clickDate: function (e) {
+
             var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
 
             if (cal.hasClass('left')) {
-                var startDate = this.leftCalendar.calendar[row][col];
+
+                var startDate = null;
+                if(this.weekSelection)
+                    startDate = this.leftCalendar.calendar[row][0];
+                else
+                    startDate = this.leftCalendar.calendar[row][col];
                 var endDate = this.endDate;
                 if (typeof this.dateLimit == 'object') {
                     var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
@@ -528,7 +534,12 @@
                 }
             } else {
                 var startDate = this.startDate;
-                var endDate = this.rightCalendar.calendar[row][col];
+                var endDate = null
+                if(this.weekSelection)
+                    endDate = this.rightCalendar.calendar[row][6];
+                else
+                    endDate = this.rightCalendar.calendar[row][col];
+                
                 if (typeof this.dateLimit == 'object') {
                     var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
                     if (startDate.isBefore(minDate)) {
@@ -540,11 +551,17 @@
             cal.find('td').removeClass('active');
 
             if (startDate.isSame(endDate) || startDate.isBefore(endDate)) {
-                $(e.target).addClass('active');
+                if(this.weekSelection)
+                    this.selectWeekRow(cal, row);
+                else
+                    $(e.target).addClass('active');
                 this.startDate = startDate;
                 this.endDate = endDate;
             } else if (startDate.isAfter(endDate)) {
-                $(e.target).addClass('active');
+                if(this.weekSelection)
+                    this.selectWeekRow(cal, row);
+                else
+                    $(e.target).addClass('active');
                 this.startDate = startDate;
                 this.endDate = moment(startDate).add('day', 1).startOf('day');
             }
@@ -627,8 +644,8 @@
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            this.container.find('.calendar.left').html(this.renderCalendar(this.container.find('.calendar.left'), this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
+            this.container.find('.calendar.right').html(this.renderCalendar(this.container.find('.calendar.right'), this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -721,7 +738,7 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate) {
+        renderCalendar: function (calendarObject, calendar, selected, minDate, maxDate) {
 
             var html = '<div class="calendar-date">';
             html += '<table class="table-condensed">';
@@ -766,6 +783,9 @@
             html += '</thead>';
             html += '<tbody>';
 
+            var left = calendarObject.hasClass("left")
+            var right = calendarObject.hasClass("right")
+
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
 
@@ -777,20 +797,42 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
-                    if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
-                        cname = ' off disabled ';
-                    } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
-                        cname += ' active ';
-                        if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
-                            cname += ' start-date ';
-                        }
-                        if (calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
+                    if(this.weekSelection) {
+                        if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
+                            cname = ' off disabled ';
+                        } else if (calendar[row][col].unix() >= selected.unix() && calendar[row][col].unix() <= moment(selected).add('days',6).unix() && left) {
+                            cname += ' active ';
+                        } else if (calendar[row][col].unix() <= selected.unix() && calendar[row][col].unix() >= moment(selected).subtract('days',6).unix() && right) {
+                            cname += ' active ';
+                        } else if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
+                                cname += ' start-date ';
+                        } else if (calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
                             cname += ' end-date ';
+                        } 
+
+                        if ((calendar[row][col].unix() > moment(selected).add('days',6).unix() &&  calendar[row][col].unix() <= moment(this.endDate).unix() && left) ){
+                            cname += ' in-range ';
                         }
-                    } else if (calendar[row][col] >= this.startDate && calendar[row][col] <= this.endDate) {
-                        cname += ' in-range ';
-                        if (calendar[row][col].isSame(this.startDate)) { cname += ' start-date '; }
-                        if (calendar[row][col].isSame(this.endDate)) { cname += ' end-date '; }
+
+                        if ((calendar[row][col].unix() < moment(selected).subtract('days',6).unix() &&  calendar[row][col].unix() >= moment(this.startDate).unix() && right) ){
+                            cname += ' in-range ';
+                        }
+                    } else {
+                        if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
+                            cname = ' off disabled ';
+                        } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
+                            cname += ' active ';
+                            if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
+                                cname += ' start-date ';
+                            }
+                            if (calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
+                                cname += ' end-date ';
+                            }
+                        } else if (calendar[row][col] >= this.startDate && calendar[row][col] <= this.endDate) {
+                            cname += ' in-range ';
+                            if (calendar[row][col].isSame(this.startDate)) { cname += ' start-date '; }
+                            if (calendar[row][col].isSame(this.endDate)) { cname += ' end-date '; }
+                        }
                     }
 
                     var title = 'r' + row + 'c' + col;
@@ -860,6 +902,39 @@
 
             return html;
 
+        },
+        hoverWeekRow: function(cal, row) {
+            var rowItems = cal.find("td").filter(function( i ) {
+                if($(this).attr("data-title").substr(0,2) == "r"+row) {
+                    if (!$(this).hasClass("active")) {
+                        $(this).addClass("week-over")
+                    }
+                    return $(this)
+                } else { 
+                    if (!$(this).hasClass("active")) {
+                        $(this).removeClass("week-over")
+                    }
+                }
+            })
+            return rowItems
+        },
+        selectWeekRow: function(cal, row) {
+            var rowItems = cal.find("td").filter(function( i ) {
+                if($(this).attr("data-title").substr(0,2) == "r"+row) {
+                    $(this).addClass("active")
+                    return $(this)
+                } else { $(this).removeClass("active") }
+            })
+            return rowItems
+        },
+        unHoverAllRow: function(cal) {
+            var rowItems = cal.find("td").filter(function( i ) {
+                if ($(this).hasClass("week-over")) {
+                    $(this).removeClass("week-over")
+                }
+            })
+
+            return rowItems
         }
 
     };
