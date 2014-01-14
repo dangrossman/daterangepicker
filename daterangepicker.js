@@ -86,8 +86,8 @@
         }
 
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
+                '<div class="calendar left-cal"></div>' +
+                '<div class="calendar right-cal"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input" style="float: left">' +
@@ -243,10 +243,10 @@
 
         if (this.opens == 'right') {
             //swap calendar positions
-            var left = this.container.find('.calendar.left');
-            var right = this.container.find('.calendar.right');
-            left.removeClass('left').addClass('right');
-            right.removeClass('right').addClass('left');
+            var left = this.container.find('.calendar.left-cal');
+            var right = this.container.find('.calendar.right-cal');
+            left.removeClass('left-cal').addClass('right-cal');
+            right.removeClass('right').addClass('left-cal');
         }
 
         if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
@@ -478,7 +478,7 @@
 
         clickPrev: function (e) {
             var cal = $(e.target).parents('.calendar');
-            if (cal.hasClass('left')) {
+            if (cal.hasClass('left-cal')) {
                 this.leftCalendar.month.subtract('month', 1);
             } else {
                 this.rightCalendar.month.subtract('month', 1);
@@ -488,7 +488,7 @@
 
         clickNext: function (e) {
             var cal = $(e.target).parents('.calendar');
-            if (cal.hasClass('left')) {
+            if (cal.hasClass('left-cal')) {
                 this.leftCalendar.month.add('month', 1);
             } else {
                 this.rightCalendar.month.add('month', 1);
@@ -503,7 +503,7 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
 
-            if (cal.hasClass('left')) {
+            if (cal.hasClass('left-cal')) {
                 this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
             } else {
                 this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
@@ -517,7 +517,7 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
 
-            if (cal.hasClass('left')) {
+            if (cal.hasClass('left-cal')) {
                 var startDate = this.leftCalendar.calendar[row][col];
                 var endDate = this.endDate;
                 if (typeof this.dateLimit == 'object') {
@@ -569,10 +569,10 @@
 
         updateMonthYear: function (e) {
 
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            var cal = this.container.find('.calendar.left');
+            var isLeft = $(e.target).closest('.calendar').hasClass('left-cal');
+            var cal = this.container.find('.calendar.left-cal');
             if (!isLeft)
-                cal = this.container.find('.calendar.right');
+                cal = this.container.find('.calendar.right-cal');
 
             // Month must be Number for new moment versions
             var month = parseInt(cal.find('.monthselect').val(), 10);
@@ -590,10 +590,10 @@
 
         updateTime: function(e) {
 
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            var cal = this.container.find('.calendar.left');
+            var isLeft = $(e.target).closest('.calendar').hasClass('left-cal');
+            var cal = this.container.find('.calendar.left-cal');
             if (!isLeft)
-                cal = this.container.find('.calendar.right');
+                cal = this.container.find('.calendar.right-cal');
 
             var hour = parseInt(cal.find('.hourselect').val());
             var minute = parseInt(cal.find('.minuteselect').val());
@@ -627,8 +627,8 @@
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
-            this.container.find('.calendar.left').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            this.container.find('.calendar.right').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
+            this.container.find('.calendar.left-cal').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
+            this.container.find('.calendar.right-cal').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
