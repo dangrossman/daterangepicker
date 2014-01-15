@@ -169,7 +169,7 @@
             if (typeof options.applyClass == 'string')
                 this.applyClass = options.applyClass;
 
-            if (typeof options.cancelClass == 'string') 
+            if (typeof options.cancelClass == 'string')
                 this.cancelClass = options.cancelClass;
 
             if (typeof options.ranges == 'object') {
@@ -226,6 +226,30 @@
                         this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
                         iterator--;
                     }
+                }
+
+                if (typeof options.locale.applyLabel == 'string') {
+                  this.locale.applyLabel = options.locale.applyLabel;
+                }
+
+                if (typeof options.locale.cancelLabel == 'string') {
+                  this.locale.cancelLabel = options.locale.cancelLabel;
+                }
+
+                if (typeof options.locale.fromLabel == 'string') {
+                  this.locale.fromLabel = options.locale.fromLabel;
+                }
+
+                if (typeof options.locale.toLabel == 'string') {
+                  this.locale.toLabel = options.locale.toLabel;
+                }
+
+                if (typeof options.locale.weekLabel == 'string') {
+                  this.locale.weekLabel = options.locale.weekLabel;
+                }
+
+                if (typeof options.locale.customRangeLabel == 'string') {
+                  this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
             }
 
@@ -347,10 +371,10 @@
             if (!this.timePicker)
                 this.startDate = this.startDate.startOf('day');
 
-            this.oldStartDate = this.startDate.clone(); 
+            this.oldStartDate = this.startDate.clone();
 
             this.updateView();
-            this.updateCalendars();  
+            this.updateCalendars();
         },
 
         setEndDate: function(endDate) {
@@ -363,7 +387,7 @@
             if (!this.timePicker)
                 this.endDate = this.endDate.startOf('day');
 
-            this.endDate = this.endDate.clone();   
+            this.endDate = this.endDate.clone();
 
             this.updateView();
             this.updateCalendars();
