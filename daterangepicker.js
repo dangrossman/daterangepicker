@@ -172,41 +172,6 @@
             if (typeof options.cancelClass == 'string')
                 this.cancelClass = options.cancelClass;
 
-            if (typeof options.ranges == 'object') {
-                for (var range in options.ranges) {
-
-                    var start = moment(options.ranges[range][0]);
-                    var end = moment(options.ranges[range][1]);
-
-                    // If we have a min/max date set, bound this range
-                    // to it, but only if it would otherwise fall
-                    // outside of the min/max.
-                    if (this.minDate && start.isBefore(this.minDate))
-                        start = moment(this.minDate);
-
-                    if (this.maxDate && end.isAfter(this.maxDate))
-                        end = moment(this.maxDate);
-
-                    // If the end of the range is before the minimum (if min is set) OR
-                    // the start of the range is after the max (also if set) don't display this
-                    // range option.
-                    if ((this.minDate && end.isBefore(this.minDate)) || (this.maxDate && start.isAfter(this.maxDate))) {
-                        continue;
-                    }
-
-                    this.ranges[range] = [start, end];
-                }
-
-                var list = '<ul>';
-                for (var range in this.ranges) {
-                    list += '<li>' + range + '</li>';
-                }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
-                list += '</ul>';
-                this.container.find('.ranges ul').remove();
-                this.container.find('.ranges').prepend(list);
-            }
-
             if (typeof options.dateLimit == 'object')
                 this.dateLimit = options.dateLimit;
 
@@ -306,6 +271,41 @@
                         this.endDate = end;
                     }
                 }
+            }
+
+            if (typeof options.ranges == 'object') {
+                for (var range in options.ranges) {
+
+                    var start = moment(options.ranges[range][0]);
+                    var end = moment(options.ranges[range][1]);
+
+                    // If we have a min/max date set, bound this range
+                    // to it, but only if it would otherwise fall
+                    // outside of the min/max.
+                    if (this.minDate && start.isBefore(this.minDate))
+                        start = moment(this.minDate);
+
+                    if (this.maxDate && end.isAfter(this.maxDate))
+                        end = moment(this.maxDate);
+
+                    // If the end of the range is before the minimum (if min is set) OR
+                    // the start of the range is after the max (also if set) don't display this
+                    // range option.
+                    if ((this.minDate && end.isBefore(this.minDate)) || (this.maxDate && start.isAfter(this.maxDate))) {
+                        continue;
+                    }
+
+                    this.ranges[range] = [start, end];
+                }
+
+                var list = '<ul>';
+                for (var range in this.ranges) {
+                    list += '<li>' + range + '</li>';
+                }
+                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                list += '</ul>';
+                this.container.find('.ranges ul').remove();
+                this.container.find('.ranges').prepend(list);
             }
 
             if (typeof callback == 'function') {
