@@ -201,8 +201,15 @@
                 for (var range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
+
+                if (typeof options.locale.customRangeLabel == 'string') {
+                  this.locale.customRangeLabel = options.locale.customRangeLabel;
+                }
+
                 list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
+
+
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
             }
@@ -246,10 +253,6 @@
 
                 if (typeof options.locale.weekLabel == 'string') {
                   this.locale.weekLabel = options.locale.weekLabel;
-                }
-
-                if (typeof options.locale.customRangeLabel == 'string') {
-                  this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
             }
 
