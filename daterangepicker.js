@@ -422,6 +422,11 @@
             var start = moment(dateString[0], this.format);
             var end = moment(dateString[1], this.format);
 
+            if (this.singleDatePicker) {
+                start = moment(this.element.val(), this.format);
+                end = start;
+            }
+
             if (start == null || end == null) return;
             if (end.isBefore(start)) return;
 
@@ -450,7 +455,7 @@
                     left: this.parentEl.offset().left - this.parentEl.scrollLeft()
                 };
             }
-
+            
             if (this.opens == 'left') {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
