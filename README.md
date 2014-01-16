@@ -93,6 +93,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `locale`: (object) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars
 
+`parentEl`: (string or jQuery object) The document object the picker will be appended to at creation; defaults to 'body'
+
 `singleDatePicker`: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
 
 ## Functions
