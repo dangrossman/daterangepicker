@@ -387,7 +387,7 @@
             if (!this.timePicker)
                 this.endDate = this.endDate.startOf('day');
 
-            this.endDate = this.endDate.clone();
+            this.oldEndDate = this.endDate.clone();
 
             this.updateView();
             this.updateCalendars();
