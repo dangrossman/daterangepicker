@@ -184,6 +184,10 @@
                     this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
                 }
 
+                if (typeof options.locale.monthNames == 'object') {
+                  this.locale.monthNames = options.locale.monthNames.slice();
+                }
+
                 if (typeof options.locale.firstDay == 'number') {
                     this.locale.firstDay = options.locale.firstDay;
                     var iterator = options.locale.firstDay;
