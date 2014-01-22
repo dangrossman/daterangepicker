@@ -1,7 +1,7 @@
 /**
-* @version: 1.3
+* @version: 1.3.1
 * @author: Dan Grossman http://www.dangrossman.info/
-* @date: 2014-01-14
+* @date: 2014-01-22
 * @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
@@ -844,7 +844,7 @@
                 dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate);
             }
 
-            html += '<th colspan="5" class="Year">' + dateHtml + '</th>';
+            html += '<th colspan="5" class="year">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar[1][1])) {
                 html += '<th class="next available"><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
             } else {
