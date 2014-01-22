@@ -22,11 +22,11 @@
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input" style="float: left">' +
+                    '<div class="daterangepicker_start_input">' +
                       '<label for="daterangepicker_start"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<div class="daterangepicker_end_input" style="float: left; padding-left: 11px">' +
+                    '<div class="daterangepicker_end_input">' +
                       '<label for="daterangepicker_end"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
@@ -807,7 +807,7 @@
                 dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate);
             }
 
-            html += '<th colspan="5" style="width: auto">' + dateHtml + '</th>';
+            html += '<th colspan="5" class="Year">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar[1][1])) {
                 html += '<th class="next available"><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
             } else {

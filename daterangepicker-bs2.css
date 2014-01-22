@@ -237,3 +237,16 @@
   width: 60px;
   margin-bottom: 0;
 }
+
+.daterangepicker_start_input {
+  float: left;
+}
+
+.daterangepicker_end_input {
+  float: left; 
+  padding-left: 11px
+}
+
+th.Year {
+  width: auto;
+}
