@@ -247,6 +247,6 @@
   padding-left: 11px
 }
 
-th.year {
+.daterangepicker th.month {
   width: auto;
 }
