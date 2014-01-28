@@ -1,0 +1,160 @@
+/*!
+ * Stylesheet for the Date Range Picker, for use with Bootstrap 3.x by
+ * Garito (http://twitter.com/garito)
+ *
+ * Copyright 2013 Dan Grossman ( http://www.dangrossman.info )
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Built for http://www.improvely.com
+ */
+ 
+.bg-contrast (@ref; @color; @amount) when (lightness(@ref) >= 50%) {
+	background-color: lighten(@color, @amount);
+}
+.bg-contrast (@ref; @color; @amount) when (lightness(@ref) < 50%) {
+	background-color: darken(@color, @amount);
+}
+
+.color-contrast (@ref; @color; @amount) when (lightness(@ref) >= 50%) {
+	color: lighten(@color, @amount);
+}
+.color-contrast (@ref; @color; @amount) when (lightness(@ref) < 50%) {
+	color: darken(@color, @amount);	
+}
+
+.daterangepicker {
+	background-color: @body-bg;
+	
+	.ranges, .calendar.left {
+		.pull-left;
+	}
+	
+	.calendars, .calendar.right {
+		.pull-right;		
+	}
+	
+	.ranges, .calendar, .calendar-time {
+ 		padding: @padding-base-vertical @padding-base-horizontal;
+	}
+	
+	.ranges {
+		li {
+			a {
+				padding: @padding-small-vertical @padding-small-horizontal;
+			}
+		}
+	}
+	
+	.range_inputs {
+		margin-top: @padding-base-vertical;
+		
+		label {
+			padding-right: @padding-base-horizontal;
+		}
+		
+		input {
+			.pull-right; 
+			.color-contrast(@body-bg, @text-color, 30%);
+			background-color: @body-bg;
+			border: 0px;
+			
+		}
+		
+		.daterangepicker_end_input {
+			margin-bottom: @padding-base-vertical;		
+		}
+		
+		button {
+			width: 48%;
+		}
+	}
+ 
+	.calendar {
+		border-radius: @input-border-radius;
+ 		border: 1px solid @input-border;
+ 		margin-top: @padding-small-vertical;
+ 		
+ 		margin-right: @padding-small-horizontal;
+ 		
+ 		.text-center;
+ 		
+ 		table {
+	 		background-color: @body-bg;
+	 	}
+ 		
+ 		.available {
+ 			cursor: pointer;
+ 			&:hover {
+	 			background-color: @nav-link-hover-bg;
+	 		}
+ 		}
+ 		
+ 		.in-range {
+ 			color: @link-color;
+ 			.bg-contrast(@body-bg, @nav-pills-active-link-hover-bg, 40%);
+ 		}
+ 		
+ 		.off {
+ 			.color-contrast(@body-bg, @text-color, 30%);
+ 		}
+ 		
+ 		.active {
+        	color: @nav-pills-active-link-hover-color;
+		    background-color: @nav-pills-active-link-hover-bg;
+		    border-radius: @border-radius-small;
+		    
+		    &:hover {
+	 			background-color: @nav-pills-active-link-hover-bg;
+	 		}
+ 		}
+ 		
+ 		.week {
+ 			.color-contrast(@body-bg, @text-color, 30%);
+ 			font-size: @font-size-small;
+ 		}
+	}
+}
+
+.daterangepicker.opensleft:before {
+    position: absolute;
+    top: -7px;
+    right: 9px;
+    display: inline-block;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid @btn-primary-border;
+    border-left: 7px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    content: '';
+}
+.daterangepicker.opensleft:after {
+    position: absolute;
+    top: -6px;
+    right: 10px;
+    display: inline-block;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid @body-bg;
+    border-left: 6px solid transparent;
+    content: '';
+}
+.daterangepicker.opensright:before {
+    position: absolute;
+    top: -7px;
+    left: 9px;
+    display: inline-block;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid @btn-primary-border;
+    border-left: 7px solid transparent;
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    content: '';
+}
+.daterangepicker.opensright:after {
+    position: absolute;
+    top: -6px;
+    left: 10px;
+    display: inline-block;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid @body-bg;
+    border-left: 6px solid transparent;
+    content: '';
+}
