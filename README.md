@@ -69,6 +69,10 @@ $('input[name="daterange"]').daterangepicker(
 
 `showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
 
+`showCancelButton`: (boolean) Show cancel button when singleDatePicker == true
+
+`showApplyButton`: (boolean) Show apply button when singleDatePicker == true
+
 `showWeekNumbers`: (boolean) Show week numbers at the start of each week on the calendars
 
 `timePicker`: (boolean) Allow selection of dates with times, not just dates
