@@ -18,8 +18,10 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
+                '<div class="calendars clearfix">' +
+                    '<div class="calendar left"></div>' +
+                    '<div class="calendar right"></div>' +
+                '</div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input">' +
@@ -30,8 +32,10 @@
                       '<label for="daterangepicker_end"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
                     '</div>' +
-                    '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
-                    '<button class="cancelBtn"></button>' +
+                  '</div>' +
+                  '<div class="daterangepicker_buttons">' +
+                      '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
+                      '<button class="cancelBtn"></button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -229,6 +233,14 @@
                 this.showWeekNumbers = options.showWeekNumbers;
             }
 
+            if (typeof options.showCancelButton == 'boolean') {
+                this.showCancelButton = options.showCancelButton;
+            }
+
+            if (typeof options.showApplyButton == 'boolean') {
+                this.showApplyButton = options.showApplyButton;
+            }
+
             if (typeof options.buttonClasses == 'string') {
                 this.buttonClasses = [options.buttonClasses];
             }
@@ -325,12 +337,39 @@
                 this.opens = 'right';
                 this.container.find('.calendar.right').show();
                 this.container.find('.calendar.left').hide();
-                this.container.find('.ranges').hide();
-                if (!this.container.find('.calendar.right').hasClass('single'))
-                    this.container.find('.calendar.right').addClass('single');
+                this.container.find('.range_inputs').hide();
+                if (!$.isEmptyObject(this.ranges)) {
+                    this.container.find('.ranges ul').show();
+                } else {
+                    this.container.find('.ranges ul').hide();
+                }
+
+                if (!this.container.hasClass('single'))
+                    this.container.addClass('single');
+
+                if (this.showApplyButton) {
+                    this.container.find('.applyBtn').show();
+                } else {
+                    this.container.find('.applyBtn').hide();
+                }
+
+                if (this.showCancelButton) {
+                    this.container.find('.cancelBtn').show();
+                } else {
+                    this.container.find('.cancelBtn').hide();
+                }
+
             } else {
-                this.container.find('.calendar.right').removeClass('single');
+                this.container.removeClass('single');
                 this.container.find('.ranges').show();
+            }
+
+            if ($.isEmptyObject(this.ranges)) {
+                if (this.container.hasClass('hasranges'))
+                    this.container.removeClass('hasranges');
+            } else {
+                if (!this.container.hasClass('hasranges'))
+                    this.container.addClass('hasranges');
             }
 
             this.oldStartDate = this.startDate.clone();
@@ -411,7 +450,7 @@
             this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
             this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
 
-            if (this.startDate.isSame(this.endDate) || this.startDate.isBefore(this.endDate)) {
+            if (this.singleDatePicker || this.startDate.isSame(this.endDate) || this.startDate.isBefore(this.endDate)) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
             } else {
                 this.container.find('button.applyBtn').attr('disabled', 'disabled');
@@ -525,7 +564,11 @@
         },
 
         showCalendars: function() {
-            this.container.find('.calendar').show();
+            if (this.singleDatePicker) {
+                this.container.find('.calendar.left').show();
+            } else {
+                this.container.find('.calendar').show();
+            }
             this.move();
         },
 
@@ -648,8 +691,9 @@
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
             this.updateCalendars();
 
-            if (this.singleDatePicker)
+            if (this.singleDatePicker && !this.showApplyButton) {
                 this.clickApply();
+            }
         },
 
         clickApply: function (e) {
@@ -887,7 +931,7 @@
                         if (calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
                             cname += ' end-date ';
                         }
-                    } else if (calendar[row][col] >= this.startDate && calendar[row][col] <= this.endDate) {
+                    } else if (!this.singleDatePicker && calendar[row][col] >= this.startDate && calendar[row][col] <= this.endDate) {
                         cname += ' in-range ';
                         if (calendar[row][col].isSame(this.startDate)) { cname += ' start-date '; }
                         if (calendar[row][col].isSame(this.endDate)) { cname += ' end-date '; }

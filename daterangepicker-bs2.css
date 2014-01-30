@@ -13,13 +13,19 @@
   z-index: 3000;
 }
 
-.daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
+.daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar, .daterangepicker.opensleft .calendars {
   float: left;
+}
+
+.daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
   margin: 4px;
 }
 
-.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar {
+.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar, .daterangepicker.opensright .calendars {
   float: right;
+}
+
+.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar {
   margin: 4px;
 }
 
@@ -41,8 +47,15 @@
   max-width: 250px;
 }
 
-.daterangepicker .calendar.single .calendar-date {
+.daterangepicker.single .calendar.left .calendar-date {
   border: none;
+}
+
+.daterangepicker.single:not(.hasranges) .ranges {
+  float: none;
+  margin: 0;
+  text-align: center;
+  width: auto;
 }
 
 .daterangepicker .calendar th, .daterangepicker .calendar td {
@@ -181,6 +194,7 @@
 
 .daterangepicker td.disabled {
   color: #999;
+  cursor: not-allowed;
 }
 
 .daterangepicker td.available:hover, .daterangepicker th.available:hover {
@@ -249,4 +263,8 @@
 
 .daterangepicker th.month {
   width: auto;
+}
+
+.daterangepicker_buttons {
+  line-height: 0;
 }
