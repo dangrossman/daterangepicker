@@ -304,10 +304,10 @@
                     if (this.maxDate && end.isAfter(this.maxDate))
                         end = moment(this.maxDate);
 
-                    // If the end of the range is before the minimum (if min is set) OR
+                    // If the end of the range is before the minimum (if min is set and is range picker) OR
                     // the start of the range is after the max (also if set) don't display this
                     // range option.
-                    if ((this.minDate && end.isBefore(this.minDate)) || (this.maxDate && start.isAfter(this.maxDate))) {
+                    if ((!this.singleDatePicker && this.minDate && end.isBefore(this.minDate)) || (this.maxDate && start.isAfter(this.maxDate))) {
                         continue;
                     }
 
