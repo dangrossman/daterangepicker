@@ -855,13 +855,12 @@
             html += '<tr>';
 
             // add week number label
-            if (this.showWeekNumbers)
+            if (this.showWeekNumbers){
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
-
-            $.each(this.locale.daysOfWeek, function (index, dayOfWeek) {
-                html += '<th>' + dayOfWeek + '</th>';
-            });
-
+                $.each(this.locale.daysOfWeek, function (index, dayOfWeek) {
+                    html += '<th>' + dayOfWeek + '</th>';
+                });
+            }
             html += '</tr>';
             html += '</thead>';
             html += '<tbody>';
