@@ -147,28 +147,28 @@
                 this.separator = options.separator;
 
             if (typeof options.startDate == 'string')
-                this.startDate = moment(options.startDate, this.format);
+                this.startDate = moment(options.startDate, this.format).startOf('minute');
 
             if (typeof options.endDate == 'string')
-                this.endDate = moment(options.endDate, this.format);
+                this.endDate = moment(options.endDate, this.format).startOf('minute');
 
             if (typeof options.minDate == 'string')
-                this.minDate = moment(options.minDate, this.format);
+                this.minDate = moment(options.minDate, this.format).startOf('minute');
 
             if (typeof options.maxDate == 'string')
-                this.maxDate = moment(options.maxDate, this.format);
+                this.maxDate = moment(options.maxDate, this.format).startOf('minute');
 
             if (typeof options.startDate == 'object')
-                this.startDate = moment(options.startDate);
+                this.startDate = moment(options.startDate).startOf('minute');
 
             if (typeof options.endDate == 'object')
-                this.endDate = moment(options.endDate);
+                this.endDate = moment(options.endDate).startOf('minute');
 
             if (typeof options.minDate == 'object')
-                this.minDate = moment(options.minDate);
+                this.minDate = moment(options.minDate).startOf('minute');
 
             if (typeof options.maxDate == 'object')
-                this.maxDate = moment(options.maxDate);
+                this.maxDate = moment(options.maxDate).startOf('minute');
 
             if (typeof options.applyClass == 'string')
                 this.applyClass = options.applyClass;
@@ -921,7 +921,8 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
-                    if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
+                    if ((minDate && calendar[row][col].clone().startOf('day').isBefore(minDate.clone().startOf('day'))) 
+                        || (maxDate && calendar[row][col].clone().startOf('day').isAfter(maxDate.clone().startOf('day')))) {
                         cname = ' off disabled ';
                     } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
