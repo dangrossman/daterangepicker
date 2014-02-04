@@ -492,6 +492,7 @@
 
         move: function () {
             var parentOffset = { top: 0, left: 0 };
+
             if (!this.parentEl.is('body')) {
                 parentOffset = {
                     top: this.parentEl.offset().top - this.parentEl.scrollTop(),
@@ -512,17 +513,28 @@
                     });
                 }
             } else {
+
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
                     left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
+
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
                     this.container.css({
                         left: 'auto',
                         right: 0
                     });
                 }
+            }
+            // Open container on top if no place to show it on bottom
+            if (this.container.offset().top + this.container.outerHeight() > $(document).scrollTop() + $(window).height()) {
+                this.container.css({
+                    top: this.element.offset().top - this.container.outerHeight() - parentOffset.top,
+                });
+                this.container.addClass('openstop');
+            } else {
+                this.container.removeClass('openstop');
             }
         },
 

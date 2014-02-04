@@ -172,6 +172,27 @@
   content: '';
 }
 
+.daterangepicker.openstop:before {
+  top: auto;
+  bottom: -7px;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #ccc;
+  border-left: 7px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 0;
+  content: '';
+}
+
+.daterangepicker.openstop:after {
+  top: auto;
+  bottom: -6px;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #fff;
+  border-left: 6px solid transparent;
+  border-bottom: 0;
+  content: '';
+}
+
 .daterangepicker table {
   width: 100%;
   margin: 0;
