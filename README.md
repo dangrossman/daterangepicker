@@ -65,7 +65,9 @@ $('input[name="daterange"]').daterangepicker(
 
 `maxDate`: (Date object, moment object or string) The latest date a user may select
 
-`dateLimit`: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months)
+`maxDateLimit`: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months, hours, minutes)
+
+`minDateLimit`: (object) The minimum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months, hours, minutes)
 
 `showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
 

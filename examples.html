@@ -204,7 +204,102 @@
                });
                </script>
 
-            </div>            
+            </div>
+
+
+            <h4>Date Range &amp; Time Picker with 3 days max date limit</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                       <input type="text" style="width: 300px" name="example3" id="example3" class="form-control" value=""  class="span4"/>
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#example3').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    maxDateLimit : {
+                      days: 3
+                    },
+                    format: 'MM/DD/YYYY h:mm A'
+                  });
+               });
+               </script>
+
+            </div>
+
+
+            <h4>Date Range &amp; Time Picker with 1 month min date limit</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                       <input type="text" style="width: 300px" name="example4" id="example4" class="form-control" value=""  class="span4"/>
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#example4').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    startDate : moment().subtract('month', 1),
+                    endDate : moment(),
+                    minDateLimit : {
+                      months: 1
+                    },
+                    format: 'MM/DD/YYYY h:mm A'
+                  });
+               });
+               </script>
+
+            </div>
+
+            <h4>Date Range &amp; Time Picker canceling value when bluring</h4>
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset>
+                  <div class="control-group">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                       <input type="text" style="width: 300px" name="example5" id="example5" class="form-control" value=""  class="span4"/>
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#example5').daterangepicker({
+                    timePicker: true,
+                    timePickerIncrement: 30,
+                    cancelOnBlur: true,
+                    format: 'MM/DD/YYYY h:mm A'
+                  });
+               });
+               </script>
+
+            </div>           
 
             <h4>Options Usage</h4>
 

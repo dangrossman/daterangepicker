@@ -105,7 +105,8 @@
             this.endDate = moment().startOf('day');
             this.minDate = false;
             this.maxDate = false;
-            this.dateLimit = false;
+            this.minDateLimit = false;
+            this.maxDateLimit = false;
 
             this.showDropdowns = false;
             this.showWeekNumbers = false;
@@ -176,8 +177,11 @@
             if (typeof options.cancelClass == 'string')
                 this.cancelClass = options.cancelClass;
 
-            if (typeof options.dateLimit == 'object')
-                this.dateLimit = options.dateLimit;
+            if (typeof options.minDateLimit == 'object')
+                this.minDateLimit = options.minDateLimit;
+
+            if (typeof options.maxDateLimit == 'object')
+                this.maxDateLimit = options.maxDateLimit;
 
             // update day names order to firstDay
             if (typeof options.locale == 'object') {
@@ -664,18 +668,30 @@
             if (cal.hasClass('left')) {
                 var startDate = this.leftCalendar.calendar[row][col];
                 var endDate = this.endDate;
-                if (typeof this.dateLimit == 'object') {
-                    var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
-                    if (endDate.isAfter(maxDate)) {
-                        endDate = maxDate;
+                if (typeof this.maxDateLimit == 'object') {
+                    var maxDate = moment(startDate).add(this.maxDateLimit);
+                     if (endDate.isAfter(maxDate)) {
+                         endDate = maxDate;
+                     }
+                 }
+                if (typeof this.minDateLimit == 'object') {
+                    var minDate = moment(startDate).add(this.minDateLimit);
+                    if (endDate.isBefore(minDate)) {
+                        endDate = minDate;
                     }
                 }
             } else {
                 var startDate = this.startDate;
                 var endDate = this.rightCalendar.calendar[row][col];
-                if (typeof this.dateLimit == 'object') {
-                    var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
-                    if (startDate.isBefore(minDate)) {
+                if (typeof this.maxDateLimit == 'object') {
+                    var minDate = moment(endDate).subtract(this.maxDateLimit);
+                     if (startDate.isBefore(minDate)) {
+                         startDate = minDate;
+                     }
+                 }
+                if (typeof this.minDateLimit == 'object') {
+                    var minDate = moment(endDate).subtract(this.minDateLimit);
+                    if (startDate.isAfter(minDate)) {
                         startDate = minDate;
                     }
                 }
@@ -767,12 +783,36 @@
                 start.hour(hour);
                 start.minute(minute);
                 this.startDate = start;
+                if (typeof this.maxDateLimit == 'object') {
+                    var maxDate = moment(this.startDate).add(this.maxDateLimit);
+                    if (this.endDate.isAfter(maxDate)) {
+                        this.endDate = maxDate;
+                    }
+                }
+                if (typeof this.minDateLimit == 'object') {
+                    var maxDate = moment(this.startDate).add(this.minDateLimit);
+                    if (this.endDate.isBefore(maxDate)) {
+                        this.endDate = maxDate;
+                    }
+                }
                 this.leftCalendar.month.hour(hour).minute(minute);
             } else {
                 var end = this.endDate.clone();
                 end.hour(hour);
                 end.minute(minute);
                 this.endDate = end;
+                if (typeof this.maxDateLimit == 'object') {
+                    var minDate = moment(this.endDate).subtract(this.maxDateLimit);
+                    if (this.startDate.isBefore(minDate)) {
+                        this.startDate = minDate;
+                    }
+                }
+                if (typeof this.minDateLimit == 'object') {
+                    var minDate = moment(this.endDate).subtract(this.minDateLimit);
+                    if (this.startDate.isAfter(minDate)) {
+                        this.startDate = minDate;
+                    }
+                }
                 this.rightCalendar.month.hour(hour).minute(minute);
             }
 
