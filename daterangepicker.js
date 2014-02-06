@@ -1,5 +1,5 @@
 /**
-* @version: 1.3.1
+* @version: 1.3.2
 * @author: Dan Grossman http://www.dangrossman.info/
 * @date: 2014-01-22
 * @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
