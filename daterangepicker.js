@@ -640,8 +640,9 @@
                 this.endDate = endDate;
             } else if (startDate.isAfter(endDate)) {
                 $(e.target).addClass('active');
+                var difference = this.endDate.diff(this.startDate);
                 this.startDate = startDate;
-                this.endDate = moment(startDate).add('day', 1).startOf('day');
+                this.endDate = moment(startDate).add('ms', difference);
             }
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
