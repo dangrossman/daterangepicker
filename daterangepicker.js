@@ -360,6 +360,7 @@
 
             this.container.addClass('opens' + this.opens);
 
+            this.notify();
             this.updateView();
             this.updateCalendars()
 
@@ -377,6 +378,7 @@
 
             this.oldStartDate = this.startDate.clone();
 
+            this.notify();
             this.updateView();
             this.updateCalendars();
         },
@@ -393,6 +395,7 @@
 
             this.oldEndDate = this.endDate.clone();
 
+            this.notify();
             this.updateView();
             this.updateCalendars();
         },
