@@ -282,6 +282,8 @@
 
                     var start = moment(options.ranges[range][0]);
                     var end = moment(options.ranges[range][1]);
+                    var originalStart = start;
+                    var originalEnd = end;
 
                     // If we have a min/max date set, bound this range
                     // to it, but only if it would otherwise fall
@@ -299,7 +301,7 @@
                         continue;
                     }
 
-                    this.ranges[range] = [start, end];
+                    this.ranges[range] = [start, end, originalStart, originalEnd];
                 }
 
                 var list = '<ul>';
@@ -735,13 +737,21 @@
             var i = 0;
             for (var range in this.ranges) {
                 if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                    if (this.dateLimit.days < this.ranges[range][2].diff(this.ranges[range][3], 'days')) {
+                        this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
+                    } else if (this.ranges[range][2].isBefore(this.ranges[range][0]) || this.ranges[range][3].isAfter(this.ranges[range][1])) {
+                        this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
+                    } else if (this.startDate.isSame(this.ranges[range][2]) && this.endDate.isSame(this.ranges[range][3])) {
                         customRange = false;
                         this.container.find('.ranges li:eq(' + i + ')').addClass('active');
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
-                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
+                    if (this.dateLimit.days < this.ranges[range][2].diff(this.ranges[range][3], 'days')) {
+                        this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
+                    } else if (this.ranges[range][2].isBefore(this.ranges[range][0]) || this.ranges[range][3].isAfter(this.ranges[range][1])) {
+                        this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
+                    } else if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][2].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][3].format('YYYY-MM-DD')) {
                         customRange = false;
                         this.container.find('.ranges li:eq(' + i + ')').addClass('active');
                     }
