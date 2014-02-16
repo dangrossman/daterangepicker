@@ -739,6 +739,8 @@
                 if (this.timePicker) {
                     if (this.dateLimit.days < this.ranges[range][2].diff(this.ranges[range][3], 'days')) {
                         this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
+                    } else if (this.ranges[range][2].isBefore(this.ranges[range][0]) || this.ranges[range][3].isAfter(this.ranges[range][1])) {
+                        this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
                     } else if (this.startDate.isSame(this.ranges[range][2]) && this.endDate.isSame(this.ranges[range][3])) {
                         customRange = false;
                         this.container.find('.ranges li:eq(' + i + ')').addClass('active');
@@ -746,6 +748,8 @@
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.dateLimit.days < this.ranges[range][2].diff(this.ranges[range][3], 'days')) {
+                        this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
+                    } else if (this.ranges[range][2].isBefore(this.ranges[range][0]) || this.ranges[range][3].isAfter(this.ranges[range][1])) {
                         this.container.find('.ranges li:eq(' + i + ')').addClass('disabled');
                     } else if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][2].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][3].format('YYYY-MM-DD')) {
                         customRange = false;
