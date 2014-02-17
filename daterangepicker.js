@@ -81,12 +81,12 @@
 
         if (this.element.is('input')) {
             this.element.on({
-                'click.daterangepicker': $.proxy(this.show, this),
-                'focus.daterangepicker': $.proxy(this.show, this),
+                'click.daterangepicker': $.proxy(this.showDatepicker, this),
+                'focus.daterangepicker': $.proxy(this.showDatepicker, this),
                 'keyup.daterangepicker': $.proxy(this.updateFromControl, this)
             });
         } else {
-            this.element.on('click.daterangepicker', $.proxy(this.show, this));
+            this.element.on('click.daterangepicker', $.proxy(this.showDatepicker, this));
         }
 
     };
@@ -459,7 +459,7 @@
                     left: this.parentEl.offset().left - this.parentEl.scrollLeft()
                 };
             }
-            
+
             if (this.opens == 'left') {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
@@ -487,7 +487,7 @@
             }
         },
 
-        show: function (e) {
+        showDatepicker: function (e) {
             this.container.show();
             this.move();
 
@@ -496,11 +496,11 @@
                 e.preventDefault();
             }
 
-            $(document).on('mousedown', $.proxy(this.hide, this));
-            this.element.trigger('show', this);
+            $(document).on('mousedown', $.proxy(this.hideDatepicker, this));
+            this.element.trigger('showDatepicker', this);
         },
 
-        hide: function (e) {
+        hideDatepicker: function (e) {
             this.container.hide();
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
@@ -509,8 +509,8 @@
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
 
-            $(document).off('mousedown', this.hide);
-            this.element.trigger('hide', this);
+            $(document).off('mousedown', this.hideDatepicker);
+            this.element.trigger('hideDatepicker', this);
         },
 
         enterRange: function (e) {
@@ -560,7 +560,7 @@
                 this.updateInputText();
 
                 this.container.find('.calendar').hide();
-                this.hide();
+                this.hideDatepicker();
                 this.element.trigger('apply', this);
             }
         },
@@ -654,7 +654,7 @@
 
         clickApply: function (e) {
             this.updateInputText();
-            this.hide();
+            this.hideDatepicker();
             this.element.trigger('apply', this);
         },
 
@@ -663,7 +663,7 @@
             this.endDate = this.oldEndDate;
             this.updateView();
             this.updateCalendars();
-            this.hide();
+            this.hideDatepicker();
             this.element.trigger('cancel', this);
         },
 

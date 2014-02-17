@@ -109,9 +109,9 @@ Several functions are provided for updating the picker's option and state after 
 
 Several events are triggered on the element you attach the picker to, which you can listen for:
 
-`show`: Triggered when the picker is shown
+`showDatepicker`: Triggered when the picker is shown
 
-`hide`: Triggered when the picker is hidden
+`hideDatepicker`: Triggered when the picker is hidden
 
 `apply`: Triggered when the apply button is clicked
 
