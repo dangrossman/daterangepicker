@@ -488,6 +488,7 @@
         },
 
         show: function (e) {
+            this.element.addClass('active');
             this.container.show();
             this.move();
 
@@ -501,6 +502,7 @@
         },
 
         hide: function (e) {
+            this.element.removeClass('active');
             this.container.hide();
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
