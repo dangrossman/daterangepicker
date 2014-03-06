@@ -1,5 +1,5 @@
 /**
-* @version: 1.3.2
+* @version: 1.3.3
 * @author: Dan Grossman http://www.dangrossman.info/
 * @date: 2014-01-22
 * @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
@@ -500,7 +500,7 @@
             }
 
             $(document).on('mousedown', $.proxy(this.hide, this));
-            this.element.trigger('show', this);
+            this.element.trigger('show.daterangepicker', this);
         },
 
         hide: function (e) {
@@ -514,7 +514,7 @@
             this.oldEndDate = this.endDate.clone();
 
             $(document).off('mousedown', this.hide);
-            this.element.trigger('hide', this);
+            this.element.trigger('hide.daterangepicker', this);
         },
 
         enterRange: function (e) {
@@ -567,7 +567,7 @@
 
                 this.container.find('.calendar').hide();
                 this.hide();
-                this.element.trigger('apply', this);
+                this.element.trigger('apply.daterangepicker', this);
             }
         },
 
@@ -662,7 +662,7 @@
         clickApply: function (e) {
             this.updateInputText();
             this.hide();
-            this.element.trigger('apply', this);
+            this.element.trigger('apply.daterangepicker', this);
         },
 
         clickCancel: function (e) {
@@ -672,7 +672,7 @@
             this.updateView();
             this.updateCalendars();
             this.hide();
-            this.element.trigger('cancel', this);
+            this.element.trigger('cancel.daterangepicker', this);
         },
 
         updateMonthYear: function (e) {

@@ -40,8 +40,8 @@ $(document).ready(function() {
 
 The constructor also takes an optional options object and callback function. The function will be called whenever 
 the selected date range has been changed by the user, and is passed the start and end dates (moment date objects)
-and the range label chosen (if any), as parameters. It will not fire if the picker is closed without any change
-to the selected dates.
+and the predefined range label chosen (if any), as parameters. It will not fire if the picker is closed without 
+any change to the selected dates.
 
 ````
 $('input[name="daterange"]').daterangepicker(
@@ -50,7 +50,7 @@ $('input[name="daterange"]').daterangepicker(
     startDate: '2013-01-01',
     endDate: '2013-12-31'
   },
-  function(start, end) {
+  function(start, end, label) {
     alert('A date range was chosen: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
   }
 );
@@ -106,17 +106,28 @@ Several functions are provided for updating the picker's option and state after 
 
 `setEndDate(Date/moment/string)`: Sets the date range picker's currently selected end date to the provided date
 
+Example usage:
+
+````
+//create a new date range picker
+$('#daterange').daterangepicker({ startDate: '2014-03-05', endDate: '2014-03-06' });
+
+//change the selected date range of that picker
+$('#daterange').data('daterangepicker').setStartDate('2014-03-01');
+$('#daterange').data('daterangepicker').setEndDate('2014-03-31');
+````
+
 ## Events
 
 Several events are triggered on the element you attach the picker to, which you can listen for:
 
-`show`: Triggered when the picker is shown
+`show.daterangepicker`: Triggered when the picker is shown
 
-`hide`: Triggered when the picker is hidden
+`hide.daterangepicker`: Triggered when the picker is hidden
 
-`apply`: Triggered when the apply button is clicked
+`apply.daterangepicker`: Triggered when the apply button is clicked
 
-`cancel`: Triggered when the cancel button is clicked
+`cancel.daterangepicker`: Triggered when the cancel button is clicked
 
 Some applications need a "clear" instead of a "cancel" functionality, which can be achieved by changing the button label and watching for the cancel event:
 
@@ -125,7 +136,7 @@ $('#daterange').daterangepicker({
   locale: { cancelLabel: 'Clear' }  
 });
 
-$('#daterange').on('cancel', function(ev, picker) {
+$('#daterange').on('cancel.daterangepicker', function(ev, picker) {
   //do something, like clearing an input
   $('#daterange').val('');
 });

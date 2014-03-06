@@ -113,9 +113,9 @@
                <script type="text/javascript">
                $(document).ready(function() {
 
-                  var cb = function(start, end) {
+                  var cb = function(start, end, label) {
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + "]");
+                    alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {
@@ -173,16 +173,16 @@
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
-                  $('#reportrange').on('show', function() { console.log("show event fired"); });
-                  $('#reportrange').on('hide', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply', function(ev, picker) { 
+                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
                     console.log("apply event fired, start/end dates are " 
                       + picker.startDate.format('MMMM D, YYYY') 
                       + " to " 
                       + picker.endDate.format('MMMM D, YYYY')
                     ); 
                   });
-                  $('#reportrange').on('cancel', function(ev, picker) { console.log("cancel event fired"); });
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
                   $('#options1').click(function() {
                     $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
