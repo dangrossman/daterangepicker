@@ -36,12 +36,13 @@
                 '</div>' +
               '</div>';
 
+        //custom options
+        if (typeof options !== 'object' || options === null)
+            options = {};
+
         this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         this.container = $(DRPTemplate).appendTo(this.parentEl);
 
-        //custom options
-        if (typeof options !== 'object')
-            options = {};
         this.setOptions(options, cb);
 
         //apply CSS classes and labels to buttons
