@@ -6,7 +6,7 @@
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
 */
-!function ($) {
+!function ($, moment) {
 
     var DateRangePicker = function (element, options, cb) {
 
@@ -36,11 +36,11 @@
                 '</div>' +
               '</div>';
 
-        this.parentEl = (typeof options == 'object' && options.parentEl && $(options.parentEl)) || $(this.parentEl);
+        this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         //custom options
-        if (typeof options != 'object')
+        if (typeof options !== 'object')
             options = {};
         this.setOptions(options, cb);
 
@@ -136,59 +136,59 @@
 
             this.cb = function () { };
 
-            if (typeof options.format == 'string')
+            if (typeof options.format === 'string')
                 this.format = options.format;
 
-            if (typeof options.separator == 'string')
+            if (typeof options.separator === 'string')
                 this.separator = options.separator;
 
-            if (typeof options.startDate == 'string')
+            if (typeof options.startDate === 'string')
                 this.startDate = moment(options.startDate, this.format);
 
-            if (typeof options.endDate == 'string')
+            if (typeof options.endDate === 'string')
                 this.endDate = moment(options.endDate, this.format);
 
-            if (typeof options.minDate == 'string')
+            if (typeof options.minDate === 'string')
                 this.minDate = moment(options.minDate, this.format);
 
-            if (typeof options.maxDate == 'string')
+            if (typeof options.maxDate === 'string')
                 this.maxDate = moment(options.maxDate, this.format);
 
-            if (typeof options.startDate == 'object')
+            if (typeof options.startDate === 'object')
                 this.startDate = moment(options.startDate);
 
-            if (typeof options.endDate == 'object')
+            if (typeof options.endDate === 'object')
                 this.endDate = moment(options.endDate);
 
-            if (typeof options.minDate == 'object')
+            if (typeof options.minDate === 'object')
                 this.minDate = moment(options.minDate);
 
-            if (typeof options.maxDate == 'object')
+            if (typeof options.maxDate === 'object')
                 this.maxDate = moment(options.maxDate);
 
-            if (typeof options.applyClass == 'string')
+            if (typeof options.applyClass === 'string')
                 this.applyClass = options.applyClass;
 
-            if (typeof options.cancelClass == 'string')
+            if (typeof options.cancelClass === 'string')
                 this.cancelClass = options.cancelClass;
 
-            if (typeof options.dateLimit == 'object')
+            if (typeof options.dateLimit === 'object')
                 this.dateLimit = options.dateLimit;
 
             // update day names order to firstDay
-            if (typeof options.locale == 'object') {
+            if (typeof options.locale === 'object') {
 
-                if (typeof options.locale.daysOfWeek == 'object') {
+                if (typeof options.locale.daysOfWeek === 'object') {
                     // Create a copy of daysOfWeek to avoid modification of original
                     // options object for reusability in multiple daterangepicker instances
                     this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
                 }
 
-                if (typeof options.locale.monthNames == 'object') {
+                if (typeof options.locale.monthNames === 'object') {
                   this.locale.monthNames = options.locale.monthNames.slice();
                 }
 
-                if (typeof options.locale.firstDay == 'number') {
+                if (typeof options.locale.firstDay === 'number') {
                     this.locale.firstDay = options.locale.firstDay;
                     var iterator = options.locale.firstDay;
                     while (iterator > 0) {
@@ -197,72 +197,74 @@
                     }
                 }
 
-                if (typeof options.locale.applyLabel == 'string') {
+                if (typeof options.locale.applyLabel === 'string') {
                   this.locale.applyLabel = options.locale.applyLabel;
                 }
 
-                if (typeof options.locale.cancelLabel == 'string') {
+                if (typeof options.locale.cancelLabel === 'string') {
                   this.locale.cancelLabel = options.locale.cancelLabel;
                 }
 
-                if (typeof options.locale.fromLabel == 'string') {
+                if (typeof options.locale.fromLabel === 'string') {
                   this.locale.fromLabel = options.locale.fromLabel;
                 }
 
-                if (typeof options.locale.toLabel == 'string') {
+                if (typeof options.locale.toLabel === 'string') {
                   this.locale.toLabel = options.locale.toLabel;
                 }
 
-                if (typeof options.locale.weekLabel == 'string') {
+                if (typeof options.locale.weekLabel === 'string') {
                   this.locale.weekLabel = options.locale.weekLabel;
                 }
 
-                if (typeof options.locale.customRangeLabel == 'string') {
+                if (typeof options.locale.customRangeLabel === 'string') {
                   this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
             }
 
-            if (typeof options.opens == 'string')
+            if (typeof options.opens === 'string')
                 this.opens = options.opens;
 
-            if (typeof options.showWeekNumbers == 'boolean') {
+            if (typeof options.showWeekNumbers === 'boolean') {
                 this.showWeekNumbers = options.showWeekNumbers;
             }
 
-            if (typeof options.buttonClasses == 'string') {
+            if (typeof options.buttonClasses === 'string') {
                 this.buttonClasses = [options.buttonClasses];
             }
 
-            if (typeof options.buttonClasses == 'object') {
+            if (typeof options.buttonClasses === 'object') {
                 this.buttonClasses = options.buttonClasses;
             }
 
-            if (typeof options.showDropdowns == 'boolean') {
+            if (typeof options.showDropdowns === 'boolean') {
                 this.showDropdowns = options.showDropdowns;
             }
 
-            if (typeof options.singleDatePicker == 'boolean') {
+            if (typeof options.singleDatePicker === 'boolean') {
                 this.singleDatePicker = options.singleDatePicker;
             }
 
-            if (typeof options.timePicker == 'boolean') {
+            if (typeof options.timePicker === 'boolean') {
                 this.timePicker = options.timePicker;
             }
 
-            if (typeof options.timePickerIncrement == 'number') {
+            if (typeof options.timePickerIncrement === 'number') {
                 this.timePickerIncrement = options.timePickerIncrement;
             }
 
-            if (typeof options.timePicker12Hour == 'boolean') {
+            if (typeof options.timePicker12Hour === 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            var start, end, range;
+
             //if no start/end dates set, check if an input element contains initial values
-            if (typeof options.startDate == 'undefined' && typeof options.endDate == 'undefined') {
+            if (typeof options.startDate === 'undefined' && typeof options.endDate === 'undefined') {
                 if ($(this.element).is('input[type=text]')) {
                     var val = $(this.element).val();
                     var split = val.split(this.separator);
-                    var start, end;
+                    start = end = null;
                     if (split.length == 2) {
                         start = moment(split[0], this.format);
                         end = moment(split[1], this.format);
@@ -270,18 +272,18 @@
                         start = moment(val, this.format);
                         end = moment(val, this.format);
                     }
-                    if (start != null && end != null) {
+                    if (start !== null && end !== null) {
                         this.startDate = start;
                         this.endDate = end;
                     }
                 }
             }
 
-            if (typeof options.ranges == 'object') {
-                for (var range in options.ranges) {
+            if (typeof options.ranges === 'object') {
+                for (range in options.ranges) {
 
-                    var start = moment(options.ranges[range][0]);
-                    var end = moment(options.ranges[range][1]);
+                    start = moment(options.ranges[range][0]);
+                    end = moment(options.ranges[range][1]);
 
                     // If we have a min/max date set, bound this range
                     // to it, but only if it would otherwise fall
@@ -303,7 +305,7 @@
                 }
 
                 var list = '<ul>';
-                for (var range in this.ranges) {
+                for (range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
                 list += '<li>' + this.locale.customRangeLabel + '</li>';
@@ -312,7 +314,7 @@
                 this.container.find('.ranges').prepend(list);
             }
 
-            if (typeof callback == 'function') {
+            if (typeof callback === 'function') {
                 this.cb = callback;
             }
 
@@ -355,22 +357,22 @@
                 right.removeClass('right').addClass('left');
             }
 
-            if (typeof options.ranges == 'undefined' && !this.singleDatePicker) {
+            if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
                 this.container.find('.calendar').show();
             }
 
             this.container.addClass('opens' + this.opens);
 
             this.updateView();
-            this.updateCalendars()
+            this.updateCalendars();
 
         },
 
         setStartDate: function(startDate) {
-            if (typeof startDate == 'string')
+            if (typeof startDate === 'string')
                 this.startDate = moment(startDate, this.format);
 
-            if (typeof startDate == 'object')
+            if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
 
             if (!this.timePicker)
@@ -383,10 +385,10 @@
         },
 
         setEndDate: function(endDate) {
-            if (typeof endDate == 'string')
+            if (typeof endDate === 'string')
                 this.endDate = moment(endDate, this.format);
 
-            if (typeof endDate == 'object')
+            if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
 
             if (!this.timePicker)
@@ -432,7 +434,6 @@
                 end = start;
             }
 
-            if (start == null || end == null) return;
             if (end.isBefore(start)) return;
 
             this.oldStartDate = this.startDate.clone();
@@ -611,19 +612,20 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
 
+            var startDate, endDate;
             if (cal.hasClass('left')) {
-                var startDate = this.leftCalendar.calendar[row][col];
-                var endDate = this.endDate;
-                if (typeof this.dateLimit == 'object') {
+                startDate = this.leftCalendar.calendar[row][col];
+                endDate = this.endDate;
+                if (typeof this.dateLimit === 'object') {
                     var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
                     if (endDate.isAfter(maxDate)) {
                         endDate = maxDate;
                     }
                 }
             } else {
-                var startDate = this.startDate;
-                var endDate = this.rightCalendar.calendar[row][col];
-                if (typeof this.dateLimit == 'object') {
+                startDate = this.startDate;
+                endDate = this.rightCalendar.calendar[row][col];
+                if (typeof this.dateLimit === 'object') {
                     var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
                     if (startDate.isBefore(minDate)) {
                         startDate = minDate;
@@ -768,9 +770,11 @@
 
             var dayOfWeek = firstDay.day();
 
+            var i;
+
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = [];
-            for (var i = 0; i < 6; i++) {
+            for (i = 0; i < 6; i++) {
                 calendar[i] = [];
             }
 
@@ -783,8 +787,9 @@
                 startDay = daysInLastMonth - 6;
 
             var curDate = moment([lastYear, lastMonth, startDay, 12, minute]);
-            for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('hour', 24)) {
-                if (i > 0 && col % 7 == 0) {
+            var col, row;
+            for (i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('hour', 24)) {
+                if (i > 0 && col % 7 === 0) {
                     col = 0;
                     row++;
                 }
@@ -909,6 +914,7 @@
             html += '</table>';
             html += '</div>';
 
+            var i;
             if (this.timePicker) {
 
                 html += '<div class="calendar-time">';
@@ -921,11 +927,11 @@
                     end = 12;
                     if (selected_hour >= 12)
                         selected_hour -= 12;
-                    if (selected_hour == 0)
+                    if (selected_hour === 0)
                         selected_hour = 12;
                 }
 
-                for (var i = start; i <= end; i++) {
+                for (i = start; i <= end; i++) {
                     if (i == selected_hour) {
                         html += '<option value="' + i + '" selected="selected">' + i + '</option>';
                     } else {
@@ -937,7 +943,7 @@
 
                 html += '<select class="minuteselect">';
 
-                for (var i = 0; i < 60; i += this.timePickerIncrement) {
+                for (i = 0; i < 60; i += this.timePickerIncrement) {
                     var num = i;
                     if (num < 10)
                         num = '0' + num;
@@ -988,4 +994,4 @@
         return this;
     };
 
-}(window.jQuery);
+}(window.jQuery, window.moment);
