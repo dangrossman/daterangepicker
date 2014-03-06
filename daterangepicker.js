@@ -335,6 +335,7 @@
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
+            this.oldChosenLabel = this.chosenLabel;
 
             this.leftCalendar = {
                 month: moment([this.startDate.year(), this.startDate.month(), 1, this.startDate.hour(), this.startDate.minute()]),
@@ -448,7 +449,7 @@
 
         notify: function () {
             this.updateView();
-            this.cb(this.startDate, this.endDate);
+            this.cb(this.startDate, this.endDate, this.chosenLabel);
         },
 
         move: function () {
@@ -514,6 +515,7 @@
         },
 
         enterRange: function (e) {
+            // mouse pointer has entered a range label
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
@@ -540,6 +542,7 @@
 
         clickRange: function (e) {
             var label = e.target.innerHTML;
+            this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
             } else {
@@ -661,6 +664,7 @@
         clickCancel: function (e) {
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
+            this.chosenLabel = this.oldChosenLabel;
             this.updateView();
             this.updateCalendars();
             this.hide();
