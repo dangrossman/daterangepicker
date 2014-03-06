@@ -146,7 +146,7 @@ While passing in a callback to the constructor is the easiest way to listen for 
 
 ````
 $('#daterange').daterangepicker();
-$('#daterange').on('apply', function(ev, picker) {
+$('#daterange').on('apply.daterangepicker', function(ev, picker) {
   console.log(picker.startDate.format('YYYY-MM-DD'));
   console.log(picker.endDate.format('YYYY-MM-DD'));
 });
