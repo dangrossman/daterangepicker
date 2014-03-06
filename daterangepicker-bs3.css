@@ -41,6 +41,10 @@
   max-width: 270px;
 }
 
+.daterangepicker.show-calendar .calendar {
+    display: block;
+}
+
 .daterangepicker .calendar.single .calendar-date {
   border: none;
 }

@@ -358,7 +358,7 @@
             }
 
             if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
-                this.container.find('.calendar').show();
+                this.container.addClass('show-calendar');
             }
 
             this.container.addClass('opens' + this.opens);
@@ -530,8 +530,12 @@
         },
 
         showCalendars: function() {
-            this.container.find('.calendar').show();
+            this.container.addClass('show-calendar');
             this.move();
+        },
+
+        hideCalendars: function() {
+            this.container.removeClass('show-calendar');
         },
 
         updateInputText: function() {
@@ -565,7 +569,7 @@
 
                 this.updateInputText();
 
-                this.container.find('.calendar').hide();
+                this.hideCalendars();
                 this.hide();
                 this.element.trigger('apply.daterangepicker', this);
             }
@@ -677,7 +681,6 @@
         },
 
         updateMonthYear: function (e) {
-
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
             var cal = this.container.find('.calendar.left');
             if (!isLeft)
@@ -694,11 +697,9 @@
             }
 
             this.updateCalendars();
-
         },
 
         updateTime: function(e) {
-
             var isLeft = $(e.target).closest('.calendar').hasClass('left');
             var cal = this.container.find('.calendar.left');
             if (!isLeft)
