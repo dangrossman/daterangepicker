@@ -39,8 +39,9 @@ $(document).ready(function() {
 ```
 
 The constructor also takes an optional options object and callback function. The function will be called whenever 
-the selected date range has been changed by the user, and is passed the start and end dates (moment date objects) as 
-parameters. It will not fire if the picker is closed without any change to the selected dates.
+the selected date range has been changed by the user, and is passed the start and end dates (moment date objects)
+and the range label chosen (if any), as parameters. It will not fire if the picker is closed without any change
+to the selected dates.
 
 ````
 $('input[name="daterange"]').daterangepicker(
