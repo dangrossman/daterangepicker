@@ -111,6 +111,7 @@
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  outline: none;
 }
 
 .daterangepicker.opensleft:before {
@@ -243,7 +244,7 @@
 }
 
 .daterangepicker_end_input {
-  float: left; 
+  float: left;
   padding-left: 11px
 }
 
