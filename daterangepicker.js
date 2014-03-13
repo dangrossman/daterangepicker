@@ -490,6 +490,8 @@
         },
 
         show: function (e) {
+            if (this._restoreTabIndex) return;
+
             this.element.addClass('active');
             this.container.show();
             this.move();
@@ -499,7 +501,8 @@
                 e.preventDefault();
             }
 
-            $(document).on('mousedown', $.proxy(this.hide, this));
+            this.container.attr('tabindex', -1).focus();
+            this.container.on('blur', $.proxy(this.hide, this));
             this.element.trigger('show.daterangepicker', this);
         },
 
@@ -513,8 +516,14 @@
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
 
-            $(document).off('mousedown', this.hide);
+            this.container.off('blur', this.hide);
             this.element.trigger('hide.daterangepicker', this);
+
+            if (this.element.is('input')) {
+                this._restoreTabIndex = true;
+                this.element.focus();
+                this._restoreTabIndex = false;
+            }
         },
 
         enterRange: function (e) {
