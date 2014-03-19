@@ -36,12 +36,13 @@
                 '</div>' +
               '</div>';
 
+        //custom options
+        if (typeof options !== 'object' || options === null)
+            options = {};
+
         this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         this.container = $(DRPTemplate).appendTo(this.parentEl);
 
-        //custom options
-        if (typeof options !== 'object')
-            options = {};
         this.setOptions(options, cb);
 
         //apply CSS classes and labels to buttons
@@ -98,7 +99,7 @@
         setOptions: function(options, callback) {
 
             this.startDate = moment().startOf('day');
-            this.endDate = moment().startOf('day');
+            this.endDate = moment().endOf('day');
             this.minDate = false;
             this.maxDate = false;
             this.dateLimit = false;
@@ -320,7 +321,7 @@
 
             if (!this.timePicker) {
                 this.startDate = this.startDate.startOf('day');
-                this.endDate = this.endDate.startOf('day');
+                this.endDate = this.endDate.endOf('day');
             }
 
             if (this.singleDatePicker) {
@@ -392,7 +393,7 @@
                 this.endDate = moment(endDate);
 
             if (!this.timePicker)
-                this.endDate = this.endDate.startOf('day');
+                this.endDate = this.endDate.endOf('day');
 
             this.oldEndDate = this.endDate.clone();
 
@@ -556,7 +557,7 @@
 
                 if (!this.timePicker) {
                     this.startDate.startOf('day');
-                    this.endDate.startOf('day');
+                    this.endDate.endOf('day');
                 }
 
                 this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
@@ -634,9 +635,9 @@
             }
 
             if (this.singleDatePicker && cal.hasClass('left')) {
-                endDate = startDate;
+                endDate = startDate.clone();
             } else if (this.singleDatePicker && cal.hasClass('right')) {
-                startDate = endDate;
+                startDate = endDate.clone();
             }
 
             cal.find('td').removeClass('active');
@@ -655,6 +656,8 @@
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
             this.updateCalendars();
+
+            endDate.endOf('day');
 
             if (this.singleDatePicker)
                 this.clickApply();

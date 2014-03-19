@@ -36,7 +36,9 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#reservation').daterangepicker();
+                  $('#reservation').daterangepicker(null, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                  });
                });
                </script>
 
@@ -60,7 +62,9 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#birthday').daterangepicker({ singleDatePicker: true });
+                  $('#birthday').daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                  });
                });
                </script>
 
@@ -76,7 +80,7 @@
                     <div class="controls">
                      <div class="input-prepend input-group">
                        <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                       <input type="text" style="width: 300px" name="reservation" id="reservationtime" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"  class="span4"/>
+                       <input type="text" style="width: 400px" name="reservation" id="reservationtime" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"  class="span4"/>
                      </div>
                     </div>
                   </div>
@@ -89,6 +93,8 @@
                     timePicker: true,
                     timePickerIncrement: 30,
                     format: 'MM/DD/YYYY h:mm A'
+                  }, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
                   });
                });
                </script>
@@ -114,8 +120,9 @@
                $(document).ready(function() {
 
                   var cb = function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
+                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {
