@@ -457,6 +457,7 @@
         },
 
         notify: function () {
+            this.datesSet = true;
             this.updateView();
             this.cb(this.startDate, this.endDate, this.chosenLabel);
         },
