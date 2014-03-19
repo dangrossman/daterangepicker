@@ -358,7 +358,7 @@
             }
 
             if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
-                this.container.find('.calendar').show();
+                this.container.addClass('show-calendar');
             }
 
             this.container.addClass('opens' + this.opens);
@@ -544,8 +544,12 @@
         },
 
         showCalendars: function() {
-            this.container.find('.calendar').show();
+            this.container.addClass('show-calendar');
             this.move();
+        },
+
+        hideCalendars: function() {
+            this.container.removeClass('show-calendar');
         },
 
         updateInputText: function() {
@@ -578,7 +582,7 @@
 
                 this.updateInputText();
 
-                this.container.find('.calendar').hide();
+                this.hideCalendars();
                 this.hide();
                 this.element.trigger('apply.daterangepicker', this);
             }
@@ -692,41 +696,31 @@
         },
 
         updateMonthYear: function (e) {
-
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            var cal = this.container.find('.calendar.left');
-            if (!isLeft)
-                cal = this.container.find('.calendar.right');
+            var isLeft = $(e.target).closest('.calendar').hasClass('left'),
+                leftOrRight = isLeft ? 'left' : 'right',
+                cal = this.container.find('.calendar.'+leftOrRight);
 
             // Month must be Number for new moment versions
             var month = parseInt(cal.find('.monthselect').val(), 10);
             var year = cal.find('.yearselect').val();
 
-            if (isLeft) {
-                this.leftCalendar.month.month(month).year(year);
-            } else {
-                this.rightCalendar.month.month(month).year(year);
-            }
-
+            this[leftOrRight+'Calendar'].month.month(month).year(year);
             this.updateCalendars();
-
         },
 
         updateTime: function(e) {
+            var isLeft = $(e.target).closest('.calendar').hasClass('left'),
+                leftOrRight = isLeft ? 'left' : 'right',
+                cal = this.container.find('.calendar.'+leftOrRight);
 
-            var isLeft = $(e.target).closest('.calendar').hasClass('left');
-            var cal = this.container.find('.calendar.left');
-            if (!isLeft)
-                cal = this.container.find('.calendar.right');
-
-            var hour = parseInt(cal.find('.hourselect').val());
-            var minute = parseInt(cal.find('.minuteselect').val());
+            var hour = parseInt(cal.find('.hourselect').val(), 10);
+            var minute = parseInt(cal.find('.minuteselect').val(), 10);
 
             if (this.timePicker12Hour) {
                 var ampm = cal.find('.ampmselect').val();
-                if (ampm == 'PM' && hour < 12)
+                if (ampm === 'PM' && hour < 12)
                     hour += 12;
-                if (ampm == 'AM' && hour == 12)
+                if (ampm === 'AM' && hour === 12)
                     hour = 0;
             }
 
@@ -745,7 +739,6 @@
             }
 
             this.updateCalendars();
-
         },
 
         updateCalendars: function () {
@@ -777,7 +770,6 @@
         },
 
         buildCalendar: function (month, year, hour, minute, side) {
-
             var firstDay = moment([year, month, 1]);
             var lastMonth = moment(firstDay).subtract('month', 1).month();
             var lastYear = moment(firstDay).subtract('month', 1).year();
@@ -814,7 +806,6 @@
             }
 
             return calendar;
-
         },
 
         renderDropdowns: function (selected, minDate, maxDate) {
