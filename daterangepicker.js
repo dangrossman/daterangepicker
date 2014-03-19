@@ -575,7 +575,7 @@
                 this.updateInputText();
 
                 this.container.find('.calendar').hide();
-                this.hide(undefined, 'apply');
+                this.hide(e, 'apply');
                 this.element.trigger('apply.daterangepicker', this);
             }
         },
@@ -682,7 +682,7 @@
             this.chosenLabel = this.oldChosenLabel;
             this.updateView();
             this.updateCalendars();
-            this.hide(e, 'cancel');
+            this.hide();
             this.element.trigger('cancel.daterangepicker', this);
         },
 
