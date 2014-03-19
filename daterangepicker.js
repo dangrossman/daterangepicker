@@ -99,6 +99,7 @@
 
             this.startDate = moment().startOf('day');
             this.endDate = moment().startOf('day');
+            this.datesSet = false;
             this.minDate = false;
             this.maxDate = false;
             this.dateLimit = false;
@@ -275,6 +276,7 @@
                     if (start !== null && end !== null) {
                         this.startDate = start;
                         this.endDate = end;
+                        this.datesSet = true;
                     }
                 }
             }
@@ -378,6 +380,7 @@
             if (!this.timePicker)
                 this.startDate = this.startDate.startOf('day');
 
+            this.datesSet = true;
             this.oldStartDate = this.startDate.clone();
 
             this.updateView();
@@ -394,6 +397,7 @@
             if (!this.timePicker)
                 this.endDate = this.endDate.startOf('day');
 
+            this.datesSet = true;
             this.oldEndDate = this.endDate.clone();
 
             this.updateView();
@@ -442,10 +446,14 @@
             this.startDate = start;
             this.endDate = end;
 
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.notify();
+            this.processNotify();
 
             this.updateCalendars();
+        },
+
+        processNotify: function() {
+            if (!this.datesSet || !this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+                this.notify();
         },
 
         notify: function () {
@@ -503,12 +511,12 @@
             this.element.trigger('show.daterangepicker', this);
         },
 
-        hide: function (e) {
+        hide: function (e, source) {
             this.element.removeClass('active');
             this.container.hide();
 
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.notify();
+            if (source != undefined && source === "apply")
+                this.processNotify();
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
@@ -566,7 +574,7 @@
                 this.updateInputText();
 
                 this.container.find('.calendar').hide();
-                this.hide();
+                this.hide(undefined, 'apply');
                 this.element.trigger('apply.daterangepicker', this);
             }
         },
@@ -650,6 +658,7 @@
                 var difference = this.endDate.diff(this.startDate);
                 this.startDate = startDate;
                 this.endDate = moment(startDate).add('ms', difference);
+                this.datesSet = true;
             }
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
@@ -662,7 +671,7 @@
 
         clickApply: function (e) {
             this.updateInputText();
-            this.hide();
+            this.hide(e, 'apply');
             this.element.trigger('apply.daterangepicker', this);
         },
 
@@ -672,7 +681,7 @@
             this.chosenLabel = this.oldChosenLabel;
             this.updateView();
             this.updateCalendars();
-            this.hide();
+            this.hide(e, 'cancel');
             this.element.trigger('cancel.daterangepicker', this);
         },
 
