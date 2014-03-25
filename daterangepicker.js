@@ -662,11 +662,13 @@
                 $(e.target).addClass('active');
                 this.startDate = startDate;
                 this.endDate = endDate;
+                this.chosenLabel = this.locale.customRangeLabel;
             } else if (startDate.isAfter(endDate)) {
                 $(e.target).addClass('active');
                 var difference = this.endDate.diff(this.startDate);
                 this.startDate = startDate;
                 this.endDate = moment(startDate).add('ms', difference);
+                this.chosenLabel = this.locale.customRangeLabel;
             }
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
