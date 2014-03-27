@@ -50,6 +50,8 @@
         $.each(this.buttonClasses, function (idx, val) {
             c.find('button').addClass(val);
         });
+        if (this.element.attr("disabled"))
+            this.container.addClass('disabled')        
         this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
         this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
         if (this.applyClass.length)
