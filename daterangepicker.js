@@ -494,15 +494,17 @@
         },
 
         show: function (e) {
-            this.element.addClass('active');
-            this.container.show();
-            this.move();
-
-            $(document).on('click.daterangepicker', $.proxy(this.outsideClick, this));
-            // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-            $(document).on('click.daterangepicker', '[data-toggle=dropdown]', $.proxy(this.outsideClick, this));
-
-            this.element.trigger('show.daterangepicker', this);
+            if (!$(this.container).hasClass('disabled')) {
+                this.element.addClass('active');
+                this.container.show();
+                this.move();
+    
+                $(document).on('click.daterangepicker', $.proxy(this.outsideClick, this));
+                // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
+                $(document).on('click.daterangepicker', '[data-toggle=dropdown]', $.proxy(this.outsideClick, this));
+    
+                this.element.trigger('show.daterangepicker', this);
+            }
         },
 
         outsideClick: function (e) {
