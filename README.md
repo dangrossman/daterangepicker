@@ -96,6 +96,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `singleDatePicker`: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
 
+`parentEl`: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be `'body'`
+
 ## Functions
 
 Several functions are provided for updating the picker's option and state after initialization:
