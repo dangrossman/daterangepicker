@@ -7,6 +7,7 @@
       <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="daterangepicker-bs3.css" />
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+      <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="moment.js"></script>
       <script type="text/javascript" src="daterangepicker.js"></script>
    </head>
@@ -36,7 +37,9 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#reservation').daterangepicker();
+                  $('#reservation').daterangepicker(null, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                  });
                });
                </script>
 
@@ -60,7 +63,9 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#birthday').daterangepicker({ singleDatePicker: true });
+                  $('#birthday').daterangepicker({ singleDatePicker: true }, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                  });
                });
                </script>
 
@@ -187,7 +192,7 @@
                     <div class="controls">
                      <div class="input-prepend input-group">
                        <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                       <input type="text" style="width: 300px" name="reservation" id="reservationtime" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"  class="span4"/>
+                       <input type="text" style="width: 400px" name="reservation" id="reservationtime" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"  class="span4"/>
                      </div>
                     </div>
                   </div>
@@ -200,6 +205,8 @@
                     timePicker: true,
                     timePickerIncrement: 30,
                     format: 'MM/DD/YYYY h:mm A'
+                  }, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
                   });
                });
                </script>
@@ -319,9 +326,10 @@
                <script type="text/javascript">
                $(document).ready(function() {
 
-                  var cb = function(start, end) {
+                  var cb = function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + "]");
+                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {
@@ -379,16 +387,16 @@
 
                   $('#reportrange').daterangepicker(optionSet1, cb);
 
-                  $('#reportrange').on('show', function() { console.log("show event fired"); });
-                  $('#reportrange').on('hide', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply', function(ev, picker) { 
+                  $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
+                  $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
                     console.log("apply event fired, start/end dates are " 
                       + picker.startDate.format('MMMM D, YYYY') 
                       + " to " 
                       + picker.endDate.format('MMMM D, YYYY')
                     ); 
                   });
-                  $('#reportrange').on('cancel', function(ev, picker) { console.log("cancel event fired"); });
+                  $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
                   $('#options1').click(function() {
                     $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
@@ -406,6 +414,33 @@
                </script>
 
             </div>
+
+
+            <h4>Plays nicely with Bootstrap dropdowns</h4>
+
+            <div class="well">
+
+               <div class="dropdown" style="display: inline-block;">
+                 <a data-toggle="dropdown" class="btn btn-primary" href="#">Regular dropdown</a>
+                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                   <li><a href="#">item</a></li>
+                 </ul>
+               </div>
+
+               <div id="reportrange2" class="btn" style="display: inline-block; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  <span></span> <b class="caret"></b>
+               </div>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reportrange2 span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+                  $('#reportrange2').daterangepicker();
+               });
+               </script>
+
+            </div>
+
 
          </div>
       </div>
