@@ -692,6 +692,16 @@
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
                 endDate = this.endDate;
+                if (typeof this.minDate === 'object') {
+                    if (this.minDate.isAfter(startDate)) {
+                        startDate = this.minDate;
+                    }
+                }
+                if (typeof this.maxDate === 'object') {
+                    if (this.maxDate.isBefore(startDate)) {
+                        startDate = this.maxDate;
+                    }
+                }
                 if (typeof this.maxDateLimit === 'object') {
                     var maxDate = moment(startDate).add(this.maxDateLimit);
                     if (endDate.isAfter(maxDate)) {
@@ -707,6 +717,16 @@
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
+                if (typeof this.minDate === 'object') {
+                    if (this.minDate.isAfter(endDate)) {
+                        endDate = this.minDate;
+                    }
+                }
+                if (typeof this.maxDate === 'object') {
+                    if (this.maxDate.isBefore(endDate)) {
+                        endDate = this.maxDate;
+                    }
+                }
                 if (typeof this.maxDateLimit === 'object') {
                     var minDate = moment(endDate).subtract(this.maxDateLimit);
                     if (startDate.isBefore(minDate)) {
@@ -1035,21 +1055,86 @@
                 html += '<select class="hourselect">';
                 var start = 0;
                 var end = 23;
+                var selectedIsMinDate = false
+                var selectedIsMaxDate = false
+                var amPm = false;
                 var selected_hour = selected.hour();
+
                 if (this.timePicker12Hour) {
                     start = 1;
                     end = 12;
-                    if (selected_hour >= 12)
+                    if (selected_hour >= 12) {
                         selected_hour -= 12;
-                    if (selected_hour === 0)
+                        amPm = "PM";
+                    } else {
+                        amPm = "AM";
+                    }
+                    if (selected_hour === 0) {
                         selected_hour = 12;
+                    }
                 }
+
+                if (minDate) {
+                    selectedIsMinDate = selected.clone().startOf("day").isSame(minDate.clone().startOf("day"));
+                }
+
+                if (maxDate) {
+                    selectedIsMaxDate = selected.clone().startOf("day").isSame(maxDate.clone().startOf("day"));
+                }
+
+                // Returns 'disabled' if hour of a minDate/maxDate is > to maxDate or < to minDate
+                var hourDisabled = function(hour, amPm) {
+                    var convertedHour;
+                    // convert hour in 24h if amPm format
+                    if (amPm) {
+
+                        if (amPm === 'AM' && hour === 12) {
+                            convertedHour = hour - 12;
+                        } else if (amPm === 'PM' && hour < 12) {
+                            convertedHour = hour + 12;
+                        } else {
+                            convertedHour = hour;
+                        }
+                    } else {
+                        convertedHour = hour;
+                    }
+                    if ((selectedIsMinDate && convertedHour < minDate.hour()) || (selectedIsMaxDate && convertedHour > maxDate.hour())) {
+                        return 'disabled';
+                    } else {
+                        return '';
+                    }
+                };
+
+                // Returns 'disabled' if minute of a minDate/maxDate and selected_hour is > to maxDate or < to minDate
+                var minuteDisabled = function(minute, selected_hour, isSelected) {
+                    if (
+                        // Day is select is minDate or maxDate and selected hour is minDate/maxDate hour
+                        ((selectedIsMinDate && selected_hour === minDate.hour()) || (selectedIsMaxDate && selected_hour === maxDate.hour())) &&
+                        ((selectedIsMinDate && minute < minDate.minute()) || (selectedIsMaxDate && minute > maxDate.minute()))) {
+                        return 'disabled';
+                    } else if (isSelected) {
+                        return 'selected="selected"';
+                    } else {
+                        return '';
+                    }
+                };
+
+                // Returns 'disabled' if all hours from a AM or PM are disabled
+                var amPmDisabled = function(amOrPm) {
+                    if (selectedIsMinDate && minDate.hour() >= 12 && amOrPm === 'AM') {
+                        return 'disabled';
+                    } else if (selectedIsMaxDate && maxDate.hour() < 12 && amOrPm === 'PM') {
+                        return 'disabled';
+                    } else {
+                        return '';
+                    }
+                };
 
                 for (i = start; i <= end; i++) {
                     if (i == selected_hour) {
-                        html += '<option value="' + i + '" selected="selected">' + i + '</option>';
+                        html += '<option value="' + i + '" selected="selected" ' + hourDisabled(i, amPm) + '>' + i + '</option>';
                     } else {
-                        html += '<option value="' + i + '">' + i + '</option>';
+                        html += '<option value="' + i + '" ' + hourDisabled(i, amPm) + '>' + i + '</option>';
                     }
                 }
 
@@ -1062,9 +1147,9 @@
                     if (num < 10)
                         num = '0' + num;
                     if (i == selected.minute()) {
-                        html += '<option value="' + i + '" selected="selected">' + num + '</option>';
+                        html += '<option value="' + i + '" ' + minuteDisabled(i, selected.hour(), true) + '>' + num + '</option>';
                     } else {
-                        html += '<option value="' + i + '">' + num + '</option>';
+                        html += '<option value="' + i + '" ' + minuteDisabled(i, selected.hour(), false) + '>' + num + '</option>';
                     }
                 }
 
@@ -1073,9 +1158,9 @@
                 if (this.timePicker12Hour) {
                     html += '<select class="ampmselect">';
                     if (selected.hour() >= 12) {
-                        html += '<option value="AM">AM</option><option value="PM" selected="selected">PM</option>';
+                        html += '<option value="AM"' + amPmDisabled('AM') + '>AM</option><option value="PM" selected="selected">PM</option>';
                     } else {
-                        html += '<option value="AM" selected="selected">AM</option><option value="PM">PM</option>';
+                        html += '<option value="AM" selected="selected">AM</option><option value="PM"' + amPmDisabled('PM') + '>PM</option>';
                     }
                     html += '</select>';
                 }
