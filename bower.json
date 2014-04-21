@@ -12,7 +12,7 @@
     "moment.min.js"
   ],
   "dependencies": {
-    "jquery": ">=1.10",
+    "jquery": ">=1.8.1",
     "momentjs": "~2.5.1"
   }
 }
