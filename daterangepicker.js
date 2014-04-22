@@ -383,7 +383,16 @@
             this.updateView();
             this.updateCalendars();
         },
+        getStartDate: function() {
+            
+            return   this.startDate;
 
+        },
+        getEndDate: function() {
+            
+            return   this.endDate;
+
+        },
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
                 this.endDate = moment(endDate, this.format);
