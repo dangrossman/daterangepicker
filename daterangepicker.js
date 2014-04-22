@@ -6,7 +6,23 @@
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
 */
-!function ($, moment) {
+(function(root, factory) {
+
+  if (typeof define === 'function' && define.amd) {
+    define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
+      root.daterangepicker = factory(root, exports, momentjs, $);
+    });
+
+  } else if (typeof exports !== 'undefined') {
+    var momentjs = require('moment');
+    factory(root, exports, momentjs);
+
+  // Finally, as a browser global.
+  } else {
+    root.daterangepicker = factory(root, {}, root.momentjs, (root.jQuery || root.Zepto || root.ender || root.$));
+  }
+
+}(this, function(root, daterangepicker, momentjs, $) {
 
     var DateRangePicker = function (element, options, cb) {
 
@@ -1007,4 +1023,4 @@
         return this;
     };
 
-}(window.jQuery, window.moment);
+}));
