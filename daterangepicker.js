@@ -421,14 +421,22 @@
             if (!this.element.is('input')) return;
             if (!this.element.val().length) return;
 
-            var dateString = this.element.val().split(this.separator);
-            var start = moment(dateString[0], this.format);
-            var end = moment(dateString[1], this.format);
+            var dateString = this.element.val().split(this.separator),
+                start = null,
+                end = null;
+            
+            if(dateString.length === 2) {
+                start = moment(dateString[0], this.format);
+                end = moment(dateString[1], this.format);
+            }
 
-            if (this.singleDatePicker) {
+            if (this.singleDatePicker || start === null || end === null) {
                 start = moment(this.element.val(), this.format);
                 end = start;
             }
+            
+            var start = moment(dateString[0], this.format);
+            var end = moment(dateString[1], this.format);
 
             if (end.isBefore(start)) return;
 
