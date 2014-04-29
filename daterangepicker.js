@@ -435,9 +435,6 @@
                 end = start;
             }
             
-            var start = moment(dateString[0], this.format);
-            var end = moment(dateString[1], this.format);
-
             if (end.isBefore(start)) return;
 
             this.oldStartDate = this.startDate.clone();
