@@ -675,7 +675,8 @@
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
             this.updateCalendars();
 
-            endDate.endOf('day');
+            if (!this.timePicker)
+                endDate.endOf('day');
 
             if (this.singleDatePicker)
                 this.clickApply();
