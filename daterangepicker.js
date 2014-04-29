@@ -50,6 +50,8 @@
         $.each(this.buttonClasses, function (idx, val) {
             c.find('button').addClass(val);
         });
+        if (this.element.attr("disabled"))
+            this.container.addClass('disabled')        
         this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
         this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
         if (this.applyClass.length)
@@ -499,15 +501,17 @@
         },
 
         show: function (e) {
-            this.element.addClass('active');
-            this.container.show();
-            this.move();
-
-            $(document).on('click.daterangepicker', $.proxy(this.outsideClick, this));
-            // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-            $(document).on('click.daterangepicker', '[data-toggle=dropdown]', $.proxy(this.outsideClick, this));
-
-            this.element.trigger('show.daterangepicker', this);
+            if (!$(this.container).hasClass('disabled')) {
+                this.element.addClass('active');
+                this.container.show();
+                this.move();
+    
+                $(document).on('click.daterangepicker', $.proxy(this.outsideClick, this));
+                // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
+                $(document).on('click.daterangepicker', '[data-toggle=dropdown]', $.proxy(this.outsideClick, this));
+    
+                this.element.trigger('show.daterangepicker', this);
+            }
         },
 
         outsideClick: function (e) {
