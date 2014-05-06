@@ -65,7 +65,7 @@
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
             .on('click.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
-            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.enterDate, this))
+            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
             .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.updateMonthYear, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.updateMonthYear, this))
@@ -628,8 +628,7 @@
             this.updateCalendars();
         },
 
-        enterDate: function (e) {
-
+        hoverDate: function (e) {
             var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
@@ -640,7 +639,6 @@
             } else {
                 this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
             }
-
         },
 
         clickDate: function (e) {
