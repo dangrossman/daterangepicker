@@ -799,8 +799,10 @@
                 i++;
             }, this));
 
-            if (customRange)
+            if (customRange) {
                 this.container.find('.ranges li:last').addClass('active');
+                this.showCalendars();
+            }
         },
 
         buildCalendar: function (month, year, hour, minute, side) {
