@@ -503,9 +503,10 @@
             this.container.show();
             this.move();
 
-            $(document).on('click.daterangepicker', $.proxy(this.outsideClick, this));
+            this._outsideClickProxy = $.proxy(function (e) { this.outsideClick(e); }, this);
+            $(document).on('click.daterangepicker', this._outsideClickProxy);
             // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-            $(document).on('click.daterangepicker', '[data-toggle=dropdown]', $.proxy(this.outsideClick, this));
+            $(document).on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy);
 
             this.element.trigger('show.daterangepicker', this);
         },
@@ -523,7 +524,7 @@
         },
 
         hide: function (e) {
-            $(document).off('click.daterangepicker', this.outsideClick);
+            $(document).off('click.daterangepicker', this._outsideClickProxy);
 
             this.element.removeClass('active');
             this.container.hide();
