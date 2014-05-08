@@ -503,10 +503,13 @@
             this.container.show();
             this.move();
 
+            // Create a click proxy that is private to this instance of datepicker, for unbinding
             this._outsideClickProxy = $.proxy(function (e) { this.outsideClick(e); }, this);
-            $(document).on('click.daterangepicker', this._outsideClickProxy);
+            // Bind global datepicker mousedown for hiding and
             // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-            $(document).on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy);
+            $(document)
+              .on('mousedown.daterangepicker', this._outsideClickProxy)
+              .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy);
 
             this.element.trigger('show.daterangepicker', this);
         },
@@ -524,7 +527,9 @@
         },
 
         hide: function (e) {
-            $(document).off('click.daterangepicker', this._outsideClickProxy);
+            $(document)
+              .off('mousedown.daterangepicker', this._outsideClickProxy)
+              .off('click.daterangepicker', this._outsideClickProxy);
 
             this.element.removeClass('active');
             this.container.hide();
