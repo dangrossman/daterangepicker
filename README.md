@@ -58,6 +58,8 @@ $('input[name="daterange"]').daterangepicker(
 
 ## Options
 
+`minViewMode`: (string: 'day'/'month') Whether the calendar will be in day or month level. When 'month' is selected the date format expected by default is 'MMM, YYYY'
+
 `startDate`: (Date object, moment object or string) The start of the initially selected date range
 
 `endDate`: (Date object, moment object or string) The end of the initially selected date range
@@ -71,6 +73,12 @@ $('input[name="daterange"]').daterangepicker(
 `showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
 
 `showWeekNumbers`: (boolean) Show week numbers at the start of each week on the calendars
+
+`hideFormInputs`: (boolean) Whether to hide the date form inputs
+
+`alwaysShowCalendars`: (boolean) Whether to always show the calendars
+
+`autoApplyClickedRange`: (boolean) Whether a range option clicked will close the calendar and apply the range selected without the need to click the 'Apply' button
 
 `timePicker`: (boolean) Allow selection of dates with times, not just dates
 

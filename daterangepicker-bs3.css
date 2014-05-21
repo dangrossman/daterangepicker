@@ -265,3 +265,9 @@
 .daterangepicker th.month {
   width: auto;
 }
+
+.daterangepicker td.month {
+    width: 56px;
+    height: 54px;
+    margin: 2px;
+}
