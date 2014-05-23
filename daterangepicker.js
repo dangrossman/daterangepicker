@@ -908,7 +908,7 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
-                    if ((minDate && calendar[row][col].isBefore(minDate)) || (maxDate && calendar[row][col].isAfter(maxDate))) {
+                    if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
                         cname = ' off disabled ';
                     } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
