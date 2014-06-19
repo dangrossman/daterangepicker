@@ -89,6 +89,10 @@
   width: 74px;
 }
 
+.daterangepicker .ranges .input-mini:hover {
+  cursor: pointer;
+}
+
 .daterangepicker .ranges ul {
   list-style: none;
   margin: 0;
