@@ -105,6 +105,7 @@
 
             this.showDropdowns = false;
             this.showWeekNumbers = false;
+            this.alwaysShowCalendar = false;
             this.timePicker = false;
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
@@ -227,6 +228,10 @@
 
             if (typeof options.showWeekNumbers === 'boolean') {
                 this.showWeekNumbers = options.showWeekNumbers;
+            }
+
+            if (typeof options.alwaysShowCalendar === 'boolean') {
+                this.alwaysShowCalendar = options.alwaysShowCalendar;
             }
 
             if (typeof options.buttonClasses === 'string') {
@@ -581,6 +586,9 @@
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
             } else {
+                if(this.alwaysShowCalendar){
+                    this.showCalendars();
+                }
                 var dates = this.ranges[label];
 
                 this.startDate = dates[0];
@@ -597,8 +605,11 @@
 
                 this.updateInputText();
 
-                this.hideCalendars();
-                this.hide();
+                if(!this.alwaysShowCalendar){
+                    this.hideCalendars();
+                    this.hide();
+                }
+                
                 this.element.trigger('apply.daterangepicker', this);
             }
         },
