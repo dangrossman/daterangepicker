@@ -50,7 +50,6 @@
 
 		&:before {
 		  top: -@caret-before-width;
-		  right: 9px;
 			border-right: @caret-before-width solid transparent;
 			border-bottom: @caret-before-width solid lighten(@gray-dark, 60%);
 			border-left: @caret-before-width solid transparent;
@@ -59,7 +58,6 @@
 
 		&:after {
 		  top: -@caret-after-width;
-		  right: 10px;
 		  border-right: @caret-after-width solid transparent;
 		  border-bottom: @caret-after-width solid #fff;
 		  border-left: @caret-after-width solid transparent;		
@@ -71,6 +69,9 @@
 			float: left;
   		margin: 4px;
 		}
+
+		&:before { right: 9px; } 
+		&:after { right: 10px; }
 	}
 
 	&.opensright {
@@ -78,6 +79,9 @@
 		  float: right;
 		  margin: 4px;
 		}
+
+		&:before { left: 9px; }
+		&:after { left: 10px; }
 	}
 
 	.ranges {
