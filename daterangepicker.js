@@ -16,29 +16,29 @@
         //element that triggered the date range picker
         this.element = $(element);
 
-        //create the picker HTML object
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input">' +
-                      '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input">' +
-                      '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
-                    '</div>' +
-                    '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
-                    '<button class="cancelBtn"></button>' +
-                  '</div>' +
-                '</div>' +
-              '</div>';
-
         //custom options
         if (typeof options !== 'object' || options === null)
             options = {};
+
+        var DRPTemplate = (typeof options.template == 'string') ? options.template : (
+            '<div class="daterangepicker dropdown-menu">' +
+              '<div class="calendar left"></div>' +
+              '<div class="calendar right"></div>' +
+              '<div class="ranges">' +
+                '<div class="range_inputs">' +
+                  '<div class="daterangepicker_start_input">' +
+                    '<label for="daterangepicker_start"></label>' +
+                    '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+                  '</div>' +
+                  '<div class="daterangepicker_end_input">' +
+                    '<label for="daterangepicker_end"></label>' +
+                    '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+                  '</div>' +
+                  '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
+                  '<button class="cancelBtn"></button>' +
+                '</div>' +
+              '</div>' +
+            '</div>');
 
         this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(DRPTemplate).appendTo(this.parentEl);
