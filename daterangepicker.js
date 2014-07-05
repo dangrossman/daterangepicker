@@ -109,6 +109,7 @@
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
+            this.customRangeClicked = false;
             this.ranges = {};
 
             this.opens = 'right';
@@ -116,7 +117,7 @@
                 this.opens = 'left';
 
             this.buttonClasses = ['btn', 'btn-small'];
-            this.applyClass = 'btn-success';
+            this.applyClass = '';
             this.cancelClass = 'btn-default';
 
             this.format = 'MM/DD/YYYY';
@@ -579,6 +580,7 @@
             var label = e.target.innerHTML;
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
+                this.customRangeClicked = true;
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
@@ -688,6 +690,7 @@
 
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year());
+            this.customRangeClicked = true;
             this.updateCalendars();
 
             if (!this.timePicker)
@@ -698,9 +701,11 @@
         },
 
         clickApply: function (e) {
+            this.customRangeClicked = true;
             this.updateInputText();
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
+            this.customRangeClicked = false;
         },
 
         clickCancel: function (e) {
@@ -711,6 +716,7 @@
             this.updateCalendars();
             this.hide();
             this.element.trigger('cancel.daterangepicker', this);
+            this.customRangeClicked = false;
         },
 
         updateMonthYear: function (e) {
@@ -758,7 +764,7 @@
 
             this.updateCalendars();
         },
-
+        
         updateCalendars: function () {
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
@@ -766,25 +772,32 @@
             this.container.find('.calendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.startDate, this.maxDate));
 
             this.container.find('.ranges li').removeClass('active');
-            var customRange = true;
-            var i = 0;
-            for (var range in this.ranges) {
-                if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
+            var customRange = true,
+                self = this,
+                updateLabel = function(index) {
+                    self.chosenLabel = self.container.find('.ranges li:eq(' + index + ')')
+                        .addClass('active').html();
+                };
+            
+            if (!this.customRangeClicked) {
+                var i = 0;
+                for (var range in this.ranges) {
+                    if (this.timePicker) {
+                        if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                            updateLabel(i);
+                            customRange = false;
+                        }
+                    } else {
+                        //ignore times when comparing dates if time picker is not enabled
+                        if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
+                            updateLabel(i);
+                            customRange = false;
+                        }
                     }
-                } else {
-                    //ignore times when comparing dates if time picker is not enabled
-                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
-                    }
+                    i++;
                 }
-                i++;
             }
+
             if (customRange) {
                 this.chosenLabel = this.container.find('.ranges li:last')
                     .addClass('active').html();
