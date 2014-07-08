@@ -382,6 +382,7 @@
 
             this.updateView();
             this.updateCalendars();
+            this.updateInputText();
         },
 
         setEndDate: function(endDate) {
@@ -398,6 +399,7 @@
 
             this.updateView();
             this.updateCalendars();
+            this.updateInputText();
         },
 
         updateView: function () {
