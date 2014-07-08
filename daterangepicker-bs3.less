@@ -1,0 +1,259 @@
+// =============================================== */
+// - Stylesheet for the Date Range Picker, for use with Bootstrap 3.x
+// -
+// - Copyright 2013 Dan Grossman ( http://www.dangrossman.info )
+// - Licensed under the Apache License v2.0
+// - http://www.apache.org/licenses/LICENSE-2.0
+// -
+// - Built for http://www.improvely.com
+// -
+// - Converted to less by Elad Chen. (eladchen @ github)
+// - =============================================== */
+
+// @import 'path/to/bootstarp/variables.less'
+
+// Uncomment the following lines in case bootstrap's 'variables.less' variables are not within this file scope.
+// @gray-dark:          lighten(#000, 20%);   // #333
+// @gray:               lighten(#000, 33.5%); // #555
+// @gray-light:         lighten(#000, 60%);   // #999
+// @gray-lighter:       lighten(#000, 93.5%); // #eee
+// @body-bg: 						#fff;
+// @font-size-base: 		14px;
+// @border-radius-base: 4px;
+// @table-border-color: #ddd;
+// @caret-width-base: 	4px
+
+// Safely remove these two vars if bootstrap's variables are within this file scope. 
+@caret-before-width: 	(@caret-width-base + 3);
+@caret-after-width: 	(@caret-before-width - 1);
+
+.daterangepicker {
+  position: absolute;
+  background: @body-bg;
+  top: 100px;
+  left: 20px;
+  padding: 4px;
+  margin-top: 1px;
+  border-radius: @border-radius-base;
+
+	&.dropdown-menu {
+		max-width: none;
+		z-index: 3000;
+	}
+
+	&.opensleft, &.opensright {
+		&:before, &:after {
+			position: absolute;
+			display: inline-block;
+			content: '';
+		}
+
+		&:before {
+		  top: -@caret-before-width;
+			border-right: @caret-before-width solid transparent;
+			border-bottom: @caret-before-width solid lighten(@gray-dark, 60%);
+			border-left: @caret-before-width solid transparent;
+			border-bottom-color: rgba(0, 0, 0, 0.2);		
+		}
+
+		&:after {
+		  top: -@caret-after-width;
+		  border-right: @caret-after-width solid transparent;
+		  border-bottom: @caret-after-width solid #fff;
+		  border-left: @caret-after-width solid transparent;		
+		}		
+	}
+
+	&.opensleft {
+		.ranges, .calendar {
+			float: left;
+  		margin: 4px;
+		}
+
+		&:before { right: 9px; } 
+		&:after { right: 10px; }
+	}
+
+	&.opensright {
+		.ranges, .calendar {
+		  float: right;
+		  margin: 4px;
+		}
+
+		&:before { left: 9px; }
+		&:after { left: 10px; }
+	}
+
+	.ranges {
+	  width: 160px;
+	  text-align: left;
+
+	  .range_inputs {
+	  	> div {
+	  		float: left;
+
+	  		&:nth-child(2) {
+	  			padding-left: 11px;
+	  		}
+	  	}
+	  }
+
+	  input { font-size: (@font-size-base - 3); }
+
+	  .input-mini {
+		  background-color: @gray-lighter;
+		  border: 1px solid lighten(@gray-dark, 60%); // #ccc
+		  border-radius: @border-radius-base;
+		  color: @gray;
+		  display: block;
+		  font-size: (@font-size-base - 3);
+		  height: 30px;
+		  line-height: 30px;
+		  vertical-align: middle;
+		  margin: 0 0 10px 0;
+		  padding: 0 6px;
+		  width: 74px;
+	  }
+
+	  ul {
+		  list-style: none;
+		  margin: 0;
+		  padding: 0;	  	
+	  }
+
+	  li {
+		  font-size: (@font-size-base - 1);
+		  background: #f5f5f5; // var ?
+		  border: 1px solid #f5f5f5;
+		  color: #08c;
+		  padding: 3px 12px;
+		  margin-bottom: 8px;
+		  border-radius: @border-radius-base;
+		  cursor: pointer;
+
+		  &:active, &:hover {
+				background: #08c;
+				border: 1px solid #08c;
+				color: #fff;		  	
+		  }	
+	  }
+	}
+
+	.calendar {
+		display: none;
+		max-width: 270px;
+
+		&.single .calendar-date { border: none; }
+
+		th, td {
+		  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; // This should be inherited by the bs defaults...
+		  white-space: nowrap;
+		  text-align: center;
+		  min-width: 32px;
+		}
+	}
+
+	.calendar-date {
+	  border: 1px solid @table-border-color; // <- #ddd
+	  padding: 4px;
+	  border-radius: @border-radius-base;
+	  background: @body-bg;
+	}
+
+	.calendar-time {
+	  text-align: center;
+	  margin: 8px auto 0 auto;
+	  line-height: 30px;		
+	}
+
+	&.show-calendar .calendar { display: block; }
+
+	.daterangepicker_start_input label,
+	.daterangepicker_end_input label {
+	  color: @gray-dark; 
+	  display: block;
+	  font-size: (@font-size-base - 3);
+	  font-weight: normal;
+	  height: 20px;
+	  line-height: 20px;
+	  margin-bottom: 2px;
+	  text-shadow: #fff 1px 1px 0px;
+	  text-transform: uppercase;
+	  width: 74px;
+	}
+
+	table {
+	  width: 100%;
+	  margin: 0;
+	}
+
+	td, th {
+		text-align: center;
+		width: 20px;
+		height: 20px;
+		border-radius: @border-radius-base;
+		cursor: pointer;
+		white-space: nowrap;
+
+		&.available {
+			&:hover { background: @gray-lighter; }
+		}
+
+		&.week {
+			font-size: 80%;
+			color: lighten(@gray-dark, 60%); // #ccc	
+		}
+	}
+
+	td {
+		&.off, &.disabled {
+			color: @gray-light;
+		}
+
+		&.in-range {
+		  background: #ebf4f8;
+		  border-radius: 0;			
+		}
+
+		&.active, &.active:hover {
+		  background-color: #357ebd;
+		  border-color: #3071a9;
+		  color: #fff;			
+		}
+	}
+
+	th {
+		&.month { width: auto; }
+	}
+
+	select {
+		&.monthselect, &.yearselect {
+			font-size: (@font-size-base - 2);
+			padding: 1px;
+			height: auto;
+			margin: 0;
+			cursor: default;			
+		}
+
+		&.monthselect {
+			margin-right: 2%;
+			width: 56%;			
+		}
+
+		&.yearselect { width: 40%; }
+
+		&.hourselect, &.minuteselect, &.ampmselect {
+			width: 50px;
+			margin-bottom: 0;
+		}		
+	}
+
+	.daterangepicker_start_input {
+		float: left;
+	}
+
+	.daterangepicker_end_input {
+	  float: left; 
+	  padding-left: 11px
+	}	
+}

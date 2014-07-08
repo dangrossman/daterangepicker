@@ -269,6 +269,12 @@
                         start = moment(split[0], this.format);
                         end = moment(split[1], this.format);
                     } else if (this.singleDatePicker) {
+                        // 'val' could be empty, in which case val needs
+                        // to have a base value to pass moment.js - lets use today :)
+                        if (val.length == 0) {
+                            var date = new Date();
+                            val = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate()
+                        }    
                         start = moment(val, this.format);
                         end = moment(val, this.format);
                     }
