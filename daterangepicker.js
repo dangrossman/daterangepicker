@@ -371,11 +371,12 @@
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
                 this.startDate = moment(startDate, this.format);
-
-            if (typeof startDate === 'object')
+            else if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
 
-            if (!this.timePicker)
+            if (this.timePicker)
+            	this.leftCalendar.month=this.startDate.clone();	// copy it because minutes and hours of this.leftCalendar.month are used when building the calendar
+            else
                 this.startDate = this.startDate.startOf('day');
 
             this.oldStartDate = this.startDate.clone();
@@ -388,11 +389,12 @@
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
                 this.endDate = moment(endDate, this.format);
-
-            if (typeof endDate === 'object')
+            else if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
 
-            if (!this.timePicker)
+            if (this.timePicker)
+            	this.rightCalendar.month=this.endDate.clone();	// copy it because minutes and hours of this.rightCalendar.month are used when building the calendar
+            else
                 this.endDate = this.endDate.endOf('day');
 
             this.oldEndDate = this.endDate.clone();
