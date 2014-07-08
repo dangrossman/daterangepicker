@@ -134,6 +134,8 @@
                 firstDay: 0
             };
 
+            this.customUpdateInputText = false;
+
             this.cb = function () { };
 
             if (typeof options.format === 'string')
@@ -255,6 +257,10 @@
 
             if (typeof options.timePicker12Hour === 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
+            }
+
+            if (typeof options.updateInputText === 'function') {
+                this.customUpdateInputText = options.updateInputText;
             }
 
             var start, end, range;
@@ -424,7 +430,7 @@
             var dateString = this.element.val().split(this.separator),
                 start = null,
                 end = null;
-            
+
             if(dateString.length === 2) {
                 start = moment(dateString[0], this.format);
                 end = moment(dateString[1], this.format);
@@ -434,7 +440,7 @@
                 start = moment(this.element.val(), this.format);
                 end = start;
             }
-            
+
             if (end.isBefore(start)) return;
 
             this.oldStartDate = this.startDate.clone();
@@ -568,10 +574,15 @@
         },
 
         updateInputText: function() {
+          (this.customUpdateInputText) ? this.customUpdateInputText.call(this) : this._defaultUpdateInputText();
+        },
+
+        _defaultUpdateInputText: function() {
+          console.warn("Called DEFAULT updateInputText function");
             if (this.element.is('input') && !this.singleDatePicker) {
-                this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
+                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
             } else if (this.element.is('input')) {
-                this.element.val(this.startDate.format(this.format));
+                 this.element.val(this.startDate.format(this.format));
             }
         },
 
