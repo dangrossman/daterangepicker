@@ -110,6 +110,7 @@
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
             this.ranges = {};
+            this.onOutsideClick = this.hide;
 
             this.opens = 'right';
             if (this.element.hasClass('pull-right'))
@@ -175,6 +176,11 @@
             if (typeof options.dateLimit === 'object')
                 this.dateLimit = options.dateLimit;
 
+            if (typeof options.onOutsideClick === 'string')
+                this.onOutsideClick = this[options.onOutsideClick];
+            else if (typeof options.onOutsideClick === 'function')
+                this.onOutsideClick = options.onOutsideClick;
+              
             // update day names order to firstDay
             if (typeof options.locale === 'object') {
 
@@ -527,7 +533,7 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-date').length
                 ) return;
-            this.hide();
+            this.onOutsideClick.apply(this);
         },
 
         hide: function (e) {
