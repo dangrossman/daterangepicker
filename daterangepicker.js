@@ -1,7 +1,7 @@
 /**
-* @version: 1.3.7
+* @version: 1.3.8
 * @author: Dan Grossman http://www.dangrossman.info/
-* @date: 2014-04-29
+* @date: 2014-07-10
 * @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
@@ -15,6 +15,9 @@
 
         //element that triggered the date range picker
         this.element = $(element);
+
+        //tracks visible state
+        this.isShowing = false;
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
@@ -501,6 +504,8 @@
         },
 
         show: function (e) {
+            if (this.isShowing) return;
+
             this.element.addClass('active');
             this.container.show();
             this.move();
@@ -515,6 +520,7 @@
               // and also close when focus changes to outside the picker (eg. tabbing between controls)
               .on('focusin.daterangepicker', this._outsideClickProxy);
 
+            this.isShowing = true;
             this.element.trigger('show.daterangepicker', this);
         },
 
@@ -531,10 +537,12 @@
         },
 
         hide: function (e) {
+            if (!this.isShowing) return;
+
             $(document)
-              .off('mousedown.daterangepicker', this._outsideClickProxy)
-              .off('click.daterangepicker', this._outsideClickProxy)
-              .off('focusin.daterangepicker', this._outsideClickProxy);
+              .off('mousedown.daterangepicker')
+              .off('click.daterangepicker', '[data-toggle=dropdown]')
+              .off('focusin.daterangepicker');
 
             this.element.removeClass('active');
             this.container.hide();
@@ -545,6 +553,7 @@
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
 
+            this.isShowing = false;
             this.element.trigger('hide.daterangepicker', this);
         },
 
