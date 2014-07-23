@@ -136,7 +136,7 @@
                 customRangeLabel: 'Custom Range',
                 daysOfWeek: moment()._lang._weekdaysMin.slice(),
                 monthNames: moment()._lang._monthsShort.slice(),
-                firstDay: 0
+                firstDay: moment()._lang._week.dow
             };
 
             this.cb = function () { };
@@ -180,7 +180,6 @@
             if (typeof options.dateLimit === 'object')
                 this.dateLimit = options.dateLimit;
 
-            // update day names order to firstDay
             if (typeof options.locale === 'object') {
 
                 if (typeof options.locale.daysOfWeek === 'object') {
@@ -194,12 +193,7 @@
                 }
 
                 if (typeof options.locale.firstDay === 'number') {
-                    this.locale.firstDay = options.locale.firstDay;
-                    var iterator = options.locale.firstDay;
-                    while (iterator > 0) {
-                        this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
-                        iterator--;
-                    }
+                  this.locale.firstDay = options.locale.firstDay;
                 }
 
                 if (typeof options.locale.applyLabel === 'string') {
@@ -260,6 +254,15 @@
 
             if (typeof options.timePicker12Hour === 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
+            }
+
+            // update day names order to firstDay
+            if (this.locale.firstDay != 0) {
+                var iterator = this.locale.firstDay;
+                while (iterator > 0) {
+                    this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
+                    iterator--;
+                }
             }
 
             var start, end, range;
