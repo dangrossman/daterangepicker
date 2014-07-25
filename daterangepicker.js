@@ -6,6 +6,7 @@
 * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
 * @website: http://www.improvely.com/
 */
+
 (function(root, factory) {
 
   if (typeof define === 'function' && define.amd) {
@@ -856,7 +857,9 @@
         },
 
         buildCalendar: function (month, year, hour, minute, side) {
+            var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
+            var lastDay = moment([year, month, daysInMonth]);
             var lastMonth = moment(firstDay).subtract('month', 1).month();
             var lastYear = moment(firstDay).subtract('month', 1).year();
 
@@ -868,6 +871,9 @@
 
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = [];
+            calendar.firstDay = firstDay;
+            calendar.lastDay = lastDay;
+
             for (i = 0; i < 6; i++) {
                 calendar[i] = [];
             }
@@ -936,7 +942,7 @@
             if (this.showWeekNumbers)
                 html += '<th></th>';
 
-            if (!minDate || minDate.isBefore(calendar[1][1])) {
+            if (!minDate || minDate.isBefore(calendar.firstDay)) {
                 html += '<th class="prev available"><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
             } else {
                 html += '<th></th>';
@@ -949,7 +955,7 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if (!maxDate || maxDate.isAfter(calendar[1][1])) {
+            if (!maxDate || maxDate.isAfter(calendar.lastDay)) {
                 html += '<th class="next available"><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
             } else {
                 html += '<th></th>';
