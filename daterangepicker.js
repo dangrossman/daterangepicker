@@ -15,7 +15,15 @@
 
   } else if (typeof exports !== 'undefined') {
     var momentjs = require('moment');
-    factory(root, exports, momentjs);
+    var jQuery;
+    try {
+      jQuery = require('jquery');
+    } catch (err) {
+      jQuery = window.jQuery;
+      if (!jQuery) throw new Error('jQuery dependency not found');
+    }
+
+    factory(root, exports, momentjs, jQuery);
 
   // Finally, as a browser global.
   } else {
