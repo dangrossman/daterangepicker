@@ -150,8 +150,8 @@
                 toLabel: 'To',
                 weekLabel: 'W',
                 customRangeLabel: 'Custom Range',
-                daysOfWeek: moment()._lang._weekdaysMin.slice(),
-                monthNames: moment()._lang._monthsShort.slice(),
+                daysOfWeek: moment.weeksdaysMin(),
+                monthNames: moment.monthsShort(),
                 firstDay: moment()._lang._week.dow
             };
 
