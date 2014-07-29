@@ -435,6 +435,34 @@
             this.updateInputText();
         },
 
+        setMinDate: function (minDate) {
+            if (typeof minDate === 'string')
+                this.minDate = moment(minDate, this.format);
+
+            if (typeof minDate === 'object')
+                this.minDate = moment(minDate);
+
+            if (this.minDate.isAfter(this.startDate)) {
+                this.setStartDate(this.minDate);
+            } else {
+                this.updateCalendars();
+            }
+        },
+
+        setMaxDate: function (maxDate) {
+            if (typeof maxDate === 'string')
+                this.maxDate = moment(maxDate, this.format);
+
+            if (typeof maxDate === 'object')
+                this.maxDate = moment(maxDate);
+
+            if (this.maxDate.isBefore(this.endDate)) {
+                this.setEndDate(this.maxDate);
+            } else {
+                this.updateCalendars();
+            }
+        },
+
         updateView: function () {
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
