@@ -439,6 +439,9 @@
             if (typeof minDate === 'string')
                 this.minDate = moment(minDate, this.format);
 
+            if (typeof minDate === 'object')
+                this.minDate = moment(minDate);
+
             if (this.minDate.isAfter(this.startDate)) {
                 this.setStartDate(this.minDate);
             } else {
@@ -449,6 +452,9 @@
         setMaxDate: function (maxDate) {
             if (typeof maxDate === 'string')
                 this.maxDate = moment(maxDate, this.format);
+
+            if (typeof maxDate === 'object')
+                this.maxDate = moment(maxDate);
 
             if (this.maxDate.isBefore(this.endDate)) {
                 this.setEndDate(this.maxDate);
