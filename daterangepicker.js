@@ -365,6 +365,7 @@
                     this.container.find('.calendar.right').addClass('single');
             } else {
                 this.container.find('.calendar.right').removeClass('single');
+                this.container.find('.calendar.left').show();
                 this.container.find('.ranges').show();
             }
 
@@ -386,8 +387,19 @@
                 //swap calendar positions
                 var left = this.container.find('.calendar.left');
                 var right = this.container.find('.calendar.right');
+
+                if (right.hasClass('single')) {
+                    right.removeClass('single');
+                    left.addClass('single');
+                }
+
                 left.removeClass('left').addClass('right');
                 right.removeClass('right').addClass('left');
+
+                if (this.singleDatePicker) {
+                    left.show();
+                    right.hide();
+                }
             }
 
             if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
