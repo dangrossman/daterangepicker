@@ -28,10 +28,10 @@
 
   // Finally, as a browser global.
   } else {
-    root.daterangepicker = factory(root, {}, root.momentjs, (root.jQuery || root.Zepto || root.ender || root.$));
+    root.daterangepicker = factory(root, {}, root.moment, (root.jQuery || root.Zepto || root.ender || root.$));
   }
 
-}(this, function(root, daterangepicker, momentjs, $) {
+}(this, function(root, daterangepicker, moment, $) {
 
     var DateRangePicker = function (element, options, cb) {
 
