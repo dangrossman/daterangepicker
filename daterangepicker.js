@@ -31,7 +31,7 @@
     root.daterangepicker = factory(root, {}, root.momentjs, (root.jQuery || root.Zepto || root.ender || root.$));
   }
 
-}(this, function(root, daterangepicker, moment, $) {
+}(this, function(root, daterangepicker, momentjs, $) {
 
     var DateRangePicker = function (element, options, cb) {
 
