@@ -482,17 +482,19 @@
 
         move: function () {
             var parentOffset = { top: 0, left: 0 };
+            var parentRightEdge = $(window).width();
             if (!this.parentEl.is('body')) {
                 parentOffset = {
                     top: this.parentEl.offset().top - this.parentEl.scrollTop(),
                     left: this.parentEl.offset().left - this.parentEl.scrollLeft()
                 };
+                parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
 
             if (this.opens == 'left') {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
+                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
                     left: 'auto'
                 });
                 if (this.container.offset().left < 0) {
