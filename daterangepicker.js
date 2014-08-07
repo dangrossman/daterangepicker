@@ -150,19 +150,9 @@
             this.cancelClass = 'btn-default';
 
             this.format = 'MM/DD/YYYY';
-            this.separator = ' - ';
-
-            this.locale = {
-                applyLabel: 'Apply',
-                cancelLabel: 'Cancel',
-                fromLabel: 'From',
-                toLabel: 'To',
-                weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
-                daysOfWeek: moment.weekdaysMin(),
-                monthNames: moment.monthsShort(),
-                firstDay: moment.localeData()._week.dow
-            };
+            this.separator = ' - ';							
+			
+			this.setLocale();
 
             this.cb = function () { };
 
@@ -399,7 +389,7 @@
             this.updateView();
             this.updateCalendars();
 
-        },
+        },		
 
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
@@ -1079,7 +1069,57 @@
             this.element.off('.daterangepicker');
             this.element.removeData('daterangepicker');
 
-        }
+        },
+		
+		// set the localization based on the data-language attribute. If no language or an invalid language is specified english will be used as the fallback language
+		setLocale: function() {
+			var defaultLocale = "en";
+			var localeName = "en";
+			
+			var langAttribute = $(this.element).attr("data-language");
+			if(typeof langAttribute !== typeof undefined && langAttribute !== false) {
+				localeName = $(this.element).attr("data-language");
+			}						
+			
+			if(typeof this.locales[localeName] !== typeof undefined) {		
+				this.locale = this.locales[localeName];
+			} else{
+				console.log("Language \"" + localeName + "\" not available. Falling back to default language (english).");
+				this.locale = this.locales[defaultLocale];
+			}
+		},
+		
+		// setup localization
+		locales: {
+			// english - default
+			"en": 
+			{
+				applyLabel: 'Apply',
+				cancelLabel: 'Cancel',
+				fromLabel: 'From',
+				toLabel: 'To',
+				weekLabel: 'W',
+				customRangeLabel: 'Custom Range',
+				daysOfWeek: moment.weekdaysMin(),
+				monthNames: moment.monthsShort(),
+				firstDay: moment.localeData()._week.dow,
+				lang: moment.locale()
+			},
+			// german
+			"de":
+			{
+				applyLabel: 'Ok',
+				cancelLabel: 'Abbrechen',
+				fromLabel: 'Von',
+				toLabel: 'Bis',
+				weekLabel: 'W',
+				customRangeLabel: 'Benutzerdefinierter Zeitraum',
+				daysOfWeek: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+				monthNames: ["Jan", "Feb", "M&auml;r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+				firstDay: moment.localeData()._week.dow,
+				lang: moment.locale()
+			}
+		}
 
     };
 
@@ -1091,6 +1131,6 @@
             el.data('daterangepicker', new DateRangePicker(el, options, cb));
         });
         return this;
-    };
+    };	
 
 }));
