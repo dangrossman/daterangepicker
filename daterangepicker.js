@@ -364,8 +364,7 @@
                 if (!this.container.find('.calendar.right').hasClass('single'))
                     this.container.find('.calendar.right').addClass('single');
             } else {
-                this.container.find('.calendar.right').show().removeClass('single');
-                this.container.find('.calendar.left').show();
+                this.container.find('.calendar.right').removeClass('single');
                 this.container.find('.ranges').show();
             }
 
