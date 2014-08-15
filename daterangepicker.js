@@ -915,9 +915,13 @@
 
         renderDropdowns: function (selected, minDate, maxDate) {
             var currentMonth = selected.month();
+            var currentYear = selected.year();
+            var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
+            var minYear = (minDate && minDate.year()) || (currentYear - 50);
+
             var monthHtml = '<select class="monthselect">';
-            var inMinYear = false;
-            var inMaxYear = false;
+            var inMinYear = currentYear == minYear;
+            var inMaxYear = currentYear == maxYear;
 
             for (var m = 0; m < 12; m++) {
                 if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
@@ -928,9 +932,6 @@
             }
             monthHtml += "</select>";
 
-            var currentYear = selected.year();
-            var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-            var minYear = (minDate && minDate.year()) || (currentYear - 50);
             var yearHtml = '<select class="yearselect">';
 
             for (var y = minYear; y <= maxYear; y++) {
