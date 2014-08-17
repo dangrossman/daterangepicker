@@ -686,9 +686,9 @@
         clickPrev: function (e) {
             var cal = $(e.target).parents('.calendar');
             if (cal.hasClass('left')) {
-                this.leftCalendar.month.subtract('month', 1);
+                this.leftCalendar.month.subtract(1, 'month');
             } else {
-                this.rightCalendar.month.subtract('month', 1);
+                this.rightCalendar.month.subtract(1, 'month');
             }
             this.updateCalendars();
         },
@@ -696,9 +696,9 @@
         clickNext: function (e) {
             var cal = $(e.target).parents('.calendar');
             if (cal.hasClass('left')) {
-                this.leftCalendar.month.add('month', 1);
+                this.leftCalendar.month.add(1, 'month');
             } else {
-                this.rightCalendar.month.add('month', 1);
+                this.rightCalendar.month.add(1, 'month');
             }
             this.updateCalendars();
         },
@@ -720,7 +720,7 @@
             this.chosenLabel = this.locale.customRangeLabel;
             if (startDate.isAfter(endDate)) {
                 var difference = this.endDate.diff(this.startDate);
-                endDate = moment(startDate).add('ms', difference);
+                endDate = moment(startDate).add(difference, 'ms');
             }
             this.startDate = startDate;
             this.endDate = endDate;
@@ -873,8 +873,8 @@
             var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
             var lastDay = moment([year, month, daysInMonth]);
-            var lastMonth = moment(firstDay).subtract('month', 1).month();
-            var lastYear = moment(firstDay).subtract('month', 1).year();
+            var lastMonth = moment(firstDay).subtract(1, 'month').month();
+            var lastYear = moment(firstDay).subtract(1, 'month').year();
 
             var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
 
@@ -901,7 +901,7 @@
 
             var curDate = moment([lastYear, lastMonth, startDay, 12, minute]);
             var col, row;
-            for (i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add('hour', 24)) {
+            for (i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
                 if (i > 0 && col % 7 === 0) {
                     col = 0;
                     row++;
