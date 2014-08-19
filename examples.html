@@ -11,7 +11,7 @@
       <script type="text/javascript" src="moment.js"></script>
       <script type="text/javascript" src="daterangepicker.js"></script>
    </head>
-   <body>
+   <body style="padding-bottom: 20em">
 
       <div class="container">
          <div class="span12">
@@ -231,6 +231,52 @@
                   $('#reportrange2 span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
                   $('#reportrange2').daterangepicker();
                });
+               </script>
+
+            </div>
+
+
+         </div>
+
+
+
+          <h4>Can be positioned</h4>
+
+            <div class="well">
+
+               <form class="form-horizontal">
+                 <fieldset style="text-align: center">
+                  <div class="control-group" style="display: inline-block; float: left;">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="positionright" id="positionright" class="form-control" value="03/18/2013 - 03/23/2013" /> 
+                     </div>
+                    </div>
+                  </div>
+                  <div class="control-group" style="display: inline-block;">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="positioncenter" id="positioncenter" class="form-control" value="03/18/2013 - 03/23/2013" /> 
+                     </div>
+                    </div>
+                  </div>
+                  <div class="control-group" style="display: inline-block; float: right">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="positionleft" id="positionleft" class="form-control" value="03/18/2013 - 03/23/2013" /> 
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#positionright').daterangepicker({ opens: 'right' });
+                  $('#positioncenter').daterangepicker({ opens: 'center' });
+                  $('#positionleft').daterangepicker({ opens: 'left' });
+               });
+
                </script>
 
             </div>

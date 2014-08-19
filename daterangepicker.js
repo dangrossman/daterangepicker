@@ -511,30 +511,32 @@
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
 
+            var styles = {
+                top: this.element.offset().top + this.element.outerHeight() - parentOffset.top
+            };
             if (this.opens == 'left') {
-                this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
-                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto'
-                });
-                if (this.container.offset().left < 0) {
-                    this.container.css({
-                        right: 'auto',
-                        left: 9
-                    });
-                }
+                styles.right = parentRightEdge - this.element.offset().left - this.element.outerWidth();
+                styles.left = 'auto';
+            } else if (this.opens == 'right') {
+                styles.right = 'auto';
+                styles.left = this.element.offset().left - parentOffset.left;
             } else {
+                styles.left = 'auto';
+                styles.right = parentRightEdge - this.element.outerWidth() - this.element.offset().left - this.element.outerWidth();
+            }
+
+            this.container.css(styles);
+
+            if (this.container.offset().left < 0) {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
-                    left: this.element.offset().left - parentOffset.left,
-                    right: 'auto'
+                    right: 'auto',
+                    left: 9
                 });
-                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
-                    this.container.css({
-                        left: 'auto',
-                        right: 0
-                    });
-                }
+            } else if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                this.container.css({
+                    left: 'auto',
+                    right: 0
+                });
             }
         },
 
