@@ -626,7 +626,7 @@
         // when a date is typed into the start to end date textboxes
         inputsChanged: function (e) {
             var el = $(e.target);
-            var date = moment(el.val());
+            var date = moment(el.val(), this.format);
             if (!date.isValid()) return;
 
             var startDate, endDate;
