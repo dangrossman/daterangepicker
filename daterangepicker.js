@@ -764,6 +764,7 @@
                         startDate = minDate;
                     }
                 }
+
                 if (typeof this.dateLimitMin === 'object') {
                     var maxDate = moment(endDate).subtract(this.dateLimitMin).startOf('day');
                     if (startDate.isAfter(maxDate)) {
