@@ -357,14 +357,20 @@
             }
 
             if (this.singleDatePicker) {
-                this.opens = 'right';
+            	this.opens = 'right';
+            	this.container.addClass('single');
                 this.container.find('.calendar.right').show();
                 this.container.find('.calendar.left').hide();
-                this.container.find('.ranges').hide();
+                if (!this.timePicker) {
+	                this.container.find('.ranges').hide();
+                } else {
+                	this.container.find('.ranges .daterangepicker_start_input, .ranges .daterangepicker_end_input').hide();
+                }
                 if (!this.container.find('.calendar.right').hasClass('single'))
                     this.container.find('.calendar.right').addClass('single');
             } else {
-                this.container.find('.calendar.right').removeClass('single');
+            	this.container.removeClass('single');
+            	this.container.find('.calendar.right').removeClass('single');
                 this.container.find('.ranges').show();
             }
 
@@ -651,7 +657,7 @@
             if (this.element.is('input') && !this.singleDatePicker) {
                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
             } else if (this.element.is('input')) {
-                this.element.val(this.startDate.format(this.format));
+            	this.element.val(this.endDate.format(this.format));
             }
         },
 
@@ -771,7 +777,7 @@
             if (!this.timePicker)
                 endDate.endOf('day');
 
-            if (this.singleDatePicker)
+            if (this.singleDatePicker && !this.timePicker)
                 this.clickApply();
         },
 
