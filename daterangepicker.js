@@ -68,8 +68,13 @@
         if (typeof options !== 'object' || options === null)
             options = {};
 
+        var $template = $(DRPTemplate);
+
         this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
-        this.container = $(DRPTemplate).appendTo(this.parentEl);
+        this.container = $template.appendTo(this.parentEl);
+
+        if (options && typeof options.className === 'string')
+            $template.addClass(options.className);
 
         this.setOptions(options, cb);
 
