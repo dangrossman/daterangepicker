@@ -773,6 +773,8 @@
 
             if (this.singleDatePicker)
                 this.clickApply();
+
+            this.element.trigger('dateSelected.daterangepicker', this);
         },
 
         clickApply: function (e) {
