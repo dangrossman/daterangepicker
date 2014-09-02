@@ -139,6 +139,7 @@
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
+            this.withSingleDate = false;
             this.ranges = {};
 
             this.opens = 'right';
@@ -159,6 +160,7 @@
                 toLabel: 'To',
                 weekLabel: 'W',
                 customRangeLabel: 'Custom Range',
+                singleDateLabel: 'Specific Date',
                 daysOfWeek: moment.weekdaysMin(),
                 monthNames: moment.monthsShort(),
                 firstDay: moment.localeData()._week.dow
@@ -244,6 +246,10 @@
                 if (typeof options.locale.customRangeLabel === 'string') {
                   this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
+                
+                if (typeof options.locale.singleDateLabel === 'string') {
+                  this.locale.singleDateLabel = options.locale.singleDateLabel;
+                }
             }
 
             if (typeof options.opens === 'string')
@@ -267,6 +273,10 @@
 
             if (typeof options.singleDatePicker === 'boolean') {
                 this.singleDatePicker = options.singleDatePicker;
+            }
+            
+            if (typeof options.withSingleDate === 'boolean') {
+                this.withSingleDate = options.withSingleDate;
             }
 
             if (typeof options.timePicker === 'boolean') {
@@ -341,6 +351,9 @@
                 for (range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
+                if (this.withSingleDate)
+                    list += '<li>' + this.locale.singleDateLabel + '</li>';
+                
                 list += '<li>' + this.locale.customRangeLabel + '</li>';
                 list += '</ul>';
                 this.container.find('.ranges ul').remove();
@@ -476,7 +489,8 @@
                 end = moment(dateString[1], this.format);
             }
 
-            if (this.singleDatePicker || start === null || end === null) {
+            if (this.singleDatePicker || start === null || end === null || 
+               (this.withSingleDate && this.chosenLabel === this.locale.singleDateLabel)) {
                 start = moment(this.element.val(), this.format);
                 end = start;
             }
@@ -603,7 +617,7 @@
         enterRange: function (e) {
             // mouse pointer has entered a range label
             var label = e.target.innerHTML;
-            if (label == this.locale.customRangeLabel) {
+            if (label === this.locale.customRangeLabel || label === this.locale.singleDateLabel) {
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
@@ -648,7 +662,7 @@
         },
 
         updateInputText: function() {
-            if (this.element.is('input') && !this.singleDatePicker) {
+            if (this.element.is('input') && (!this.singleDatePicker && this.chosenLabel !== this.locale.singleDateLabel)) {
                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
             } else if (this.element.is('input')) {
                 this.element.val(this.startDate.format(this.format));
@@ -660,6 +674,10 @@
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
+                this.container.find('.calendar.right').show();                
+            } else if (label == this.locale.singleDateLabel) {
+                this.showCalendars();
+                this.container.find('.calendar.right').hide();                
             } else {
                 var dates = this.ranges[label];
 
@@ -717,7 +735,8 @@
         },
 
         setCustomDates: function(startDate, endDate) {
-            this.chosenLabel = this.locale.customRangeLabel;
+            if (this.chosenLabel !== this.locale.singleDateLabel)
+                this.chosenLabel = this.locale.customRangeLabel;
             if (startDate.isAfter(endDate)) {
                 var difference = this.endDate.diff(this.startDate);
                 endDate = moment(startDate).add(difference, 'ms');
@@ -761,7 +780,13 @@
             } else if (this.singleDatePicker && cal.hasClass('right')) {
                 startDate = endDate.clone();
             }
-
+            
+            if (this.withSingleDate && this.chosenLabel  === this.locale.singleDateLabel && cal.hasClass('left')) {
+                endDate = startDate.clone();
+            } else if (this.withSingleDate && this.chosenLabel  === this.locale.singleDateLabel && cal.hasClass('right')) {
+                startDate = endDate.clone();
+            }
+           
             cal.find('td').removeClass('active');
 
             $(e.target).addClass('active');
@@ -771,7 +796,7 @@
             if (!this.timePicker)
                 endDate.endOf('day');
 
-            if (this.singleDatePicker)
+            if (this.singleDatePicker || this.chosenLabel == this.locale.singleDateLabel)
                 this.clickApply();
         },
 
@@ -849,27 +874,35 @@
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
-            var i = 0;
-            for (var range in this.ranges) {
-                if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
+            var specificDate = (this.chosenLabel === this.locale.singleDateLabel);
+            // Since this method is called every time you click on 'prev' and/or 'next'
+            // Don't match any date with the ones in the ranges since I am selecting/searching a specific one
+            if (!specificDate) {
+                var i = 0;
+                for (var range in this.ranges) {
+                    if (this.timePicker) {
+                        if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                            customRange = false;
+                            this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
+                                .addClass('active').html();
+                        }
+                    } else {
+                        //ignore times when comparing dates if time picker is not enabled
+                        if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
+                            customRange = false;
+                            this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
+                                .addClass('active').html();
+                        }
                     }
-                } else {
-                    //ignore times when comparing dates if time picker is not enabled
-                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
-                    }
+                    i++;
                 }
-                i++;
             }
-            if (customRange) {
+            if (customRange && !specificDate) {
                 this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
                 this.showCalendars();
+            } else if (specificDate) {
+                this.container.find('.ranges li:contains("' + this.chosenLabel + '")').addClass('active');
+                this.showCalendars();                
             }
         },
 
