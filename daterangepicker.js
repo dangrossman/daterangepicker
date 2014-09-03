@@ -44,6 +44,11 @@
         //tracks visible state
         this.isShowing = false;
 
+        var disabled = '';
+        if (options.customRange === false) {
+            disabled = ' disabled="disabled"';
+        }
+
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left"></div>' +
@@ -52,11 +57,11 @@
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input">' +
                       '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+                      '<input class="input-mini" type="text" name="daterangepicker_start" value=""' + disabled + ' />' +
                     '</div>' +
                     '<div class="daterangepicker_end_input">' +
                       '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+                      '<input class="input-mini" type="text" name="daterangepicker_end" value=""' + disabled + ' />' +
                     '</div>' +
                     '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
                     '<button class="cancelBtn"></button>' +
@@ -140,6 +145,7 @@
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
             this.ranges = {};
+            this.customRange = true;
 
             this.opens = 'right';
             if (this.element.hasClass('pull-right'))
@@ -165,6 +171,9 @@
             };
 
             this.cb = function () { };
+
+            if (typeof options.customRange === 'boolean')
+                this.customRange = options.customRange;
 
             if (typeof options.format === 'string')
                 this.format = options.format;
@@ -341,7 +350,9 @@
                 for (range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                if (this.customRange) {
+                    list += '<li>' + this.locale.customRangeLabel + '</li>';
+                }
                 list += '</ul>';
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
@@ -613,9 +624,11 @@
         },
 
         showCalendars: function() {
-            this.container.addClass('show-calendar');
-            this.move();
-            this.element.trigger('showCalendar.daterangepicker', this);
+            if (this.customRange) {
+                this.container.addClass('show-calendar');
+                this.move();
+                this.element.trigger('showCalendar.daterangepicker', this);
+            }
         },
 
         hideCalendars: function() {
@@ -841,7 +854,7 @@
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            
+
             var minDate = this.minDate;
             if (!this.singleDatePicker)
                 minDate = this.startDate;
