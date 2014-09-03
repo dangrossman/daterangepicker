@@ -897,12 +897,9 @@
                     i++;
                 }
             }
-            if (customRange && !specificDate) {
-                this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
-                this.showCalendars();
-            } else if (specificDate) {
+            if (customRange || specificDate) {
                 this.container.find('.ranges li:contains("' + this.chosenLabel + '")').addClass('active');
-                this.showCalendars();                
+                this.showCalendars();
             }
         },
 
