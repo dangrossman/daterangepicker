@@ -23,6 +23,10 @@
   margin: 4px;
 }
 
+.daterangepicker.single .ranges, .daterangepicker.single .calendar {
+  float: none;
+}
+
 .daterangepicker .ranges {
   width: 160px;
   text-align: left;
