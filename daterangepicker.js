@@ -267,8 +267,8 @@
 
             if (typeof options.singleDatePicker === 'boolean') {
                 this.singleDatePicker = options.singleDatePicker;
-                if (this.singleDatePicker == true) {
-                    this.endDate = this.startDate;
+                if (this.singleDatePicker) {
+                    this.endDate = this.startDate.clone();
                 }
             }
 
