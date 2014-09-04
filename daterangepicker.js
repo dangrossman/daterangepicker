@@ -1,35 +1,35 @@
 /**
-* @version: 1.3.12
-* @author: Dan Grossman http://www.dangrossman.info/
-* @date: 2014-08-18
-* @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
-* @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
-* @website: http://www.improvely.com/
-*/
+ * @version: 1.3.12
+ * @author: Dan Grossman http://www.dangrossman.info/
+ * @date: 2014-08-18
+ * @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
+ * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
+ * @website: http://www.improvely.com/
+ */
 
 (function(root, factory) {
 
-  if (typeof define === 'function' && define.amd) {
-    define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-      root.daterangepicker = factory(root, exports, momentjs, $);
-    });
+    if (typeof define === 'function' && define.amd) {
+        define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
+            root.daterangepicker = factory(root, exports, momentjs, $);
+        });
 
-  } else if (typeof exports !== 'undefined') {
-    var momentjs = require('moment');
-    var jQuery;
-    try {
-      jQuery = require('jquery');
-    } catch (err) {
-      jQuery = window.jQuery;
-      if (!jQuery) throw new Error('jQuery dependency not found');
+    } else if (typeof exports !== 'undefined') {
+        var momentjs = require('moment');
+        var jQuery;
+        try {
+            jQuery = require('jquery');
+        } catch (err) {
+            jQuery = window.jQuery;
+            if (!jQuery) throw new Error('jQuery dependency not found');
+        }
+
+        factory(root, exports, momentjs, jQuery);
+
+        // Finally, as a browser global.
+    } else {
+        root.daterangepicker = factory(root, {}, root.moment, (root.jQuery || root.Zepto || root.ender || root.$));
     }
-
-    factory(root, exports, momentjs, jQuery);
-
-  // Finally, as a browser global.
-  } else {
-    root.daterangepicker = factory(root, {}, root.moment, (root.jQuery || root.Zepto || root.ender || root.$));
-  }
 
 }(this, function(root, daterangepicker, moment, $) {
 
@@ -41,35 +41,9 @@
         //element that triggered the date range picker
         this.element = $(element);
 
-        //tracks visible state
-        this.isShowing = false;
-
-        //create the picker HTML object
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input">' +
-                      '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input">' +
-                      '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
-                    '</div>' +
-                    '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
-                    '<button class="cancelBtn"></button>' +
-                  '</div>' +
-                '</div>' +
-              '</div>';
-
         //custom options
         if (typeof options !== 'object' || options === null)
             options = {};
-
-        this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
-        this.container = $(DRPTemplate).appendTo(this.parentEl);
 
         this.setOptions(options, cb);
 
@@ -164,6 +138,32 @@
                 firstDay: moment.localeData()._week.dow
             };
 
+            this.template =
+                '<div class="daterangepicker dropdown-menu">' +
+                    '<div class="calendar left"></div>' +
+                    '<div class="calendar right"></div>' +
+                    '<div class="ranges">' +
+                        '<div class="range_inputs">' +
+                            '<div class="daterangepicker_start_input">' +
+                                '<label for="daterangepicker_start"></label>' +
+                                '<input class="input-mini" type="text" name="daterangepicker_start" value="" disabled="disabled" />' +
+                            '</div>' +
+                            '<div class="daterangepicker_end_input">' +
+                                '<label for="daterangepicker_end"></label>' +
+                                '<input class="input-mini" type="text" name="daterangepicker_end" value="" disabled="disabled" />' +
+                            '</div>' +
+                            '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
+                            '<button class="cancelBtn"></button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+
+            if (typeof options.template == 'string')
+                this.template = options.template;
+
+            this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
+            this.container = $(this.template).appendTo(this.parentEl);
+
             this.cb = function () { };
 
             if (typeof options.format === 'string')
@@ -214,35 +214,35 @@
                 }
 
                 if (typeof options.locale.monthNames === 'object') {
-                  this.locale.monthNames = options.locale.monthNames.slice();
+                    this.locale.monthNames = options.locale.monthNames.slice();
                 }
 
                 if (typeof options.locale.firstDay === 'number') {
-                  this.locale.firstDay = options.locale.firstDay;
+                    this.locale.firstDay = options.locale.firstDay;
                 }
 
                 if (typeof options.locale.applyLabel === 'string') {
-                  this.locale.applyLabel = options.locale.applyLabel;
+                    this.locale.applyLabel = options.locale.applyLabel;
                 }
 
                 if (typeof options.locale.cancelLabel === 'string') {
-                  this.locale.cancelLabel = options.locale.cancelLabel;
+                    this.locale.cancelLabel = options.locale.cancelLabel;
                 }
 
                 if (typeof options.locale.fromLabel === 'string') {
-                  this.locale.fromLabel = options.locale.fromLabel;
+                    this.locale.fromLabel = options.locale.fromLabel;
                 }
 
                 if (typeof options.locale.toLabel === 'string') {
-                  this.locale.toLabel = options.locale.toLabel;
+                    this.locale.toLabel = options.locale.toLabel;
                 }
 
                 if (typeof options.locale.weekLabel === 'string') {
-                  this.locale.weekLabel = options.locale.weekLabel;
+                    this.locale.weekLabel = options.locale.weekLabel;
                 }
 
                 if (typeof options.locale.customRangeLabel === 'string') {
-                  this.locale.customRangeLabel = options.locale.customRangeLabel;
+                    this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
             }
 
@@ -560,11 +560,11 @@
             this._outsideClickProxy = $.proxy(function (e) { this.outsideClick(e); }, this);
             // Bind global datepicker mousedown for hiding and
             $(document)
-              .on('mousedown.daterangepicker', this._outsideClickProxy)
-              // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-              .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
-              // and also close when focus changes to outside the picker (eg. tabbing between controls)
-              .on('focusin.daterangepicker', this._outsideClickProxy);
+                .on('mousedown.daterangepicker', this._outsideClickProxy)
+                // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
+                .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
+                // and also close when focus changes to outside the picker (eg. tabbing between controls)
+                .on('focusin.daterangepicker', this._outsideClickProxy);
 
             this.isShowing = true;
             this.element.trigger('show.daterangepicker', this);
@@ -578,7 +578,7 @@
                 target.closest(this.element).length ||
                 target.closest(this.container).length ||
                 target.closest('.calendar-date').length
-                ) return;
+            ) return;
             this.hide();
         },
 
@@ -586,9 +586,9 @@
             if (!this.isShowing) return;
 
             $(document)
-              .off('mousedown.daterangepicker')
-              .off('click.daterangepicker', '[data-toggle=dropdown]')
-              .off('focusin.daterangepicker');
+                .off('mousedown.daterangepicker')
+                .off('click.daterangepicker', '[data-toggle=dropdown]')
+                .off('focusin.daterangepicker');
 
             this.element.removeClass('active');
             this.container.hide();
@@ -844,7 +844,7 @@
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
-            
+
             var minDate = this.minDate;
             if (!this.singleDatePicker)
                 minDate = this.startDate;
@@ -929,8 +929,8 @@
             for (var m = 0; m < 12; m++) {
                 if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
                     monthHtml += "<option value='" + m + "'" +
-                        (m === currentMonth ? " selected='selected'" : "") +
-                        ">" + this.locale.monthNames[m] + "</option>";
+                    (m === currentMonth ? " selected='selected'" : "") +
+                    ">" + this.locale.monthNames[m] + "</option>";
                 }
             }
             monthHtml += "</select>";
@@ -942,8 +942,8 @@
 
             for (var y = minYear; y <= maxYear; y++) {
                 yearHtml += '<option value="' + y + '"' +
-                    (y === currentYear ? ' selected="selected"' : '') +
-                    '>' + y + '</option>';
+                (y === currentYear ? ' selected="selected"' : '') +
+                '>' + y + '</option>';
             }
 
             yearHtml += '</select>';
