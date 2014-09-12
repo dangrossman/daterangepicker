@@ -138,6 +138,8 @@
             this.timePicker = false;
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
+            this.secondView = false;
+            this.secondIncrement = 10;
             this.singleDatePicker = false;
             this.ranges = {};
 
@@ -284,6 +286,14 @@
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            if (typeof options.secondView == 'boolean') {
+                this.secondView = options.secondView;
+            }
+
+            if (typeof options.secondIncrement == 'number') {
+                this.secondIncrement = options.secondIncrement;
+            }
+
             // update day names order to firstDay
             if (this.locale.firstDay != 0) {
                 var iterator = this.locale.firstDay;
@@ -382,12 +392,12 @@
             this.oldChosenLabel = this.chosenLabel;
 
             this.leftCalendar = {
-                month: moment([this.startDate.year(), this.startDate.month(), 1, this.startDate.hour(), this.startDate.minute()]),
+                month: moment([this.startDate.year(), this.startDate.month(), 1, this.startDate.hour(), this.startDate.minute(), this.startDate.second()]),
                 calendar: []
             };
 
             this.rightCalendar = {
-                month: moment([this.endDate.year(), this.endDate.month(), 1, this.endDate.hour(), this.endDate.minute()]),
+                month: moment([this.endDate.year(), this.endDate.month(), 1, this.endDate.hour(), this.endDate.minute(), this.endDate.second()]),
                 calendar: []
             };
 
@@ -680,8 +690,8 @@
                     this.endDate.endOf('day');
                 }
 
-                this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
-                this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
+                this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute()).second(this.startDate.second());
+                this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute()).second(this.endDate.second());
                 this.updateCalendars();
 
                 this.updateInputText();
@@ -820,6 +830,10 @@
 
             var hour = parseInt(cal.find('.hourselect').val(), 10);
             var minute = parseInt(cal.find('.minuteselect').val(), 10);
+            var second = 0;
+            if (this.secondView) {
+                second = parseInt(cal.find('.secondselect').val(), 10);
+            }
 
             if (this.timePicker12Hour) {
                 var ampm = cal.find('.ampmselect').val();
@@ -833,12 +847,14 @@
                 var start = this.startDate.clone();
                 start.hour(hour);
                 start.minute(minute);
+                start.second(second);
                 this.startDate = start;
                 this.leftCalendar.month.hour(hour).minute(minute);
             } else {
                 var end = this.endDate.clone();
                 end.hour(hour);
                 end.minute(minute);
+                end.second(second);
                 this.endDate = end;
                 this.rightCalendar.month.hour(hour).minute(minute);
             }
@@ -847,8 +863,8 @@
         },
 
         updateCalendars: function () {
-            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
-            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
+            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), this.leftCalendar.month.second(), 'left');
+            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), this.rightCalendar.month.second(), 'right');
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
             this.container.find('.calendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate));
             
@@ -878,7 +894,7 @@
             }
         },
 
-        buildCalendar: function (month, year, hour, minute, side) {
+        buildCalendar: function (month, year, hour, minute, second, side) {
             var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
             var lastDay = moment([year, month, daysInMonth]);
@@ -908,7 +924,7 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute]);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
             var col, row;
             for (i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
                 if (i > 0 && col % 7 === 0) {
@@ -1076,6 +1092,23 @@
                 }
 
                 html += '</select> ';
+
+                if (this.secondView) {
+                    html += ': <select class="secondselect">';
+
+                    for (var i = 0; i < 60; i += this.secondIncrement) {
+                        var num = i;
+                        if (num < 10)
+                            num = '0' + num;
+                        if (i == selected.second()) {
+                            html += '<option value="' + i + '" selected="selected">' + num + '</option>';
+                        } else {
+                            html += '<option value="' + i + '">' + num + '</option>';
+                        }
+                    }
+
+                    html += '</select> ';
+                }
 
                 if (this.timePicker12Hour) {
                     html += '<select class="ampmselect">';
