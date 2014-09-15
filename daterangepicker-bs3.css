@@ -23,6 +23,10 @@
   margin: 4px;
 }
 
+.daterangepicker.single .ranges, .daterangepicker.single .calendar {
+  float: none;
+}
+
 .daterangepicker .ranges {
   width: 160px;
   text-align: left;
@@ -41,6 +45,10 @@
   max-width: 270px;
 }
 
+.daterangepicker.show-calendar .calendar {
+    display: block;
+}
+
 .daterangepicker .calendar.single .calendar-date {
   border: none;
 }
@@ -52,7 +60,8 @@
   min-width: 32px;
 }
 
-.daterangepicker .ranges label {
+.daterangepicker .daterangepicker_start_input label,
+.daterangepicker .daterangepicker_end_input label {
   color: #333;
   display: block;
   font-size: 11px;
@@ -70,7 +79,6 @@
 }
 
 .daterangepicker .ranges .input-mini {
-  background-color: #eee;
   border: 1px solid #ccc;
   border-radius: 4px;
   color: #555;
@@ -213,6 +221,24 @@
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
+}
+
+.daterangepicker td.start-date {
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.daterangepicker td.end-date {
+  -webkit-border-radius: 0 4px 4px 0;
+  -moz-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+}
+
+.daterangepicker td.start-date.end-date {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
 }
 
 .daterangepicker td.active, .daterangepicker td.active:hover {

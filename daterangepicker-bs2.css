@@ -40,6 +40,9 @@
   display: none;
   max-width: 250px;
 }
+.daterangepicker.show-calendar .calendar {
+    display: block;
+}
 
 .daterangepicker .calendar.single .calendar-date {
   border: none;
@@ -51,7 +54,8 @@
   text-align: center;
 }
 
-.daterangepicker .ranges label {
+.daterangepicker .daterangepicker_start_input label,
+.daterangepicker .daterangepicker_end_input label {
   color: #333;
   font-size: 11px;
   margin-bottom: 2px;
