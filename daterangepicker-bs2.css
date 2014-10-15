@@ -183,7 +183,7 @@
   color: #999;
 }
 
-.daterangepicker td.disabled {
+.daterangepicker td.disabled, option.disabled {
   color: #999;
 }
 
