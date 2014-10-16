@@ -532,6 +532,19 @@
                         left: 9
                     });
                 }
+            } else if (this.opens == 'center') {
+                this.container.css({
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
+                            - this.container.outerWidth() / 2,
+                    right: 'auto'
+                });
+                if (this.container.offset().left < 0) {
+                    this.container.css({
+                        right: 'auto',
+                        left: 9
+                    });
+                }
             } else {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
