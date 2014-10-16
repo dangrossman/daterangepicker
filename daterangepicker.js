@@ -1043,6 +1043,49 @@
                 var start = 0;
                 var end = 23;
                 var selected_hour = selected.hour();
+                var selected_day_eq_min = minDate && minDate.format('LL') === selected.format('LL');
+                var selected_day_eq_max = maxDate && maxDate.format('LL') === selected.format('LL');
+                var disabled_element_prop = 'disabled class="disabled"'; // setting for disabled element
+
+                // if our date is not the same day, don't disable anything
+                var min_hour = 0;
+                if (selected_day_eq_min) {
+                    // we are in the same day so check hours
+                    min_hour = minDate.hour();
+                    // if we have 12 hour calendar and our min hours if for second half of day and we are in PM remove the first 12 hours
+                    if (minDate.hour() >= 12 && this.timePicker12Hour && selected.hour() >= 12) {
+                        min_hour = min_hour - 12;
+                    }
+                }
+                var max_hour = 24;
+                if (selected_day_eq_max) {
+                    // we are in the same day so check hours
+                    max_hour = maxDate.hour();
+                    // if we have 12 hour calendar and our min hours if for second half of day and we are in PM remove the first 12 hours
+                    if (maxDate.hour() >= 12 && this.timePicker12Hour && selected.hour() >= 12) {
+                        max_hour = max_hour - 12;
+                    }
+                }
+
+
+                var min_minute = 0;
+                if (selected_day_eq_min && minDate.hour() === selected_hour) {
+                    min_minute = minDate.minute();
+                }
+                var max_minute = 60;
+                if (selected_day_eq_max && maxDate.hour() === selected_hour) {
+                    max_minute = maxDate.minute();
+                }
+
+                var activeAM = true;
+                if (selected_day_eq_min && minDate.hour() >= 12) {
+                    activeAM = false;
+                }
+                var activePM = true;
+                if (selected_day_eq_max && maxDate.hour() < 12) {
+                    activePM = false;
+                }
+
                 if (this.timePicker12Hour) {
                     start = 1;
                     end = 12;
@@ -1053,10 +1096,25 @@
                 }
 
                 for (i = start; i <= end; i++) {
+                    // assuming you can't be selected and disabled at the same time
+                    var disabledHour_min = i < min_hour ? disabled_element_prop : '';
+                    var disabledHour_max = i > max_hour ? disabled_element_prop : '';
+                    // turn of disabled hour if min is in PM and AM if in wrong half of day
+                    if (minDate && minDate.hour() < 12 && this.timePicker12Hour && selected.hour() >= 12) {
+                        disabledHour_min = '';
+                    }
+                    if (maxDate && maxDate.hour() >= 12 && this.timePicker12Hour && selected.hour() < 12) {
+                        disabledHour_max = '';
+                    }
+                    // check to make sure we won't add the properties twice. 
+                    if (disabledHour_max && disabledHour_min) {
+                        disabledHour_max = '';
+                    }
+
                     if (i == selected_hour) {
                         html += '<option value="' + i + '" selected="selected">' + i + '</option>';
                     } else {
-                        html += '<option value="' + i + '">' + i + '</option>';
+                        html += '<option value="' + i + '"' + disabledHour_min + disabledHour_max + '>' + i + '</option>';
                     }
                 }
 
@@ -1066,12 +1124,13 @@
 
                 for (i = 0; i < 60; i += this.timePickerIncrement) {
                     var num = i;
+                    var disabledMinute = i < min_minute || i > max_minute ? disabled_element_prop : '';
                     if (num < 10)
                         num = '0' + num;
                     if (i == selected.minute()) {
                         html += '<option value="' + i + '" selected="selected">' + num + '</option>';
                     } else {
-                        html += '<option value="' + i + '">' + num + '</option>';
+                        html += '<option value="' + i + '"' + disabledMinute + '>' + num + '</option>';
                     }
                 }
 
@@ -1079,10 +1138,12 @@
 
                 if (this.timePicker12Hour) {
                     html += '<select class="ampmselect">';
+                    var disabledAM = !activeAM ? disabled_element_prop: '';
+                    var disabledPM = !activePM ? disabled_element_prop: '';
                     if (selected.hour() >= 12) {
-                        html += '<option value="AM">AM</option><option value="PM" selected="selected">PM</option>';
+                        html += '<option value="AM"'+disabledAM+'>AM</option><option value="PM" selected="selected">PM</option>';
                     } else {
-                        html += '<option value="AM" selected="selected">AM</option><option value="PM">PM</option>';
+                        html += '<option value="AM" selected="selected">AM</option><option value="PM"'+disabledPM+'>PM</option>';
                     }
                     html += '</select>';
                 }
