@@ -113,7 +113,8 @@
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.updateFromControl, this)
+                'keyup.daterangepicker': $.proxy(this.updateFromControlUp, this),
+                'keydown.daterangepicker': $.proxy(this.updateFromControlDown, this)
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
@@ -472,7 +473,66 @@
             }
         },
 
-        updateFromControl: function () {
+		updateFromControlDown: function(e) {
+			if (!this.element.is('input')) return;
+            if (!this.element.val().length) return;
+		
+			var key_code = e.keyCode || e.which;
+            var dateString = this.element.val().split(this.separator);
+            var start = moment(dateString[0], this.format);
+            var end = moment(dateString[1], this.format);
+			
+			if (this.singleDatePicker) {
+				start = this.startDate;
+                if (!start.isSame(moment(this.element.val(), this.format))) {
+					start = moment(this.element.val(), this.format);
+				}
+					
+				switch(key_code) {
+					case 38: // up
+						if (!this.minDate || this.minDate.isBefore(start)) {
+							start = start.subtract('days', 1);
+							end = start;
+							
+							this.oldStartDate = this.startDate.clone();
+							this.oldEndDate = this.endDate.clone();
+							this.startDate = this.endDate = start;
+							
+							if (start == null || end == null) return;
+							if (end.isBefore(start)) return;
+							
+							this.notify();
+							this.updateCalendars();
+							this.updateInputText();
+						}
+						break;
+					case 40: // down
+						if (!this.maxDate || this.maxDate.isAfter(start)) {
+							start = start.add('days', 1);
+							end = start;
+							
+							this.oldStartDate = this.startDate.clone();
+							this.oldEndDate = this.endDate.clone();
+							this.startDate = this.endDate = start;
+							
+							if (start == null || end == null) return;
+							if (end.isBefore(start)) return;
+							
+							this.notify();
+							this.updateCalendars();
+							this.updateInputText();
+						}
+						break;
+					case 13: // enter	
+						e.preventDefault();
+					case 9: //tab
+						this.clickApply();
+						break;
+				}
+            }
+		},
+
+        updateFromControlUp: function (e) {
             if (!this.element.is('input')) return;
             if (!this.element.val().length) return;
 
