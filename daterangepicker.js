@@ -38,8 +38,11 @@
         // by default, the daterangepicker element is placed at the bottom of HTML body
         this.parentEl = 'body';
 
-        //element that triggered the date range picker
+        //element that display selected date and retrieve date by this control
         this.element = $(element);
+
+        //element that triggered the date range picker
+        this.eventTrigger = $(element);
 
         //tracks visible state
         this.isShowing = false;
@@ -109,14 +112,18 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.enterRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        if (this.element.is('input')) {
-            this.element.on({
+        if (!(typeof options.eventTrigger === 'undefined')) {
+            this.eventTrigger = $(options.eventTrigger);
+        }
+
+        if (this.eventTrigger.is('input')) {
+            this.eventTrigger.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
                 'keyup.daterangepicker': $.proxy(this.updateFromControl, this)
             });
         } else {
-            this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
+            this.eventTrigger.on('click.daterangepicker', $.proxy(this.toggle, this));
         }
 
     };
