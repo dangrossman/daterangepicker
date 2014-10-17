@@ -18,7 +18,8 @@
   margin: 4px;
 }
 
-.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar {
+.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar,
+.daterangepicker.openscenter .ranges, .daterangepicker.openscenter .calendar {
   float: right;
   margin: 4px;
 }
@@ -158,6 +159,37 @@
   position: absolute;
   top: -6px;
   right: 10px;
+  display: inline-block;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #fff;
+  border-left: 6px solid transparent;
+  content: '';
+}
+
+.daterangepicker.openscenter:before {
+  position: absolute;
+  top: -7px;
+  left: 0;  
+  right: 0;
+  width: 0;
+  margin-left: auto;
+  margin-right: auto;
+  display: inline-block;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-left: 7px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  content: '';
+}
+
+.daterangepicker.openscenter:after {
+  position: absolute;
+  top: -6px;
+  left: 0;  
+  right: 0;  
+  width: 0;
+  margin-left: auto;
+  margin-right: auto;
   display: inline-block;
   border-right: 6px solid transparent;
   border-bottom: 6px solid #fff;
