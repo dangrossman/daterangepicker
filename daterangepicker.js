@@ -391,7 +391,7 @@
                 calendar: []
             };
 
-            if (this.opens == 'right') {
+            if (this.opens == 'right' || this.opens == 'center') {
                 //swap calendar positions
                 var left = this.container.find('.calendar.left');
                 var right = this.container.find('.calendar.right');
@@ -525,6 +525,19 @@
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
                     right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
                     left: 'auto'
+                });
+                if (this.container.offset().left < 0) {
+                    this.container.css({
+                        right: 'auto',
+                        left: 9
+                    });
+                }
+            } else if (this.opens == 'center') {
+                this.container.css({
+                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
+                            - this.container.outerWidth() / 2,
+                    right: 'auto'
                 });
                 if (this.container.offset().left < 0) {
                     this.container.css({
