@@ -876,7 +876,6 @@
                 }
             }
 
-
             this.updateCalendars();
         },
 
@@ -1110,7 +1109,6 @@
                 var start = 0;
                 var end = 23;
                 var selected_hour = selected.hour();
-
                 if (this.timePicker12Hour) {
                     start = 1;
                     end = 12;
@@ -1121,7 +1119,6 @@
                 }
 
                 for (i = start; i <= end; i++) {
-
 
                     if (i == selected_hour) {
                         html += '<option value="' + i + '" selected="selected">' + i + '</option>';
