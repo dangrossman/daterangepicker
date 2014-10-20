@@ -360,20 +360,20 @@
             }
 
             if (this.singleDatePicker) {
-            	this.opens = 'right';
-            	this.container.addClass('single');
+                this.opens = 'right';
+                this.container.addClass('single');
                 this.container.find('.calendar.right').show();
                 this.container.find('.calendar.left').hide();
                 if (!this.timePicker) {
-	                this.container.find('.ranges').hide();
+                    this.container.find('.ranges').hide();
                 } else {
-                	this.container.find('.ranges .daterangepicker_start_input, .ranges .daterangepicker_end_input').hide();
+                    this.container.find('.ranges .daterangepicker_start_input, .ranges .daterangepicker_end_input').hide();
                 }
                 if (!this.container.find('.calendar.right').hasClass('single'))
                     this.container.find('.calendar.right').addClass('single');
             } else {
-            	this.container.removeClass('single');
-            	this.container.find('.calendar.right').removeClass('single');
+                this.container.removeClass('single');
+                this.container.find('.calendar.right').removeClass('single');
                 this.container.find('.ranges').show();
             }
 
@@ -673,7 +673,7 @@
             if (this.element.is('input') && !this.singleDatePicker) {
                 this.element.val(this.startDate.format(this.format) + this.separator + this.endDate.format(this.format));
             } else if (this.element.is('input')) {
-            	this.element.val(this.endDate.format(this.format));
+                this.element.val(this.endDate.format(this.format));
             }
         },
 
@@ -848,11 +848,15 @@
                 start.minute(minute);
                 this.startDate = start;
                 this.leftCalendar.month.hour(hour).minute(minute);
+                if (this.singleDatePicker)
+                    this.endDate = start.clone();
             } else {
                 var end = this.endDate.clone();
                 end.hour(hour);
                 end.minute(minute);
                 this.endDate = end;
+                if (this.singleDatePicker)
+                    this.startDate = end.clone();
                 this.rightCalendar.month.hour(hour).minute(minute);
             }
 
