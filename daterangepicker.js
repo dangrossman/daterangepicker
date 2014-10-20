@@ -1068,7 +1068,7 @@
                 var min_hour = 0;
                 var max_hour = 23;
 
-                if (minDate && (side == 'left' || this.singleDatePicker) && selected.format('YYYY-MM-DD A') == minDate.format('YYYY-MM-DD A')) {
+                if (minDate && (side == 'left' || this.singleDatePicker) && selected.format('YYYY-MM-DD') == minDate.format('YYYY-MM-DD')) {
                     min_hour = minDate.hour();
                     if (selected.hour() < min_hour)
                         selected.hour(min_hour);
@@ -1078,7 +1078,7 @@
                         min_hour = 1;
                 }
 
-                if (maxDate && (side == 'right' || this.singleDatePicker) && selected.format('YYYY-MM-DD A') == maxDate.format('YYYY-MM-DD A')) {
+                if (maxDate && (side == 'right' || this.singleDatePicker) && selected.format('YYYY-MM-DD') == maxDate.format('YYYY-MM-DD')) {
                     max_hour = maxDate.hour();
                     if (selected.hour() > max_hour)
                         selected.hour(max_hour);
