@@ -848,12 +848,18 @@
                 start.minute(minute);
                 this.startDate = start;
                 this.leftCalendar.month.hour(hour).minute(minute);
+                if(this.singleDatePicker) {
+                    this.endDate = start.clone();
+                }
             } else {
                 var end = this.endDate.clone();
                 end.hour(hour);
                 end.minute(minute);
                 this.endDate = end;
                 this.rightCalendar.month.hour(hour).minute(minute);
+                if ( this.singleDatePicker) {
+                    this.startDate = end.clone();
+                }
             }
 
             this.updateCalendars();
