@@ -63,12 +63,7 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#birthday').daterangepicker({ singleDatePicker: true,                  format: 'MM/DD/YYYY h:mm A',
-                  minDate: '10/17/2014 1:30 PM',
-                  maxDate: '10/22/2014 9:30 AM',
-                  startDate: moment(),
-                  timePicker: true,
-                  timePickerIncrment: 1 }, function(start, end, label) {
+                  $('#birthday').daterangepicker({ singleDatePicker: true }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
                });
