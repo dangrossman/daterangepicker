@@ -80,7 +80,7 @@ $('input[name="daterange"]').daterangepicker(
 
 `ranges`: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
 
-`opens`: (string: 'left'/'right') Whether the picker appears aligned to the left or to the right of the HTML element it's attached to
+`opens`: (string: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to
 
 `buttonClasses`: (array) CSS class names that will be added to all buttons in the picker
 
