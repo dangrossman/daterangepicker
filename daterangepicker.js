@@ -860,6 +860,7 @@
                 this.rightCalendar.month.hour(hour).minute(minute);
             }
 
+            this.updateView();
             this.updateCalendars();
         },
 
