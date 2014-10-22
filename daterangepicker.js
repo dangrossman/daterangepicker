@@ -145,6 +145,10 @@
             if (this.element.hasClass('pull-right'))
                 this.opens = 'left';
 
+            this.drop = 'down';
+            if (this.element.hasClass('dropup'))
+                this.drop = 'up';
+
             this.buttonClasses = ['btn', 'btn-small btn-sm'];
             this.applyClass = 'btn-success';
             this.cancelClass = 'btn-default';
@@ -248,6 +252,9 @@
 
             if (typeof options.opens === 'string')
                 this.opens = options.opens;
+
+            if (typeof options.drop === 'string')
+                this.drop = options.drop;
 
             if (typeof options.showWeekNumbers === 'boolean') {
                 this.showWeekNumbers = options.showWeekNumbers;
@@ -510,7 +517,8 @@
         },
 
         move: function () {
-            var parentOffset = { top: 0, left: 0 };
+            var parentOffset = { top: 0, left: 0 },
+            	containerTop;
             var parentRightEdge = $(window).width();
             if (!this.parentEl.is('body')) {
                 parentOffset = {
@@ -519,10 +527,16 @@
                 };
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
+            
+            if(this.drop=='up')
+            	containerTop=this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+            else
+            	containerTop=this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+            this.container[this.drop=='up'?'addClass':'removeClass']('dropup');
 
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    top: containerTop,
                     right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
                     left: 'auto'
                 });
@@ -534,7 +548,7 @@
                 }
             } else if (this.opens == 'center') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    top: containerTop,
                     left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
                             - this.container.outerWidth() / 2,
                     right: 'auto'
@@ -547,7 +561,7 @@
                 }
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    top: containerTop,
                     left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
