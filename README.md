@@ -127,6 +127,10 @@ Several events are triggered on the element you attach the picker to, which you 
 
 `hide.daterangepicker`: Triggered when the picker is hidden
 
+`showCalendar.daterangepicker`: Triggered when the calendar is shown
+
+`hideCalendar.daterangepicker`: Triggered when the calendar is hidden
+
 `apply.daterangepicker`: Triggered when the apply button is clicked
 
 `cancel.daterangepicker`: Triggered when the cancel button is clicked
