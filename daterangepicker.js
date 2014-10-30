@@ -97,7 +97,7 @@
             .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.updateMonthYear, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.updateMonthYear, this))
-            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.ampmselect', $.proxy(this.updateTime, this));
+            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.updateTime, this));
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
@@ -136,6 +136,7 @@
             this.showDropdowns = false;
             this.showWeekNumbers = false;
             this.timePicker = false;
+            this.timePickerSeconds = false;
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
@@ -276,6 +277,10 @@
                 this.timePicker = options.timePicker;
             }
 
+            if (typeof options.timePickerSeconds === 'boolean') {
+                this.timePickerSeconds = options.timePickerSeconds;
+            }
+
             if (typeof options.timePickerIncrement === 'number') {
                 this.timePickerIncrement = options.timePickerIncrement;
             }
@@ -382,12 +387,12 @@
             this.oldChosenLabel = this.chosenLabel;
 
             this.leftCalendar = {
-                month: moment([this.startDate.year(), this.startDate.month(), 1, this.startDate.hour(), this.startDate.minute()]),
+                month: moment([this.startDate.year(), this.startDate.month(), 1, this.startDate.hour(), this.startDate.minute(), this.startDate.second()]),
                 calendar: []
             };
 
             this.rightCalendar = {
-                month: moment([this.endDate.year(), this.endDate.month(), 1, this.endDate.hour(), this.endDate.minute()]),
+                month: moment([this.endDate.year(), this.endDate.month(), 1, this.endDate.hour(), this.endDate.minute(), this.endDate.second()]),
                 calendar: []
             };
 
@@ -833,6 +838,11 @@
 
             var hour = parseInt(cal.find('.hourselect').val(), 10);
             var minute = parseInt(cal.find('.minuteselect').val(), 10);
+            var second = 0;
+
+            if (this.timePickerSeconds) {
+                second = parseInt(cal.find('.secondselect').val(), 10);
+            }
 
             if (this.timePicker12Hour) {
                 var ampm = cal.find('.ampmselect').val();
@@ -846,18 +856,20 @@
                 var start = this.startDate.clone();
                 start.hour(hour);
                 start.minute(minute);
+                start.second(second);
                 this.startDate = start;
-                this.leftCalendar.month.hour(hour).minute(minute);
+                this.leftCalendar.month.hour(hour).minute(minute).second(second);
                 if (this.singleDatePicker)
                     this.endDate = start.clone();
             } else {
                 var end = this.endDate.clone();
                 end.hour(hour);
                 end.minute(minute);
+                end.second(second);
                 this.endDate = end;
                 if (this.singleDatePicker)
                     this.startDate = end.clone();
-                this.rightCalendar.month.hour(hour).minute(minute);
+                this.rightCalendar.month.hour(hour).minute(minute).second(second);
             }
 
             this.updateView();
@@ -865,8 +877,8 @@
         },
 
         updateCalendars: function () {
-            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), 'left');
-            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
+            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), this.leftCalendar.month.second(), 'left');
+            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), this.rightCalendar.month.second(), 'right');
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, 'left'));
             this.container.find('.calendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate, 'right'));
             
@@ -896,7 +908,7 @@
             }
         },
 
-        buildCalendar: function (month, year, hour, minute, side) {
+        buildCalendar: function (month, year, hour, minute, second, side) {
             var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
             var lastDay = moment([year, month, daysInMonth]);
@@ -926,7 +938,7 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute]);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
             var col, row;
             for (i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
                 if (i > 0 && col % 7 === 0) {
@@ -1148,6 +1160,23 @@
                 }
 
                 html += '</select> ';
+
+                if (this.timePickerSeconds) {
+                    html += ': <select class="secondselect">';
+
+                    for (i = 0; i < 60; i += this.timePickerIncrement) {
+                        var num = i;
+                        if (num < 10)
+                            num = '0' + num;
+                        if (i == selected.second()) {
+                            html += '<option value="' + i + '" selected="selected">' + num + '</option>';
+                        } else {
+                            html += '<option value="' + i + '">' + num + '</option>';
+                        }
+                    }
+
+                    html += '</select>';
+                }
 
                 if (this.timePicker12Hour) {
                     html += '<select class="ampmselect">';
