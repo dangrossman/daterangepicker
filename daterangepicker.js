@@ -129,6 +129,7 @@
 
             this.startDate = moment().startOf('day');
             this.endDate = moment().endOf('day');
+            this.timeZone = moment().zone();
             this.minDate = false;
             this.maxDate = false;
             this.dateLimit = false;
@@ -313,6 +314,13 @@
                         this.endDate = end;
                     }
                 }
+            }
+
+            // bind the time zone used to build the calendar to either the timeZone passed in through the options or the zone of the startDate (which will be the local time zone by default)
+            if (typeof options.timeZone === 'string' || typeof options.timeZone === 'number') {
+                this.timeZone = options.timeZone;
+            } else {
+                this.timeZone = moment(this.startDate).zone();
             }
 
             if (typeof options.ranges === 'object') {
@@ -926,7 +934,7 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute]);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute]).zone(this.timeZone);
             var col, row;
             for (i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
                 if (i > 0 && col % 7 === 0) {
