@@ -599,6 +599,7 @@
                 target.closest('.calendar-date').length
                 ) return;
             this.hide();
+            this.element.trigger('outsideClick.daterangepicker', this);
         },
 
         hide: function (e) {
