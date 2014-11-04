@@ -298,13 +298,15 @@
             //if no start/end dates set, check if an input element contains initial values
             if (typeof options.startDate === 'undefined' && typeof options.endDate === 'undefined') {
                 if ($(this.element).is('input[type=text]')) {
-                    var val = $(this.element).val();
-                    var split = val.split(this.separator);
+                    var val = $(this.element).val(), 
+                        split = val.split(this.separator);
+                    
                     start = end = null;
+                    
                     if (split.length == 2) {
                         start = moment(split[0], this.format);
                         end = moment(split[1], this.format);
-                    } else if (this.singleDatePicker) {
+                    } else if (this.singleDatePicker && val !== "") {
                         start = moment(val, this.format);
                         end = moment(val, this.format);
                     }
