@@ -318,8 +318,15 @@
             if (typeof options.ranges === 'object') {
                 for (range in options.ranges) {
 
-                    start = moment(options.ranges[range][0]);
-                    end = moment(options.ranges[range][1]);
+                    if (typeof options.ranges[range][0] === 'string')
+                        start = moment(options.ranges[range][0], this.format);
+                    else
+                        start = moment(options.ranges[range][0]);
+
+                    if (typeof options.ranges[range][1] === 'string')
+                        end = moment(options.ranges[range][1], this.format);
+                    else
+                        end = moment(options.ranges[range][1]);
 
                     // If we have a min/max date set, bound this range
                     // to it, but only if it would otherwise fall
