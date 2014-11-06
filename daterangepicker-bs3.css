@@ -318,3 +318,45 @@
 .daterangepicker th.month {
   width: auto;
 }
+
+.daterangepicker.opensright .monthcalendar {
+    float: right;
+    margin: 4px;
+}
+.daterangepicker.opensleft .monthcalendar {
+    float: left;
+    margin: 4px;
+}
+.daterangepicker.opensright .weekcalendar {
+    float: right;
+    margin: 4px;
+}
+.daterangepicker.opensleft .weekcalendar {
+    float: left;
+    margin: 4px;
+}
+.daterangepicker.opensright .singlecalendar {
+    float: right;
+    margin: 4px;
+}
+.daterangepicker.opensleft .singlecalendar {
+    float: left;
+    margin: 4px;
+}
+.monthcalendar td {
+    width: 65px !important;
+    height:65px !important;
+}
+.monthcalendar th {
+    width: 65px !important;
+    height:30px !important;
+
+}
+.weekcalendar td, .weekcalendar th {
+    width: 25px !important;
+    height:30px !important;
+}
+.monthcalendar .yearselect{
+    width:60px !important;
+
+}

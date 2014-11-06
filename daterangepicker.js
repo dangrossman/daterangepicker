@@ -46,6 +46,12 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
+		 '<div class="monthcalendar left" style="display:none"></div>' +
+	            '<div class="monthcalendar right" style="display:none"></div>' +
+	            '<div class="weekcalendar left" style="display:none"></div>' +
+	            '<div class="weekcalendar right" style="display:none"></div>' +
+	            '<div class="singlecalendar left" style="display:none"></div>' +
+	            '<div class="singlecalendar right" style="display:none"></div>' +
                 '<div class="calendar left"></div>' +
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
@@ -89,7 +95,7 @@
 
         //event listeners
 
-        this.container.find('.calendar')
+        this.container.find('.calendar,.monthcalendar,.weekcalendar,.singlecalendar')
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
             .on('click.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
@@ -158,7 +164,9 @@
                 fromLabel: 'From',
                 toLabel: 'To',
                 weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
+                customRangeLabel: '',
+                customs:[],
+                weekNames:[],
                 daysOfWeek: moment.weekdaysMin(),
                 monthNames: moment.monthsShort(),
                 firstDay: moment.localeData()._week.dow
@@ -244,8 +252,15 @@
                 if (typeof options.locale.customRangeLabel === 'string') {
                   this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
+				if (typeof options.locale.customs === 'object') {
+                  this.locale.customs = options.locale.customs;
+                }
             }
-
+            this.types=["calendar","monthcalendar","weekcalendar","singlecalendar"];
+			this.typeLabelMap={};
+            for(var i=0;i<this.locale.customs.length;i++){
+            	this.typeLabelMap[this.locale.customs[i].label]=this.locale.customs[i].type;
+            }
             if (typeof options.opens === 'string')
                 this.opens = options.opens;
 
@@ -353,7 +368,12 @@
                 for (range in this.ranges) {
                     list += '<li>' + range + '</li>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
+                 if(this.locale.customRangeLabel!=""){
+                	list += '<li>' + this.locale.customRangeLabel + '</li>';
+                }
+            	for(var i=0;i<this.locale.customs.length;i++){
+            		list += '<li>' + this.locale.customs[i].label + '</li>';
+            	}
                 list += '</ul>';
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
@@ -417,6 +437,20 @@
                     left.show();
                     right.hide();
                 }
+				var leftMonth = this.container.find('.monthcalendar.left');
+                var rightMonth = this.container.find('.monthcalendar.right');
+                leftMonth.removeClass('left').addClass('right');
+                rightMonth.removeClass('right').addClass('left');
+                
+                var leftWeek = this.container.find('.weekcalendar.left');
+                var rightWeek = this.container.find('.weekcalendar.right');
+                leftWeek.removeClass('left').addClass('right');
+                rightWeek.removeClass('right').addClass('left');
+                
+                var singleLeftCalenda = this.container.find('.singlecalendar.left');
+                var singleRightCalenda = this.container.find('.singlecalendar.right');
+                singleLeftCalenda.removeClass('left').addClass('right');
+                singleRightCalenda.removeClass('right').addClass('left');
             }
 
             if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
@@ -633,8 +667,8 @@
 
         enterRange: function (e) {
             // mouse pointer has entered a range label
-            var label = e.target.innerHTML;
-            if (label == this.locale.customRangeLabel) {
+			var label = e.target.innerHTML;
+            if (label == this.locale.customRangeLabel||this.typeLabelMap[label] == this.types[1] || this.typeLabelMap[label] == this.types[2] || this.typeLabelMap[label] == this.types[3]) {
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
@@ -643,8 +677,13 @@
             }
         },
 
-        showCalendars: function() {
+        showCalendars: function(label) {
             this.container.addClass('show-calendar');
+            var type="calendar";
+			if(this.typeLabelMap[label]){
+			    type=this.typeLabelMap[label];
+			}
+            this.showByType(type);
             this.move();
             this.element.trigger('showCalendar.daterangepicker', this);
         },
@@ -687,10 +726,15 @@
         },
 
         clickRange: function (e) {
-            var label = e.target.innerHTML;
+			var label = e.target.innerHTML;
             this.chosenLabel = label;
-            if (label == this.locale.customRangeLabel) {
-                this.showCalendars();
+            this.element.data("label",label);
+            if (label == this.locale.customRangeLabel||this.typeLabelMap[label] ==this.types[1] || this.typeLabelMap[label] ==this.types[2]|| this.typeLabelMap[label] ==this.types[3]) {
+            	if(this.typeLabelMap[label] ==this.types[3]){
+            		this.setCustomDates(this.startDate, this.startDate.clone());
+            	}
+            	
+                this.showCalendars(label);
             } else {
                 var dates = this.ranges[label];
 
@@ -701,7 +745,7 @@
                     this.startDate.startOf('day');
                     this.endDate.endOf('day');
                 }
-
+                //leftCalendar rightCalenda is always the startOf month and the end of month
                 this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
                 this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
                 this.updateCalendars();
@@ -712,38 +756,68 @@
                 this.hide();
                 this.element.trigger('apply.daterangepicker', this);
             }
+            //select the cholsen label
+            this.container.find('.ranges li').removeClass('active');
+            this.chosenLabel = this.container.find('.ranges li:contains('+label+')').addClass('active').html();
         },
 
         clickPrev: function (e) {
-            var cal = $(e.target).parents('.calendar');
-            if (cal.hasClass('left')) {
-                this.leftCalendar.month.subtract(1, 'month');
-            } else {
-                this.rightCalendar.month.subtract(1, 'month');
+			var type=this.calendarType(e);
+            var isLeft = $(e.target).closest('.'+type).hasClass('left'),
+            leftOrRight = isLeft ? 'left' : 'right',
+            cal = this.container.find('.'+type+'.'+leftOrRight);
+            if(type=="calendar"||type=="singlecalendar"){
+            	if (cal.hasClass('left')) {
+                    this.leftCalendar.month.subtract(1, 'month');
+	            } else {
+	                this.rightCalendar.month.subtract(1, 'month');
+	            }
+            }else if(type=="monthcalendar" || type=="weekcalendar"){
+            	if (cal.hasClass('left')) {
+                    this.leftCalendar.month.subtract(12, 'month');
+	            } else {
+	                this.rightCalendar.month.subtract(1, 'month');
+	            }
             }
+            
             this.updateCalendars();
         },
 
         clickNext: function (e) {
-            var cal = $(e.target).parents('.calendar');
-            if (cal.hasClass('left')) {
-                this.leftCalendar.month.add(1, 'month');
-            } else {
-                this.rightCalendar.month.add(1, 'month');
+            var type=this.calendarType(e);
+            var isLeft = $(e.target).closest('.'+type).hasClass('left'),
+            leftOrRight = isLeft ? 'left' : 'right',
+            cal = this.container.find('.'+type+'.'+leftOrRight);
+            
+            if(type=="calendar" || type=="singlecalendar"){
+            	if (cal.hasClass('left')) {
+                    this.leftCalendar.month.add(1, 'month');
+	            } else {
+	                this.rightCalendar.month.add(1, 'month');
+	            }
+            }else if(type=="monthcalendar" || type=="weekcalendar"){
+            	if (cal.hasClass('left')) {
+                    this.leftCalendar.month.add(12, 'month');
+	            } else {
+	                this.rightCalendar.month.add(12, 'month');
+	            }
             }
             this.updateCalendars();
         },
 
         hoverDate: function (e) {
-            var title = $(e.target).attr('data-title');
-            var row = title.substr(1, 1);
-            var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
-
+        	var type=this.calendarType(e);
+            var isLeft = $(e.target).closest('.'+type).hasClass('left'),
+            leftOrRight = isLeft ? 'left' : 'right',
+            cal = this.container.find('.'+type+'.'+leftOrRight);
             if (cal.hasClass('left')) {
-                this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
+                this.container.find('input[name=daterangepicker_start]').val(this.getCalendarValue(e,type,"left").format(this.format));
             } else {
-                this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
+                this.container.find('input[name=daterangepicker_end]').val(this.getCalendarValue(e,type,"right").format(this.format));
+            }
+            if(type=="singlecalendar"){
+            	this.container.find('input[name=daterangepicker_start]').val(this.getCalendarValue(e,type,"left").format(this.format));
+            	this.container.find('input[name=daterangepicker_end]').val(this.getCalendarValue(e,type,"right").format(this.format));
             }
         },
 
@@ -761,14 +835,14 @@
         },
 
         clickDate: function (e) {
-            var title = $(e.target).attr('data-title');
-            var row = title.substr(1, 1);
-            var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
-
+        	var type=this.calendarType(e);
+            var isLeft = $(e.target).closest('.'+type).hasClass('left'),
+            leftOrRight = isLeft ? 'left' : 'right',
+            cal = this.container.find('.'+type+'.'+leftOrRight);
             var startDate, endDate;
+            var value=this.getCalendarValue(e,type,"left");
             if (cal.hasClass('left')) {
-                startDate = this.leftCalendar.calendar[row][col];
+                startDate = value;
                 endDate = this.endDate;
                 if (typeof this.dateLimit === 'object') {
                     var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
@@ -777,8 +851,9 @@
                     }
                 }
             } else {
+            	value=this.getCalendarValue(e,type,"right");
                 startDate = this.startDate;
-                endDate = this.rightCalendar.calendar[row][col];
+                endDate = value;
                 if (typeof this.dateLimit === 'object') {
                     var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
                     if (startDate.isBefore(minDate)) {
@@ -786,7 +861,10 @@
                     }
                 }
             }
-
+            if(type=="singlecalendar"){
+            	startDate=value.clone();
+            	endDate = value.clone();
+            }
             if (this.singleDatePicker && cal.hasClass('left')) {
                 endDate = startDate.clone();
             } else if (this.singleDatePicker && cal.hasClass('right')) {
@@ -823,9 +901,10 @@
         },
 
         updateMonthYear: function (e) {
-            var isLeft = $(e.target).closest('.calendar').hasClass('left'),
+        	var type=this.calendarType(e);
+            var isLeft = $(e.target).closest('.'+type).hasClass('left'),
                 leftOrRight = isLeft ? 'left' : 'right',
-                cal = this.container.find('.calendar.'+leftOrRight);
+                cal = this.container.find('.'+type+'.'+leftOrRight);
 
             // Month must be Number for new moment versions
             var month = parseInt(cal.find('.monthselect').val(), 10);
@@ -879,30 +958,15 @@
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, 'left'));
             this.container.find('.calendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate, 'right'));
             
-            this.container.find('.ranges li').removeClass('active');
-            var customRange = true;
-            var i = 0;
-            for (var range in this.ranges) {
-                if (this.timePicker) {
-                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
-                    }
-                } else {
-                    //ignore times when comparing dates if time picker is not enabled
-                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
-                        customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
-                    }
-                }
-                i++;
-            }
-            if (customRange) {
-                this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
-                this.showCalendars();
-            }
+			 //sqw add  
+            this.container.find('.monthcalendar.left').empty().html(this.renderMonthOrWeekCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate,"monthcalendar"));
+            this.container.find('.monthcalendar.right').empty().html(this.renderMonthOrWeekCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate,"monthcalendar"));
+            this.container.find('.weekcalendar.left').empty().html(this.renderMonthOrWeekCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate,"weekcalendar"));
+            this.container.find('.weekcalendar.right').empty().html(this.renderMonthOrWeekCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate,"weekcalendar"));
+            
+            this.container.find('.singlecalendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate));
+            this.container.find('.singlecalendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.minDate, this.maxDate));
+            
         },
 
         buildCalendar: function (month, year, hour, minute, side) {
@@ -958,15 +1022,12 @@
             return calendar;
         },
 
-        renderDropdowns: function (selected, minDate, maxDate) {
+        renderDropdowns: function (selected, minDate, maxDate,isHideMonth) {
             var currentMonth = selected.month();
-            var currentYear = selected.year();
-            var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-            var minYear = (minDate && minDate.year()) || (currentYear - 50);
-
-            var monthHtml = '<select class="monthselect">';
-            var inMinYear = currentYear == minYear;
-            var inMaxYear = currentYear == maxYear;
+            var display=isHideMonth ? "none":"inline";
+            var monthHtml = '<select style="display:'+display+'" class="monthselect">';
+            var inMinYear = false;
+            var inMaxYear = false;
 
             for (var m = 0; m < 12; m++) {
                 if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
@@ -976,7 +1037,11 @@
                 }
             }
             monthHtml += "</select>";
+            
 
+            var currentYear = selected.year();
+            var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
+            var minYear = (minDate && minDate.year()) || (currentYear - 50);
             var yearHtml = '<select class="yearselect">';
 
             for (var y = minYear; y <= maxYear; y++) {
@@ -1195,7 +1260,173 @@
             this.element.off('.daterangepicker');
             this.element.removeData('daterangepicker');
 
-        }
+        },
+		renderMonthOrWeekCalendar: function (calendar, selected, minDate, maxDate,monthOrWeek) {
+            var num=0;
+            var colspan=2;
+            //year 1 1
+            var leftLimit=moment([selected.year(),0,1]);
+            var rightLimit=moment([selected.year()+1,0,1]);
+        	if(monthOrWeek=="monthcalendar"){
+        		num=12
+        		rownum=4;
+        	}else if(monthOrWeek=="weekcalendar"){
+        		num=selected.weeksInYear();
+        		rownum=8;
+        		leftLimit=this.leftCalendar.month.clone().week(1).add(1,"days");
+        		var lastWeek=this.rightCalendar.month.clone().weeksInYear();
+                rightLimit=this.rightCalendar.month.clone().week(lastWeek);
+                colspan=5;
+        	}
+            var html = '<div class="calendar-date">';
+            html += '<table class="table-condensed">';
+            html += '<thead>';
+            html += '<tr>';
+            //add pre
+//            if (!minDate || minDate.isBefore(leftLimit)) {
+                html += '<th class="prev available"><i class="fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
+//            } else {
+//                html += '<th></th>';
+//            }
+
+           var dateHtml = calendar[1][1].format(" YYYY");
+
+            if (this.showDropdowns) {
+                dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate,true);
+            }
+
+            html += '<th colspan=' +colspan+' class="month">' + dateHtml + '</th>';
+            if (!maxDate || maxDate.isAfter(rightLimit)) {
+                html += '<th class="next available"><i class="fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
+            } else {
+                html += '<th></th>';
+            }
+
+            html += '</tr>';
+            html += '<tr>';
+            html += '</thead>';
+            html += '<tbody>';
+
+            html += '<tr>';
+            
+            for (var i = 1; i <=num; i++) {
+				var cname = 'available ';
+				//default month
+				var curMonthOrWeek=moment([selected.year(),i-1]);
+				var mow="month";
+				var startMonthOrWeek=this.startDate.format('YYYY-MM');
+				var endMonthOrWeek=this.startDate.format('YYYY-MM');
+				var selectMonthOrWeek=this.startDate.format('YYYY-MM');
+				if(monthOrWeek=="weekcalendar"){
+					
+					curMonthOrWeek=moment(selected.year()+"-"+i,"GGGG-W");
+					mow="week";
+					startMonthOrWeek=this.startDate.format('YYYY-GG');
+				    endMonthOrWeek=this.startDate.format('YYYY-GG');
+				    selectMonthOrWeek=this.startDate.format('YYYY-GG');
+				}
+				
+
+				if ((minDate && curMonthOrWeek.isBefore(minDate, mow))
+						|| (maxDate && curMonthOrWeek.isAfter(maxDate,
+								mow))) {
+					cname = ' off disabled ';
+				} else if (curMonthOrWeek== selectMonthOrWeek) {
+					cname += ' active ';
+					if (curMonthOrWeek.format('YYYY-MM-DD') == this.startDate
+							.format('YYYY-MM-DD')) {
+						cname += '  start-date ';
+					}
+					if (curMonthOrWeek.format('YYYY-MM-DD') == this.endDate
+							.format('YYYY-MM-DD')) {
+						cname += '  end-date ';
+					}
+				} else if (curMonthOrWeek >= this.startDate
+						&& curMonthOrWeek <= this.endDate) {
+					cname += ' in-range ';
+					if (curMonthOrWeek.isSame(this.startDate)) {
+						cname += ' active start-date ';
+					}
+					if (curMonthOrWeek.isSame(this.endDate)) {
+						cname += ' active end-date ';
+					}
+				}
+				var title = mow+'-'+i;
+				var content=i+"周";
+				if(monthOrWeek=="monthcalendar"){
+					content=this.locale.monthNames[i-1]
+					
+				}
+				html += '<td class="'
+						+ cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/,
+								'$1') + '" data-title="' + title + '">'
+						+ content + '</td>';
+				if (i % rownum==0) {
+					html += '</tr>';
+				}
+
+			}
+
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+
+
+            return html;
+
+        },
+       
+        //sqw add
+        showByType:function(type){
+			$(".left").css("display", "none");
+			$(".right").css("display", "none");
+			
+			if(type=="singlecalendar"){
+				if(this.opens=="right"){
+				    $("."+type+".left").css("display", "block");
+				}else{
+					$("."+type+".right").css("display", "block");
+				}
+				
+			}else{
+				 $("."+type+".left").css("display", "block");
+				 $("."+type+".right").css("display", "block");
+			}
+			
+	    },
+	    //sqw add
+	    calendarType:function(e){
+	    	var type="calendar";
+        	if($(e.target).parents('.monthcalendar').length>0){
+        		type="monthcalendar";
+        	}else if($(e.target).parents('.weekcalendar').length>0){
+        		type="weekcalendar";
+        	}else if($(e.target).parents('.singlecalendar').length>0){
+        		type="singlecalendar";
+        	}
+        	return type;
+	    },
+	    //sqw add
+	    getCalendarValue:function(e,type,pos){
+	    	var value=null;
+            var title = $(e.target).attr('data-title');
+            var calendar=this.leftCalendar;
+            if(pos=="right" && type!="singlecalendar"){
+            	calendar=this.rightCalendar;
+            }
+            if(type=="calendar" ||type=="singlecalendar"){
+	            var row = title.substr(1, 1);
+	            var col = title.substr(3, 1);
+	            value=calendar.calendar[row][col];
+            }else if(type=="monthcalendar"){
+            	var month = parseInt(title.substr(6))-1;
+            	value=moment([calendar.month.year(),month,1]);
+            }else if(type=="weekcalendar"){
+            	var week = parseInt(title.substr(5));
+            	var value=moment(calendar.month.year()+"-"+week,"GGGG-W");
+            }
+            return value;
+	    }
 
     };
 
