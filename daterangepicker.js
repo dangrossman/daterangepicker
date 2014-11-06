@@ -840,8 +840,8 @@
             leftOrRight = isLeft ? 'left' : 'right',
             cal = this.container.find('.'+type+'.'+leftOrRight);
             var startDate, endDate;
+            var value=this.getCalendarValue(e,type,"left");
             if (cal.hasClass('left')) {
-            	value=this.getCalendarValue(e,type,"left");
                 startDate = value;
                 endDate = this.endDate;
                 if (typeof this.dateLimit === 'object') {
@@ -862,7 +862,8 @@
                 }
             }
             if(type=="singlecalendar"){
-            	endDate = startDate.clone();
+            	startDate=value.clone();
+            	endDate = value.clone();
             }
             if (this.singleDatePicker && cal.hasClass('left')) {
                 endDate = startDate.clone();
