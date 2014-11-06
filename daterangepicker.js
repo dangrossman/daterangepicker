@@ -608,6 +608,7 @@
             if (this.element.hasClass('active')) {
                 this.hide();
             } else {
+                this.move();
                 this.show();
             }
         },
@@ -616,6 +617,7 @@
             if (this.isShowing) return;
 
             this.element.addClass('active');
+            this.move();
             this.container.show();
             this.move();
 
