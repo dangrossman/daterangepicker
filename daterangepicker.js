@@ -285,7 +285,7 @@
             }
 
             // update day names order to firstDay
-            if (this.locale.firstDay != 0) {
+            if (this.locale.firstDay !== 0) {
                 var iterator = this.locale.firstDay;
                 while (iterator > 0) {
                     this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
