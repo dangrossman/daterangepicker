@@ -903,6 +903,8 @@
                 this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
                 this.showCalendars();
             }
+
+            this.element.trigger('update.daterangepicker', this);
         },
 
         buildCalendar: function (month, year, hour, minute, side) {
