@@ -1,0 +1,39 @@
+{
+  "name": "bootstrap-daterangepicker",
+  "version": "1.3.16",
+  "description": "![Improvely.com](http://i.imgur.com/LbAMf3D.png)",
+  "main": "daterangepicker.js",
+  "style": "daterangepicker-bs3.css",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dangrossman/bootstrap-daterangepicker.git"
+  },
+  "author": {
+    "name": "Dan Grossman",
+    "email": "dan@dangrossman.info",
+    "url": "http://www.dangrossman.info"
+  },
+  "contributors": [
+    {
+      "name": "Dimitri Kopriwa",
+      "email": "dimitri.kopriwa@sanslesmains.io",
+      "url": "http://www.sanslesmains.io"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dangrossman/bootstrap-daterangepicker/issues"
+  },
+  "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
+  "engines": {
+    "node": "0.10.32",
+    "nmp": "1.4.28"
+  },
+  "dependencies": {
+    "jquery": "^2.1.1",
+    "moment": "^2.8.3"
+  }
+}
