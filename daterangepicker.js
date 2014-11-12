@@ -46,8 +46,8 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
+                '<div class="calendar first left"></div>' +
+                '<div class="calendar second right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input">' +
@@ -402,20 +402,20 @@
 
             if (this.opens == 'right' || this.opens == 'center') {
                 //swap calendar positions
-                var left = this.container.find('.calendar.left');
-                var right = this.container.find('.calendar.right');
+                var first = this.container.find('.calendar.first');
+                var second = this.container.find('.calendar.second');
 
-                if (right.hasClass('single')) {
-                    right.removeClass('single');
-                    left.addClass('single');
+                if (second.hasClass('single')) {
+                    second.removeClass('single');
+                    first.addClass('single');
                 }
 
-                left.removeClass('left').addClass('right');
-                right.removeClass('right').addClass('left');
+                first.removeClass('left').addClass('right');
+                second.removeClass('right').addClass('left');
 
                 if (this.singleDatePicker) {
-                    left.show();
-                    right.hide();
+                    first.show();
+                    second.hide();
                 }
             }
 
@@ -878,7 +878,7 @@
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), 'right');
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, 'left'));
             this.container.find('.calendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate, 'right'));
-            
+
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
             var i = 0;
