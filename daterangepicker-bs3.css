@@ -318,3 +318,13 @@
 .daterangepicker th.month {
   width: auto;
 }
+
+.daterangepicker .toggleBtn{
+  display: none;
+  width: 100%;
+
+}
+
+.daterangepicker .toggleBtn.one{
+margin-bottom: 3px;
+}
