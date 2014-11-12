@@ -614,9 +614,7 @@
             if (!this.isShowing) return;
 
             $(document)
-              .off('mousedown.daterangepicker')
-              .off('click.daterangepicker', '[data-toggle=dropdown]')
-              .off('focusin.daterangepicker');
+              .off('.daterangepicker');
 
             this.element.removeClass('active');
             this.container.hide();
