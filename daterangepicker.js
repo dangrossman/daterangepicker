@@ -140,6 +140,7 @@
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
             this.ranges = {};
+            this.stayInView = false;
 
             this.opens = 'right';
             if (this.element.hasClass('pull-right'))
@@ -358,6 +359,10 @@
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
             }
+            
+            if (typeof options.stayInView === 'boolean'){
+              this.stayInView = options.stayInView;
+            }
 
             if (typeof callback === 'function') {
                 this.cb = callback;
@@ -525,7 +530,7 @@
             var topOffset = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
             var elemBottom = topOffset + this.container.outerHeight();
             // if container height passes the bottom of the view, show it on top
-            if ((elemBottom >= docViewBottom)) {
+            if ((elemBottom >= docViewBottom) && this.stayInView == true) {
                 showOnTop = true;
             }
 
