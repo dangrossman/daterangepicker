@@ -291,7 +291,7 @@
             }
 
             // update day names order to firstDay
-            if (this.locale.firstDay != 0) {
+            if (this.locale.firstDay !== 0) {
                 var iterator = this.locale.firstDay;
                 while (iterator > 0) {
                     this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
@@ -535,6 +535,15 @@
 
         move: function () {
             var parentOffset = { top: 0, left: 0 };
+            var showOnTop = false;
+            var docViewBottom = $(window).scrollTop() + $(window).height();
+            var topOffset = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+            var elemBottom = topOffset + this.container.outerHeight();
+            // if container height passes the bottom of the view, show it on top
+            if ((elemBottom >= docViewBottom)) {
+                showOnTop = true;
+            }
+
             var parentRightEdge = $(window).width();
             if (!this.parentEl.is('body')) {
                 parentOffset = {
@@ -543,10 +552,15 @@
                 };
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
+            
+            if (showOnTop) {
+                // calculate new top offset
+                topOffset = this.element.offset().top - this.container.outerHeight() - parentOffset.top - 2;
+            }
 
             if (this.opens == 'left') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    top: topOffset,
                     right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
                     left: 'auto'
                 });
@@ -558,7 +572,7 @@
                 }
             } else if (this.opens == 'center') {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    top: topOffset,
                     left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
                             - this.container.outerWidth() / 2,
                     right: 'auto'
@@ -571,7 +585,7 @@
                 }
             } else {
                 this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
+                    top: topOffset,
                     left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
@@ -582,12 +596,34 @@
                     });
                 }
             }
+            
+            // switch between top and bottom classes
+            if (showOnTop) {
+                if (this.container.hasClass("opensleft"))
+                    this.container.removeClass("opensleft").addClass("openstopleft");
+
+                if (this.container.hasClass("openscenter"))
+                    this.container.removeClass("openscenter").addClass("openstopcenter");
+
+                if (this.container.hasClass("opensright"))
+                    this.container.removeClass("opensright").addClass("openstopright");
+            } else {
+                if (this.container.hasClass("openstopleft"))
+                    this.container.removeClass("openstopleft").addClass("opensleft");
+
+                if (this.container.hasClass("openstopcenter"))
+                    this.container.removeClass("openstopcenter").addClass("openscenter");
+
+                if (this.container.hasClass("openstopright"))
+                    this.container.removeClass("openstopright").addClass("opensright");
+            }
         },
 
         toggle: function (e) {
             if (this.element.hasClass('active')) {
                 this.hide();
             } else {
+                this.move();
                 this.show();
             }
         },
@@ -596,6 +632,7 @@
             if (this.isShowing) return;
 
             this.element.addClass('active');
+            this.move();
             this.container.show();
             this.move();
 
