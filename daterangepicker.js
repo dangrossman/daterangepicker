@@ -766,6 +766,13 @@
                 var difference = this.endDate.diff(this.startDate);
                 endDate = moment(startDate).add(difference, 'ms');
             }
+            if (this.minDate && startDate.isBefore(this.minDate)){
+                startDate = this.minDate;
+            }
+            if (this.maxDate && endDate.isAfter(this.maxDate)){
+                endDate = this.maxDate;
+            }
+
             this.startDate = startDate;
             this.endDate = endDate;
 
