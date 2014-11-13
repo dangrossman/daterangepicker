@@ -68,6 +68,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `dateLimit`: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months)
 
+`timeZone`: (string or number) The timezone that will be used to display the startDate and endDate in the calendar. This may be a string such as "-08:00" or an offset in minutes from Greenwich Mean Time. Uses Moment.js #zone, [see the docs here](http://momentjs.com/docs/#/manipulating/timezone-offset/) for more information. If the timeZone option is not set, the calendar will use the time zone set on the startDate that has been passed in through the options, if it has one. Defaults to the local time zone
+
 `showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
 
 `showWeekNumbers`: (boolean) Show week numbers at the start of each week on the calendars
