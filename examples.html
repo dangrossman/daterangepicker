@@ -92,8 +92,9 @@
                $(document).ready(function() {
                   $('#reservationtime').daterangepicker({
                     timePicker: true,
-                    timePickerIncrement: 30,
-                    format: 'MM/DD/YYYY h:mm A'
+                    timePickerIncrement: 1,
+                    timePickerSeconds: true,
+                    format: 'MM/DD/YYYY h:mm:ss A'
                   }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
