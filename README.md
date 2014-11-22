@@ -119,8 +119,7 @@ Example usage:
 $('#daterange').daterangepicker({ startDate: '2014-03-05', endDate: '2014-03-06' });
 
 //change the selected date range of that picker
-$('#daterange').data('daterangepicker').setStartDate('2014-03-01');
-$('#daterange').data('daterangepicker').setEndDate('2014-03-31');
+$('#daterange').data('daterangepicker').setStartDate('2014-03-01').setEndDate('2014-03-31');
 ````
 
 ## Events
