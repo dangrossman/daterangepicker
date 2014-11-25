@@ -1,7 +1,7 @@
 {
   "name": "bootstrap-daterangepicker",
-  "version": "1.3.16",
-  "description": "![Improvely.com](http://i.imgur.com/LbAMf3D.png)",
+  "version": "1.3.17",
+  "description": "Date range picker component for Bootstrap",
   "main": "daterangepicker.js",
   "style": "daterangepicker-bs3.css",
   "scripts": {
@@ -16,13 +16,6 @@
     "email": "dan@dangrossman.info",
     "url": "http://www.dangrossman.info"
   },
-  "contributors": [
-    {
-      "name": "Dimitri Kopriwa",
-      "email": "dimitri.kopriwa@sanslesmains.io",
-      "url": "http://www.sanslesmains.io"
-    }
-  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/dangrossman/bootstrap-daterangepicker/issues"
