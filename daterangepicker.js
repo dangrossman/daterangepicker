@@ -142,7 +142,7 @@
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
-            this.rangeList = 'ul';
+            this.rangeView = 'ul';
             
             this.ranges = {};
 
@@ -281,8 +281,8 @@
                 this.timePicker = options.timePicker;
             }
 
-            if (typeof options.rangeList === 'string') {
-                this.rangeList = options.rangeList;
+            if (typeof options.rangeView === 'string') {
+                this.rangeView = options.rangeView;
             }
 
             if (typeof options.timePickerSeconds === 'boolean') {
@@ -371,10 +371,10 @@
                     this.ranges[range] = [start, end];
                 }
 
-                if(this.rangeList === 'ul'){
+                if(this.rangeView === 'ul'){
                     this.rangeListWrapper = '<ul></ul>';
                     this.rangeListItem = '<li></li>';
-                } else if(this.rangeList === 'select'){
+                } else if(this.rangeView === 'select'){
                     this.rangeListWrapper = '<select></select>';
                     this.rangeListItem = '<option></option>';
                 }
@@ -382,7 +382,7 @@
                 var list = $(this.rangeListWrapper);
                 for (range in this.ranges) {
                     rangeItem = $(this.rangeListItem).append(range);
-                    if(this.rangeList === 'select'){
+                    if(this.rangeView === 'select'){
                         rangeItem.val(range);
                     }
                     list.append(rangeItem);
