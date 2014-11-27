@@ -8,7 +8,7 @@
       <link rel="stylesheet" type="text/css" media="all" href="daterangepicker-bs3.css" />
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
       <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="moment.js"></script>
+      <script type="text/javascript" src="moment.min.js"></script>
       <script type="text/javascript" src="daterangepicker.js"></script>
    </head>
    <body>
@@ -135,6 +135,7 @@
                     showDropdowns: true,
                     showWeekNumbers: true,
                     timePicker: false,
+                    rangeList: 'ul',
                     timePickerIncrement: 1,
                     timePicker12Hour: true,
                     ranges: {
@@ -166,6 +167,7 @@
                   var optionSet2 = {
                     startDate: moment().subtract(7, 'days'),
                     endDate: moment(),
+                    rangeList: 'select',
                     opens: 'left',
                     ranges: {
                        'Today': [moment(), moment()],

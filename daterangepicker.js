@@ -106,6 +106,7 @@
             .on('change.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.inputsChanged, this))
             .on('keydown.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.inputsKeydown, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
+            .on('change.select', $.proxy(this.selectRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.enterRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
@@ -141,6 +142,8 @@
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
+            this.rangeList = 'ul';
+            
             this.ranges = {};
 
             this.opens = 'right';
@@ -278,6 +281,10 @@
                 this.timePicker = options.timePicker;
             }
 
+            if (typeof options.rangeList === 'string') {
+                this.rangeList = options.rangeList;
+            }
+
             if (typeof options.timePickerSeconds === 'boolean') {
                 this.timePickerSeconds = options.timePickerSeconds;
             }
@@ -364,13 +371,26 @@
                     this.ranges[range] = [start, end];
                 }
 
-                var list = '<ul>';
-                for (range in this.ranges) {
-                    list += '<li>' + range + '</li>';
+                if(this.rangeList === 'ul'){
+                    this.rangeListWrapper = '<ul></ul>';
+                    this.rangeListItem = '<li></li>';
+                } else if(this.rangeList === 'select'){
+                    this.rangeListWrapper = '<select></select>';
+                    this.rangeListItem = '<option></option>';
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
-                list += '</ul>';
-                this.container.find('.ranges ul').remove();
+
+                var list = $(this.rangeListWrapper);
+                for (range in this.ranges) {
+                    rangeItem = $(this.rangeListItem).append(range);
+                    if(this.rangeList === 'select'){
+                        rangeItem.val(range);
+                    }
+                    list.append(rangeItem);
+                }
+                var rangeCustom = $(this.rangeListItem).html(this.locale.customRangeLabel);
+                list.append(rangeCustom);
+                
+                this.container.find('.ranges li, select').remove();
                 this.container.find('.ranges').prepend(list);
             }
 
@@ -705,6 +725,15 @@
 
         clickRange: function (e) {
             var label = e.target.innerHTML;
+            this.changeRange(label);
+        },
+
+        selectRange: function (e) {
+            var label = e.target.value;
+            this.changeRange(label);
+        },
+
+        changeRange: function (label) {
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
