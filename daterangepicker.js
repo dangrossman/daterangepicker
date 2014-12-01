@@ -397,8 +397,13 @@
                     this.container.find('.calendar.right').addClass('single');
             } else {
                 this.container.removeClass('single');
+                this.container.find('.calendar.left').show();
                 this.container.find('.calendar.right').removeClass('single');
-                this.container.find('.ranges').show();
+                if (!this.timePicker) {
+                    this.container.find('.ranges').show();
+                } else {
+                    this.container.find('.ranges .daterangepicker_start_input, .ranges .daterangepicker_end_input').show();
+                }
             }
 
             this.oldStartDate = this.startDate.clone();
