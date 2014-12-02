@@ -78,6 +78,10 @@
         $.each(this.buttonClasses, function (idx, val) {
             c.find('button').addClass(val);
         });
+        if (!this.showRangeInputs) {
+		    this.container.find('.daterangepicker_start_input').hide();
+   		    this.container.find('.daterangepicker_end_input').hide();
+        }
         this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
         this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
         if (this.applyClass.length)
@@ -136,6 +140,7 @@
 
             this.showDropdowns = false;
             this.showWeekNumbers = false;
+            this.showRangeInputs = true;
             this.timePicker = false;
             this.timePickerSeconds = false;
             this.timePickerIncrement = 30;
@@ -253,6 +258,10 @@
 
             if (typeof options.showWeekNumbers === 'boolean') {
                 this.showWeekNumbers = options.showWeekNumbers;
+            }
+            
+            if (typeof options.showRangeInputs === 'boolean') {
+                this.showRangeInputs = options.showRangeInputs;
             }
 
             if (typeof options.buttonClasses === 'string') {
