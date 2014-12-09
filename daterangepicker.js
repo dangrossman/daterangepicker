@@ -201,11 +201,6 @@
             if (typeof options.applyClass === 'string')
                 this.applyClass = options.applyClass;
 
-                    if (options.ranges[range] == true || options.ranges[range] == false){
-                        this.ranges[range] = options.ranges[range];
-                        continue;
-                    }
-
             if (typeof options.cancelClass === 'string')
                 this.cancelClass = options.cancelClass;
 
@@ -485,11 +480,6 @@
         },
 
         updateView: function () {
-            if (this.isDefined != null){
-                this.container.find('input[name=daterangepicker_start]').val('');
-                this.container.find('input[name=daterangepicker_end]').val('');
-                return
-            }
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
             this.updateFormInputs();
@@ -720,14 +710,6 @@
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
-                if (dates == true || dates == false){
-                    this.isDefined = dates;
-                    this.startDate = null;
-                    this.endDate = null;
-                } else {
-                    this.isDefined = null;
-                    this.startDate = dates[0];
-                    this.endDate = dates[1];
 
                 this.startDate = dates[0];
                 this.endDate = dates[1];
