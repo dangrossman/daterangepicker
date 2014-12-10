@@ -362,14 +362,16 @@
                     }
 
                     this.ranges[range] = [start, end];
+                    
+                    if(typeof options.ranges[range][2] === 'string')
+                    	this.ranges[range].push(options.ranges[range][2]);
                 }
 
-                var list = '<ul>';
+                var list = $('<ul></ul>');
                 for (range in this.ranges) {
-                    list += '<li>' + range + '</li>';
+                    $('<li>' + (typeof this.ranges[range][2] === 'string' ? this.ranges[range][2] : range) + '</li>').data('rangeKey', range).appendTo(list);
                 }
-                list += '<li>' + this.locale.customRangeLabel + '</li>';
-                list += '</ul>';
+               $('<li>' + this.locale.customRangeLabel + '</li>').appendTo(list);
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
             }
@@ -650,8 +652,8 @@
 
         enterRange: function (e) {
             // mouse pointer has entered a range label
-            var label = e.target.innerHTML;
-            if (label == this.locale.customRangeLabel) {
+            var label = $(e.target).data('rangeKey');
+            if (!label) {
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
@@ -704,9 +706,9 @@
         },
 
         clickRange: function (e) {
-            var label = e.target.innerHTML;
-            this.chosenLabel = label;
-            if (label == this.locale.customRangeLabel) {
+            var label = $(e.target).data('rangeKey');
+            this.chosenLabel = label || this.locale.customRangeLabel;
+            if (!label) {
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
@@ -911,20 +913,20 @@
                     if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
+                            .addClass('active').data('rangeKey') || this.locale.customRangeLabel;
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
+                            .addClass('active').data('rangeKey') || this.locale.customRangeLabel;
                     }
                 }
                 i++;
             }
             if (customRange) {
-                this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                this.chosenLabel = this.container.find('.ranges li:last').addClass('active').data('rangeKey') || this.locale.customRangeLabel;
                 this.showCalendars();
             }
         },
