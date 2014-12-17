@@ -424,10 +424,10 @@
                     second.removeClass('single');
                     first.addClass('single');
                 }
-
-                first.removeClass('left').addClass('right');
-                second.removeClass('right').addClass('left');
-
+                if($(document).width() > 840){ // how to set this width better?
+                    first.removeClass('left').addClass('right');
+                    second.removeClass('right').addClass('left');
+                }
                 if (this.singleDatePicker) {
                     first.show();
                     second.hide();
