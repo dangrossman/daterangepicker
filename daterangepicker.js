@@ -174,16 +174,16 @@
                 this.separator = options.separator;
 
             if (typeof options.startDate === 'string')
-                this.startDate = moment(options.startDate, this.format);
+                this.startDate = moment(options.startDate, this.format, true);
 
             if (typeof options.endDate === 'string')
-                this.endDate = moment(options.endDate, this.format);
+                this.endDate = moment(options.endDate, this.format, true);
 
             if (typeof options.minDate === 'string')
-                this.minDate = moment(options.minDate, this.format);
+                this.minDate = moment(options.minDate, this.format, true);
 
             if (typeof options.maxDate === 'string')
-                this.maxDate = moment(options.maxDate, this.format);
+                this.maxDate = moment(options.maxDate, this.format, true);
 
             if (typeof options.startDate === 'object')
                 this.startDate = moment(options.startDate);
@@ -309,11 +309,11 @@
                     start = end = null;
 
                     if (split.length == 2) {
-                        start = moment(split[0], this.format);
-                        end = moment(split[1], this.format);
+                        start = moment(split[0], this.format, true);
+                        end = moment(split[1], this.format, true);
                     } else if (this.singleDatePicker && val !== "") {
-                        start = moment(val, this.format);
-                        end = moment(val, this.format);
+                        start = moment(val, this.format, true);
+                        end = moment(val, this.format, true);
                     }
                     if (start !== null && end !== null) {
                         this.startDate = start;
@@ -335,12 +335,12 @@
                 for (range in options.ranges) {
 
                     if (typeof options.ranges[range][0] === 'string')
-                        start = moment(options.ranges[range][0], this.format);
+                        start = moment(options.ranges[range][0], this.format, true);
                     else
                         start = moment(options.ranges[range][0]);
 
                     if (typeof options.ranges[range][1] === 'string')
-                        end = moment(options.ranges[range][1], this.format);
+                        end = moment(options.ranges[range][1], this.format, true);
                     else
                         end = moment(options.ranges[range][1]);
 
@@ -446,7 +446,7 @@
 
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
-                this.startDate = moment(startDate, this.format).utcOffset(this.timeZone);
+                this.startDate = moment(startDate, this.format, true).utcOffset(this.timeZone);
 
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
@@ -463,7 +463,7 @@
 
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
-                this.endDate = moment(endDate, this.format).utcOffset(this.timeZone);
+                this.endDate = moment(endDate, this.format, true).utcOffset(this.timeZone);
 
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
@@ -504,14 +504,16 @@
                 end = null;
 
             if(dateString.length === 2) {
-                start = moment(dateString[0], this.format).utcOffset(this.timeZone);
-                end = moment(dateString[1], this.format).utcOffset(this.timeZone);
+                start = moment(dateString[0], this.format, true).utcOffset(this.timeZone);
+                end = moment(dateString[1], this.format, true).utcOffset(this.timeZone);
             }
 
             if (this.singleDatePicker || start === null || end === null) {
-                start = moment(this.element.val(), this.format).utcOffset(this.timeZone);
+                start = moment(this.element.val(), this.format, true).utcOffset(this.timeZone);
                 end = start;
             }
+
+            if (!start.isValid() || !end.isValid()) return;
 
             if (end.isBefore(start)) return;
 
@@ -673,7 +675,7 @@
         // when a date is typed into the start to end date textboxes
         inputsChanged: function (e) {
             var el = $(e.target);
-            var date = moment(el.val(), this.format);
+            var date = moment(el.val(), this.format, true);
             if (!date.isValid()) return;
 
             var startDate, endDate;
