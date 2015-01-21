@@ -7,9 +7,13 @@
  * Built for http://www.improvely.com
  */
 
- .daterangepicker.dropdown-menu {
+.daterangepicker.dropdown-menu {
   max-width: none;
   z-index: 3000;
+}
+
+.daterangepicker .buttons {
+	margin: 4px;
 }
 
 .daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
@@ -23,11 +27,11 @@
   margin: 4px;
 }
 
-.daterangepicker.single .ranges, .daterangepicker.single .calendar {
+.daterangepicker.single .ranges, .daterangepicker.single .calendar, .daterangepicker.single .buttons {
   float: none;
 }
 
-.daterangepicker .ranges {
+.daterangepicker .ranges, .daterangepicker .buttons {
   width: 160px;
   text-align: left;
 }
