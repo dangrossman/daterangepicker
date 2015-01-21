@@ -12,6 +12,10 @@
   z-index: 3000;
 }
 
+.daterangepicker .buttons {
+	margin: 4px;
+}
+
 .daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
   float: left;
   margin: 4px;
@@ -23,7 +27,7 @@
   margin: 4px;
 }
 
-.daterangepicker .ranges {
+.daterangepicker .ranges, .daterangepicker .buttons {
   width: 160px;
   text-align: left;
 }
