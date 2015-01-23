@@ -86,6 +86,10 @@
             this.container.find('.cancelBtn').addClass(this.cancelClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+        if (this.arrowLeftClass.length)
+            this.container.find('.fa.fa-arrow-left').removeClass().addClass(this.arrowLeftClass);
+        if (this.arrowRightClass.length)
+            this.container.find('.fa.fa-arrow-right').removeClass().addClass(this.arrowRightClass);
 
         //event listeners
 
@@ -151,6 +155,9 @@
             this.applyClass = 'btn-success';
             this.cancelClass = 'btn-default';
 
+            this.arrowLeftClass = 'fa fa-arrow-left icon-arrow-left glyphicon glyphicon-arrow-left';
+            this.arrowRightClass = 'fa fa-arrow-right icon-arrow-right glyphicon glyphicon-arrow-right';
+
             this.format = 'MM/DD/YYYY';
             this.separator = ' - ';
 
@@ -203,6 +210,12 @@
 
             if (typeof options.cancelClass === 'string')
                 this.cancelClass = options.cancelClass;
+
+            if (typeof options.arrowLeftClass === 'string')
+                this.arrowLeftClass = options.arrowLeftClass;
+
+            if (typeof options.arrowRightClass === 'string')
+                this.arrowRightClass = options.arrowRightClass;
 
             if (typeof options.dateLimit === 'object')
                 this.dateLimit = options.dateLimit;
@@ -1027,7 +1040,7 @@
                 html += '<th></th>';
 
             if (!minDate || minDate.isBefore(calendar.firstDay)) {
-                html += '<th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
+                html += '<th class="prev available"><i class="'+this.arrowLeftClass+'"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -1040,7 +1053,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar.lastDay)) {
-                html += '<th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
+                html += '<th class="next available"><i class="'+this.arrowRightClass+'"></i></th>';
             } else {
                 html += '<th></th>';
             }
