@@ -853,8 +853,8 @@
 
         clickApply: function (e) {
             this.updateInputText();
-            this.hide();
             this.element.trigger('apply.daterangepicker', this);
+            this.hide();
         },
 
         clickCancel: function (e) {
