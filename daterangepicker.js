@@ -41,28 +41,31 @@
         //element that triggered the date range picker
         this.element = $(element);
 
+        // name of the element
+        this.elementName = this.element.attr('name') || 'daterangepicker';
+
         //tracks visible state
         this.isShowing = false;
 
         //create the picker HTML object
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar first left"></div>' +
-                '<div class="calendar second right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input">' +
-                      '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input">' +
-                      '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
-                    '</div>' +
-                    '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
-                    '<button class="cancelBtn"></button>' +
-                  '</div>' +
-                '</div>' +
-              '</div>';
+        var DRPTemplate = ('<div class="daterangepicker dropdown-menu">' +
+          '<div class="calendar first left"></div>' +
+          '<div class="calendar second right"></div>' +
+          '<div class="ranges">' +
+            '<div class="range_inputs">' +
+              '<div class="daterangepicker_start_input">' +
+                '<label for="[ELEMENT_NAME]_start"></label>' +
+                '<input class="input-mini" type="text" name="[ELEMENT_NAME]_start" value="" />' +
+              '</div>' +
+              '<div class="daterangepicker_end_input">' +
+                '<label for="[ELEMENT_NAME]_end"></label>' +
+                '<input class="input-mini" type="text" name="[ELEMENT_NAME]_end" value="" />' +
+              '</div>' +
+              '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
+              '<button class="cancelBtn"></button>' +
+            '</div>' +
+          '</div>' +
+        '</div>').replace(/\[ELEMENT_NAME\]/g, this.elementName);
 
         //custom options
         if (typeof options !== 'object' || options === null)
@@ -486,8 +489,8 @@
         },
 
         updateFormInputs: function () {
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.format));
-            this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.format));
+            this.container.find('input[name=' + this.elementName + '_start]').val(this.startDate.format(this.format));
+            this.container.find('input[name=' + this.elementName + '_end]').val(this.endDate.format(this.format));
 
             if (this.startDate.isSame(this.endDate) || this.startDate.isBefore(this.endDate)) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
@@ -655,8 +658,8 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.format));
+                this.container.find('input[name=' + this.elementName + '_start]').val(dates[0].format(this.format));
+                this.container.find('input[name=' + this.elementName + '_end]').val(dates[1].format(this.format));
             }
         },
 
@@ -678,7 +681,7 @@
             if (!date.isValid()) return;
 
             var startDate, endDate;
-            if (el.attr('name') === 'daterangepicker_start') {
+            if (el.attr('name') === (this.elementName + '_start')) {
                 startDate = date;
                 endDate = this.endDate;
             } else {
@@ -758,9 +761,9 @@
             var cal = $(e.target).parents('.calendar');
 
             if (cal.hasClass('left')) {
-                this.container.find('input[name=daterangepicker_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
+                this.container.find('input[name=' + this.elementName + '_start]').val(this.leftCalendar.calendar[row][col].format(this.format));
             } else {
-                this.container.find('input[name=daterangepicker_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
+                this.container.find('input[name=' + this.elementName + '_end]').val(this.rightCalendar.calendar[row][col].format(this.format));
             }
         },
 
