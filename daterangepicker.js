@@ -853,6 +853,7 @@
 
             this[leftOrRight+'Calendar'].month.month(month).year(year);
             this.updateCalendars();
+            this.element.trigger('change.daterangepicker');
         },
 
         updateTime: function(e) {
