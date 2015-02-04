@@ -140,6 +140,7 @@
             this.timePickerSeconds = false;
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
+            this.autoApply = false;
             this.singleDatePicker = false;
             this.ranges = {};
 
@@ -291,6 +292,11 @@
 
             if (typeof options.timePicker12Hour === 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
+            }
+
+            if (typeof options.autoApply === 'boolean') {
+                this.autoApply = options.autoApply;
+                this.container.find('.applyBtn, .cancelBtn').addClass('hide');
             }
 
             // update day names order to firstDay
@@ -795,6 +801,12 @@
 
             this.updateView();
             this.updateCalendars();
+
+            if (this.autoApply) {
+                this.notify();
+                this.updateInputText();
+                this.element.trigger('apply.daterangepicker', this);
+            }
         },
 
         clickDate: function(e) {
@@ -950,6 +962,12 @@
 
             this.updateView();
             this.updateCalendars();
+
+            if (this.autoApply) {
+                this.notify();
+                this.updateInputText();
+                this.element.trigger('apply.daterangepicker', this);
+            }
         },
 
         updateCalendars: function () {
