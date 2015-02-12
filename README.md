@@ -2,13 +2,18 @@
 
 ![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
+This is a fork of the Date Range Picker for Bootstrap by [Dan Grossman](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/).  While initially being used as a sandbox to try out new features/improvements for the picker, I've made some minor code updates and added an option to the api `showRangeInputsOnCustomRangeOnly` that will turn off the range inputs (apply,cancel,to,from) unless the custom range selector is triggered.
+
+More updates are planned including LESS/SASS variations and exposing more functionality thru the api.
+
+## Original Docs
 This date range picker component for Bootstrap creates a dropdown menu from which a user can
-select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
+select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com),
 which needed a way to select date ranges for reports.
 
-If invoked with no options, it will present two calendars to choose a start 
-and end date from. Optionally, you can provide a list of date ranges the user can select from instead 
-of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
+If invoked with no options, it will present two calendars to choose a start
+and end date from. Optionally, you can provide a list of date ranges the user can select from instead
+of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
 The component can also be used as a single date picker by setting the `singleDatePicker` option to `true`.
@@ -38,14 +43,14 @@ $(document).ready(function() {
 </script>
 ```
 
-The constructor also takes an optional options object and callback function. The function will be called whenever 
+The constructor also takes an optional options object and callback function. The function will be called whenever
 the selected date range has been changed by the user, and is passed the start and end dates (moment date objects)
-and the predefined range label chosen (if any), as parameters. It will not fire if the picker is closed without 
+and the predefined range label chosen (if any), as parameters. It will not fire if the picker is closed without
 any change to the selected dates.
 
 ````
 $('input[name="daterange"]').daterangepicker(
-  { 
+  {
     format: 'YYYY-MM-DD',
     startDate: '2013-01-01',
     endDate: '2013-12-31'
@@ -70,19 +75,21 @@ $('input[name="daterange"]').daterangepicker(
 
 `timeZone`: (string or number) The timezone that will be used to display the startDate and endDate in the calendar. This may be a string such as "-08:00" or an offset in minutes from Greenwich Mean Time. Uses Moment.js #zone, [see the docs here](http://momentjs.com/docs/#/manipulating/timezone-offset/) for more information. If the timeZone option is not set, the calendar will use the time zone set on the startDate that has been passed in through the options, if it has one. Defaults to the local time zone
 
-`showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
+`showDropdowns`: (boolean:false) Show year and month select boxes above calendars to jump to a specific month and year
 
-`showWeekNumbers`: (boolean) Show week numbers at the start of each week on the calendars
+`showWeekNumbers`: (boolean:false) Show week numbers at the start of each week on the calendars
 
-`timePicker`: (boolean) Allow selection of dates with times, not just dates
+`timePicker`: (boolean:false) Allow selection of dates with times, not just dates
 
 `timePickerIncrement`: (number) Increment of the minutes selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30)
 
-`timePicker12Hour`: (boolean) Use 12-hour instead of 24-hour times, adding an AM/PM select box
+`timePicker12Hour`: (boolean:true) Use 12-hour instead of 24-hour times, adding an AM/PM select box
 
-`timePickerSeconds`: (boolean) Show seconds in the timePicker
+`timePickerSeconds`: (boolean:false) Show seconds in the timePicker
 
 `ranges`: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
+
+`showRangeInputsOnCustomRangeOnly`: (boolean:false) Allows the custom range label to trigger the visiblity of the range inputs (apply | cancel | to | from)
 
 `opens`: (string: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to
 
@@ -98,7 +105,7 @@ $('input[name="daterange"]').daterangepicker(
 
 `locale`: (object) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars
 
-`singleDatePicker`: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
+`singleDatePicker`: (boolean:false) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
 
 `parentEl`: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be `'body'`
 
@@ -112,11 +119,13 @@ Several functions are provided for updating the picker's option and state after 
 
 `setEndDate(Date/moment/string)`: Sets the date range picker's currently selected end date to the provided date
 
+
+
 Example usage:
 
 ````
 //create a new date range picker
-$('#daterange').daterangepicker({ startDate: '2014-03-05', endDate: '2014-03-06' });
+$('#daterange').daterangepicker({ startDate: '2014-03-05', endDate: '2014-03-06', showRangeInputsOnCustomRangeOnly: true });
 
 //change the selected date range of that picker
 $('#daterange').data('daterangepicker').setStartDate('2014-03-01');
@@ -143,7 +152,7 @@ Some applications need a "clear" instead of a "cancel" functionality, which can 
 
 ````
 $('#daterange').daterangepicker({
-  locale: { cancelLabel: 'Clear' }  
+  locale: { cancelLabel: 'Clear' }
 });
 
 $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
@@ -172,6 +181,7 @@ for convenience. It is available under the [MIT license](http://www.opensource.o
 The MIT License (MIT)
 
 Copyright (c) 2012-2014 Dan Grossman
+Modifications by Greg Benjamin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
