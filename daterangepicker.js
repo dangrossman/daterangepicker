@@ -1073,7 +1073,7 @@
                     var cname = 'available ';
                     var formated = calendar[row][col].format('YYYY-MM-DD');
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
-                    cname += (moment(formated).day() == '0' || moment(formated).day() == '6') ? 'weekend' : '';
+                    cname += (moment(formated).day() == '0' || moment(formated).day() == '6') ? ' weekend ' : '';
 
                     if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
                         cname = ' off disabled ';
