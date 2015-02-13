@@ -1076,7 +1076,7 @@
                     cname += (moment(formated).day() == '0' || moment(formated).day() == '6') ? ' weekend ' : '';
 
                     if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
-                        cname = ' off disabled ';
+                        cname += ' off disabled ';
                     } else if (formated == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
                         if (formated == this.startDate.format('YYYY-MM-DD')) {
