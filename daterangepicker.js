@@ -1171,34 +1171,62 @@
                         selected.minute(max_minute);
                 }
 
+                var selectedMinuteDisplayed = false;
+
+                var minutes = [];
+
                 for (i = 0; i < 60; i += this.timePickerIncrement) {
-                    var num = i;
+                    minutes.push(i);
+                }
+
+                if (selected.minute() % this.timePickerIncrement > 0) {
+                    minutes.push(selected.minute());
+                    minutes.sort(function(a, b) {
+                      return a - b;
+                    });
+                }
+
+                minutes.forEach(function(minute) {
+                    var num = minute;
                     if (num < 10)
                         num = '0' + num;
-                    if (i == selected.minute()) {
+                    if (minute == selected.minute()) {
                         html += '<option value="' + i + '" selected="selected">' + num + '</option>';
-                    } else if (i < min_minute || i > max_minute) {
-                        html += '<option value="' + i + '" disabled="disabled" class="disabled">' + num + '</option>';
+                    } else if (minute < min_minute || minute > max_minute) {
+                        html += '<option value="' + minute + '" disabled="disabled" class="disabled">' + num + '</option>';
                     } else {
-                        html += '<option value="' + i + '">' + num + '</option>';
+                        html += '<option value="' + minute + '">' + num + '</option>';
                     }
-                }
+                });
 
                 html += '</select> ';
 
                 if (this.timePickerSeconds) {
                     html += ': <select class="secondselect">';
 
+                    var seconds = [];
+
                     for (i = 0; i < 60; i += this.timePickerIncrement) {
-                        var num = i;
+                        seconds.push(i);
+                    }
+
+                    if (selected.second() % this.timePickerIncrement > 0) {
+                        seconds.push(selected.second());
+                        seconds.sort(function(a, b) {
+                          return a - b;
+                        });
+                    }
+
+                    seconds.forEach(function(second) {
+                        var num = second;
                         if (num < 10)
                             num = '0' + num;
-                        if (i == selected.second()) {
-                            html += '<option value="' + i + '" selected="selected">' + num + '</option>';
+                        if (second == selected.second()) {
+                            html += '<option value="' + second + '" selected="selected">' + num + '</option>';
                         } else {
-                            html += '<option value="' + i + '">' + num + '</option>';
+                            html += '<option value="' + second + '">' + num + '</option>';
                         }
-                    }
+                    });
 
                     html += '</select>';
                 }
