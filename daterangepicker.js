@@ -678,11 +678,11 @@
 
             var startDate, endDate;
             if (el.attr('name') === 'daterangepicker_start') {
-                startDate = date;
+                startDate = (false !== this.minDate && date.isBefore(this.minDate)) ? this.minDate : date;
                 endDate = this.endDate;
             } else {
                 startDate = this.startDate;
-                endDate = date;
+                endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date;
             }
             this.setCustomDates(startDate, endDate);
         },
