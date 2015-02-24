@@ -769,6 +769,9 @@
             if (startDate.isAfter(endDate)) {
                 var difference = this.endDate.diff(this.startDate);
                 endDate = moment(startDate).add(difference, 'ms');
+                if (this.maxDate && endDate.isAfter(this.maxDate)) {
+                  endDate = this.maxDate;
+                }
             }
             this.startDate = startDate;
             this.endDate = endDate;
@@ -847,6 +850,28 @@
             // Month must be Number for new moment versions
             var month = parseInt(cal.find('.monthselect').val(), 10);
             var year = cal.find('.yearselect').val();
+
+            if (!isLeft) {
+                if (year < this.startDate.year() || (year == this.startDate.year() && month < this.startDate.month())) {
+                    month = this.startDate.month();
+                    year = this.startDate.year();
+                }
+            }
+
+            if (this.minDate) {
+                if (year < this.minDate.year() || (year == this.minDate.year() && month < this.minDate.month())) {
+                    month = this.minDate.month();
+                    year = this.minDate.year();
+                }
+            }
+
+            if (this.maxDate) {
+                if (year > this.maxDate.year() || (year == this.maxDate.year() && month > this.maxDate.month())) {
+                    month = this.maxDate.month();
+                    year = this.maxDate.year();
+                }
+            }
+
 
             this[leftOrRight+'Calendar'].month.month(month).year(year);
             this.updateCalendars();
