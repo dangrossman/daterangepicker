@@ -521,7 +521,7 @@
             this.oldEndDate = this.endDate.clone();
 
             this.startDate = start;
-            this.endDate = end;
+            this.endDate = end.endOf('day');
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.notify();
@@ -684,7 +684,7 @@
                 endDate = this.endDate;
             } else {
                 startDate = this.startDate;
-                endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date;
+                endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date.endOf('day');
             }
             this.setCustomDates(startDate, endDate);
         },
