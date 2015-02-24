@@ -1,9 +1,9 @@
 /**
-* @version: 1.3.17
+* @version: 1.3.18
 * @author: Dan Grossman http://www.dangrossman.info/
-* @copyright: Copyright (c) 2012-2014 Dan Grossman. All rights reserved.
+* @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
-* @website: http://www.improvely.com/
+* @website: https://www.improvely.com/
 */
 
 (function(root, factory) {
