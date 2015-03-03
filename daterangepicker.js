@@ -573,8 +573,7 @@
                     });
                 }
             } else if (this.opens == 'embed') {                
-                this.element.parent().append(this.container);
-                this.element.hide();
+                this.element.after(this.container);
             } else {
                 this.container.css({
                     top: this.element.offset().top + this.element.outerHeight() - parentOffset.top,
