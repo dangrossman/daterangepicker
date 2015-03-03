@@ -112,7 +112,11 @@
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.updateFromControl, this)
+                'keyup.daterangepicker': (function(event){
+                    if(event.keyCode == 13){
+                        self.updateFromControl()
+                    }
+                })
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
@@ -521,7 +525,7 @@
             this.oldEndDate = this.endDate.clone();
 
             this.startDate = start;
-            this.endDate = end.endOf('day');
+            this.endDate = end;
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.notify();
@@ -684,8 +688,8 @@
                 endDate = this.endDate;
             } else {
                 startDate = this.startDate;
-                endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date.endOf('day');
-            }
+                endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date;
+           }
             this.setCustomDates(startDate, endDate);
         },
 
