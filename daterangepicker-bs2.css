@@ -291,6 +291,7 @@
   top: auto;
   left: auto;
   float: none;
+  z-index: auto;
 }
 
 .daterangepicker.opensembed > .calendar,
