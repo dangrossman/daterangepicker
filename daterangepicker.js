@@ -109,12 +109,12 @@
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
         if (this.element.is('input')) {
-            self = this
+            var self = this
             self.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': (function(event){
-                    if(event.keyCode == 13){
+                'keydown.daterangepicker': (function(event){
+                    if(event.which == 13){
                         self.updateFromControl()
                     }
                 })
