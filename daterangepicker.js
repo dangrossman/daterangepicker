@@ -536,6 +536,7 @@
 
         notify: function () {
             this.updateView();
+            this.updateInputText();
             this.cb(this.startDate, this.endDate, this.chosenLabel);
         },
 
@@ -734,6 +735,11 @@
                 this.hideCalendars();
                 this.hide();
                 this.element.trigger('apply.daterangepicker', this);
+
+                if (this.autoApply) {
+                    this.notify();
+                }
+
             }
         },
 
@@ -787,7 +793,6 @@
 
             if (this.autoApply) {
                 this.notify();
-                this.updateInputText();
                 this.element.trigger('apply.daterangepicker', this);
             }
         },
@@ -913,7 +918,6 @@
 
             if (this.autoApply) {
                 this.notify();
-                this.updateInputText();
                 this.element.trigger('apply.daterangepicker', this);
             }
         },
