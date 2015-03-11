@@ -852,7 +852,7 @@
             var month = parseInt(cal.find('.monthselect').val(), 10);
             var year = cal.find('.yearselect').val();
 
-            if (!isLeft) {
+            if (!isLeft && !this.singleDatePicker) {
                 if (year < this.startDate.year() || (year == this.startDate.year() && month < this.startDate.month())) {
                     month = this.startDate.month();
                     year = this.startDate.year();
