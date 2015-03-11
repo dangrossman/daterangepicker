@@ -13,7 +13,7 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 
 The component can also be used as a single date picker by setting the `singleDatePicker` option to `true`.
 
-**[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)** or **[Try it in a live application](https://awio.iljmp.com/5/drpdemogh)**
+**[View some examples](http://www.daterangepicker.com/)** or **[Try it in a live application](https://awio.iljmp.com/5/drpdemogh)**
 
 ## Usage
 
