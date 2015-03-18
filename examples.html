@@ -3,11 +3,11 @@
    <head>
       <meta charset="UTF-8" />
       <title>A date range picker for Bootstrap</title>
-      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-      <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+      <link href="http://netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="daterangepicker-bs3.css" />
-      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-      <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="moment.js"></script>
       <script type="text/javascript" src="daterangepicker.js"></script>
    </head>
@@ -124,13 +124,13 @@
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
                     //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
-                  }
+                  };
 
                   var optionSet1 = {
                     startDate: moment().subtract(29, 'days'),
                     endDate: moment(),
                     minDate: '01/01/2012',
-                    maxDate: '12/31/2014',
+                    maxDate: '12/31/2015',
                     dateLimit: { days: 60 },
                     showDropdowns: true,
                     showWeekNumbers: true,
@@ -147,8 +147,8 @@
                     },
                     opens: 'left',
                     buttonClasses: ['btn btn-default'],
-                    applyClass: 'btn-small btn-primary',
-                    cancelClass: 'btn-small',
+                    applyClass: 'btn-sm btn-primary',
+                    cancelClass: 'btn-sm',
                     format: 'MM/DD/YYYY',
                     separator: ' to ',
                     locale: {

@@ -13,7 +13,7 @@ into the text box. Otherwise, you can provide a custom callback function to rece
 
 The component can also be used as a single date picker by setting the `singleDatePicker` option to `true`.
 
-**[View a demo](http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/)** or **[Try it in a live application](https://awio.iljmp.com/5/drpdemogh)**
+**[View some examples](http://www.daterangepicker.com/)** or **[Try it in a live application](https://awio.iljmp.com/5/drpdemogh)**
 
 ## Usage
 
@@ -68,6 +68,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `dateLimit`: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months)
 
+`timeZone`: (string or number) The timezone that will be used to display the startDate and endDate in the calendar. This may be a string such as "08:00" or an offset in minutes from Greenwich Mean Time. Uses Moment.js #utcOffset, [see the docs here](http://momentjs.com/docs/#/manipulating/utc-offset/) for more information. If the timeZone option is not set, the calendar will use the time zone set on the startDate that has been passed in through the options, if it has one. Defaults to the local time zone
+
 `showDropdowns`: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
 
 `showWeekNumbers`: (boolean) Show week numbers at the start of each week on the calendars
@@ -77,6 +79,8 @@ $('input[name="daterange"]').daterangepicker(
 `timePickerIncrement`: (number) Increment of the minutes selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30)
 
 `timePicker12Hour`: (boolean) Use 12-hour instead of 24-hour times, adding an AM/PM select box
+
+`timePickerSeconds`: (boolean) Show seconds in the timePicker
 
 `ranges`: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
 
@@ -127,6 +131,10 @@ Several events are triggered on the element you attach the picker to, which you 
 
 `hide.daterangepicker`: Triggered when the picker is hidden
 
+`showCalendar.daterangepicker`: Triggered when the calendar is shown
+
+`hideCalendar.daterangepicker`: Triggered when the calendar is hidden
+
 `apply.daterangepicker`: Triggered when the apply button is clicked
 
 `cancel.daterangepicker`: Triggered when the cancel button is clicked
@@ -161,16 +169,24 @@ for convenience. It is available under the [MIT license](http://www.opensource.o
 
 --
 
-Copyright 2012-2014 Dan Grossman
+The MIT License (MIT)
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Copyright (c) 2012-2014 Dan Grossman
 
-   http://www.apache.org/licenses/LICENSE-2.0
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
