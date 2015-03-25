@@ -92,7 +92,7 @@
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
             .on('click.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
-            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
+            //.on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
             .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.updateMonthYear, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.updateMonthYear, this))
@@ -821,6 +821,8 @@
             var cal = $(e.target).parents('.calendar');
 
             var startDate, endDate;
+            
+            var criarEfeitoDataInvalida = false;
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
                 endDate = this.endDate;
@@ -835,6 +837,11 @@
                     if (endDate.isBefore(minDate)) {
                         endDate = minDate;
                     }
+                }
+                if (endDate.isAfter(this.maxDate)){
+                	endDate = this.maxDate;
+                	startDate = moment(endDate).subtract(this.dateLimitMin).startOf('day');
+                	criarEfeitoDataInvalida = true;
                 }
             } else {
                 startDate = this.startDate;
@@ -851,6 +858,11 @@
                         startDate = maxDate;
                     }
                 }
+                if (startDate.isBefore(this.minDate)){
+                	startDate = this.minDate;
+                	endDate = moment(startDate).add(this.dateLimitMin).startOf('day');
+                	criarEfeitoDataInvalida = true;
+                }
 
             }
 
@@ -865,6 +877,10 @@
             $(e.target).addClass('active');
 
             this.setCustomDates(startDate, endDate);
+          
+            if (criarEfeitoDataInvalida){
+        		cal.find("[data-title='r"+row+"c"+col+"']").fadeTo(200,0).delay(50).fadeTo(200, 100);
+            }
 
             if (!this.timePicker)
                 endDate.endOf('day');
