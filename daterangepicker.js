@@ -424,6 +424,9 @@
 
             this.container.addClass('opens' + this.opens);
 
+            this.updateView();
+            this.updateCalendars();
+
             //apply CSS classes and labels to buttons
             var c = this.container;
             $.each(this.buttonClasses, function (idx, val) {
@@ -437,9 +440,6 @@
                 this.container.find('.cancelBtn').addClass(this.cancelClass);
             this.container.find('.applyBtn').html(this.locale.applyLabel);
             this.container.find('.cancelBtn').html(this.locale.cancelLabel);
-
-            this.updateView();
-            this.updateCalendars();
         },
 
         setStartDate: function(startDate) {
