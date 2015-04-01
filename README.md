@@ -17,7 +17,7 @@ The component can also be used as a single date picker by setting the `singleDat
 
 ## Usage
 
-This component relies on [Bootstrap](http://getbootstrap.com),
+This component relies on [Bootstrap](http://getbootstrap.com) (the dropdown core component only),
 [Moment.js](http://momentjs.com/) and [jQuery](http://jquery.com/).
 
 Separate stylesheets are included for use with Bootstrap 2 or Bootstrap 3.
