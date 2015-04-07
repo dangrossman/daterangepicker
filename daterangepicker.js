@@ -94,10 +94,15 @@
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
         if (this.element.is('input')) {
-            this.element.on({
+            var self = this
+            self.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.updateFromControl, this)
+                'keydown.daterangepicker': (function(event){
+                    if(event.which == 13){
+                        self.updateFromControl()
+                    }
+                })
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
@@ -506,14 +511,16 @@
                 end = null;
 
             if(dateString.length === 2) {
-                start = moment(dateString[0], this.format).utcOffset(this.timeZone);
-                end = moment(dateString[1], this.format).utcOffset(this.timeZone);
+                start = moment(dateString[0], this.format, true).utcOffset(this.timeZone);
+                end = moment(dateString[1], this.format, true).utcOffset(this.timeZone);
             }
 
             if (this.singleDatePicker || start === null || end === null) {
-                start = moment(this.element.val(), this.format).utcOffset(this.timeZone);
+                start = moment(this.element.val(), this.format, true).utcOffset(this.timeZone);
                 end = start;
             }
+
+            if (!start.isValid() || !end.isValid()) return;
 
             if (end.isBefore(start)) return;
 
@@ -675,7 +682,7 @@
         // when a date is typed into the start to end date textboxes
         inputsChanged: function (e) {
             var el = $(e.target);
-            var date = moment(el.val(), this.format);
+            var date = moment(el.val(), this.format, true);
             if (!date.isValid()) return;
 
             var startDate, endDate;
@@ -685,7 +692,7 @@
             } else {
                 startDate = this.startDate;
                 endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date;
-            }
+           }
             this.setCustomDates(startDate, endDate);
         },
 
