@@ -426,7 +426,7 @@
                 this.container.addClass('show-calendar');
             }
 
-            this.container.addClass('opens' + this.opens);
+            this.container.removeClass('opensleft opensright').addClass('opens' + this.opens);
 
             this.updateView();
             this.updateCalendars();
