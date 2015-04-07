@@ -97,7 +97,8 @@
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.updateFromControl, this)
+                'keyup.daterangepicker': $.proxy(this.updateFromControl, this),
+                'keydown.daterangepicker': $.proxy(this.keydown, this)
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
@@ -527,6 +528,12 @@
                 this.notify();
 
             this.updateCalendars();
+        },
+        
+        keydown: function (e) {
+        	if ((e.keyCode===9)||(e.keyCode===13)) {
+        		this.hide();
+        	}
         },
 
         notify: function () {
