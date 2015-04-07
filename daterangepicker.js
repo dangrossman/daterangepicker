@@ -324,9 +324,13 @@
 
             // bind the time zone used to build the calendar to either the timeZone passed in through the options or the zone of the startDate (which will be the local time zone by default)
             if (typeof options.timeZone === 'string' || typeof options.timeZone === 'number') {
-                this.timeZone = options.timeZone;
-                this.startDate.utcOffset(this.timeZone);
-                this.endDate.utcOffset(this.timeZone);
+            	if (typeof options.timeZone === 'string' && typeof moment.tz !== 'undefined') {
+            		this.timeZone = moment.tz.zone(options.timeZone).parse(new Date) * -1;	// Offset is positive if the timezone is behind UTC and negative if it is ahead.
+            	} else {
+            		this.timeZone = options.timeZone;
+            	}
+              this.startDate.utcOffset(this.timeZone);
+              this.endDate.utcOffset(this.timeZone);
             } else {
                 this.timeZone = moment(this.startDate).utcOffset();
             }
