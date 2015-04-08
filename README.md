@@ -86,6 +86,8 @@ $('input[name="daterange"]').daterangepicker(
 
 `opens`: (string: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to
 
+`drop`: (string: 'down' or 'up') Whether the picker opens below (default) or above the element it's attached to
+
 `buttonClasses`: (array) CSS class names that will be added to all buttons in the picker
 
 `applyClass`: (string) CSS class string that will be added to the apply button
