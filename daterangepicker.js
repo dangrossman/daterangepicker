@@ -132,9 +132,9 @@
             if (this.element.hasClass('pull-right'))
                 this.opens = 'left';
 
-            this.drop = 'down';
+            this.drops = 'down';
             if (this.element.hasClass('dropup'))
-                this.drop = 'up';
+                this.drops = 'up';
 
             this.buttonClasses = ['btn', 'btn-small btn-sm'];
             this.applyClass = 'btn-success';
@@ -240,8 +240,8 @@
             if (typeof options.opens === 'string')
                 this.opens = options.opens;
 
-            if (typeof options.drop === 'string')
-                this.drop = options.drop;
+            if (typeof options.drops === 'string')
+                this.drops = options.drops;
 
             if (typeof options.showWeekNumbers === 'boolean') {
                 this.showWeekNumbers = options.showWeekNumbers;
@@ -561,11 +561,11 @@
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
             
-            if(this.drop=='up')
-            	containerTop=this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+            if (this.drops == 'up')
+            	containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
             else
-            	containerTop=this.element.offset().top + this.element.outerHeight() - parentOffset.top;
-            this.container[this.drop=='up'?'addClass':'removeClass']('dropup');
+            	containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+            this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
 
             if (this.opens == 'left') {
                 this.container.css({
