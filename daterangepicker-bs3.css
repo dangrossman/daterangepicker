@@ -219,6 +219,22 @@
   content: '';
 }
 
+.daterangepicker.dropup{
+  margin-top: -5px;
+}
+.daterangepicker.dropup:before{
+  top: initial;
+  bottom:-7px;
+  border-bottom: initial;
+  border-top: 7px solid #ccc;
+}
+.daterangepicker.dropup:after{
+  top: initial;
+  bottom:-6px;
+  border-bottom: initial;
+  border-top: 6px solid #fff;
+}
+
 .daterangepicker table {
   width: 100%;
   margin: 0;

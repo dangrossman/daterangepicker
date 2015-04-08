@@ -238,6 +238,35 @@
             </div>
 
 
+            <h4>And also can drop "up"</h4>
+
+            <div class="well">
+
+               <div class="dropdown" style="display: inline-block;">
+                 <a data-toggle="dropdown" class="btn btn-primary" href="#">Regular bootstrap dropdown</a>
+                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                   <li><a href="#">item</a></li>
+                 </ul>
+               </div>
+
+               <div id="reportrange3" class="btn" style="display: inline-block; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  <span></span> <b class="caret"></b>
+               </div>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reportrange3 span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+                  $('#reportrange3').daterangepicker({
+                      opens: 'center',
+                      drop:'up'
+                  });
+               });
+               </script>
+
+            </div>
+
+
          </div>
       </div>
 
