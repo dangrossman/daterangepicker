@@ -33,7 +33,6 @@
 }(this, function(root, daterangepicker, moment, $) {
 
     var DateRangePicker = function (element, options, cb) {
-
         // by default, the daterangepicker element is placed at the bottom of HTML body
         this.parentEl = 'body';
 
@@ -1119,16 +1118,18 @@
 
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
+                    var formated = calendar[row][col].format('YYYY-MM-DD');
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
+                    cname += (moment(formated).day() == '0' || moment(formated).day() == '6') ? ' weekend ' : '';
 
                     if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
-                        cname = ' off disabled ';
-                    } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
+                        cname += ' off disabled ';
+                    } else if (formated == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
-                        if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
+                        if (formated == this.startDate.format('YYYY-MM-DD')) {
                             cname += ' start-date ';
                         }
-                        if (calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
+                        if (formated == this.endDate.format('YYYY-MM-DD')) {
                             cname += ' end-date ';
                         }
                     } else if (calendar[row][col] >= this.startDate && calendar[row][col] <= this.endDate) {
