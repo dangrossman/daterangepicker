@@ -139,6 +139,8 @@
             this.buttonClasses = ['btn', 'btn-small btn-sm'];
             this.applyClass = 'btn-success';
             this.cancelClass = 'btn-default';
+            this.prevIconClasses = ['fa', 'fa-arrow-left', 'icon', 'icon-arrow-left', 'glyphicon', 'glyphicon-arrow-left'];
+            this.nextIconClasses = ['fa', 'fa-arrow-right', 'icon', 'icon-arrow-right', 'glyphicon', 'glyphicon-arrow-right'];
 
             this.format = 'MM/DD/YYYY';
             this.separator = ' - ';
@@ -253,6 +255,22 @@
 
             if (typeof options.buttonClasses === 'object') {
                 this.buttonClasses = options.buttonClasses;
+            }
+
+            if (typeof options.prevIconClasses === 'string') {
+                this.prevIconClasses = [options.prevIconClasses];
+            }
+
+            if (typeof options.prevIconClasses === 'object') {
+                this.prevIconClasses = options.prevIconClasses;
+            }
+
+            if (typeof options.nextIconClasses === 'string') {
+                this.nextIconClasses = [options.nextIconClasses];
+            }
+
+            if (typeof options.nextIconClasses === 'object') {
+                this.nextIconClasses = options.nextIconClasses;
             }
 
             if (typeof options.showDropdowns === 'boolean') {
@@ -1077,7 +1095,7 @@
                 html += '<th></th>';
 
             if (!minDate || minDate.isBefore(calendar.firstDay)) {
-                html += '<th class="prev available"><i class="fa fa-arrow-left icon icon-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
+                html += '<th class="prev available"><i class="' + this.prevIconClasses.join(" ") + '"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -1090,7 +1108,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar.lastDay)) {
-                html += '<th class="next available"><i class="fa fa-arrow-right icon icon-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
+                html += '<th class="next available"><i class="' + this.nextIconClasses.join(" ") + '"></i></th>';
             } else {
                 html += '<th></th>';
             }
