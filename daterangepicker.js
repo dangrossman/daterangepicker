@@ -282,6 +282,10 @@
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            if (typeof options.isInvalidDay === 'function') {
+                this.isInvalidDay = options.isInvalidDay;
+            }
+
             // update day names order to firstDay
             if (this.locale.firstDay != 0) {
                 var iterator = this.locale.firstDay;
@@ -486,6 +490,10 @@
             this.updateView();
             this.updateCalendars();
             this.updateInputText();
+        },
+
+        isInvalidDay: function() {
+            return false;
         },
 
         updateView: function () {
@@ -1121,7 +1129,7 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
-                    if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
+                    if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day')) || this.isInvalidDay(calendar[row][col])) {
                         cname = ' off disabled ';
                     } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
