@@ -10,7 +10,7 @@
 
   if (typeof define === 'function' && define.amd) {
     define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-      root.daterangepicker = factory(root, exports, momentjs, $);
+      root.daterangepickerNH = factory(root, exports, momentjs, $);
     });
 
   } else if (typeof exports !== 'undefined') {
@@ -27,7 +27,7 @@
 
   // Finally, as a browser global.
   } else {
-    root.daterangepicker = factory(root, {}, root.moment, (root.jQuery || root.Zepto || root.ender || root.$));
+    root.daterangepickerNH = factory(root, {}, root.moment, (root.jQuery || root.Zepto || root.ender || root.$));
   }
 
 }(this, function(root, daterangepicker, moment, $) {
@@ -282,6 +282,10 @@
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            if (typeof options.isInvalidDay === 'function') {
+                this.isInvalidDay = options.isInvalidDay;
+            }
+
             // update day names order to firstDay
             if (this.locale.firstDay != 0) {
                 var iterator = this.locale.firstDay;
@@ -486,6 +490,10 @@
             this.updateView();
             this.updateCalendars();
             this.updateInputText();
+        },
+
+        isInvalidDay: function() {
+            return false;
         },
 
         updateView: function () {
@@ -1121,7 +1129,7 @@
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
 
-                    if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
+                    if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day')) || this.isInvalidDay(calendar[row][col])) {
                         cname = ' off disabled ';
                     } else if (calendar[row][col].format('YYYY-MM-DD') == selected.format('YYYY-MM-DD')) {
                         cname += ' active ';
@@ -1291,7 +1299,7 @@
 
     };
 
-    $.fn.daterangepicker = function (options, cb) {
+    $.fn.daterangepickerNH = function (options, cb) {
         this.each(function () {
             var el = $(this);
             if (el.data('daterangepicker'))
