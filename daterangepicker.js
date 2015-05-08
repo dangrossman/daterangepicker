@@ -849,6 +849,8 @@
 
             if (this.singleDatePicker && !this.timePicker)
                 this.clickApply();
+
+            this.element.trigger('clickDate.daterangepicker', this);
         },
 
         clickApply: function (e) {
