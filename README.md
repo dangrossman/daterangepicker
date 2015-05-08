@@ -141,6 +141,8 @@ Several events are triggered on the element you attach the picker to, which you 
 
 `cancel.daterangepicker`: Triggered when the cancel button is clicked
 
+`clickDate.daterangepicker`: Triggered when a date in calendar is clicked
+
 Some applications need a "clear" instead of a "cancel" functionality, which can be achieved by changing the button label and watching for the cancel event:
 
 ````
