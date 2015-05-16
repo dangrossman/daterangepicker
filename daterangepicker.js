@@ -380,7 +380,7 @@
             }
 
             if (this.singleDatePicker) {
-                this.opens = 'right';
+                this.opens = this.opens || 'right';
                 this.container.addClass('single');
                 this.container.find('.calendar.right').show();
                 this.container.find('.calendar.left').hide();
