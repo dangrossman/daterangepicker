@@ -98,7 +98,7 @@ $('input[name="daterange"]').daterangepicker(
 
 `separator`: (string) Separator string to display between the start and end date when populating a text input the picker is attached to
 
-`locale`: (object) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars
+`locale`: (object or string) Allows you to provide localized strings for buttons and labels, and the first day of week for the calendars. If option is String, it should be a correct locale name (e.g. 'en', 'ru', 'ja', etc). Or it should be equal to 'moment' in order to use momentjs locale.
 
 `singleDatePicker`: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
 

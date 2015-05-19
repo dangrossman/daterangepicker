@@ -143,17 +143,38 @@
             this.format = 'MM/DD/YYYY';
             this.separator = ' - ';
 
-            this.locale = {
+            this.locales = {
+              'en': {
                 applyLabel: 'Apply',
                 cancelLabel: 'Cancel',
                 fromLabel: 'From',
                 toLabel: 'To',
                 weekLabel: 'W',
                 customRangeLabel: 'Custom Range',
+              },
+              'ru': {
+                applyLabel: 'Применить',
+                cancelLabel: 'Отмена',
+                fromLabel: 'От',
+                toLabel: 'До',
+                weekLabel: 'Нед.',
+                customRangeLabel: 'Свой диапазон',
+              },
+              'ja': {
+                applyLabel: '適用します',
+                cancelLabel: 'キャンセル',
+                fromLabel: 'より',
+                toLabel: 'へ',
+                weekLabel: '週',
+                customRangeLabel: '独自の範囲。',
+              }
+            }
+
+            this.locale = $.extend({
                 daysOfWeek: moment.weekdaysMin(),
                 monthNames: moment.monthsShort(),
                 firstDay: moment.localeData()._week.dow
-            };
+            }, this.locales.en);
 
             this.cb = function () { };
 
@@ -235,6 +256,13 @@
                 if (typeof options.locale.customRangeLabel === 'string') {
                   this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
+            } else if (typeof options.locale === 'string') {
+              // 'en' is failsafe locale
+              $.extend(this.locale, this.locales[
+                options.locale === 'moment'
+                ? moment.locale()
+                : options.locale
+              ] || {});
             }
 
             if (typeof options.opens === 'string')
