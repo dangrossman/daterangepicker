@@ -148,7 +148,7 @@
                 cancelLabel: 'Cancel',
                 fromLabel: 'From',
                 toLabel: 'To',
-                weekLabel: 'W',
+                weekLabel: 'Week',
                 customRangeLabel: 'Custom Range',
                 daysOfWeek: moment.weekdaysMin(),
                 monthNames: moment.monthsShort(),
