@@ -123,7 +123,7 @@
             this.showWeekNumbers = false;
             this.timePicker = false;
             this.timePickerSeconds = false;
-            this.timePickerIncrement = 30;
+            this.timePickerIncrement = 1;
             this.timePicker12Hour = true;
             this.singleDatePicker = false;
             this.ranges = {};
@@ -148,7 +148,7 @@
                 cancelLabel: 'Cancel',
                 fromLabel: 'From',
                 toLabel: 'To',
-                weekLabel: 'W',
+                weekLabel: 'Week',
                 customRangeLabel: 'Custom Range',
                 daysOfWeek: moment.weekdaysMin(),
                 monthNames: moment.monthsShort(),
