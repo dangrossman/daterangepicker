@@ -700,12 +700,10 @@
             var date = moment(el.val(), this.format);
             if (!date.isValid()) return;
 
-            var startDate, endDate;
+            var startDate = false, endDate = false;
             if (el.attr('name') === 'daterangepicker_start') {
                 startDate = (false !== this.minDate && date.isBefore(this.minDate)) ? this.minDate : date;
-                endDate = this.endDate;
             } else {
-                startDate = this.startDate;
                 endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date;
             }
             this.setCustomDates(startDate, endDate);
@@ -790,6 +788,31 @@
         },
 
         setCustomDates: function(startDate, endDate) {
+            if (this.singleDatePicker) {
+                if (startDate) {
+                    endDate = startDate.clone();
+                } else if (endDate) {
+                    startDate = endDate.clone();
+                }
+            }
+            if (!startDate) {
+                startDate = this.startDate;
+                if (typeof this.dateLimit === 'object') {
+                    var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
+                    if (startDate.isBefore(minDate)) {
+                        startDate = minDate;
+                    }
+                }
+            }
+            if (!endDate) {
+                endDate = this.endDate;
+                if (typeof this.dateLimit === 'object') {
+                    var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
+                    if (endDate.isAfter(maxDate)) {
+                        endDate = maxDate;
+                    }
+                }
+            }
             this.chosenLabel = this.locale.customRangeLabel;
             if (startDate.isAfter(endDate)) {
                 var difference = this.endDate.diff(this.startDate);
@@ -811,31 +834,11 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
 
-            var startDate, endDate;
+            var startDate = false, endDate = false;
             if (cal.hasClass('left')) {
                 startDate = this.leftCalendar.calendar[row][col];
-                endDate = this.endDate;
-                if (typeof this.dateLimit === 'object') {
-                    var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
-                    if (endDate.isAfter(maxDate)) {
-                        endDate = maxDate;
-                    }
-                }
             } else {
-                startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
-                if (typeof this.dateLimit === 'object') {
-                    var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
-                    if (startDate.isBefore(minDate)) {
-                        startDate = minDate;
-                    }
-                }
-            }
-
-            if (this.singleDatePicker && cal.hasClass('left')) {
-                endDate = startDate.clone();
-            } else if (this.singleDatePicker && cal.hasClass('right')) {
-                startDate = endDate.clone();
             }
 
             cal.find('td').removeClass('active');
