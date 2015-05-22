@@ -704,10 +704,23 @@
             if (el.attr('name') === 'daterangepicker_start') {
                 startDate = (false !== this.minDate && date.isBefore(this.minDate)) ? this.minDate : date;
                 endDate = this.endDate;
+                if (typeof this.dateLimit === 'object') {
+                    var maxDate = moment(startDate).add(this.dateLimit).startOf('day');
+                    if (endDate.isAfter(maxDate)) {
+                        endDate = maxDate;
+                    }
+                }
             } else {
                 startDate = this.startDate;
                 endDate = (false !== this.maxDate && date.isAfter(this.maxDate)) ? this.maxDate : date;
+                if (typeof this.dateLimit === 'object') {
+                    var minDate = moment(endDate).subtract(this.dateLimit).startOf('day');
+                    if (startDate.isBefore(minDate)) {
+                        startDate = minDate;
+                    }
+                }
             }
+
             this.setCustomDates(startDate, endDate);
         },
 
