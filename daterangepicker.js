@@ -293,7 +293,8 @@
 
             if (typeof options.autoApply === 'boolean') {
                 this.autoApply = options.autoApply;
-                this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+                if (this.autoApply)
+                  this.container.find('.applyBtn, .cancelBtn').addClass('hide');
             }
 
             // update day names order to firstDay
