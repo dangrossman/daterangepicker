@@ -45,17 +45,17 @@
 
         //create the picker HTML object
         var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar first left"></div>' +
+                '<div class="calendar first left hidden"></div>' +
                 '<div class="calendar second right"></div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div class="daterangepicker_start_input">' +
                       '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+                      '<input class="input-mini date_input_start" type="text" name="daterangepicker_start" value="" />' +
                     '</div>' +
                     '<div class="daterangepicker_end_input">' +
                       '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+                      '<input class="input-mini date_input_end" type="text" name="daterangepicker_end" value="" />' +
                     '</div>' +
                     '<div class="daterangepicker_presets">' +
                       '<label>Presets</label>' +
@@ -84,7 +84,7 @@
         $.each(this.buttonClasses, function (idx, val) {
             c.find('button').addClass(val);
         });
-        this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
+        this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel).focus();
         this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
         if (this.applyClass.length)
             this.container.find('.applyBtn').addClass(this.applyClass);
@@ -109,6 +109,8 @@
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
             .on('click.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.showCalendars, this))
+            .on('click.daterangepicker', '.daterangepicker_start_input', $.proxy(this.showStart, this))
+            .on('click.daterangepicker', '.daterangepicker_end_input', $.proxy(this.showEnd, this))
             .on('change.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.inputsChanged, this))
             .on('change.select', $.proxy(this.selectRange, this))
             .on('keydown.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.inputsKeydown, this))
@@ -169,8 +171,8 @@
             this.locale = {
                 applyLabel: 'Apply',
                 cancelLabel: 'Cancel',
-                fromLabel: 'From',
-                toLabel: 'To',
+                fromLabel: 'Start',
+                toLabel: 'End',
                 weekLabel: 'W',
                 customRangeLabel: 'Custom Range',
                 daysOfWeek: moment.weekdaysMin(),
@@ -635,6 +637,7 @@
 
             this.isShowing = true;
             this.element.trigger('show.daterangepicker', this);
+            this.container.find('.date_input_start').focus();
         },
 
         outsideClick: function (e) {
@@ -686,6 +689,16 @@
             this.container.addClass('show-calendar');
             this.move();
             this.element.trigger('showCalendar.daterangepicker', this);
+        },
+
+        showStart: function () {
+          this.container.find('.calendar.right').addClass('hidden');
+          this.container.find('.calendar.left').removeClass('hidden');
+        },
+
+        showEnd: function () {
+          this.container.find('.calendar.left').addClass('hidden');
+          this.container.find('.calendar.right').removeClass('hidden');
         },
 
         hideCalendars: function() {
@@ -834,6 +847,10 @@
                         endDate = maxDate;
                     }
                 }
+                cal.addClass('hidden')
+                this.container.find()
+                this.container.find('.calendar.right').removeClass("hidden");
+                this.container.find('.date_input_end').focus();
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
@@ -843,6 +860,9 @@
                         startDate = minDate;
                     }
                 }
+                cal.addClass('hidden')
+                this.container.find('.calendar.left').removeClass("hidden");
+                this.container.find('.date_input_start').focus()
             }
 
             if (this.singleDatePicker && cal.hasClass('left')) {
