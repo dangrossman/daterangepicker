@@ -94,12 +94,14 @@
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
         if (this.element.is('input')) {
-            this.element.on({
-                'click.daterangepicker': $.proxy(this.show, this),
-                'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.updateFromControl, this),
-                'keydown.daterangepicker': $.proxy(this.keydown, this)
-            });
+            if (this.autoShow) {
+                this.element.on({
+                    'click.daterangepicker': $.proxy(this.show, this),
+                    'focus.daterangepicker': $.proxy(this.show, this),
+                    'keyup.daterangepicker': $.proxy(this.updateFromControl, this),
+                    'keydown.daterangepicker': $.proxy(this.keydown, this)
+                });
+            }
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
         }
@@ -118,6 +120,8 @@
             this.minDate = false;
             this.maxDate = false;
             this.dateLimit = false;
+            this.autoOpen = true;
+            this.autoHide = true;
 
             this.showDropdowns = false;
             this.showWeekNumbers = false;
@@ -280,6 +284,14 @@
 
             if (typeof options.timePicker12Hour === 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
+            }
+
+            if (typeof options.autoShow === 'boolean') {
+                this.autoShow = options.autoShow;
+            }
+
+            if (typeof options.autoHide === 'boolean') {
+                this.autoHide = options.autoHide;
             }
 
             // update day names order to firstDay
@@ -536,7 +548,7 @@
 
             this.updateCalendars();
         },
-        
+
         keydown: function (e) {
             //hide on tab or enter
         	if ((e.keyCode === 9) || (e.keyCode === 13)) {
@@ -560,7 +572,7 @@
                 };
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
-            
+
             if (this.drops == 'up')
             	containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
             else
@@ -649,7 +661,10 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-date').length
                 ) return;
-            this.hide();
+
+            if (this.autoHide) {
+                this.hide();
+            }
         },
 
         hide: function (e) {

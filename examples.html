@@ -28,7 +28,7 @@
                   <div class="control-group">
                     <div class="controls">
                      <div class="input-prepend input-group">
-                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="03/18/2013 - 03/23/2013" /> 
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="reservation" id="reservation" class="form-control" value="03/18/2013 - 03/23/2013" />
                      </div>
                     </div>
                   </div>
@@ -54,7 +54,7 @@
                   <div class="control-group">
                     <div class="controls">
                      <div class="input-prepend input-group">
-                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="birthday" id="birthday" class="form-control" value="03/18/2013" /> 
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="birthday" id="birthday" class="form-control" value="03/18/2013" />
                      </div>
                     </div>
                   </div>
@@ -70,6 +70,58 @@
                </script>
 
             </div>
+
+            <h4>Manually triggered Date Range Picker</h4>
+            <div class="well">
+
+            <form class="form-horizontal">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" id="manualTriggerBtnLeft">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                                <input type="text" name="manual_trigger" id="manual_trigger_left" class="form-control" value="" />
+                            </div>
+                            <span class="help-block"><code>{ autoShow: true, autoHide: true }</code> Only opens when button is clicked</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <input type="text" name="manual_trigger_right" id="manual_trigger_right" class="form-control" value="" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button" id="manualTriggerBtnRight">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <span class="help-block"><code>{ autoShow: true, autoHide: false }</code> Also opens on input focus</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#manual_trigger_left').daterangepicker({ autoShow: false, autoHide: false });
+                  $('#manual_trigger_right').daterangepicker({ autoShow: true, autoHide: false });
+
+                  $('#manualTriggerBtnLeft').click(function(e) {
+                    $('#manual_trigger_left').data('daterangepicker').toggle();
+                  });
+
+                  $('#manualTriggerBtnRight').click(function(e) {
+                    $('#manual_trigger_right').data('daterangepicker').toggle();
+                  });
+               });
+               </script>
+
+            </div>
+
 
             <h4>Date Range &amp; Time Picker with 30 Minute Increments</h4>
             <div class="well">
@@ -100,7 +152,7 @@
                });
                </script>
 
-            </div>            
+            </div>
 
             <h4>Options Usage</h4>
 
@@ -183,12 +235,12 @@
 
                   $('#reportrange').on('show.daterangepicker', function() { console.log("show event fired"); });
                   $('#reportrange').on('hide.daterangepicker', function() { console.log("hide event fired"); });
-                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) { 
-                    console.log("apply event fired, start/end dates are " 
-                      + picker.startDate.format('MMMM D, YYYY') 
-                      + " to " 
+                  $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+                    console.log("apply event fired, start/end dates are "
+                      + picker.startDate.format('MMMM D, YYYY')
+                      + " to "
                       + picker.endDate.format('MMMM D, YYYY')
-                    ); 
+                    );
                   });
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
@@ -247,7 +299,7 @@
                   <div class="control-group">
                     <div class="controls">
                      <div class="input-prepend input-group">
-                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="dropup" id="dropup" class="form-control" value="03/18/2013 - 03/23/2013" /> 
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" style="width: 200px" name="dropup" id="dropup" class="form-control" value="03/18/2013 - 03/23/2013" />
                      </div>
                     </div>
                   </div>
