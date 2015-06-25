@@ -3,12 +3,12 @@
 ![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
 This date range picker component for Bootstrap creates a dropdown menu from which a user can
-select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
+select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com),
 which needed a way to select date ranges for reports.
 
-If invoked with no options, it will present two calendars to choose a start 
-and end date from. Optionally, you can provide a list of date ranges the user can select from instead 
-of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted 
+If invoked with no options, it will present two calendars to choose a start
+and end date from. Optionally, you can provide a list of date ranges the user can select from instead
+of choosing dates from the calendars. If attached to a text input, the selected dates will be inserted
 into the text box. Otherwise, you can provide a custom callback function to receive the selection.
 
 The component can also be used as a single date picker by setting the `singleDatePicker` option to `true`.
@@ -38,14 +38,14 @@ $(document).ready(function() {
 </script>
 ```
 
-The constructor also takes an optional options object and callback function. The function will be called whenever 
+The constructor also takes an optional options object and callback function. The function will be called whenever
 the selected date range has been changed by the user, and is passed the start and end dates (moment date objects)
-and the predefined range label chosen (if any), as parameters. It will not fire if the picker is closed without 
+and the predefined range label chosen (if any), as parameters. It will not fire if the picker is closed without
 any change to the selected dates.
 
 ````
 $('input[name="daterange"]').daterangepicker(
-  { 
+  {
     format: 'YYYY-MM-DD',
     startDate: '2013-01-01',
     endDate: '2013-12-31'
@@ -104,6 +104,10 @@ $('input[name="daterange"]').daterangepicker(
 
 `parentEl`: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be `'body'`
 
+`autoOpen`: (boolean, default true) Open picker on input focus
+
+`autoHide`: (boolean, default true) Hide picker when clicking outside the input widget
+
 ## Functions
 
 Several functions are provided for updating the picker's option and state after initialization:
@@ -145,7 +149,7 @@ Some applications need a "clear" instead of a "cancel" functionality, which can 
 
 ````
 $('#daterange').daterangepicker({
-  locale: { cancelLabel: 'Clear' }  
+  locale: { cancelLabel: 'Clear' }
 });
 
 $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
