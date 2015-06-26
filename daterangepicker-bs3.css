@@ -168,7 +168,7 @@
 .daterangepicker.openscenter:before {
   position: absolute;
   top: -7px;
-  left: 0;  
+  left: 0;
   right: 0;
   width: 0;
   margin-left: auto;
@@ -184,8 +184,8 @@
 .daterangepicker.openscenter:after {
   position: absolute;
   top: -6px;
-  left: 0;  
-  right: 0;  
+  left: 0;
+  right: 0;
   width: 0;
   margin-left: auto;
   margin-right: auto;
@@ -259,7 +259,7 @@
   color: #999;
 }
 
-.daterangepicker td.available:hover, .daterangepicker th.available:hover {
+.daterangepicker td.available:hover, .daterangepicker td.available.today .daterangepicker th.available:hover {
   background: #eee;
 }
 
@@ -288,7 +288,7 @@
   border-radius: 4px;
 }
 
-.daterangepicker td.active, .daterangepicker td.active:hover {
+.daterangepicker td.today.active, .daterangepicker td.active, .daterangepicker td.active:hover {
   background-color: #357ebd;
   border-color: #3071a9;
   color: #fff;
@@ -326,7 +326,7 @@
 }
 
 .daterangepicker_end_input {
-  float: left; 
+  float: left;
   padding-left: 11px
 }
 

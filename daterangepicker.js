@@ -1120,6 +1120,10 @@
                 for (var col = 0; col < 7; col++) {
                     var cname = 'available ';
                     cname += (calendar[row][col].month() == calendar[1][1].month()) ? '' : 'off';
+                    
+                    if(calendar[row][col].isSame(new Date(), "day") ) {
+                        cname += ' today ';
+                    }
 
                     if ((minDate && calendar[row][col].isBefore(minDate, 'day')) || (maxDate && calendar[row][col].isAfter(maxDate, 'day'))) {
                         cname = ' off disabled ';
