@@ -125,6 +125,7 @@
             this.timePickerSeconds = false;
             this.timePickerIncrement = 30;
             this.timePicker12Hour = true;
+            this.autoApply = false;
             this.singleDatePicker = false;
             this.ranges = {};
 
@@ -280,6 +281,12 @@
 
             if (typeof options.timePicker12Hour === 'boolean') {
                 this.timePicker12Hour = options.timePicker12Hour;
+            }
+
+            if (typeof options.autoApply === 'boolean') {
+                this.autoApply = options.autoApply;
+                if (this.autoApply)
+                  this.container.find('.applyBtn, .cancelBtn').addClass('hide');
             }
 
             // update day names order to firstDay
@@ -547,6 +554,7 @@
 
         notify: function () {
             this.updateView();
+            this.updateInputText();
             this.cb(this.startDate, this.endDate, this.chosenLabel);
         },
 
@@ -766,6 +774,11 @@
                 this.hideCalendars();
                 this.hide();
                 this.element.trigger('apply.daterangepicker', this);
+
+                if (this.autoApply) {
+                    this.notify();
+                }
+
             }
         },
 
@@ -816,6 +829,11 @@
 
             this.updateView();
             this.updateCalendars();
+
+            if (this.autoApply) {
+                this.notify();
+                this.element.trigger('apply.daterangepicker', this);
+            }
         },
 
         clickDate: function (e) {
@@ -958,6 +976,11 @@
 
             this.updateView();
             this.updateCalendars();
+
+            if (this.autoApply) {
+                this.notify();
+                this.element.trigger('apply.daterangepicker', this);
+            }
         },
 
         updateCalendars: function () {
