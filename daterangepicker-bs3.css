@@ -259,7 +259,7 @@
   color: #999;
 }
 
-.daterangepicker td.available:hover, .daterangepicker td.available.today .daterangepicker th.available:hover {
+.daterangepicker td.available:hover, .daterangepicker td.available.today, .daterangepicker th.available:hover {
   background: #eee;
 }
 
