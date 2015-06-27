@@ -815,6 +815,7 @@
 
             this.updateView();
             this.updateCalendars();
+            this.updateInputText();
         },
 
         clickDate: function (e) {
