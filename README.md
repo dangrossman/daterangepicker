@@ -56,6 +56,12 @@ $('input[name="daterange"]').daterangepicker(
 );
 ````
 
+Options may also be set using HTML5 data attributes. For example, timePicker="true" would be set with:
+
+```
+<input type="text" data-time-picker="true" name="daterange">
+```
+
 ## Options
 
 `startDate`: (Date object, moment object or string) The start of the initially selected date range
