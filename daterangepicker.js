@@ -123,6 +123,7 @@
             this.maxDate = false;
             this.dateLimit = false;
 
+            this.hideCalendarsOnRange = true;
             this.showDropdowns = false;
             this.showWeekNumbers = false;
             this.timePicker = false;
@@ -263,6 +264,10 @@
             if (typeof options.showDropdowns === 'boolean') {
                 this.showDropdowns = options.showDropdowns;
             }
+
+            if (typeof options.hideCalendarsOnRange === 'boolean') {
+                this.hideCalendarsOnRange = options.hideCalendarsOnRange;
+            }            
 
             if (typeof options.singleDatePicker === 'boolean') {
                 this.singleDatePicker = options.singleDatePicker;
@@ -774,8 +779,10 @@
                 this.updateCalendars();
 
                 this.updateInputText();
-
-                this.hideCalendars();
+		
+                if(this.hideCalendarsOnRange)
+                    this.hideCalendars();
+                
                 this.hide();
                 this.element.trigger('apply.daterangepicker', this);
 
@@ -1013,10 +1020,10 @@
                 }
                 i++;
             }
-            if (customRange) {
-                this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+            if (!this.hideCalendarsOnRange || customRange)
                 this.showCalendars();
-            }
+            if(customRange)
+                this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
         },
 
         buildCalendar: function (month, year, hour, minute, second, side) {

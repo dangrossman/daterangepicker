@@ -88,6 +88,8 @@ Options may also be set using HTML5 data attributes. For example, timePicker="tr
 
 `timePickerSeconds`: (boolean) Show seconds in the timePicker
 
+`hideCalendarsOnRange`: (boolean) Hide calendars if ranges (e.g. yesterday, last month, etc) are chosen (defaults to true)
+
 `ranges`: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
 
 `opens`: (string: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to
