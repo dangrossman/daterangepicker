@@ -9,6 +9,8 @@
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="moment.js"></script>
+      <script type="text/javascript" src="node_modules/moment/min/locales.min.js"></script>
+      <script type="text/javascript">moment.locale('en')</script>
       <script type="text/javascript" src="daterangepicker.js"></script>
    </head>
    <body>
@@ -203,6 +205,50 @@
                   $('#destroy').click(function() {
                     $('#reportrange').data('daterangepicker').remove();
                   });
+
+               });
+               </script>
+
+            </div>
+
+
+            <h4>Different Locales</h4>
+
+            <div class="well" style="overflow: auto">
+
+              <div class="alert alert-warning" role="alert">
+                <b>Warning!</b> Localization highly depend on moment.locale(). Be sure you've configure momentjs properly!.
+              </div>
+
+              <button class="btn btn-primary" onclick="setLocale('en')">English</button>
+              <button class="btn btn-primary" onclick="setLocale('ru')">Русский</button>
+              <button class="btn btn-primary" onclick="setLocale('ja')">日本語</button>
+
+               <div id="picker-localized" class="btn pull-right" style="display: inline-block; background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                  <span></span> <b class="caret"></b>
+               </div>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+
+                  var config = {
+                    ranges: {},
+                    showWeekNumbers: true,
+                    opens: 'left',
+                    locale: 'moment'
+                  }
+
+                  var picker = $('#picker-localized');
+                  picker.daterangepicker();
+
+                  window.setLocale = function(locale) {
+                    moment.locale(locale);
+                    picker.data('daterangepicker').setOptions(config);
+                    picker.find('span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+                  }
+
+                  setLocale('en')
 
                });
                </script>
