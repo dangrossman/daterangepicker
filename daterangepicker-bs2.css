@@ -19,7 +19,7 @@
 
 .daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar,
 .daterangepicker.openscenter .ranges, .daterangepicker.openscenter .calendar {
-  float: right;
+  float: left;
   margin: 4px;
 }
 
