@@ -524,6 +524,18 @@
             var dateString = this.element.val().split(this.separator),
                 start = null,
                 end = null;
+                
+           // This allows the user to change the dates on the main input
+            if (dateString[0].length < 10) {
+                return;
+            }
+            
+            if (dateString[1] !== undefined) {
+                if (dateString[1].length < 10) {
+                 return;
+                }
+            
+            }
 
             if(dateString.length === 2) {
                 start = moment(dateString[0], this.format).utcOffset(this.timeZone);
