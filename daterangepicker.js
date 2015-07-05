@@ -68,7 +68,7 @@
             options = {};
 
         this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
-        this.container = $(DRPTemplate).appendTo(this.parentEl);
+        this.container = $(options.template || DRPTemplate).appendTo(this.parentEl);
 
         //allow setting options with data attributes
         //data-api options will be overwritten with custom javascript options
