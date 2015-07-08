@@ -43,29 +43,33 @@
         //tracks visible state
         this.isShowing = false;
 
-        //create the picker HTML object
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar first left"></div>' +
-                '<div class="calendar second right"></div>' +
-                '<div class="ranges">' +
-                  '<div class="range_inputs">' +
-                    '<div class="daterangepicker_start_input">' +
-                      '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
-                    '</div>' +
-                    '<div class="daterangepicker_end_input">' +
-                      '<label for="daterangepicker_end"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
-                    '</div>' +
-                    '<button class="applyBtn" disabled="disabled" type="button"></button>&nbsp;' +
-                    '<button class="cancelBtn" type="button"></button>' +
-                  '</div>' +
-                '</div>' +
-              '</div>';
-
         //custom options
         if (typeof options !== 'object' || options === null)
             options = {};
+
+        var rangeTemplate = options.showRange === false ? '' :
+            '<div class="ranges">' +
+                '<div class="range_inputs">' +
+                    '<div class="daterangepicker_start_input">' +
+                        '<label for="daterangepicker_start"></label>' +
+                        '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+                    '</div>' +
+                    '<div class="daterangepicker_end_input">' +
+                        '<label for="daterangepicker_end"></label>' +
+                        '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+                    '</div>' +
+                    '<button class="applyBtn" disabled="disabled"></button>&nbsp;' +
+                    '<button class="cancelBtn"></button>' +
+                '</div>' +
+            '</div>';
+
+        //create the picker HTML object
+        var DRPTemplate =
+            '<div class="daterangepicker dropdown-menu">' +
+                '<div class="calendar first left"></div>' +
+                '<div class="calendar second right"></div>' +
+                rangeTemplate +
+            '</div>';
 
         this.parentEl = (typeof options === 'object' && options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(DRPTemplate).appendTo(this.parentEl);
@@ -161,6 +165,9 @@
             };
 
             this.cb = function () { };
+
+            if (options.showRange === false)
+                this.showRange = false;
 
             if (typeof options.format === 'string')
                 this.format = options.format;
@@ -884,6 +891,10 @@
 
             if (this.singleDatePicker && !this.timePicker)
                 this.clickApply();
+            else if (this.showRange === false) {
+                this.updateInputText();
+                this.element.trigger('apply.daterangepicker', this);
+            }
         },
 
         clickApply: function (e) {
