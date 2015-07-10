@@ -132,6 +132,7 @@
             this.autoApply = false;
             this.singleDatePicker = false;
             this.ranges = {};
+            this.rangeAutoClose = true;
 
             this.opens = 'right';
             if (this.element.hasClass('pull-right'))
@@ -339,6 +340,10 @@
                 this.timeZone = moment(this.startDate).utcOffset();
             }
 
+            if (typeof options.rangeAutoClose === 'boolean') {
+                this.rangeAutoClose = options.rangeAutoClose;
+            }
+            
             if (typeof options.ranges === 'object') {
                 for (range in options.ranges) {
 
@@ -774,15 +779,16 @@
                 this.updateCalendars();
 
                 this.updateInputText();
-
-                this.hideCalendars();
-                this.hide();
-                this.element.trigger('apply.daterangepicker', this);
-
-                if (this.autoApply) {
-                    this.notify();
+                
+                if (this.rangeAutoClose) {
+                    this.hideCalendars();
+                    this.hide();
+                    this.element.trigger('apply.daterangepicker', this);
+    
+                    if (this.autoApply) {
+                        this.notify();
+                    }
                 }
-
             }
         },
 
