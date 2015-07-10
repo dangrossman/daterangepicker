@@ -447,7 +447,7 @@
                 }
             }
 
-            if ((this.rangeAutoClose || typeof options.ranges === 'undefined') && !this.singleDatePicker) {
+            if ((!this.rangeAutoClose || typeof options.ranges === 'undefined') && !this.singleDatePicker) {
                 this.container.addClass('show-calendar');
             }
 
