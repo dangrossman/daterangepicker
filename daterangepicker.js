@@ -65,13 +65,16 @@
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
 
-        this.buttonClasses = 'btn btn-sm btn-success';
+        this.buttonClasses = 'btn btn-sm';
+        this.applyClass = 'btn-success';
+        this.cancelClass = 'btn-default';
 
         this.format = 'MM/DD/YYYY';
         this.separator = ' - ';
 
         this.locale = {
             applyLabel: 'Apply',
+            cancelLabel: 'Cancel',
             fromLabel: 'From',
             toLabel: 'To',
             weekLabel: 'W',
@@ -113,7 +116,8 @@
                 '<div class="ranges">' +
                     '<label style="display: none"> </label>' + 
                     '<div class="range_inputs">' +
-                        '<button class="applyBtn" disabled="disabled" type="button"></button>&nbsp;' +
+                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+                        '<button class="cancelBtn" type="button"></button>' +
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -153,6 +157,12 @@
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
 
+        if (typeof options.applyClass === 'string')
+            this.applyClass = options.applyClass;
+
+        if (typeof options.cancelClass === 'string')
+            this.cancelClass = options.cancelClass;
+
         if (typeof options.dateLimit === 'object')
             this.dateLimit = options.dateLimit;
 
@@ -169,6 +179,9 @@
 
             if (typeof options.locale.applyLabel === 'string')
               this.locale.applyLabel = options.locale.applyLabel;
+
+            if (typeof options.locale.cancelLabel === 'string')
+              this.locale.cancelLabel = options.locale.cancelLabel;
 
             if (typeof options.locale.fromLabel === 'string')
               this.locale.fromLabel = options.locale.fromLabel;
@@ -223,7 +236,7 @@
         if (typeof options.autoApply === 'boolean') {
             this.autoApply = options.autoApply;
             if (this.autoApply)
-                this.container.find('.applyBtn').hide();
+                this.container.find('.applyBtn, .cancelBtn').addClass('hide');
         }
 
         // update day names order to firstDay
@@ -358,8 +371,13 @@
         this.updateCalendars();
 
         //apply CSS classes and labels to buttons
-        this.container.find('.applyBtn').addClass(this.buttonClasses);
+        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+        if (this.applyClass.length)
+            this.container.find('.applyBtn').addClass(this.applyClass);
+        if (this.cancelClass.length)
+            this.container.find('.cancelBtn').addClass(this.cancelClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
+        this.container.find('.cancelBtn').html(this.locale.cancelLabel);
         this.container.find('.left .daterangepicker_input label').html(this.locale.fromLabel);
         this.container.find('.right .daterangepicker_input label').html(this.locale.toLabel);
 
@@ -379,6 +397,7 @@
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
+            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.enterRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
@@ -832,6 +851,16 @@
             this.updateInputText();
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
+        },
+
+        clickCancel: function (e) {
+            this.startDate = this.oldStartDate;
+            this.endDate = this.oldEndDate;
+            this.chosenLabel = this.oldChosenLabel;
+            this.updateView();
+            this.updateCalendars();
+            this.hide();
+            this.element.trigger('cancel.daterangepicker', this);
         },
 
         updateMonthYear: function (e) {
