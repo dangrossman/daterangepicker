@@ -12,14 +12,8 @@
   z-index: 3000;
 }
 
-.daterangepicker.opensleft .ranges, .daterangepicker.opensleft .calendar {
+.daterangepicker .ranges, .daterangepicker .calendar {
   float: left;
-  margin: 4px;
-}
-
-.daterangepicker.opensright .ranges, .daterangepicker.opensright .calendar,
-.daterangepicker.openscenter .ranges, .daterangepicker.openscenter .calendar {
-  float: right;
   margin: 4px;
 }
 
@@ -32,14 +26,6 @@
   text-align: left;
 }
 
-.daterangepicker .ranges .range_inputs>div {
-  float: left;
-}
-
-.daterangepicker .ranges .range_inputs>div:nth-child(2) {
-  padding-left: 11px;
-}
-
 .daterangepicker .calendar {
   display: none;
   max-width: 270px;
@@ -49,7 +35,7 @@
     display: block;
 }
 
-.daterangepicker .calendar.single .calendar-date {
+.daterangepicker .calendar.single .calendar-table {
   border: none;
 }
 
@@ -58,38 +44,6 @@
   white-space: nowrap;
   text-align: center;
   min-width: 32px;
-}
-
-.daterangepicker .daterangepicker_start_input label,
-.daterangepicker .daterangepicker_end_input label {
-  color: #333;
-  display: block;
-  font-size: 11px;
-  font-weight: normal;
-  height: 20px;
-  line-height: 20px;
-  margin-bottom: 2px;
-  text-shadow: #fff 1px 1px 0px;
-  text-transform: uppercase;
-  width: 74px;
-}
-
-.daterangepicker .ranges input {
-  font-size: 11px;
-}
-
-.daterangepicker .ranges .input-mini {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  color: #555;
-  display: block;
-  font-size: 11px;
-  height: 30px;
-  line-height: 30px;
-  vertical-align: middle;
-  margin: 0 0 10px 0;
-  padding: 0 6px;
-  width: 74px;
 }
 
 .daterangepicker .ranges ul {
@@ -117,7 +71,7 @@
   color: #fff;
 }
 
-.daterangepicker .calendar-date {
+.daterangepicker .calendar-table {
   border: 1px solid #ddd;
   padding: 4px;
   border-radius: 4px;
@@ -321,15 +275,38 @@
   margin-bottom: 0;
 }
 
-.daterangepicker_start_input {
-  float: left;
-}
-
-.daterangepicker_end_input {
-  float: left;
-  padding-left: 11px
-}
-
 .daterangepicker th.month {
   width: auto;
+}
+
+.daterangepicker .daterangepicker_start_input label,
+.daterangepicker .daterangepicker_end_input label {
+  color: #333;
+  display: block;
+  font-size: 11px;
+  font-weight: normal;
+  height: 20px;
+  line-height: 20px;
+  margin-bottom: 2px;
+  text-shadow: #fff 1px 1px 0px;
+  text-transform: uppercase;
+  width: 74px;
+}
+
+.daterangepicker .ranges {
+  font-size: 11px;
+  padding-top: 22px;
+}
+
+.daterangepicker .input-mini {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #555;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  margin: 0 0 10px 0;
+  padding: 0 6px;
+  width: 100%;
 }
