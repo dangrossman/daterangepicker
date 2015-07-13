@@ -283,19 +283,6 @@
   position: relative;
 }
 
-.daterangepicker .daterangepicker_input label,
-.daterangepicker .ranges label {
-  color: #333;
-  display: block;
-  font-size: 11px;
-  font-weight: normal;
-  height: 20px;
-  line-height: 20px;
-  margin-bottom: 2px;
-  text-shadow: #fff 1px 1px 0px;
-  text-transform: uppercase;
-}
-
 .daterangepicker .ranges {
   font-size: 11px;
 }
@@ -316,7 +303,7 @@
 .daterangepicker .daterangepicker_input i {
   position: absolute;
   left: 8px;
-  top: 30px;
+  top: 8px;
 }
 
 .daterangepicker .calendar.left .calendar-table {
