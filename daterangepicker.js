@@ -122,6 +122,7 @@
             this.minDate = false;
             this.maxDate = false;
             this.dateLimit = false;
+            this.dateLimitMin = false;
 
             this.showDropdowns = false;
             this.showWeekNumbers = false;
@@ -200,6 +201,9 @@
 
             if (typeof options.dateLimit === 'object')
                 this.dateLimit = options.dateLimit;
+
+            if (typeof options.dateLimitMin === 'object')
+                this.dateLimitMin = options.dateLimitMin;
 
             if (typeof options.locale === 'object') {
 
@@ -855,6 +859,12 @@
                         endDate = maxDate;
                     }
                 }
+                if (typeof this.dateLimitMin === 'object') {
+                    var minDate = moment(startDate).add(this.dateLimitMin).startOf('day');
+                    if (endDate.isBefore(minDate)) {
+                        endDate = minDate;
+                    }
+                }
             } else {
                 startDate = this.startDate;
                 endDate = this.rightCalendar.calendar[row][col];
@@ -864,6 +874,13 @@
                         startDate = minDate;
                     }
                 }
+
+                if (typeof this.dateLimitMin === 'object') {
+                    var maxDate = moment(endDate).subtract(this.dateLimitMin).startOf('day');
+                    if (startDate.isAfter(maxDate)) {
+                        startDate = maxDate;
+                    }
+                }                
             }
 
             if (this.singleDatePicker && cal.hasClass('left')) {
