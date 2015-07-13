@@ -78,6 +78,7 @@
             fromLabel: 'From',
             toLabel: 'To',
             weekLabel: 'W',
+            rangesLabel: 'Date Range',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
@@ -100,7 +101,8 @@
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_start_input">' +
                       '<label for="daterangepicker_start"></label>' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" placeholder="FROM" />' +
+                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+                      '<i class="fa fa-calendar-o glyphicon glyphicon-calendar"></i>' +
                     '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
@@ -108,10 +110,12 @@
                     '<div class="daterangepicker_end_input">' +
                       '<label for="daterangepicker_end"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+                      '<i class="fa fa-calendar-o glyphicon glyphicon-calendar"></i>' +
                     '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="ranges">' +
+                    '<label style="display: none"></label>' + 
                     '<div class="range_inputs">' +
                         '<button class="applyBtn" disabled="disabled" type="button"></button>&nbsp;' +
                         '<button class="cancelBtn" type="button"></button>' +
@@ -191,6 +195,9 @@
 
             if (typeof options.locale.customRangeLabel === 'string')
               this.locale.customRangeLabel = options.locale.customRangeLabel;
+
+            if (typeof options.locale.rangesLabel === 'string')
+              this.locale.rangesLabel = options.locale.rangesLabel;
 
         }
 
@@ -321,7 +328,7 @@
             list += '<li>' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
             this.container.find('.ranges ul').remove();
-            this.container.find('.ranges').prepend(list);
+            this.container.find('.ranges label').after(list);
         }
 
         if (typeof callback === 'function') {
@@ -368,8 +375,6 @@
         this.updateCalendars();
 
         //apply CSS classes and labels to buttons
-        this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
-        this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
         this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
         if (this.applyClass.length)
             this.container.find('.applyBtn').addClass(this.applyClass);
@@ -377,6 +382,9 @@
             this.container.find('.cancelBtn').addClass(this.cancelClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+        this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
+        this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
+        this.container.find('.ranges label').html(this.locale.rangesLabel);
 
         //event listeners
         this.container.find('.calendar')
@@ -462,6 +470,9 @@
         updateView: function () {
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
+            if (this.startDate.month() == this.endDate.month() && this.startDate.year() == this.endDate.year()) {
+                this.rightCalendar.month.add(1, 'month');
+            }
             this.updateFormInputs();
         },
 
@@ -651,12 +662,14 @@
 
         showCalendars: function() {
             this.container.addClass('show-calendar');
+            this.container.find('.ranges label').show();
             this.move();
             this.element.trigger('showCalendar.daterangepicker', this);
         },
 
         hideCalendars: function() {
             this.container.removeClass('show-calendar');
+            this.container.find('.ranges label').hide();
             this.element.trigger('hideCalendar.daterangepicker', this);
         },
 
@@ -944,8 +957,8 @@
             
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), this.leftCalendar.month.second(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), this.rightCalendar.month.second(), 'right');
-            this.container.find('.calendar.left .calendar-table').html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, 'left'));
-            this.container.find('.calendar.right .calendar-table').html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate, 'right'));
+            this.container.find('.calendar.left .calendar-table').html(this.renderCalendar(this.leftCalendar.calendar, 'left'));
+            this.container.find('.calendar.right .calendar-table').html(this.renderCalendar(this.rightCalendar.calendar, 'right'));
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -1056,7 +1069,18 @@
             return monthHtml + yearHtml;
         },
 
-        renderCalendar: function (calendar, selected, minDate, maxDate, side) {
+        renderCalendar: function (calendar, side) {
+
+            var minDate, maxDate, selected;
+            if (side == 'left') {
+                minDate = this.minDate;
+                maxDate = this.maxDate;
+                selected = this.startDate;
+            } else {
+                minDate = this.singleDatePicker ? this.minDate : this.startDate;
+                maxDate = this.maxDate;
+                selected = this.endDate;
+            }
 
             var html = '<table class="table-condensed">';
             html += '<thead>';
@@ -1067,7 +1091,7 @@
                 html += '<th></th>';
 
             if (!minDate || minDate.isBefore(calendar.firstDay)) {
-                html += '<th class="prev available"><i class="fa fa-arrow-left glyphicon glyphicon-arrow-left"></i></th>';
+                html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -1080,7 +1104,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if (!maxDate || maxDate.isAfter(calendar.lastDay)) {
-                html += '<th class="next available"><i class="fa fa-arrow-right glyphicon glyphicon-arrow-right"></i></th>';
+                html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
                 html += '<th></th>';
             }

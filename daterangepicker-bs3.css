@@ -14,7 +14,6 @@
 
 .daterangepicker .ranges, .daterangepicker .calendar {
   float: left;
-  margin: 4px;
 }
 
 .daterangepicker.single .ranges, .daterangepicker.single .calendar {
@@ -22,7 +21,7 @@
 }
 
 .daterangepicker .ranges {
-  width: 160px;
+  margin: 4px;
   text-align: left;
 }
 
@@ -50,6 +49,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  width: 160px;
 }
 
 .daterangepicker .ranges li {
@@ -279,8 +279,14 @@
   width: auto;
 }
 
+.daterangepicker .daterangepicker_start_input,
+.daterangepicker .daterangepicker_end_input {
+  position: relative;
+}
+
 .daterangepicker .daterangepicker_start_input label,
-.daterangepicker .daterangepicker_end_input label {
+.daterangepicker .daterangepicker_end_input label,
+.daterangepicker .ranges label {
   color: #333;
   display: block;
   font-size: 11px;
@@ -295,7 +301,6 @@
 
 .daterangepicker .ranges {
   font-size: 11px;
-  padding-top: 22px;
 }
 
 .daterangepicker .input-mini {
@@ -307,6 +312,38 @@
   line-height: 30px;
   vertical-align: middle;
   margin: 0 0 10px 0;
-  padding: 0 6px;
+  padding: 0 6px 0 28px;
   width: 100%;
+}
+
+.daterangepicker .daterangepicker_start_input i,
+.daterangepicker .daterangepicker_end_input i {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  top: auto;
+}
+
+.daterangepicker .calendar.left .calendar-table {
+  border-right: none;
+}
+
+.daterangepicker .calendar.right .calendar-table {
+  border-left: none;
+}
+
+.daterangepicker .calendar.left {
+  margin: 4px 0 4px 4px;
+}
+
+.daterangepicker .calendar.right {
+  margin: 4px 4px 4px 0;
+}
+
+.daterangepicker .calendar.left .calendar-table {
+  padding-right: 12px;
+}
+
+.daterangepicker .daterangepicker_start_input {
+  padding-right: 12px;
 }
