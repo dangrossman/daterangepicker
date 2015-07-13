@@ -132,6 +132,7 @@
             this.autoApply = false;
             this.singleDatePicker = false;
             this.ranges = {};
+            this.rangeAutoClose = true;
 
             this.opens = 'right';
             if (this.element.hasClass('pull-right'))
@@ -287,9 +288,13 @@
                 this.timePicker12Hour = options.timePicker12Hour;
             }
 
+            if (typeof options.rangeAutoClose === 'boolean') {
+                this.rangeAutoClose = options.rangeAutoClose;
+            }
+            
             if (typeof options.autoApply === 'boolean') {
                 this.autoApply = options.autoApply;
-                if (this.autoApply)
+                if (this.autoApply && this.rangeAutoClose)
                   this.container.find('.applyBtn, .cancelBtn').addClass('hide');
             }
 
@@ -441,7 +446,7 @@
                 }
             }
 
-            if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
+            if ((!this.rangeAutoClose || typeof options.ranges === 'undefined') && !this.singleDatePicker) {
                 this.container.addClass('show-calendar');
             }
 
@@ -773,15 +778,16 @@
                 this.updateCalendars();
 
                 this.updateInputText();
-
-                this.hideCalendars();
-                this.hide();
-                this.element.trigger('apply.daterangepicker', this);
-
-                if (this.autoApply) {
-                    this.notify();
+                
+                if (this.rangeAutoClose) {
+                    this.hideCalendars();
+                    this.hide();
+                    this.element.trigger('apply.daterangepicker', this);
+    
+                    if (this.autoApply) {
+                        this.notify();
+                    }
                 }
-
             }
         },
 
