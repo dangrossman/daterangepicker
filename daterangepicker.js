@@ -247,6 +247,11 @@
                 if (typeof options.locale.customRangeLabel === 'string') {
                   this.locale.customRangeLabel = options.locale.customRangeLabel;
                 }
+                
+                if (typeof options.locale.customDateLabel === 'string') {
+                  this.locale.customDateLabel = options.locale.customDateLabel;
+                }
+
             }
 
             if (typeof options.opens === 'string')
