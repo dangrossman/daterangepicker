@@ -461,6 +461,11 @@
 
             this.container.removeClass('opensleft opensright').addClass('opens' + this.opens);
 
+            if (this.startDate.isSame(this.endDate, 'day')) {
+                this.container.find('.ranges .daterangepicker_start_input, .ranges .daterangepicker_end_input').hide();
+                this.container.find('.ranges .daterangepicker_singleDate').show();
+            }
+
             this.updateView();
             this.updateCalendars();
 
@@ -847,6 +852,13 @@
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
+
+            if (this.chosenLabel !== this.locale.customDateLabel && this.chosenLabel !== this.locale.customRangeLabel) {
+              this.chosenLabel = this.locale.customRangeLabel;
+              var customRangeEl = $(e.target).closest('.daterangepicker').find('.ranges li').last();
+              this.enterRange({target: customRangeEl[0]});
+              this.updateFormInputs();
+            }
 
             if (cal.hasClass('left')) {
                 this.container.find('input[name=daterangepicker_start], input[name=daterangepicker_singleDate]').val(this.leftCalendar.calendar[row][col].format(this.format));
