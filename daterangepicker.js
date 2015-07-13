@@ -340,7 +340,7 @@
             this.container.addClass('single');
             this.container.find('.calendar.right').show();
             this.container.find('.calendar.left').hide();
-            this.container.find('.daterangepicker_end_input').hide();
+            this.container.find('.daterangepicker_input').hide();
             if (!this.timePicker24Hour) {
                 this.container.find('.ranges').hide();
             }
@@ -465,7 +465,7 @@
         updateView: function () {
             this.leftCalendar.month.month(this.startDate.month()).year(this.startDate.year()).hour(this.startDate.hour()).minute(this.startDate.minute());
             this.rightCalendar.month.month(this.endDate.month()).year(this.endDate.year()).hour(this.endDate.hour()).minute(this.endDate.minute());
-            if (this.startDate.month() == this.endDate.month() && this.startDate.year() == this.endDate.year()) {
+            if (this.startDate.month() == this.endDate.month() && this.startDate.year() == this.endDate.year() && !this.singleDatePicker) {
                 this.rightCalendar.month.add(1, 'month');
             }
             this.updateFormInputs();
@@ -953,6 +953,11 @@
             this.renderCalendar('left');
             this.renderCalendar('right');
 
+            if (this.timePicker) {
+                this.renderTimePicker('left');
+                this.renderTimePicker('right');
+            }
+
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
             var i = 0;
@@ -1181,11 +1186,15 @@
             html += '</tbody>';
             html += '</table>';
 
-            $('.calendar.' + side + ' .calendar-table').html(html);
+            this.container.find('.calendar.' + side + ' .calendar-table').html(html);
 
-            //
-            // Display a time picker above the calendar
-            //
+        },
+
+        renderTimePicker: function(side) {
+
+            var minDate = (side == 'left' || (side == 'right' && this.singleDatePicker)) ? this.minDate : this.startDate;
+            var maxDate = this.maxDate;
+            var selected = side == 'left' ? this.startDate : this.endDate;
 
             if (this.timePicker) {
 
