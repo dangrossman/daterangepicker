@@ -78,7 +78,6 @@
             fromLabel: 'From',
             toLabel: 'To',
             weekLabel: 'W',
-            rangesLabel: 'Date Range',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
@@ -99,7 +98,7 @@
         if (typeof options.template !== 'string')
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
-                    '<div class="daterangepicker_start_input">' +
+                    '<div class="daterangepicker_input">' +
                       '<label for="daterangepicker_start"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
                       '<i class="fa fa-calendar-o glyphicon glyphicon-calendar"></i>' +
@@ -107,7 +106,7 @@
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="calendar right">' +
-                    '<div class="daterangepicker_end_input">' +
+                    '<div class="daterangepicker_input">' +
                       '<label for="daterangepicker_end"></label>' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
                       '<i class="fa fa-calendar-o glyphicon glyphicon-calendar"></i>' +
@@ -115,7 +114,7 @@
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="ranges">' +
-                    '<label style="display: none"></label>' + 
+                    '<label style="display: none"> </label>' + 
                     '<div class="range_inputs">' +
                         '<button class="applyBtn" disabled="disabled" type="button"></button>&nbsp;' +
                         '<button class="cancelBtn" type="button"></button>' +
@@ -195,9 +194,6 @@
 
             if (typeof options.locale.customRangeLabel === 'string')
               this.locale.customRangeLabel = options.locale.customRangeLabel;
-
-            if (typeof options.locale.rangesLabel === 'string')
-              this.locale.rangesLabel = options.locale.rangesLabel;
 
         }
 
@@ -344,8 +340,8 @@
             this.container.addClass('single');
             this.container.find('.calendar.right').show();
             this.container.find('.calendar.left').hide();
-            if (!this.timePicker) {
-                this.container.find('.daterangepicker_start_input label, .daterangepicker_end_input label').hide();
+            this.container.find('.daterangepicker_end_input').hide();
+            if (!this.timePicker24Hour) {
                 this.container.find('.ranges').hide();
             }
             this.container.find('.calendar.right').addClass('single');
@@ -382,9 +378,8 @@
             this.container.find('.cancelBtn').addClass(this.cancelClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
-        this.container.find('.daterangepicker_start_input label').html(this.locale.fromLabel);
-        this.container.find('.daterangepicker_end_input label').html(this.locale.toLabel);
-        this.container.find('.ranges label').html(this.locale.rangesLabel);
+        this.container.find('.left .daterangepicker_input label').html(this.locale.fromLabel);
+        this.container.find('.right .daterangepicker_input label').html(this.locale.toLabel);
 
         //event listeners
         this.container.find('.calendar')
@@ -395,14 +390,14 @@
             .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.updateMonthYear, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.updateMonthYear, this))
-            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.updateTime, this));
+            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.updateTime, this))
+            .on('click.daterangepicker', '.daterangepicker_input input', $.proxy(this.showCalendars, this))
+            .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.inputsChanged, this))
+            .on('keydown.daterangepicker', '.daterangepicker_input input', $.proxy(this.inputsKeydown, this));
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
-            .on('click.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.showCalendars, this))
-            .on('change.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.inputsChanged, this))
-            .on('keydown.daterangepicker', '.daterangepicker_start_input,.daterangepicker_end_input', $.proxy(this.inputsKeydown, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.enterRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
@@ -955,10 +950,8 @@
 
         updateCalendars: function () {
             
-            this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), this.leftCalendar.month.second(), 'left');
-            this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), this.rightCalendar.month.second(), 'right');
-            this.container.find('.calendar.left .calendar-table').html(this.renderCalendar(this.leftCalendar.calendar, 'left'));
-            this.container.find('.calendar.right .calendar-table').html(this.renderCalendar(this.rightCalendar.calendar, 'right'));
+            this.renderCalendar('left');
+            this.renderCalendar('right');
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -986,7 +979,18 @@
             }
         },
 
-        buildCalendar: function (month, year, hour, minute, second, side) {
+        renderCalendar: function (side) {
+
+            //
+            // Build the matrix of dates that will populate the calendar
+            //
+
+            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
+            var month = calendar.month.month();
+            var year = calendar.month.year();
+            var hour = calendar.month.hour();
+            var minute = calendar.month.minute();
+            var second = calendar.month.second();
             var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
             var lastDay = moment([year, month, daysInMonth]);
@@ -1034,55 +1038,22 @@
 
             }
 
-            return calendar;
-        },
-
-        renderDropdowns: function (selected, minDate, maxDate) {
-            var currentMonth = selected.month();
-            var currentYear = selected.year();
-            var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-            var minYear = (minDate && minDate.year()) || (currentYear - 50);
-
-            var monthHtml = '<select class="monthselect">';
-            var inMinYear = currentYear == minYear;
-            var inMaxYear = currentYear == maxYear;
-
-            for (var m = 0; m < 12; m++) {
-                if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
-                    monthHtml += "<option value='" + m + "'" +
-                        (m === currentMonth ? " selected='selected'" : "") +
-                        ">" + this.locale.monthNames[m] + "</option>";
-                }
-            }
-            monthHtml += "</select>";
-
-            var yearHtml = '<select class="yearselect">';
-
-            for (var y = minYear; y <= maxYear; y++) {
-                yearHtml += '<option value="' + y + '"' +
-                    (y === currentYear ? ' selected="selected"' : '') +
-                    '>' + y + '</option>';
-            }
-
-            yearHtml += '</select>';
-
-            return monthHtml + yearHtml;
-        },
-
-        renderCalendar: function (calendar, side) {
-
-            var minDate, maxDate, selected;
+            //make the calendar object available to hoverDate/clickDate
             if (side == 'left') {
-                minDate = this.minDate;
-                maxDate = this.maxDate;
-                selected = this.startDate;
+                this.leftCalendar.calendar = calendar;
             } else {
-                minDate = this.singleDatePicker ? this.minDate : this.startDate;
-                maxDate = this.maxDate;
-                selected = this.endDate;
+                this.rightCalendar.calendar = calendar;
             }
 
-            var html = '<table class="table-condensed">';
+            //
+            // Display the calendar
+            //
+
+            var minDate = (side == 'left' || (side == 'right' && this.singleDatePicker)) ? this.minDate : this.startDate;
+            var maxDate = this.maxDate;
+            var selected = side == 'left' ? this.startDate : this.endDate;
+
+            html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
 
@@ -1099,7 +1070,32 @@
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
 
             if (this.showDropdowns) {
-                dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate);
+                var currentMonth = selected.month();
+                var currentYear = selected.year();
+                var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
+                var minYear = (minDate && minDate.year()) || (currentYear - 50);
+                var inMinYear = currentYear == minYear;
+                var inMaxYear = currentYear == maxYear;
+
+                var monthHtml = '<select class="monthselect">';
+                for (var m = 0; m < 12; m++) {
+                    if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
+                        monthHtml += "<option value='" + m + "'" +
+                            (m === currentMonth ? " selected='selected'" : "") +
+                            ">" + this.locale.monthNames[m] + "</option>";
+                    }
+                }
+                monthHtml += "</select>";
+
+                var yearHtml = '<select class="yearselect">';
+                for (var y = minYear; y <= maxYear; y++) {
+                    yearHtml += '<option value="' + y + '"' +
+                        (y === currentYear ? ' selected="selected"' : '') +
+                        '>' + y + '</option>';
+                }
+                yearHtml += '</select>';
+
+                dateHtml = monthHtml + yearHtml;
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
@@ -1185,10 +1181,15 @@
             html += '</tbody>';
             html += '</table>';
 
-            var i;
+            $('.calendar.' + side + ' .calendar-table').html(html);
+
+            //
+            // Display a time picker above the calendar
+            //
+
             if (this.timePicker) {
 
-                html += '<div class="calendar-time">';
+                html = '<div class="calendar-time">';
                 html += '<select class="hourselect">';
 
                 // Disallow selections before the minDate or after the maxDate
@@ -1225,7 +1226,7 @@
                         selected_hour = 12;
                 }
 
-                for (i = start; i <= end; i++) {
+                for (var i = start; i <= end; i++) {
 
                     if (i == selected_hour) {
                         html += '<option value="' + i + '" selected="selected">' + i + '</option>';
@@ -1256,7 +1257,7 @@
                         selected.minute(max_minute);
                 }
 
-                for (i = 0; i < 60; i += this.timePickerIncrement) {
+                for (var i = 0; i < 60; i += this.timePickerIncrement) {
                     var num = i;
                     if (num < 10)
                         num = '0' + num;
@@ -1274,7 +1275,7 @@
                 if (this.timePickerSeconds) {
                     html += ': <select class="secondselect">';
 
-                    for (i = 0; i < 60; i += this.timePickerIncrement) {
+                    for (var i = 0; i < 60; i += this.timePickerIncrement) {
                         var num = i;
                         if (num < 10)
                             num = '0' + num;
@@ -1313,9 +1314,10 @@
 
                 html += '</div>';
 
-            }
+                this.container.find('.calendar.' + side + ' .calendar-time').remove();
+                this.container.find('.calendar.' + side + ' .daterangepicker_input').append(html);
 
-            return html;
+            }
 
         },
 
