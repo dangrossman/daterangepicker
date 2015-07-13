@@ -90,7 +90,7 @@ Options may also be set using HTML5 data attributes. For example, timePicker="tr
 
 `ranges`: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
 
-`opens`: (string: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to
+`opens`: (string: 'left'/'right'/'center'/'embed') Whether the picker appears aligned to the left, to the right, centered under or embed after the HTML element it's attached to
 
 `drops`: (string: 'down' or 'up') Whether the picker opens below (default) or above the element it's attached to
 
