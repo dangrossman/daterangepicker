@@ -217,6 +217,10 @@
   background: #eee;
 }
 
+.daterangepicker td.available.today {
+  background: #fcf8e3;
+}
+
 .daterangepicker td.in-range {
   background: #ebf4f8;
   -webkit-border-radius: 0;
