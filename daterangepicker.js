@@ -571,6 +571,8 @@
                     left: this.parentEl.offset().left - this.parentEl.scrollLeft()
                 };
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
+            } else {
+              parentRightEdge += $(window).scrollLeft();
             }
             
             if (this.drops == 'up')
