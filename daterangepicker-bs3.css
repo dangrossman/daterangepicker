@@ -217,11 +217,6 @@
   background: #eee;
 }
 
-.daterangepicker td.hidden-date {
-  background: #fff;
-  color: #fff;
-}
-
 .daterangepicker td.available.today {
   background: #fcf8e3;
 }
@@ -341,4 +336,9 @@
 
 .daterangepicker .left .daterangepicker_input {
   padding-right: 12px;
+}
+
+.daterangepicker .calendar-time select.disabled {
+  color: #ccc;
+  cursor: not-allowed;
 }

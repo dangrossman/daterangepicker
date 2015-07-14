@@ -37,7 +37,7 @@
                <script type="text/javascript">
                $(document).ready(function() {
                   $('#reservation').daterangepicker({
-                    dateLimit: { days: 3 }, autoApply: true
+                    dateLimit: { days: 7 }, autoApply: true
                   }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
@@ -64,7 +64,7 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#birthday').daterangepicker({ singleDatePicker: true, timePicker: true, locale: { format: 'MM/DD/YYYY h:mm A' } }, function(start, end, label) {
+                  $('#birthday').daterangepicker({ singleDatePicker: true, timePicker: false, locale: { format: 'MM/DD/YYYY h:mm A' } }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
                });
@@ -197,11 +197,11 @@
                   $('#reportrange').on('cancel.daterangepicker', function(ev, picker) { console.log("cancel event fired"); });
 
                   $('#options1').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet1, cb);
+                    $('#reportrange').setOptions(optionSet1, cb);
                   });
 
                   $('#options2').click(function() {
-                    $('#reportrange').data('daterangepicker').setOptions(optionSet2, cb);
+                    $('#reportrange').setOptions(optionSet2, cb);
                   });
 
                   $('#destroy').click(function() {
