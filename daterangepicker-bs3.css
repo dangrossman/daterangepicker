@@ -217,6 +217,11 @@
   background: #eee;
 }
 
+.daterangepicker td.hidden-date {
+  background: #fff;
+  color: #fff;
+}
+
 .daterangepicker td.available.today {
   background: #fcf8e3;
 }
