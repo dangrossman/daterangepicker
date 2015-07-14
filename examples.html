@@ -82,7 +82,7 @@
                     <div class="controls">
                      <div class="input-prepend input-group">
                        <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                       <input type="text" style="width: 400px" name="reservation" id="reservationtime" class="form-control" value="08/01/2013 1:00 PM - 08/01/2013 1:30 PM"  class="span4"/>
+                       <input type="text" style="width: 400px" name="reservation" id="reservationtime" class="form-control" value="07/01/2015 1:00 PM - 07/15/2015 1:30 PM"  class="span4"/>
                      </div>
                     </div>
                   </div>
@@ -96,7 +96,8 @@
                     timePickerIncrement: 30,
                     locale: {
                       format: 'MM/DD/YYYY h:mm A'
-                    }
+                    },
+                    maxDate: '07/28/2015 12:30 PM'
                   }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
