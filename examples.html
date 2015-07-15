@@ -36,9 +36,7 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#reservation').daterangepicker({
-                    dateLimit: { days: 7 }, autoApply: true
-                  }, function(start, end, label) {
+                  $('#reservation').daterangepicker(null, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
                });
@@ -64,7 +62,7 @@
 
                <script type="text/javascript">
                $(document).ready(function() {
-                  $('#birthday').daterangepicker({ singleDatePicker: true, timePicker: false, locale: { format: 'MM/DD/YYYY h:mm A' } }, function(start, end, label) {
+                  $('#birthday').daterangepicker({ singleDatePicker: true, minDate: moment(), maxDate: moment().add(5, 'day') }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
                });

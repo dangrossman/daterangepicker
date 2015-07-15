@@ -20,7 +20,7 @@
       jQuery = require('jquery');
     } catch (err) {
       jQuery = window.jQuery;
-      if (!jQuery) throw new Error('jQuery dependency not found');
+      if (!jQuery) throw new Error('jQuery dependnecy not found');
     }
 
     factory(root, exports, momentjs, jQuery);
@@ -1279,13 +1279,25 @@
 
         },
 
-        formInputsChanged: function() {
+        formInputsChanged: function(e) {
+            var isRight = $(e.target).closest('.calendar').hasClass('right');
             var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
             var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
 
             if (start.isValid() && end.isValid()) {
+
+                if (isRight && end.isBefore(start))
+                    start = end.clone();
+
                 this.setStartDate(start);
                 this.setEndDate(end);
+
+                if (isRight) {
+                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
+                } else {
+                    this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
+                }
+
             }
 
             this.updateCalendars();
