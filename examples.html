@@ -93,7 +93,9 @@
                $(document).ready(function() {
                   $('#reservationtime').daterangepicker({
                     timePicker: true,
-                    timePickerIncrement: 30,
+                    timePickerIncrement: 1,
+                    timePickerSeconds: true,
+                    timePicker24Hour: true,
                     locale: {
                       format: 'MM/DD/YYYY h:mm A'
                     },

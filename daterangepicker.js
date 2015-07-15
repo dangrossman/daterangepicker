@@ -430,6 +430,8 @@
 
             if (this.maxDate && this.startDate.isAfter(this.maxDate))
                 this.startDate = this.maxDate;
+
+            this.updateMonthsInView();
         },
 
         setEndDate: function(endDate) {
@@ -453,6 +455,8 @@
 
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
+
+            this.updateMonthsInView();
         },
 
         updateView: function () {
@@ -465,18 +469,21 @@
                     this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
                 }
             }
+            this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
         },
 
-        updateCalendars: function () {
-
+        updateMonthsInView: function( ){
             this.leftCalendar.month = this.startDate.clone().day(1);
             if (this.endDate && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                 this.rightCalendar.month = this.endDate.clone().day(1);
             } else {
                 this.rightCalendar.month = this.startDate.clone().day(1).add(1, 'month');
             }
+        },
+
+        updateCalendars: function () {
 
             if (this.timePicker) {
                 var hour, minute, second;
@@ -545,6 +552,7 @@
             //
 
             var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
+            console.log(calendar.month);
             var month = calendar.month.month();
             var year = calendar.month.year();
             var hour = calendar.month.hour();
@@ -798,13 +806,13 @@
                 }
             }
 
-            html += '</select> : ';
+            html += '</select> ';
 
             //
             // minutes
             //
 
-            html += '<select class="minuteselect">';
+            html += ': <select class="minuteselect">';
 
             for (var i = 0; i < 60; i += this.timePickerIncrement) {
                 var padded = i < 10 ? '0' + i : i;
@@ -832,7 +840,7 @@
             //
 
             if (this.timePickerSeconds) {
-                html += '<select class="minuteselect">';
+                html += ': <select class="secondselect">';
 
                 for (var i = 0; i < 60; i++) {
                     var padded = i < 10 ? '0' + i : i;
@@ -895,10 +903,6 @@
             } else {
                 this.container.find('button.applyBtn').attr('disabled', 'disabled');
             }
-        },
-
-        notify: function() {
-            this.callback(this.startDate, this.endDate, this.chosenLabel);
         },
 
         move: function () {
@@ -993,8 +997,9 @@
                 this.endDate = this.oldEndDate.clone();
             }
 
+            //if a new date range was selected, invoke the user callback function
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.notify();
+                this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
             if (this.element.is('input') && !this.singleDatePicker) {
