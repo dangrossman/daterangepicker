@@ -673,8 +673,41 @@
             this.element.removeClass('active');
             this.container.hide();
 
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (!!this.minDate) {
+                if (this.startDate.isBefore(this.minDate)) {
+                    this.oldStartDate = this.startDate;
+                    this.startDate = this.minDate;
+                }
+                if (!this.singleDatePicker && this.endDate.isBefore(this.minDate)) {
+                    this.oldEndDate = this.endDate;
+                    this.endDate = this.minDate;
+                }
+            }
+
+            if (!!this.maxDate) {
+                if (this.startDate.isAfter(this.maxDate)) {
+                    this.oldStartDate = this.startDate;
+                    this.startDate = this.maxDate;
+                }
+                if (!this.singleDatePicker && this.endDate.isAfter(this.maxDate)) {
+                    this.oldEndDate = this.endDate;
+                    this.endDate = this.maxDate;
+                }
+            }
+
+            //Validate only in daterange mode
+            if (!this.singleDatePicker && this.startDate.isAfter(this.endDate)) {
+                this.oldStartDate = this.startDate;
+                this.startDate = this.endDate;
+            }
+
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate)) {
                 this.notify();
+
+                if (this.singleDatePicker && this.element.is('input')) {
+                    this.element.val(this.startDate.format(this.format));
+                }
+            }
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
