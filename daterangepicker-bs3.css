@@ -247,7 +247,6 @@
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  cursor: pointer;
   white-space: nowrap;
 }
 
@@ -257,6 +256,10 @@
 
 .daterangepicker td.disabled, .daterangepicker option.disabled {
   color: #999;
+}
+
+.daterangepicker td.available, .daterangepicker th.available {
+  cursor: pointer;
 }
 
 .daterangepicker td.available:hover, .daterangepicker td.available.today, .daterangepicker th.available:hover {
