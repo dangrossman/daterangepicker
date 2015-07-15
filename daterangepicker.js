@@ -44,7 +44,7 @@
         this.maxDate = false;
         this.dateLimit = false;
         this.autoApply = false;
-        this.singleDatePicker = false=
+        this.singleDatePicker = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
         this.timePicker = false;
@@ -52,6 +52,9 @@
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
         this.ranges = {};
+
+        console.log("Constructor");
+        console.log(this);
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
