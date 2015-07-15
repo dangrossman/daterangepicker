@@ -43,14 +43,14 @@
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
+        this.autoApply = false;
+        this.singleDatePicker = false=
         this.showDropdowns = false;
         this.showWeekNumbers = false;
         this.timePicker = false;
-        this.timePickerSeconds = false;
-        this.timePickerIncrement = 1;
         this.timePicker24Hour = false;
-        this.autoApply = false;
-        this.singleDatePicker = false;
+        this.timePickerIncrement = 1;
+        this.timePickerSeconds = false;
         this.ranges = {};
 
         this.opens = 'right';
