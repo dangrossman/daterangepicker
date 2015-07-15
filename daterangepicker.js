@@ -99,7 +99,10 @@
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
                       '<i class="fa fa-calendar-o glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time"></div>' +
+                      '<div class="calendar-time">' + 
+                        '<div></div>' +
+                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      '</div>' +
                     '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
@@ -107,7 +110,10 @@
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
                       '<i class="fa fa-calendar-o glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time"></div>' +
+                      '<div class="calendar-time">' + 
+                        '<div></div>' +
+                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      '</div>' +
                     '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
@@ -226,14 +232,8 @@
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
 
-        if (typeof options.autoApply === 'boolean') {
+        if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
-            if (this.autoApply && typeof options.ranges !== 'object') {
-                this.container.find('.ranges').hide();
-            } else if (this.autoApply) {
-                this.container.find('.applyBtn, .cancelBtn').addClass('hide');
-            }
-        }
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -330,11 +330,18 @@
         if (!this.timePicker) {
             this.startDate = this.startDate.startOf('day');
             this.endDate = this.endDate.endOf('day');
+            this.container.find('.calendar-time').hide();
         }
 
         //can't be used together for now
         if (this.timePicker && this.autoApply)
             this.autoApply = false;
+
+        if (this.autoApply && typeof options.ranges !== 'object') {
+            this.container.find('.ranges').hide();
+        } else if (this.autoApply) {
+            this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+        }
 
         if (this.singleDatePicker) {
             this.container.addClass('single');
@@ -552,7 +559,6 @@
             //
 
             var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
-            console.log(calendar.month);
             var month = calendar.month.month();
             var year = calendar.month.year();
             var hour = calendar.month.hour();
@@ -889,7 +895,7 @@
                 html += '</select>';
             }
 
-            this.container.find('.calendar.' + side + ' .calendar-time').html(html);
+            this.container.find('.calendar.' + side + ' .calendar-time div').html(html);
 
         },
 
@@ -1329,12 +1335,12 @@
 
     };
 
-    $.fn.daterangepicker = function (options, cb) {
+    $.fn.daterangepicker = function (options, callback) {
         this.each(function () {
             var el = $(this);
             if (el.data('daterangepicker'))
                 el.data('daterangepicker').remove();
-            el.data('daterangepicker', new DateRangePicker(el, options, cb));
+            el.data('daterangepicker', new DateRangePicker(el, options, callback));
         });
         return this;
     };
