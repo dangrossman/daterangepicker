@@ -2,7 +2,7 @@
   "name": "bootstrap-daterangepicker",
   "main": [
     "daterangepicker.js",
-    "daterangepicker-bs3.css"
+    "daterangepicker.css"
   ],
   "ignore": [
     "**/.*",

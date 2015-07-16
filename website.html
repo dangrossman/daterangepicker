@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Date Range Picker for Bootstrap</title>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/2.9.0/moment.min.js"></script>         
+
+        <script type="text/javascript" src="daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
+
+        <meta name="google-site-verification" content="1fP-Eo9i1ozV4MUlqZv2vsLv1r7tvYutUb6i38v0_vg" />
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="container">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="http://www.daterangepicker.com" rel="nofollow" style="background: #eee; color: #000">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-calendar fa-stack-1x fa-inverse" style="color: #eee"></i>
+                            </span>
+                            Date Range Picker
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="http://www.websitegoodies.com" rel="nofollow" style="background: #f49a16">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wrench fa-stack-1x fa-inverse" style="color: #f49a16"></i>
+                            </span>
+                            Website Goodies
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.improvely.com" rel="nofollow" style="background: #00caff">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-signal fa-stack-1x fa-inverse" style="color: #00caff"></i>
+                            </span>
+                            Improvely
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.w3counter.com" rel="nofollow" style="background: #009fe8">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-pie-chart fa-stack-1x fa-inverse" style="color: #009fe8"></i>
+                            </span>
+                            W3Counter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.visitorboost.com" rel="nofollow" style="background: #f55443">
+                            <span class="fa-stack">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-line-chart fa-stack-1x fa-inverse" style="color: #f55443"></i>
+                            </span>
+                            Visitor Boost
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="jumbo" style="background: #f5f5f5 linear-gradient(to bottom,#eee 0,#f5f5f5 100%); color: #000; padding: 40px 0 10px 0; margin-bottom: 40px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <h1 style="margin: 0 0 20px 0">Date Range Picker</h1>
+                        <p style="font-size: 18px">
+                            A JavaScript dropdown for choosing date ranges.
+                            <br />
+                            Designed to work with the Bootstrap CSS framework.
+                        </p>
+
+                    </div>
+                    <div class="col-md-6" style="text-align: right; padding-right: 0">
+
+                        <a href="https://github.com/dangrossman/bootstrap-daterangepicker" class="btn btn-lg btn-default">View on GitHub</a>
+
+                        &nbsp;
+
+                        <a href="https://github.com/dangrossman/bootstrap-daterangepicker/archive/master.zip" class="btn btn-lg btn-success">Download ZIP</a>
+
+                        <br /><br />
+
+                        <iframe src="https://ghbtns.com/github-btn.html?user=dangrossman&repo=bootstrap-daterangepicker&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+                        <iframe src="https://ghbtns.com/github-btn.html?user=dangrossman&repo=bootstrap-daterangepicker&type=watch&count=true&size=large&v=2" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+                        <iframe src="https://ghbtns.com/github-btn.html?user=dangrossman&repo=bootstrap-daterangepicker&type=fork&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container main">
+            <div class="row">
+                <div class="col-md-3 col-sm-12 col-xs-12" id="nav-spy">
+
+                    <ul class="nav nav-pills nav-stacked" id="sidebar">
+                        <li class="active"><a href="#overview">Overview</a></li>
+                        <li><a href="#usage">Usage</a></li>
+                        <li>
+                            <a href="#examples">Examples</a>
+                            <ul class="nav nav-pills nav-stacked" style="margin: 0 0 0 15px; padding: 0; font-size: 13px">
+                                <li><a href="#ex1">Date Range Picker</a></li>
+                                <li><a href="#ex2">Date and Time</a></li>
+                                <li><a href="#ex3">Single Date Picker</a></li>
+                                <li><a href="#ex4">Predefined Ranges</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#config">Configuration Generator</a></li>
+                        <li><a href="#options">Options Reference</a></li>
+                        <li><a href="#methods">Methods Reference</a></li>
+                        <li><a href="#events">Events Reference</a></li>
+                        <li><a href="#license">License</a></li>
+                    </ul>
+
+                </div>
+                <div class="col-md-9 col-sm-12 col-xs-12">
+
+                    <div id="overview" name="overview">
+
+                        <p>
+                            Originally built for reporting at <a href="https://www.improvely.com">Improvely</a>,
+                            the Date Range Picker can be attached to any webpage element to pop up two calendars
+                            for selecting dates, times, or from predefined ranges like "Last 30 Days".
+                        </p>
+
+                        <a style="display: block; height: 300px; background: url('drp.png') top right no-repeat; background-size: auto 100%; border: 1px solid #ccc; margin-bottom: 20px" href="https://awio.iljmp.com/5/drpdemo" title="Click for a Live Demo"></a>
+                    
+                    </div>
+
+                    <div id="usage" name="usage">
+
+                        <h2>Usage</h2>
+
+                        <p>
+                            Date Range Picker relies on <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://www.jquery.com/">jQuery</a> and <a href="http://momentjs.com/">Moment.js</a>.
+
+                            Include the required scripts and stylesheet in your page:
+                        </p>
+
+                        <script src="https://gist.github.com/dangrossman/fc0ec04cf073f0834c97.js"></script>
+
+                        <p>Then attach the picker to the element you want to trigger it:</p>
+
+                        <script src="https://gist.github.com/dangrossman/c4cc05fff6fe86cdca05.js"></script>
+
+                        <hr />
+
+                        <p>
+                            You can customize Date Range Picker with <a href="#options">options</a>, and 
+                            get notified when the user chooses new dates by providing a callback function.
+                        </p>
+
+                        <script src="https://gist.github.com/dangrossman/90b0b82275c81ac5904a.js"></script>
+
+                    </div>
+
+                    <div id="examples" name="examples">
+
+                        <h2>Examples</h2>
+
+                        <div id="ex1" name="ex1">
+
+                            <h3>Date Range Picker</h3>
+
+                            <p>
+                                The Date Range Picker is attached to a text input. It will use the current
+                                value of the input to initialize, and update the input if new dates are chosen.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-8 col-xs-12">
+                                    <script src="https://gist.github.com/dangrossman/8e97e05e68cb683c4d71.js"></script>
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="daterange" value="01/15/2015 - 02/15/2015" />
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                            $(function() {
+                                $('input[name="daterange"]').daterangepicker();
+                            });
+                            </script>
+
+                        </div>
+
+                        <div id="ex2" name="ex2">
+
+                            <h3>Date and Time</h3>
+
+                            <p>
+                                The Date Range Picker can also be used to select times. Hour, minute and (optional)
+                                second dropdowns are added below the calendars. An option exists to set the increment
+                                count of the minutes dropdown to e.g. offer only 15-minute or 30-minute increments.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-7 col-xs-12">
+                                    <script src="https://gist.github.com/dangrossman/89a40223f5a8a892fbf1.js"></script>
+                                </div>
+                                <div class="col-md-5 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="daterange2" value="01/01/2015 1:30 PM - 01/01/2015 2:00 PM" />
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                            $(function() {
+                                $('input[name="daterange2"]').daterangepicker({
+                                    timePicker: true,
+                                    timePickerIncrement: 30,
+                                    locale: {
+                                        format: 'MM/DD/YYYY h:mm A'
+                                    }
+                                });
+                            });
+                            </script>
+
+                        </div>
+
+                        <div id="ex3" name="ex3">
+
+                            <h3>Single Date Picker</h3>
+
+                            <p>
+                                The Date Range Picker can be turned into a single date picker widget with only
+                                one calendar. In this example, dropdowns to select a month and year have also
+                                been enabled at the top of the calendar to quickly jump to different months.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-9 col-xs-12">
+                                    <script src="https://gist.github.com/dangrossman/df41977acae070b3feb2.js"></script>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="birthdate" value="10/24/1984" />
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                            $(function() {
+                                $('input[name="birthdate"]').daterangepicker({
+                                    singleDatePicker: true,
+                                    showDropdowns: true
+                                }, 
+                                function(start, end, label) {
+                                    var years = moment().diff(start, 'years');
+                                    alert("You are " + years + " years old.");
+                                });
+                            });
+                            </script>
+
+                        </div>
+
+                        <div id="ex4" name="ex4">
+
+                            <h3>Predefined Ranges</h3>
+
+                            <p>
+                                This example shows the option to predefine date ranges that
+                                the user can choose from a list.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-8 col-xs-12">
+                                    <script src="https://gist.github.com/dangrossman/bd8cf6efbba1c2123adc.js"></script>
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                        <span></span> <b class="caret"></b>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <script type="text/javascript">
+                        $(function() {
+
+                            function cb(start, end) {
+                                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                            }
+                            cb(moment().subtract(29, 'days'), moment());
+
+                            $('#reportrange').daterangepicker({
+                                ranges: {
+                                   'Today': [moment(), moment()],
+                                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                }
+                            }, cb);
+
+                        });
+                        </script>
+
+                    </div>
+
+                    <div id="config" name="config">
+
+                        <h2>Configuration Generator</h2>
+
+                        <div class="well configurator">
+                           
+                          <form>
+                          <div class="row">
+
+                            <div class="col-md-4">
+
+                              <div class="form-group">
+                                <label for="parentEl">parentEl</label>
+                                <input type="text" class="form-control" id="parentEl" value="" placeholder="body">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="startDate">startDate</label>
+                                <input type="text" class="form-control" id="startDate" value="07/01/2015">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="endDate">endDate</label>
+                                <input type="text" class="form-control" id="endDate" value="07/15/2015">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="minDate">minDate</label>
+                                <input type="text" class="form-control" id="minDate" value="" placeholder="MM/DD/YYYY">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="maxDate">maxDate</label>
+                                <input type="text" class="form-control" id="maxDate" value="" placeholder="MM/DD/YYYY">
+                              </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="autoApply"> autoApply
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="singleDatePicker"> singleDatePicker
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="showDropdowns"> showDropdowns
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="showWeekNumbers"> showWeekNumbers
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="timePicker"> timePicker
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="timePicker24Hour"> timePicker24Hour
+                                </label>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
+                                <input type="text" class="form-control" id="timePickerIncrement" value="1">
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="timePickerSeconds"> timePickerSeconds
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="dateLimit"> dateLimit (with example date range span)
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="locale"> locale (with example settings)
+                                </label>
+                              </div>
+
+                            </div>
+                            <div class="col-md-4">
+
+                              <div class="form-group">
+                                <label for="opens">opens (left/center/right)</label>
+                                <input type="text" class="form-control" id="opens" value="left">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="drops">drops (down/up)</label>
+                                <input type="text" class="form-control" id="drops" value="down">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="buttonClasses">buttonClasses</label>
+                                <input type="text" class="form-control" id="buttonClasses" value="btn btn-sm">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="applyClass">applyClass</label>
+                                <input type="text" class="form-control" id="applyClass" value="btn-success">
+                              </div>
+
+                              <div class="form-group">
+                                <label for="cancelClass">cancelClass</label>
+                                <input type="text" class="form-control" id="cancelClass" value="btn-default">
+                              </div>
+
+                            </div>
+
+                          </div>
+                          </form>
+
+                        </div>
+
+                        <div class="row">
+
+                          <div class="col-md-8">
+                            <h4>Configuration</h4>
+
+                            <div class="well">
+                              <textarea id="config-text" style="height: 300px; width: 100%; padding: 10px"></textarea>
+                            </div>
+
+                          </div>
+                          <div class="col-md-4 demo">
+                            <h4>Your Date Range Picker</h4>
+                            <input type="text" id="config-demo" class="form-control">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                          </div>
+
+                        </div>
+
+                    </div>
+
+                    <div id="options" name="options">
+
+                        <h2>Options</h2>
+
+                        <ul class="nobullets">
+                            <li>
+                                <code>startDate</code> (Date object, moment object or string) The start of the initially selected date range
+                            </li>
+                            <li>
+                                <code>endDate</code>: (Date object, moment object or string) The end of the initially selected date range
+                            </li>
+                            <li>
+                                <code>minDate</code>: (Date object, moment object or string) The earliest date a user may select
+                            </li>
+                            <li>
+                                <code>maxDate</code>: (Date object, moment object or string) The latest date a user may select
+                            </li>
+                            <li>
+                                <code>dateLimit</code>: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months)
+                            </li>
+                            <li>
+                                <code>timeZone</code>: (string or number) The timezone that will be used to display the startDate and endDate in the calendar. This may be a string such as "08</code>:00" or an offset in minutes from Greenwich Mean Time. Uses Moment.js #utcOffset, <a href="http://momentjs.com/docs/#/manipulating/utc-offset/">see the docs here</a> for more information. If the timeZone option is not set, the calendar will use the time zone set on the startDate that has been passed in through the options, if it has one. Defaults to the local time zone
+                            </li>
+                            <li>
+                                <code>showDropdowns</code>: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
+                            </li>
+                            <li>
+                                <code>showWeekNumbers</code>: (boolean) Show week numbers at the start of each week on the calendars
+                            </li>
+                            <li>
+                                <code>timePicker</code>: (boolean) Allow selection of dates with times, not just dates
+                            </li>
+                            <li>
+                                <code>timePickerIncrement</code>: (number) Increment of the minutes selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30)
+                            </li>
+                            <li>
+                                <code>timePicker24Hour</code>: (boolean) Use 24-hour instead of 12-hour times, removing the AM/PM selection
+                            </li>
+                            <li>
+                                <code>timePickerSeconds</code>: (boolean) Show seconds in the timePicker
+                            </li>
+                            <li>
+                                <code>ranges</code>: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
+                            </li>
+                            <li>
+                                <code>opens</code>: (string</code>: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to
+                            </li>
+                            <li>
+                                <code>drops</code>: (string</code>: 'down' or 'up') Whether the picker appears below (default) or above the HTML element it's attached to
+                            </li>
+                            <li>
+                                <code>buttonClasses</code>: (array) CSS class names that will be added to all buttons in the picker
+                            </li>
+                            <li>
+                                <code>applyClass</code>: (string) CSS class string that will be added to the apply button
+                            </li>
+                            <li>
+                                <code>cancelClass</code>: (string) CSS class string that will be added to the cancel button
+                            </li>
+                            <li>
+                                <code>locale</code>: (object) Allows you to provide localized strings for buttons and labels, customize the date display format, and change the first day of week for the calendars
+                            </li>
+                            <li>
+                                <code>singleDatePicker</code>: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
+                            </li>
+                            <li>
+                                <code>parentEl</code>: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be 'body'
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <div id="methods" name="methods">
+
+                        <h2>Methods Reference</h2>
+
+                        <p>
+                            You can programmatically update the <code>startDate</code> and <code>endDate</code>
+                            in the picker using the <code>setStartDate</code> and <code>setEndDate</code> methods.
+                            You can access the Date Range Picker object and its functions and properties through 
+                            data properties of the element you attached it to.
+                        </p>
+
+                        <script src="https://gist.github.com/dangrossman/8ff9b1220c9b5682e8bd.js"></script>
+
+                        <br />
+                        
+                        <ul class="nobullets">
+                            <li>
+                                <code>setStartDate(Date/moment/string)</code>: Sets the date range picker's currently selected start date to the provided date
+                            </li>
+                            <li>
+                                <code>setEndDate(Date/moment/string)</code>: Sets the date range picker's currently selected end date to the provided date
+                            </li>
+                        </ul>
+
+                        <p style="margin: 0"><b>Example usage:</b></p>
+
+                        <script src="https://gist.github.com/dangrossman/e1a8effbaeacb50a1e31.js"></script>
+
+                    </div>
+
+                    <div id="events" name="events">
+
+                        <h2>Events Reference</h2>
+
+                        <p>
+                            Several events are triggered on the element you attach the picker to, which you can listen for.
+                        </p>
+
+                        <ul class="nobullets">
+                            <li>
+                                <code>show.daterangepicker</code>: Triggered when the picker is shown
+                            </li>
+                            <li>
+                                <code>hide.daterangepicker</code>: Triggered when the picker is hidden
+                            </li>
+                            <li>
+                                <code>showCalendar.daterangepicker</code>: Triggered when the calendar(s) are shown
+                            </li>
+                            <li>
+                                <code>hideCalendar.daterangepicker</code>: Triggered when the calendar(s) are hidden
+                            </li>
+                            <li>
+                                <code>apply.daterangepicker</code>: Triggered when the apply button is clicked,
+                                or when a predefined range is clicked
+                            </li>
+                            <li>
+                                <code>cancel.daterangepicker</code>: Triggered when the cancel button is clicked
+                            </li>
+                        </ul>
+
+                        <p>
+                            Some applications need a "clear" instead of a "cancel" functionality, which can be achieved by changing the button label and watching for the cancel event:
+                        </p>
+
+                        <script src="https://gist.github.com/dangrossman/1bea78da703f2896564d.js"></script>
+
+                        <br />
+
+                        <p>
+                            While passing in a callback to the constructor is the easiest way to listen for changes in the selected date range, you can also do something every time the apply button is clicked even if the selection hasn't changed:
+                        </p>
+
+                        <script src="https://gist.github.com/dangrossman/0c6c911fea1459b5fd13.js"></script>
+
+                    </div>
+
+                    <div id="license" name="license">
+
+                        <h2>License</h2>
+
+                        <p>The MIT License (MIT)</p>
+
+                        <p>Copyright (c) 2012-2015 <a href="http://www.dangrossman.info">Dan Grossman</a></p>
+
+                        <p>
+                            Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+                        </p>
+
+                        <p>
+                            The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+                        </p>
+
+                        <p>
+                            THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+                        </p>
+
+                    </div>
+
+                    <div id="comments">
+
+                        <h2>Comments</h2>
+
+                        <div id="disqus_thread"></div>
+                        <script type="text/javascript">
+                            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                            var disqus_url = 'http://www.dangrossman.info/2012/08/20/a-date-range-picker-for-twitter-bootstrap/';
+                            var disqus_identifier = '1045 http://www.dangrossman.info/?p=1045';
+                            var disqus_container_id = 'disqus_thread';
+                            var disqus_shortname = 'dangrossman';
+                            var disqus_title = "A Date Range Picker for Bootstrap";
+
+                            /* * * DON'T EDIT BELOW THIS LINE * * */
+                            (function() {
+                                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                            })();
+                        </script>
+                        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <style type="text/css">
+        body {
+            font-size: 15px;
+            line-height: 1.6em;
+            position: relative;
+            margin: 0;
+        }
+        p, pre {
+            margin-bottom: 2em;
+        }
+        .main h2 {
+            font-weight: bold;
+            margin: 60px 0 20px 0;
+        }
+        .main h3 {
+            margin: 60px 0 20px 0;
+        }
+        .main h4 {
+            margin: 0 0 10px 0;
+            font-weight: bold;
+        }
+        ul.nobullets {
+            margin: 0;
+            padding: 0;
+            list-style-position: inside;
+        }
+        li {
+            padding-bottom: 1em;
+        }
+        #sidebar {
+            top: 20px;
+            width: 250px;
+        }
+        #sidebar li {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        #sidebar li ul {
+            display: none;
+        }
+        #sidebar li.active ul {
+            display: block;
+        }
+        #sidebar li li {
+            padding: 4px 0;
+        }
+        input[type="text"] {
+            padding: 6px;
+            width: 100%;
+            border-radius: 4px;
+        }
+        .navbar {
+            text-align: left;
+            margin: 0;
+            border: 0;
+        }
+        .navbar-inverse {
+            background: #222;
+        }
+        .navbar .container {
+            padding: 0 20px;
+        }
+        .navbar-nav li a:link, .navbar-nav li a:visited {
+            font-weight: bold;
+            color: #fff;
+            font-size: 16px;
+        }
+        .navbar-nav li {
+            background: #fff;
+        }
+        .navbar-nav li a:hover {
+            opacity: 0.8;
+        }
+        .navbar-nav li {
+            padding: 0;
+        }
+        .navbar-inverse .navbar-text {
+                margin: 18px 0 0 0;
+                color: #eee;
+        }
+        #footer {
+            background: #222;
+            margin-top: 80px;
+            padding: 30px;
+            color: #fff;
+            text-align: center;
+        }
+        #footer a:link, #footer a:visited {
+            color: #fff;
+            border-bottom: 1px dotted #fff;
+        }
+        #jumbo .btn {
+            border-radius: 0;
+        }
+        #config .demo { position: relative; }
+        #config .demo i { position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer; }
+        </style>
+
+        <script type="text/javascript">
+        $(document).ready(function() {
+            
+            $('.configurator input').change(function() {
+              updateConfig();
+            });
+
+            $('.demo i').click(function() {
+              $(this).parent().find('input').click();
+            });
+
+            updateConfig();
+
+            function updateConfig() {
+              var options = {};
+
+              if ($('#singleDatePicker').is(':checked'))
+                options.singleDatePicker = true;
+              
+              if ($('#showDropdowns').is(':checked'))
+                options.showDropdowns = true;
+
+              if ($('#showWeekNumbers').is(':checked'))
+                options.showWeekNumbers = true;
+
+              if ($('#timePicker').is(':checked'))
+                options.timePicker = true;
+              
+              if ($('#timePicker24Hour').is(':checked'))
+                options.timePicker24Hour = true;
+
+              if ($('#timePickerIncrement').val().length)
+                options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
+
+              if ($('#timePickerSeconds').is(':checked'))
+                options.timePickerSeconds = true;
+              
+              if ($('#autoApply').is(':checked'))
+                options.autoApply = true;
+
+              if ($('#dateLimit').is(':checked'))
+                options.dateLimit = { days: 7 };
+
+              if ($('#ranges').is(':checked')) {
+                options.ranges = {
+                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                  'This Month': [moment().startOf('month'), moment().endOf('month')],
+                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                };
+              }
+
+              if ($('#locale').is(':checked')) {
+                options.locale = {
+                  format: 'MM/DD/YYYY',
+                  separator: ' - ',
+                  applyLabel: 'Apply',
+                  cancelLabel: 'Cancel',
+                  fromLabel: 'From',
+                  toLabel: 'To',
+                  customRangeLabel: 'Custom',
+                  daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                  monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                  firstDay: 1
+                };
+              }
+
+              if ($('#parentEl').val().length)
+                options.parentEl = $('#parentEl').val();
+
+              if ($('#startDate').val().length) 
+                options.startDate = $('#startDate').val();
+
+              if ($('#endDate').val().length)
+                options.endDate = $('#endDate').val();
+              
+              if ($('#minDate').val().length)
+                options.minDate = $('#minDate').val();
+
+              if ($('#maxDate').val().length)
+                options.maxDate = $('#maxDate').val();
+
+              if ($('#opens').val().length)
+                options.opens = $('#opens').val();
+
+              if ($('#drops').val().length)
+                options.drops = $('#drops').val();
+
+              if ($('#buttonClasses').val().length)
+                options.buttonClasses = $('#buttonClasses').val();
+
+              if ($('#applyClass').val().length)
+                options.applyClass = $('#applyClass').val();
+
+              if ($('#cancelClass').val().length)
+                options.cancelClass = $('#cancelClass').val();
+
+              $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
+
+              $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
+              
+            }
+
+            if ($(window).width() > 900) {
+                $('#sidebar').affix({
+                  offset: {
+                    top: 300,
+                    bottom: function () {
+                      return (this.bottom = $('.footer').outerHeight(true))
+                    }
+                  }
+                });
+            }
+            $('body').scrollspy({ target: '#nav-spy', offset: 20 });
+        });
+        </script>
+
+
+        <!-- Begin W3Counter Tracking Code -->
+        <script type="text/javascript" src="https://www.w3counter.com/tracker.js"></script>
+        <script type="text/javascript">
+        w3counter(90840);
+        </script>
+        <noscript>
+        <div><a href="http://www.w3counter.com"><img src="https://www.w3counter.com/tracker.php?id=90840" style="border: 0" alt="W3Counter" /></a></div>
+        </noscript>
+        <!-- End W3Counter Tracking Code -->
+
+        <script type="text/javascript">
+        var im_domain = 'awio';
+        var im_project_id = 48;
+        (function(e,t){window._improvely=[];var n=e.getElementsByTagName("script")[0];var r=e.createElement("script");r.type="text/javascript";r.src="https://"+im_domain+".iljmp.com/improvely.js";r.async=true;n.parentNode.insertBefore(r,n);if(typeof t.init=="undefined"){t.init=function(e,t){window._improvely.push(["init",e,t])};t.goal=function(e){window._improvely.push(["goal",e])};t.conversion=function(e){window._improvely.push(["conversion",e])};t.label=function(e){window._improvely.push(["label",e])}}window.improvely=t;t.init(im_domain,im_project_id)})(document,window.improvely||[])
+        </script>
+
+        <script type="text/javascript">
+        Shopify = { shop: 'www.improvely.com' };
+        </script>
+        <script type="text/javascript" src="https://icf.improvely.com/icf-button.js?shop=www.improvely.com"></script>
+
+        <div id="footer">
+            Copyright &copy; 2015 <a href="http://www.awio.com">Awio Web Services LLC</a>.
+            &nbsp;
+            Developed and maintained by <a href="http://www.dangrossman.info/">Dan Grossman</a>. 
+            &nbsp;
+        </div>
+
+    </body>
+</html>

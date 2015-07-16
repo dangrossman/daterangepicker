@@ -1,6 +1,6 @@
 Package.describe({
   name: 'dangrossman:bootstrap-daterangepicker',
-  version: '1.3.22',
+  version: '2.0.0',
   summary: 'Date range picker component for Bootstrap',
   git: 'https://github.com/dangrossman/bootstrap-daterangepicker',
   documentation: 'README.md'
@@ -14,5 +14,5 @@ Package.onUse(function(api) {
   api.use('jquery@1.11.3_2', ["client"]);
 
   api.addFiles('daterangepicker.js', ["client"]);
-  api.addFiles('daterangepicker-bs3.css', ["client"]);
+  api.addFiles('daterangepicker.css', ["client"]);
 });
