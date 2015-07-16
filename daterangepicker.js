@@ -10,10 +10,10 @@
 
   if (typeof define === 'function' && define.amd) {
     define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-      root.daterangepicker = factory(root, exports, momentjs, $);
+      root.daterangepicker = factory(root, momentjs, $);
     });
 
-  } else if (typeof exports !== 'undefined') {
+  } else if(typeof module === "object" && typeof module.exports === "object") {
     var momentjs = require('moment');
     var jQuery;
     try {
@@ -23,14 +23,13 @@
       if (!jQuery) throw new Error('jQuery dependency not found');
     }
 
-    factory(root, exports, momentjs, jQuery);
-
+    module.exports = factory(root, momentjs, jQuery);
   // Finally, as a browser global.
   } else {
-    root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
+    root.daterangepicker = factory(root, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
   }
 
-}(this, function(root, daterangepicker, moment, $) {
+}(this, function(root, moment, $) {
 
     var DateRangePicker = function (element, options, cb) {
 
@@ -1335,7 +1334,7 @@
 
     };
 
-    $.fn.daterangepicker = function (options, cb) {
+    return $.fn.daterangepicker = function (options, cb) {
         this.each(function () {
             var el = $(this);
             if (el.data('daterangepicker'))
@@ -1344,5 +1343,4 @@
         });
         return this;
     };
-
 }));
