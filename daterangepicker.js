@@ -74,7 +74,7 @@
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
-            firstDay: moment.localeData()._week.dow
+            firstDay: moment.localeData().firstDayOfWeek()
         };
 
         this.callback = function() { };
