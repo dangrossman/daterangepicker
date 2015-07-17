@@ -5,12 +5,15 @@
         <title>Date Range Picker for Bootstrap</title>
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/2.9.0/moment.min.js"></script>         
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/momentjs/2.9.0/moment.min.js"></script>         
 
-        <script type="text/javascript" src="daterangepicker.js"></script>
-        <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
+        <script src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+        <script src="website.js"></script>
+        <link rel="stylesheet" type="text/css" href="website.css" />
 
         <meta name="google-site-verification" content="1fP-Eo9i1ozV4MUlqZv2vsLv1r7tvYutUb6i38v0_vg" />
     </head>
@@ -106,29 +109,43 @@
 
         <div class="container main">
             <div class="row">
-                <div class="col-md-3 col-sm-12 col-xs-12" id="nav-spy">
 
-                    <ul class="nav nav-pills nav-stacked" id="sidebar">
-                        <li class="active"><a href="#overview">Overview</a></li>
-                        <li><a href="#usage">Usage</a></li>
-                        <li>
-                            <a href="#examples">Examples</a>
-                            <ul class="nav nav-pills nav-stacked" style="margin: 0 0 0 15px; padding: 0; font-size: 13px">
-                                <li><a href="#ex1">Date Range Picker</a></li>
-                                <li><a href="#ex2">Date and Time</a></li>
-                                <li><a href="#ex3">Single Date Picker</a></li>
-                                <li><a href="#ex4">Predefined Ranges</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#config">Configuration Generator</a></li>
-                        <li><a href="#options">Options Reference</a></li>
-                        <li><a href="#methods">Methods Reference</a></li>
-                        <li><a href="#events">Events Reference</a></li>
-                        <li><a href="#license">License</a></li>
-                    </ul>
+                <div id="nav-spy">
+
+                    <div id="sidebar">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li class="active"><a href="#overview">Overview</a></li>
+                            <li><a href="#usage">Usage</a></li>
+                            <li>
+                                <a href="#examples">Examples</a>
+                                <ul class="nav nav-pills nav-stacked" style="margin: 0 0 0 15px; padding: 0; font-size: 13px">
+                                    <li><a href="#ex1">Date Range Picker</a></li>
+                                    <li><a href="#ex2">Date and Time</a></li>
+                                    <li><a href="#ex3">Single Date Picker</a></li>
+                                    <li><a href="#ex4">Predefined Ranges</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#config">Configuration Generator</a></li>
+                            <li><a href="#options">Options Reference</a></li>
+                            <li><a href="#methods">Methods Reference</a></li>
+                            <li><a href="#events">Events Reference</a></li>
+                            <li><a href="#license">License</a></li>
+                        </ul>
+
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <!-- DRP 300x250 -->
+                        <ins class="adsbygoogle"
+                            style="display:inline-block;width:300px;height:250px"
+                            data-ad-client="ca-pub-9095657276960731"
+                            data-ad-slot="1761466995"></ins>
+                        <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
 
                 </div>
-                <div class="col-md-9 col-sm-12 col-xs-12">
+
+                <div id="rightcol">
 
                     <div id="overview" name="overview">
 
@@ -671,224 +688,9 @@
                     </div>
 
                 </div>
+
             </div>
         </div>
-
-        <style type="text/css">
-        body {
-            font-size: 15px;
-            line-height: 1.6em;
-            position: relative;
-            margin: 0;
-        }
-        p, pre {
-            margin-bottom: 2em;
-        }
-        .main h2 {
-            font-weight: bold;
-            margin: 60px 0 20px 0;
-        }
-        .main h3 {
-            margin: 60px 0 20px 0;
-        }
-        .main h4 {
-            margin: 0 0 10px 0;
-            font-weight: bold;
-        }
-        ul.nobullets {
-            margin: 0;
-            padding: 0;
-            list-style-position: inside;
-        }
-        li {
-            padding-bottom: 1em;
-        }
-        #sidebar {
-            top: 20px;
-            width: 250px;
-        }
-        #sidebar li {
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        #sidebar li ul {
-            display: none;
-        }
-        #sidebar li.active ul {
-            display: block;
-        }
-        #sidebar li li {
-            padding: 4px 0;
-        }
-        input[type="text"] {
-            padding: 6px;
-            width: 100%;
-            border-radius: 4px;
-        }
-        .navbar {
-            text-align: left;
-            margin: 0;
-            border: 0;
-        }
-        .navbar-inverse {
-            background: #222;
-        }
-        .navbar .container {
-            padding: 0 20px;
-        }
-        .navbar-nav li a:link, .navbar-nav li a:visited {
-            font-weight: bold;
-            color: #fff;
-            font-size: 16px;
-        }
-        .navbar-nav li {
-            background: #fff;
-        }
-        .navbar-nav li a:hover {
-            opacity: 0.8;
-        }
-        .navbar-nav li {
-            padding: 0;
-        }
-        .navbar-inverse .navbar-text {
-                margin: 18px 0 0 0;
-                color: #eee;
-        }
-        #footer {
-            background: #222;
-            margin-top: 80px;
-            padding: 30px;
-            color: #fff;
-            text-align: center;
-        }
-        #footer a:link, #footer a:visited {
-            color: #fff;
-            border-bottom: 1px dotted #fff;
-        }
-        #jumbo .btn {
-            border-radius: 0;
-        }
-        #config .demo { position: relative; }
-        #config .demo i { position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer; }
-        </style>
-
-        <script type="text/javascript">
-        $(document).ready(function() {
-            
-            $('.configurator input').change(function() {
-              updateConfig();
-            });
-
-            $('.demo i').click(function() {
-              $(this).parent().find('input').click();
-            });
-
-            updateConfig();
-
-            function updateConfig() {
-              var options = {};
-
-              if ($('#singleDatePicker').is(':checked'))
-                options.singleDatePicker = true;
-              
-              if ($('#showDropdowns').is(':checked'))
-                options.showDropdowns = true;
-
-              if ($('#showWeekNumbers').is(':checked'))
-                options.showWeekNumbers = true;
-
-              if ($('#timePicker').is(':checked'))
-                options.timePicker = true;
-              
-              if ($('#timePicker24Hour').is(':checked'))
-                options.timePicker24Hour = true;
-
-              if ($('#timePickerIncrement').val().length)
-                options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
-
-              if ($('#timePickerSeconds').is(':checked'))
-                options.timePickerSeconds = true;
-              
-              if ($('#autoApply').is(':checked'))
-                options.autoApply = true;
-
-              if ($('#dateLimit').is(':checked'))
-                options.dateLimit = { days: 7 };
-
-              if ($('#ranges').is(':checked')) {
-                options.ranges = {
-                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                  'This Month': [moment().startOf('month'), moment().endOf('month')],
-                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                };
-              }
-
-              if ($('#locale').is(':checked')) {
-                options.locale = {
-                  format: 'MM/DD/YYYY',
-                  separator: ' - ',
-                  applyLabel: 'Apply',
-                  cancelLabel: 'Cancel',
-                  fromLabel: 'From',
-                  toLabel: 'To',
-                  customRangeLabel: 'Custom',
-                  daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-                  monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                  firstDay: 1
-                };
-              }
-
-              if ($('#parentEl').val().length)
-                options.parentEl = $('#parentEl').val();
-
-              if ($('#startDate').val().length) 
-                options.startDate = $('#startDate').val();
-
-              if ($('#endDate').val().length)
-                options.endDate = $('#endDate').val();
-              
-              if ($('#minDate').val().length)
-                options.minDate = $('#minDate').val();
-
-              if ($('#maxDate').val().length)
-                options.maxDate = $('#maxDate').val();
-
-              if ($('#opens').val().length)
-                options.opens = $('#opens').val();
-
-              if ($('#drops').val().length)
-                options.drops = $('#drops').val();
-
-              if ($('#buttonClasses').val().length)
-                options.buttonClasses = $('#buttonClasses').val();
-
-              if ($('#applyClass').val().length)
-                options.applyClass = $('#applyClass').val();
-
-              if ($('#cancelClass').val().length)
-                options.cancelClass = $('#cancelClass').val();
-
-              $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
-
-              $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
-              
-            }
-
-            if ($(window).width() > 900) {
-                $('#sidebar').affix({
-                  offset: {
-                    top: 300,
-                    bottom: function () {
-                      return (this.bottom = $('.footer').outerHeight(true))
-                    }
-                  }
-                });
-            }
-            $('body').scrollspy({ target: '#nav-spy', offset: 20 });
-        });
-        </script>
-
 
         <!-- Begin W3Counter Tracking Code -->
         <script type="text/javascript" src="https://www.w3counter.com/tracker.js"></script>
