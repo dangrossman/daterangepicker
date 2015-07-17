@@ -4,6 +4,10 @@ $(document).ready(function() {
       updateConfig();
     });
 
+    $('#config').keyup(function() {
+      eval($(this).val());
+    });
+
     $('.demo i').click(function() {
       $(this).parent().find('input').click();
     });

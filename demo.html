@@ -180,6 +180,10 @@
 
       <script type="text/javascript">
       $(document).ready(function() {
+
+        $('#config').keyup(function() {
+          eval($(this).val());
+        });
         
         $('.configurator input').change(function() {
           updateConfig();
