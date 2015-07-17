@@ -15,6 +15,6 @@
   ],
   "dependencies": {
     "jquery": ">=1.10",
-    "moment": "~2.9.0"
+    "moment": ">=2.9.0"
  }
 }
