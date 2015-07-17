@@ -4,7 +4,7 @@ $(document).ready(function() {
       updateConfig();
     });
 
-    $('#config').keyup(function() {
+    $('#config-text').keyup(function() {
       eval($(this).val());
     });
 
