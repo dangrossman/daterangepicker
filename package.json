@@ -21,10 +21,6 @@
     "url": "https://github.com/dangrossman/bootstrap-daterangepicker/issues"
   },
   "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
-  "engines": {
-    "node": "0.10.32",
-    "nmp": "1.4.28"
-  },
   "dependencies": {
     "jquery": "^1.10",
     "moment": "^2.9.0"
