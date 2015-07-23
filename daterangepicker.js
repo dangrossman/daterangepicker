@@ -1092,7 +1092,7 @@
                 }
 
                 this.hideCalendars();
-                this.hide();
+                this.clickApply();
             }
         },
 
