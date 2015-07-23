@@ -98,17 +98,17 @@ input[type="text"] {
 #config .demo i { position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer; }
 
 #rightcol {
-    margin-left: 330px;
+    margin-right: 330px;
 }
 
 #nav-spy {
-    float: left;
+    float: right;
     width: 300px;
 }
 
 @media (max-width: 980px) {
     #rightcol {
-        margin-left: 0;
+        margin-right: 0;
     }
     #nav-spy {
         float: none;

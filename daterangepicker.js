@@ -764,7 +764,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.trim() + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
 
                 }
                 html += '</tr>';
