@@ -91,6 +91,12 @@ input[type="text"] {
     color: #fff;
     border-bottom: 1px dotted #fff;
 }
+#jumbo {
+    background: #f5f5f5 linear-gradient(to bottom,#eee 0,#f5f5f5 100%);
+    color: #000;
+    padding: 30px 0;
+    margin-bottom: 30px;
+}
 #jumbo .btn {
     border-radius: 0;
 }
@@ -98,17 +104,17 @@ input[type="text"] {
 #config .demo i { position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer; }
 
 #rightcol {
-    margin-right: 330px;
+    margin-left: 330px;
 }
 
 #nav-spy {
-    float: right;
+    float: left;
     width: 300px;
 }
 
 @media (max-width: 980px) {
     #rightcol {
-        margin-right: 0;
+        margin-left: 0;
     }
     #nav-spy {
         float: none;

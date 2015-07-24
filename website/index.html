@@ -10,7 +10,7 @@
         <script src="https://cdn.jsdelivr.net/momentjs/2.9.0/moment.min.js"></script>         
 
         <script src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
         <script src="website.js"></script>
         <link rel="stylesheet" type="text/css" href="website.css" />
@@ -73,13 +73,13 @@
             </div>
         </nav>
 
-        <div id="jumbo" style="background: #f5f5f5 linear-gradient(to bottom,#eee 0,#f5f5f5 100%); color: #000; padding: 40px 0 10px 0; margin-bottom: 40px">
+        <div id="jumbo">
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
 
                         <h1 style="margin: 0 0 20px 0">Date Range Picker</h1>
-                        <p style="font-size: 18px">
+                        <p style="font-size: 18px; margin-bottom: 0">
                             A JavaScript component for choosing date ranges. 
                             <br />
                             Designed to work with the Bootstrap CSS framework.
@@ -114,7 +114,6 @@
 
                     <div id="sidebar">
                         <ul class="nav nav-pills nav-stacked">
-                            <li class="active"><a href="#overview">Overview</a></li>
                             <li><a href="#usage">Usage</a></li>
                             <li>
                                 <a href="#examples">Examples</a>
@@ -126,13 +125,11 @@
                                 </ul>
                             </li>
                             <li><a href="#config">Configuration Generator</a></li>
-                            <li><a href="#options">Options Reference</a></li>
-                            <li><a href="#methods">Methods Reference</a></li>
-                            <li><a href="#events">Events Reference</a></li>
+                            <li><a href="#options">Options, Methods &amp; Events</a></li>
                             <li><a href="#license">License</a></li>
                         </ul>
 
-                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
                         <!-- DRP 300x250 -->
                         <ins class="adsbygoogle"
                             style="display:inline-block;width:300px;height:250px"
@@ -559,6 +556,9 @@
                                 <code>singleDatePicker</code>: (boolean) Show only a single calendar to choose one date, instead of a range picker with two calendars; the start and end dates provided to your callback will be the same single date chosen
                             </li>
                             <li>
+                                <code>autoApply</code>: (boolean) Hide the apply and cancel buttons, and automatically apply a new date range as soon as two dates or a predefined range is selected
+                            </li>
+                            <li>
                                 <code>parentEl</code>: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be 'body'
                             </li>
                         </ul>
@@ -567,7 +567,7 @@
 
                     <div id="methods" name="methods">
 
-                        <h2>Methods Reference</h2>
+                        <h2>Methods</h2>
 
                         <p>
                             You can programmatically update the <code>startDate</code> and <code>endDate</code>
@@ -597,7 +597,7 @@
 
                     <div id="events" name="events">
 
-                        <h2>Events Reference</h2>
+                        <h2>Events</h2>
 
                         <p>
                             Several events are triggered on the element you attach the picker to, which you can listen for.
