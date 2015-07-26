@@ -99,7 +99,7 @@
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' + 
+                      '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
                       '</div>' +
@@ -110,7 +110,7 @@
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' + 
+                      '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
                       '</div>' +
@@ -213,7 +213,7 @@
 
         if (typeof options.showDropdowns === 'boolean')
             this.showDropdowns = options.showDropdowns;
-        
+
         if (typeof options.singleDatePicker === 'boolean') {
             this.singleDatePicker = options.singleDatePicker;
             if (this.singleDatePicker)
@@ -305,7 +305,7 @@
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
 
-                // If the end of the range is before the minimum or the start of the range is 
+                // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
                 if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
                     continue;
@@ -545,12 +545,14 @@
                     if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        break;
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
                         this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        break;
                     }
                 }
                 i++;
@@ -722,7 +724,7 @@
                 for (var col = 0; col < 7; col++) {
 
                     var classes = [];
-                    
+
                     //highlight today's date
                     if (calendar[row][col].isSame(new Date(), "day"))
                         classes.push('today');
@@ -778,7 +780,7 @@
         },
 
         renderTimePicker: function(side) {
-  
+
             var selected, minDate, maxDate = this.maxDate;
 
             if (this.dateLimit && (!this.maxDate || this.startDate.clone().add(this.dateLimit).isAfter(this.maxDate)))
@@ -791,7 +793,7 @@
                 selected = this.endDate ? this.endDate.clone() : this.startDate.clone();
                 minDate = this.startDate;
             }
- 
+
             //
             // hours
             //
@@ -932,7 +934,7 @@
                 };
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
-            
+
             if (this.drops == 'up')
                 containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
             else
@@ -996,7 +998,7 @@
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
- 
+
             this.updateView();
             this.container.show();
             this.move();
@@ -1339,7 +1341,7 @@
             this.setEndDate(end);
             this.updateView();
         },
-        
+
         keydown: function(e) {
             //hide on tab or enter
             if ((e.keyCode === 9) || (e.keyCode === 13)) {
