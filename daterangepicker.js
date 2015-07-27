@@ -758,7 +758,7 @@
                         classes.push('in-range');
 
                     var cname = '', disabled = false;
-                    for (var i in classes) {
+                    for (var i = 0; i < classes.length; i++) {
                         cname += classes[i] + ' ';
                         if (classes[i] == 'disabled')
                             disabled = true;
