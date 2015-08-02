@@ -187,6 +187,14 @@
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
 
+        // sanity check for bad options
+        if (this.minDate && this.startDate.isBefore(this.minDate))
+            this.startDate = this.minDate.clone();
+
+        // sanity check for bad options
+        if (this.maxDate && this.endDate.isAfter(this.maxDate))
+            this.endDate = this.maxDate.clone();
+
         if (typeof options.applyClass === 'string')
             this.applyClass = options.applyClass;
 
@@ -479,6 +487,13 @@
                     this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
                 }
             }
+            if (this.endDate) {
+                this.container.find('input[name="daterangepicker_end"]').removeClass('active');
+                this.container.find('input[name="daterangepicker_start"]').addClass('active');
+            } else {
+                this.container.find('input[name="daterangepicker_end"]').addClass('active');
+                this.container.find('input[name="daterangepicker_start"]').removeClass('active');
+            }
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
@@ -638,7 +653,7 @@
             var maxDate = this.maxDate;
             var selected = side == 'left' ? this.startDate : this.endDate;
 
-            html = '<table class="table-condensed">';
+            var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
 
@@ -1123,6 +1138,7 @@
             //ignore dates that can't be selected
             if (!$(e.target).hasClass('available')) return;
 
+            //have the text inputs above calendars reflect the date being hovered over
             var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
@@ -1133,6 +1149,25 @@
                 this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
             } else {
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+            }
+
+            //highlight the dates between the start date and the date being hovered as a potential end date
+            var leftCalendar = this.leftCalendar;
+            var rightCalendar = this.rightCalendar;
+            var startDate = this.startDate;
+            if (!this.endDate) {
+                this.container.find('.calendar td').each(function(index, el) {
+                    var title = $(el).attr('data-title');
+                    var row = title.substr(1, 1);
+                    var col = title.substr(3, 1);
+                    var cal = $(el).parents('.calendar');
+                    var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
+                    if (dt.isAfter(startDate) && dt.isBefore(date)) {
+                        $(el).addClass('in-range');
+                    } else {
+                        $(el).removeClass('in-range');
+                    }
+                });
             }
 
         },
