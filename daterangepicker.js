@@ -54,6 +54,8 @@
         this.timePickerSeconds = false;
         this.ranges = {};
 
+        this.timePickerHourLimit = {left:[], right:[]};
+
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
@@ -240,6 +242,9 @@
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
+
+        if (typeof options.timePickerHourLimit === 'object')
+            this.timePickerHourLimit = options.timePickerHourLimit;
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
@@ -818,8 +823,13 @@
 
             var start = this.timePicker24Hour ? 0 : 1;
             var end = this.timePicker24Hour ? 23 : 12;
+            var hourLimit = this.timePickerHourLimit[side];
 
             for (var i = start; i <= end; i++) {
+                if(hourLimit.length !== 0 && $.inArray(i, hourLimit) === -1) {
+                   continue;
+                }
+
                 var i_in_24 = i;
                 if (!this.timePicker24Hour)
                     i_in_24 = selected.hour() >= 12 ? (i == 12 ? 12 : i + 12) : (i == 12 ? 0 : i);
