@@ -1158,16 +1158,22 @@
             var startDate = this.startDate;
             if (!this.endDate) {
                 this.container.find('.calendar td').each(function(index, el) {
+                    
+                    //skip week numbers, only look at dates
+                    if ($(el).hasClass('week')) return;
+
                     var title = $(el).attr('data-title');
                     var row = title.substr(1, 1);
                     var col = title.substr(3, 1);
                     var cal = $(el).parents('.calendar');
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
+
                     if (dt.isAfter(startDate) && dt.isBefore(date)) {
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
                     }
+
                 });
             }
 
