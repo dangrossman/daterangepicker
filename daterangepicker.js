@@ -52,6 +52,7 @@
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
+        this.linkedCalendars = true;
         this.ranges = {};
 
         this.opens = 'right';
@@ -243,6 +244,9 @@
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
+
+        if (typeof options.linkedCalendars === 'boolean')
+            this.linkedCalendars = options.linkedCalendars;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -503,7 +507,7 @@
         updateMonthsInView: function() {
             if (this.endDate) {
                 this.leftCalendar.month = this.startDate.clone().date(2);
-                if (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year()) {
+                if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
@@ -662,7 +666,7 @@
             if (this.showWeekNumbers)
                 html += '<th></th>';
 
-            if (!minDate || minDate.isBefore(calendar.firstDay)) {
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
                 html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
             } else {
                 html += '<th></th>';
@@ -684,6 +688,10 @@
                         monthHtml += "<option value='" + m + "'" +
                             (m === currentMonth ? " selected='selected'" : "") +
                             ">" + this.locale.monthNames[m] + "</option>";
+                    } else {
+                        monthHtml += "<option value='" + m + "'" +
+                            (m === currentMonth ? " selected='selected'" : "") +
+                            " disabled='disabled'>" + this.locale.monthNames[m] + "</option>";
                     }
                 }
                 monthHtml += "</select>";
@@ -700,7 +708,7 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if (!maxDate || maxDate.isAfter(calendar.lastDay)) {
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right')) {
                 html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
                 html += '<th></th>';
@@ -1118,6 +1126,8 @@
             var cal = $(e.target).parents('.calendar');
             if (cal.hasClass('left')) {
                 this.leftCalendar.month.subtract(1, 'month');
+                if (this.linkedCalendars)
+                    this.rightCalendar.month.subtract(1, 'month');
             } else {
                 this.rightCalendar.month.subtract(1, 'month');
             }
@@ -1130,6 +1140,8 @@
                 this.leftCalendar.month.add(1, 'month');
             } else {
                 this.rightCalendar.month.add(1, 'month');
+                if (this.linkedCalendars)
+                    this.leftCalendar.month.add(1, 'month');
             }
             this.updateCalendars();
         },
@@ -1284,7 +1296,15 @@
                 }
             }
 
-            this[leftOrRight+'Calendar'].month.month(month).year(year);
+            if (isLeft) {
+                this.leftCalendar.month.month(month).year(year);
+                if (this.linkedCalendars)
+                    this.rightCalendar.month = this.leftCalendar.month.clone().add(1, 'month');
+            } else {
+                this.rightCalendar.month.month(month).year(year);
+                if (this.linkedCalendars)
+                    this.leftCalendar.month = this.rightCalendar.month.clone().subtract(1, 'month');
+            }
             this.updateCalendars();
         },
 

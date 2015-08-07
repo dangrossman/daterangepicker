@@ -15,6 +15,7 @@ $(document).ready(function() {
     updateConfig();
 
     function updateConfig() {
+      
       var options = {};
 
       if ($('#singleDatePicker').is(':checked'))
@@ -32,7 +33,7 @@ $(document).ready(function() {
       if ($('#timePicker24Hour').is(':checked'))
         options.timePicker24Hour = true;
 
-      if ($('#timePickerIncrement').val().length)
+      if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
         options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
 
       if ($('#timePickerSeconds').is(':checked'))
@@ -68,6 +69,9 @@ $(document).ready(function() {
         };
       }
 
+      if (!$('#linkedCalendars').is(':checked'))
+        options.linkedCalendars = false;
+
       if ($('#parentEl').val().length)
         options.parentEl = $('#parentEl').val();
 
@@ -83,20 +87,21 @@ $(document).ready(function() {
       if ($('#maxDate').val().length)
         options.maxDate = $('#maxDate').val();
 
-      if ($('#opens').val().length)
+      if ($('#opens').val().length && $('#opens').val() != 'left')
         options.opens = $('#opens').val();
 
-      if ($('#drops').val().length)
+      if ($('#drops').val().length && $('#drops').val() != 'down')
         options.drops = $('#drops').val();
 
-      if ($('#buttonClasses').val().length)
+      if ($('#buttonClasses').val().length && $('#buttonClasses').val() != 'btn btn-sm')
         options.buttonClasses = $('#buttonClasses').val();
 
-      if ($('#applyClass').val().length)
+      if ($('#applyClass').val().length && $('#applyClass').val() != 'btn-success')
         options.applyClass = $('#applyClass').val();
 
-      if ($('#cancelClass').val().length)
+      if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
         options.cancelClass = $('#cancelClass').val();
+
 
       $('#config-text').val("$('#config-demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
