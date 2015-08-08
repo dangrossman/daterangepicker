@@ -248,8 +248,8 @@
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
-        if (typeof options.isInvalidDay === 'function')
-            this.isInvalidDay = options.isInvalidDay;
+        if (typeof options.isInvalidDate === 'function')
+            this.isInvalidDate = options.isInvalidDate;
 
 
         // update day names order to firstDay
@@ -486,7 +486,7 @@
             this.updateMonthsInView();
         },
 
-        isInvalidDay: function() {
+        isInvalidDate: function() {
             return false;
         },
 
@@ -778,7 +778,7 @@
                         classes.push('off', 'disabled');
 
                     //don't allow selection of date if a custom function decides it's invalid
-                    if (this.isInvalidDay(calendar[row][col]))
+                    if (this.isInvalidDate(calendar[row][col]))
                         classes.push('off', 'disabled');
 
                     //highlight the currently selected start date
