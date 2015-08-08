@@ -248,6 +248,10 @@
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
+        if (typeof options.isInvalidDay === 'function')
+            this.isInvalidDay = options.isInvalidDay;
+
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -480,6 +484,10 @@
                 this.endDate = this.startDate.clone().add(this.dateLimit);
 
             this.updateMonthsInView();
+        },
+
+        isInvalidDay: function() {
+            return false;
         },
 
         updateView: function() {
@@ -767,6 +775,10 @@
 
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
+                        classes.push('off', 'disabled');
+
+                    //don't allow selection of date if a custom function decides it's invalid
+                    if (this.isInvalidDay(calendar[row][col]))
                         classes.push('off', 'disabled');
 
                     //highlight the currently selected start date
