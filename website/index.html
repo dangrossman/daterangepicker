@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/momentjs/2.9.0/moment.min.js"></script>         
+        <script src="moment.min.js"></script>         
 
-        <script src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+        <script src="daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
 
         <script src="website.js"></script>
         <link rel="stylesheet" type="text/css" href="website.css" />
@@ -400,15 +400,15 @@
                                 </label>
                               </div>
 
+                              <div class="form-group">
+                                <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
+                                <input type="text" class="form-control" id="timePickerIncrement" value="1">
+                              </div>
+
                               <div class="checkbox">
                                 <label>
                                   <input type="checkbox" id="timePicker24Hour"> timePicker24Hour
                                 </label>
-                              </div>
-
-                              <div class="form-group">
-                                <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
-                                <input type="text" class="form-control" id="timePickerIncrement" value="1">
                               </div>
 
                               <div class="checkbox">
