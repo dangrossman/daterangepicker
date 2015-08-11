@@ -127,7 +127,7 @@
 
               <div class="form-group">
                 <label for="opens">opens (left/center/right)</label>
-                <input type="text" class="form-control" id="opens" value="left">
+                <input type="text" class="form-control" id="opens" value="right">
               </div>
 
               <div class="form-group">
@@ -273,7 +273,7 @@
           if ($('#maxDate').val().length)
             options.maxDate = $('#maxDate').val();
 
-          if ($('#opens').val().length && $('#opens').val() != 'left')
+          if ($('#opens').val().length && $('#opens').val() != 'right')
             options.opens = $('#opens').val();
 
           if ($('#drops').val().length && $('#drops').val() != 'down')

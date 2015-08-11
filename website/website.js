@@ -87,7 +87,7 @@ $(document).ready(function() {
       if ($('#maxDate').val().length)
         options.maxDate = $('#maxDate').val();
 
-      if ($('#opens').val().length && $('#opens').val() != 'left')
+      if ($('#opens').val().length && $('#opens').val() != 'right')
         options.opens = $('#opens').val();
 
       if ($('#drops').val().length && $('#drops').val() != 'down')
