@@ -993,7 +993,7 @@
             } else {
                 this.container.css({
                     top: containerTop,
-                    left: this.element.offset().left - parentOffset.left,
+                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() - this.container.outerWidth(),
                     right: 'auto'
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
