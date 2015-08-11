@@ -126,13 +126,20 @@
             <div class="col-md-4">
 
               <div class="form-group">
-                <label for="opens">opens (left/center/right)</label>
-                <input type="text" class="form-control" id="opens" value="right">
+                <label for="opens">opens</label>
+                <select id="opens" class="form-control">
+                  <option value="right" selected>right</option>
+                  <option value="left">left</option>
+                  <option value="center">center</option>
+                </select>
               </div>
 
               <div class="form-group">
-                <label for="drops">drops (down/up)</label>
-                <input type="text" class="form-control" id="drops" value="down">
+                <label for="drops">drops</label>
+                <select id="drops" class="form-control">
+                  <option value="down" selected>down</option>
+                  <option value="up">up</option>
+                </select>
               </div>
 
               <div class="form-group">
@@ -159,18 +166,19 @@
 
         <div class="row">
 
-          <div class="col-md-8">
+          <div class="col-md-4 col-md-offset-2 demo">
+            <h4>Your Date Range Picker</h4>
+            <input type="text" id="config-demo" class="form-control">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+          </div>
+
+          <div class="col-md-6">
             <h4>Configuration</h4>
 
             <div class="well">
-              <textarea id="config" style="height: 300px; width: 100%; padding: 10px"></textarea>
+              <textarea id="config-text" style="height: 300px; width: 100%; padding: 10px"></textarea>
             </div>
 
-          </div>
-          <div class="col-md-4 demo">
-            <h4>Your Date Range Picker</h4>
-            <input type="text" id="demo" class="form-control">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
           </div>
 
         </div>
@@ -187,16 +195,26 @@
       <script type="text/javascript">
       $(document).ready(function() {
 
-        $('#config').keyup(function() {
+        $('#config-text').keyup(function() {
           eval($(this).val());
         });
         
-        $('.configurator input').change(function() {
+        $('.configurator input, .configurator select').change(function() {
           updateConfig();
         });
 
         $('.demo i').click(function() {
           $(this).parent().find('input').click();
+        });
+
+        $('#startDate').daterangepicker({
+          singleDatePicker: true,
+          startDate: moment().subtract(6, 'days')
+        });
+
+        $('#endDate').daterangepicker({
+          singleDatePicker: true,
+          startDate: moment()
         });
 
         updateConfig();
@@ -233,6 +251,8 @@
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {
+              'Today': [moment(), moment()],
+              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
               'Last 7 Days': [moment().subtract(6, 'days'), moment()],
               'Last 30 Days': [moment().subtract(29, 'days'), moment()],
               'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -288,9 +308,9 @@
           if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
             options.cancelClass = $('#cancelClass').val();
 
-          $('#config').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
+          $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
-          $('#demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
+          $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
           
         }
 
