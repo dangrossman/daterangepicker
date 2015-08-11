@@ -336,7 +336,7 @@
                         <h2>Configuration Generator</h2>
 
                         <div class="well configurator">
-                           
+                                           
                           <form>
                           <div class="row">
 
@@ -400,15 +400,15 @@
                                 </label>
                               </div>
 
-                              <div class="form-group">
-                                <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
-                                <input type="text" class="form-control" id="timePickerIncrement" value="1">
-                              </div>
-
                               <div class="checkbox">
                                 <label>
                                   <input type="checkbox" id="timePicker24Hour"> timePicker24Hour
                                 </label>
+                              </div>
+
+                              <div class="form-group">
+                                <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
+                                <input type="text" class="form-control" id="timePickerIncrement" value="1">
                               </div>
 
                               <div class="checkbox">
@@ -445,13 +445,20 @@
                             <div class="col-md-4">
 
                               <div class="form-group">
-                                <label for="opens">opens (left/center/right)</label>
-                                <input type="text" class="form-control" id="opens" value="right">
+                                <label for="opens">opens</label>
+                                <select id="opens" class="form-control">
+                                  <option value="right" selected>right</option>
+                                  <option value="left">left</option>
+                                  <option value="center">center</option>
+                                </select>
                               </div>
 
                               <div class="form-group">
-                                <label for="drops">drops (down/up)</label>
-                                <input type="text" class="form-control" id="drops" value="down">
+                                <label for="drops">drops</label>
+                                <select id="drops" class="form-control">
+                                  <option value="down" selected>down</option>
+                                  <option value="up">up</option>
+                                </select>
                               </div>
 
                               <div class="form-group">
@@ -478,18 +485,18 @@
 
                         <div class="row">
 
-                          <div class="col-md-8">
+                          <div class="col-md-4 col-md-offset-2 demo">
+                            <h4>Your Date Range Picker</h4>
+                            <input type="text" id="config-demo" class="form-control">
+                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                          </div>
+
+                          <div class="col-md-6">
                             <h4>Configuration</h4>
 
                             <div class="well">
                               <textarea id="config-text" style="height: 300px; width: 100%; padding: 10px"></textarea>
                             </div>
-
-                          </div>
-                          <div class="col-md-4 demo">
-                            <h4>Your Date Range Picker</h4>
-                            <input type="text" id="config-demo" class="form-control">
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                           </div>
 
                         </div>
