@@ -454,7 +454,7 @@
             if (this.maxDate && this.startDate.isAfter(this.maxDate))
                 this.startDate = this.maxDate;
 
-            this.updateMonthsInView();
+            this.updateView();
         },
 
         setEndDate: function(endDate) {
@@ -479,7 +479,7 @@
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
 
-            this.updateMonthsInView();
+            this.updateView();
         },
 
         updateView: function() {
@@ -502,6 +502,17 @@
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
+            this.updateElment();
+        },
+        
+        updateElment : function(){
+            if (this.element.is('input') && !this.singleDatePicker) {
+                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                this.element.trigger('change');
+            } else if (this.element.is('input')) {
+                this.element.val(this.startDate.format(this.locale.format));
+                this.element.trigger('change');
+            }
         },
 
         updateMonthsInView: function() {
