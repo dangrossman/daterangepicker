@@ -782,11 +782,11 @@
                         classes.push('in-range');
 
                     var cname = '', disabled = false;
-                    for (var i = 0; i < classes.length; i++) {
-                        cname += classes[i] + ' ';
-                        if (classes[i] == 'disabled')
+                    $.each(classes, function (i, className) {
+                        cname += className + ' ';
+                        if (className == 'disabled')
                             disabled = true;
-                    }
+                    });
                     if (!disabled)
                         cname += 'available';
 
