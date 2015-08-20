@@ -339,3 +339,10 @@
   border: 1px solid #08c;
   color: #fff;
 }
+
+.daterangepicker .ranges li.disabled, .daterangepicker .ranges li.disabled:hover {
+  background: #f5f5f5;
+  border: 1px solid #f5f5f5;
+  color: #bbbbbb;
+  cursor: default;
+}
