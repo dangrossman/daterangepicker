@@ -53,6 +53,7 @@
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
+        this.autoUpdateInput = true;
         this.ranges = {};
 
         this.opens = 'right';
@@ -245,6 +246,9 @@
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
 
+        if (typeof options.autoUpdateInput === 'boolean')
+            this.autoUpdateInput = options.autoUpdateInput;
+
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
@@ -421,10 +425,10 @@
         // if attached to a text input, set the initial value
         //
 
-        if (this.element.is('input') && !this.singleDatePicker) {
+        if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
             this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
             this.element.trigger('change');
-        } else if (this.element.is('input')) {
+        } else if (this.element.is('input') && this.autoUpdateInput) {
             this.element.val(this.startDate.format(this.locale.format));
             this.element.trigger('change');
         }
@@ -1044,10 +1048,10 @@
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
-            if (this.element.is('input') && !this.singleDatePicker) {
+            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 this.element.trigger('change');
-            } else if (this.element.is('input')) {
+            } else if (this.element.is('input') && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format));
                 this.element.trigger('change');
             }
@@ -1170,7 +1174,7 @@
             var startDate = this.startDate;
             if (!this.endDate) {
                 this.container.find('.calendar td').each(function(index, el) {
-                    
+
                     //skip week numbers, only look at dates
                     if ($(el).hasClass('week')) return;
 
