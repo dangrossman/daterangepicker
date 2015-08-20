@@ -53,6 +53,8 @@
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
+        this.showDisabled = false;
+        this.disabledRanges = [];
         this.ranges = {};
 
         this.opens = 'right';
@@ -248,6 +250,12 @@
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
+        if (typeof options.showDisabled === 'boolean')
+            this.showDisabled = options.showDisabled;
+
+        if (typeof options.disabledRanges === 'object')
+            this.disabledRanges = options.disabledRanges.slice();
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -320,15 +328,24 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
-                    continue;
+                if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate))) {
+                    if (this.showDisabled) {
+                        this.disabledRanges.push(range);
+                    } else {
+                        continue;
+                    }
+                }
 
                 this.ranges[range] = [start, end];
             }
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li>' + range + '</li>';
+                if (this.disabledRanges.indexOf(range) > -1) {
+                    list += '<li class=\'disabled\'>' + range + '</li>';
+                } else {
+                    list += '<li>' + range + '</li>';
+                }
             }
             list += '<li>' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
@@ -402,7 +419,7 @@
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
-            .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
+            .on('click.daterangepicker', 'li:not(.disabled)', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
