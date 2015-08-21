@@ -118,7 +118,13 @@
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="linkedCalendars" checked="checked"> linked calendars
+                  <input type="checkbox" id="linkedCalendars" checked="checked"> linkedCalendars
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="autoUpdateInput" checked="checked"> autoUpdateInput
                 </label>
               </div>
 
@@ -276,6 +282,9 @@
 
           if (!$('#linkedCalendars').is(':checked'))
             options.linkedCalendars = false;
+
+          if (!$('#autoUpdateInput').is(':checked'))
+            options.autoUpdateInput = false;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();

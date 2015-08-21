@@ -83,6 +83,9 @@ $(document).ready(function() {
       if (!$('#linkedCalendars').is(':checked'))
         options.linkedCalendars = false;
 
+      if (!$('#autoUpdateInput').is(':checked'))
+        options.autoUpdateInput = false;
+
       if ($('#parentEl').val().length)
         options.parentEl = $('#parentEl').val();
 

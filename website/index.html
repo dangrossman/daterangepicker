@@ -437,7 +437,13 @@
 
                               <div class="checkbox">
                                 <label>
-                                  <input type="checkbox" id="linkedCalendars" checked="checked"> linked calendars
+                                  <input type="checkbox" id="linkedCalendars" checked="checked"> linkedCalendars
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="autoUpdateInput" checked="checked"> autoUpdateInput
                                 </label>
                               </div>
 
@@ -581,6 +587,11 @@
                                 <code>isInvalidDate</code>: (function) A function that is passed each date in the two
                                 calendars before they are displayed, and may return true or false to indicate whether
                                 that date should be available for selection or not.
+                            </li>
+                            <li>
+                                <code>autoUpdateInput</code>: (boolean) Indicates whether the date range picker should
+                                automatically update the value of an <code>&lt;input&gt;</code> element it's attached to
+                                at initialization and when the selected dates change.
                             </li>
                         </ul>
 
