@@ -577,6 +577,11 @@
                             <li>
                                 <code>parentEl</code>: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be 'body'
                             </li>
+                            <li>
+                                <code>isInvalidDate</code>: (function) A function that is passed each date in the two
+                                calendars before they are displayed, and may return true or false to indicate whether
+                                that date should be available for selection or not.
+                            </li>
                         </ul>
 
                     </div>
