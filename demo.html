@@ -149,6 +149,14 @@
               </div>
 
               <div class="form-group">
+                <label for="rangesPositionInRelationToCalendars">rangesPositionInRelationToCalendars</label>
+                <select id="rangesPositionInRelationToCalendars" class="form-control">
+                  <option value="after" selected>after</option>
+                  <option value="before">before</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <label for="buttonClasses">buttonClasses</label>
                 <input type="text" class="form-control" id="buttonClasses" value="btn btn-sm">
               </div>
@@ -306,6 +314,9 @@
 
           if ($('#drops').val().length && $('#drops').val() != 'down')
             options.drops = $('#drops').val();
+
+          if ($('#rangesPositionInRelationToCalendars').val().length && $('#rangesPositionInRelationToCalendars').val() != 'after')
+            options.rangesPositionInRelationToCalendars = $('#rangesPositionInRelationToCalendars').val();
 
           if ($('#buttonClasses').val().length && $('#buttonClasses').val() != 'btn btn-sm')
             options.buttonClasses = $('#buttonClasses').val();
