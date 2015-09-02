@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script src="moment.min.js"></script>         
+        <script src="../moment.min.js"></script>
 
-        <script src="daterangepicker.js"></script>
-        <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
+        <script src="../daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="../daterangepicker.css" />
 
         <script src="website.js"></script>
         <link rel="stylesheet" type="text/css" href="website.css" />
@@ -279,6 +279,46 @@
                                     alert("You are " + years + " years old.");
                                 });
                             });
+                            </script>
+
+
+                            <h3>Single Date Picker - no need to select a date</h3>
+
+                            <p>
+                                If you're using a single date picker there are various possibilities where it would
+                                be useful to let the user decide to not select a date at all (e.g. if an event didn't
+                                happened yet). If you delete the text of the input manually or insert something invalid
+                                the date picker handles it as an empty date now.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-9 col-xs-12">
+                                    <pre>
+                                        <code>
+$(function() {
+    $('input[name="emptyDate"]').daterangepicker({
+        singleDatePicker: true,
+        enableEmptyDate: true,
+        showDropdowns: true
+    });
+});
+                                        </code>
+                                    </pre>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="emptyDate" />
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                                $(function() {
+                                    $('input[name="emptyDate"]').daterangepicker({
+                                                singleDatePicker: true,
+                                                enableEmptyDate: true,
+                                                showDropdowns: true
+                                            });
+                                });
                             </script>
 
                         </div>
@@ -592,6 +632,10 @@
                                 <code>autoUpdateInput</code>: (boolean) Indicates whether the date range picker should
                                 automatically update the value of an <code>&lt;input&gt;</code> element it's attached to
                                 at initialization and when the selected dates change.
+                            </li>
+                            <li>
+                                <code>enableEmptyDate</code>: (boolean) If set to true the user of a single date picker do not have to select a date.
+                                The content of the input field can be deleted so that no date is selected at all.
                             </li>
                         </ul>
 
