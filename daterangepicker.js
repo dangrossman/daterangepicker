@@ -54,6 +54,8 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.enableEmptyDate = false;
+        this.calendarClicked = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -255,6 +257,10 @@
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
 
+        if(typeof options.enableEmptyDate === 'boolean'){
+            this.enableEmptyDate = options.enableEmptyDate;
+        }
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -432,7 +438,11 @@
             this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
             this.element.trigger('change');
         } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
+            if(this.enableEmptyDate && (this.element.val() == '' || !this.startDate.isValid())){
+                this.element.val('');
+            } else {
+                this.element.val(this.startDate.format(this.locale.format));
+            }
             this.element.trigger('change');
         }
 
@@ -1074,7 +1084,12 @@
                 this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 this.element.trigger('change');
             } else if (this.element.is('input') && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format));
+                if(this.enableEmptyDate && ((!this.calendarClicked && this.element.val() == '') || !this.startDate.isValid())){
+                    this.element.val('');
+                    this.calendarClicked = false;
+                } else {
+                    this.element.val(this.startDate.format(this.locale.format));
+                }
                 this.element.trigger('change');
             }
 
@@ -1281,6 +1296,7 @@
         },
 
         clickApply: function(e) {
+            this.calendarClicked = true;
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
         },
@@ -1431,6 +1447,7 @@
         },
 
         keydown: function(e) {
+            this.calendarClicked = false;
             //hide on tab or enter
             if ((e.keyCode === 9) || (e.keyCode === 13)) {
                 this.hide();
