@@ -461,6 +461,10 @@
             if (this.maxDate && this.startDate.isAfter(this.maxDate))
                 this.startDate = this.maxDate;
 
+            if (!this.isShowing) {
+                this.updateInputValue();
+            }
+
             this.updateMonthsInView();
         },
 
@@ -485,6 +489,10 @@
 
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
+
+            if (!this.isShowing) {
+                this.updateInputValue();
+            }
 
             this.updateMonthsInView();
         },
@@ -973,6 +981,19 @@
             }
         },
 
+        updateInputValue: function() {
+            //if picker is attached to a text input, update it
+            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+                this.element.val( this.startDate.format(this.locale.format) 
+                    + this.locale.separator 
+                    + this.endDate.format(this.locale.format));
+                this.element.trigger('change');
+            } else if (this.element.is('input') && this.autoUpdateInput) {
+                this.element.val(this.startDate.format(this.locale.format));
+                this.element.trigger('change');
+            }
+        },
+
         move: function() {
             var parentOffset = { top: 0, left: 0 },
                 containerTop;
@@ -1070,13 +1091,7 @@
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
-            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-                this.element.trigger('change');
-            } else if (this.element.is('input') && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format));
-                this.element.trigger('change');
-            }
+            this.updateInputValue();
 
             $(document).off('.daterangepicker');
             this.container.hide();
