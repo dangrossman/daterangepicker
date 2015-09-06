@@ -335,9 +335,9 @@
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li>' + range + '</li>';
+                list += '<li data-range-label="' + range + '">' + range + '</li>';
             }
-            list += '<li>' + this.locale.customRangeLabel + '</li>';
+            list += '<li data-range-label="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
             this.container.find('.ranges ul').remove();
             this.container.find('.ranges').prepend(list);
@@ -1118,7 +1118,11 @@
         },
 
         hoverRange: function(e) {
-            var label = e.target.innerHTML;
+            var $el = $(e.target);
+            if ($(e.target).prop('tagName') !== 'LI') {
+                $el = $el.parents('li');
+            }
+            var label = $el.data('range-label');
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
             } else {
@@ -1129,7 +1133,11 @@
         },
 
         clickRange: function(e) {
-            var label = e.target.innerHTML;
+            var $el = $(e.target);
+            if ($(e.target).prop('tagName') !== 'LI') {
+                $el = $el.parents('li');
+            }
+            var label = $el.data('range-label');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
