@@ -1,5 +1,5 @@
 {
-  "name": "bootstrap-daterangepicker",
+  "name": "pcr-bootstrap-daterangepicker",
   "main": [
     "daterangepicker.js",
     "daterangepicker.css"

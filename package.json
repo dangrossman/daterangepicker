@@ -1,6 +1,6 @@
 {
-  "name": "bootstrap-daterangepicker",
-  "version": "2.0.9",
+  "name": "pcr-bootstrap-daterangepicker",
+  "version": "2.0.9.pcr",
   "description": "Date range picker component for Bootstrap",
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
@@ -9,18 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dangrossman/bootstrap-daterangepicker.git"
+    "url": "https://github.com/pcragone/bootstrap-daterangepicker.git"
   },
   "author": {
-    "name": "Dan Grossman",
-    "email": "dan@dangrossman.info",
-    "url": "http://www.dangrossman.info"
+    "name": "Peter Ragone",
+    "email": "pcragone@gmail.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dangrossman/bootstrap-daterangepicker/issues"
+    "url": "https://github.com/pcragone/bootstrap-daterangepicker/issues"
   },
-  "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
+  "homepage": "https://github.com/pcragone/bootstrap-daterangepicker",
   "dependencies": {
     "jquery": "^1.10",
     "moment": "^2.9.0"
