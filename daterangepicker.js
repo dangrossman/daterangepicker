@@ -55,6 +55,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.ranges = {};
+        this.showLabelRangeDates = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -252,6 +253,9 @@
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
+        if (typeof options.showLabelRangeDates === 'boolean')
+            this.showLabelRangeDates = options.showLabelRangeDates;
+
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
 
@@ -334,8 +338,21 @@
             }
 
             var list = '<ul>';
-            for (range in this.ranges) {
-                list += '<li data-range-label="' + range + '">' + range + '</li>';
+            if (this.showLabelRangeDates) {
+                for (range in this.ranges) {
+                    list += '<li data-range-label="' + range + '">';
+                    list += range;
+                    list += '<br><em><small>';
+                    list += this.ranges[range][0].format(this.locale.format);
+                    list += ' - ';
+                    list += this.ranges[range][1].format(this.locale.format);
+                    list += '</small></em>';
+                    list += '</li>';
+                }
+            } else {
+                for (range in this.ranges) {
+                    list += '<li data-range-label="' + range + '">' + range + '</li>';
+                }
             }
             list += '<li data-range-label="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
