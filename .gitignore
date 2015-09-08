@@ -3,3 +3,9 @@ node_modules
 npm-debug.log
 *.sublime-workspace
 *.sublime-project
+
+.idea/
+# File-based project format:
+*.iml
+*.ipr
+*.iws
