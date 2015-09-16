@@ -417,7 +417,7 @@
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.controlChanged, this),
+                'keyup.daterangepicker': $.proxy(this.elementChanged, this),
                 'keydown.daterangepicker': $.proxy(this.keydown, this)
             });
         } else {
@@ -461,6 +461,9 @@
             if (this.maxDate && this.startDate.isAfter(this.maxDate))
                 this.startDate = this.maxDate;
 
+            if (!this.isShowing)
+                this.updateElement();
+
             this.updateMonthsInView();
         },
 
@@ -485,6 +488,9 @@
 
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
+
+            if (!this.isShowing)
+                this.updateElement();
 
             this.updateMonthsInView();
         },
@@ -1070,13 +1076,7 @@
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
-            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-                this.element.trigger('change');
-            } else if (this.element.is('input') && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format));
-                this.element.trigger('change');
-            }
+            this.updateElement();
 
             $(document).off('.daterangepicker');
             this.container.hide();
@@ -1173,6 +1173,10 @@
         },
 
         hoverDate: function(e) {
+
+            //ignore mouse movements while an above-calendar text input has focus
+            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+                return;
 
             //ignore dates that can't be selected
             if (!$(e.target).hasClass('available')) return;
@@ -1407,7 +1411,7 @@
             }
         },
 
-        controlChanged: function() {
+        elementChanged: function() {
             if (!this.element.is('input')) return;
             if (!this.element.val().length) return;
 
@@ -1434,6 +1438,16 @@
             //hide on tab or enter
             if ((e.keyCode === 9) || (e.keyCode === 13)) {
                 this.hide();
+            }
+        },
+
+        updateElement: function() {
+            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                this.element.trigger('change');
+            } else if (this.element.is('input') && this.autoUpdateInput) {
+                this.element.val(this.startDate.format(this.locale.format));
+                this.element.trigger('change');
             }
         },
 
