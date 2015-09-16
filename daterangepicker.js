@@ -64,6 +64,8 @@
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
 
+        this.rangesPositionInRelationToCalendars = 'after';
+
         this.buttonClasses = 'btn btn-sm';
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
@@ -95,9 +97,20 @@
         //data-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
 
+        if (typeof options.rangesPositionInRelationToCalendars === 'string')
+            this.rangesPositionInRelationToCalendars = options.rangesPositionInRelationToCalendars;
+
         //html template for the picker UI
-        if (typeof options.template !== 'string')
+        if (typeof options.template !== 'string') {
+            var rangesTemplate = '<div class="ranges">' +
+                '<div class="range_inputs">' +
+                    '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+                    '<button class="cancelBtn" type="button"></button>' +
+                '</div>' +
+            '</div>';
+
             options.template = '<div class="daterangepicker dropdown-menu">' +
+                ((this.rangesPositionInRelationToCalendars === 'before') ? rangesTemplate : '') +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
@@ -120,13 +133,9 @@
                     '</div>' +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
-                '<div class="ranges">' +
-                    '<div class="range_inputs">' +
-                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                        '<button class="cancelBtn" type="button"></button>' +
-                    '</div>' +
-                '</div>' +
+                ((this.rangesPositionInRelationToCalendars === 'after') ? rangesTemplate : '') +
             '</div>';
+        }
 
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);

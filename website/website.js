@@ -107,6 +107,9 @@ $(document).ready(function() {
       if ($('#drops').val().length && $('#drops').val() != 'down')
         options.drops = $('#drops').val();
 
+      if ($('#rangesPositionInRelationToCalendars').val().length && $('#rangesPositionInRelationToCalendars').val() != 'after')
+        options.rangesPositionInRelationToCalendars = $('#rangesPositionInRelationToCalendars').val();
+
       if ($('#buttonClasses').val().length && $('#buttonClasses').val() != 'btn btn-sm')
         options.buttonClasses = $('#buttonClasses').val();
 
