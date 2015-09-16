@@ -1455,4 +1455,5 @@
         return this;
     };
 
+	return DateRangePicker;
 }));
