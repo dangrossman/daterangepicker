@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+   <head>
+      <meta charset="UTF-8" />
+      <title>A date range picker for Bootstrap</title>
+      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="moment.js"></script>
+      <script type="text/javascript" src="daterangepicker.js"></script>
+   </head>
+   <body style="margin: 60px 0">
+
+      <div class="container">
+
+         <h2 style="margin: 0 0 20px 0">Call autoamticaly update input text when calling setStartDate/setendDate</h2>
+
+        <div class="row">
+
+          <div class="col-md-4 col-md-offset-2 demo">
+            <h4>Your Date Range Picker</h4>
+            <input type="text" id="config-demo" class="form-control">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+          </div>
+
+          <div class="col-md-6">
+            <h4>Configuration</h4>
+            <button id="move">Move by 1week</button>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-2 demo">
+            <h4>Dates values set up programaticaly</h4>
+              <input type="text" id="dates"></input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 col-md-offset-2 demo">
+            <h4>Single mode</h4>
+              <input type="text" id="config-demo-single" class="form-control">
+          </div>
+        </div>
+
+          <h2 style="margin: 0 0 20px 0">Allow Empty option </h2>
+          <p>if allowEmpty=true and startDate/endDate not provided input text is blank</p>
+          <div class="row">
+              <div class="col-md-4 col-md-offset-2 demo">
+                  <h4>Single mode allow empty</h4>
+                  <input type="text" id="demo-single-empty" class="form-control">
+                  <i class="glyphicon glyphicon-trash fa fa-calendar" id="clear1"></i>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-4 col-md-offset-2 demo">
+                  <h4>Single mode allow empty with initial value</h4>
+                  <input type="text" id="demo-single-empty2" class="form-control">
+                  <i class="glyphicon glyphicon-trash fa fa-calendar" id="clear2"></i>
+              </div>
+          </div>
+
+
+          <div class="row">
+              <div class="col-md-4 col-md-offset-2 demo">
+                  <h4>Date Range allow empty </h4>
+                  <input type="text" id="demo-empty1" class="form-control">
+                  <i class="glyphicon glyphicon-trash fa fa-calendar" id="clear3"></i>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-md-4 col-md-offset-2 demo">
+                  <h4>Date Range allow empty </h4>
+                  <input type="text" id="demo-empty2" class="form-control">
+                  <i class="glyphicon glyphicon-trash fa fa-calendar" id="clear4"></i>
+              </div>
+          </div>
+
+
+      </div>
+
+      <style type="text/css">
+      .demo { position: relative; }
+      .demo i {
+        position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer;
+      }
+      </style>
+
+      <script type="text/javascript">
+      $(document).ready(function() {
+
+          function updateText(startDate, endDate) {
+            console.log('Input text updated: ' + startDate.format('L') + ' - ' + endDate.format('L'));
+             $("#dates").val(startDate.format('L') + ' - ' + endDate.format('L')) ;
+          }
+
+          $("#move").click(function(){
+              var drp = $('#config-demo').data('daterangepicker');
+              drp.setStartDate(drp.startDate.add(7, 'days'));
+              drp.setEndDate(drp.endDate.add(7, 'days'));       
+              //drp.updateInputValue();      
+              updateText(drp.startDate, drp.endDate) ; 
+
+              var drp2 = $('#config-demo-single').data('daterangepicker');
+              drp2.setStartDate(drp.startDate.add(7, 'days'));
+
+
+          });
+
+          $("#clear1").click(function(){
+              var drp = $('#demo-single-empty').data('daterangepicker');
+              drp.clear();
+          });
+
+          $("#clear2").click(function(){
+              var drp = $('#demo-single-empty2').data('daterangepicker');
+              drp.clear();
+          });
+
+
+          var options = {autoUpdateInput: true };
+          $('#config-demo').daterangepicker(options, function(start, end, label) {
+           console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); 
+         });
+
+
+          $('#config-demo-single').daterangepicker({"singleDatePicker": true}, function(start, end, label) {
+           console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); 
+         });
+
+
+          $('#demo-single-empty').daterangepicker(
+                  {
+                      singleDatePicker: true,
+                      allowEmpty: true
+                  },
+                  function(start, end, label) {
+              console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+          });
+
+
+          var startDate = moment();
+
+          $('#demo-single-empty2').daterangepicker(
+                  {
+                      singleDatePicker: true,
+                      allowEmpty: true,
+                      startDate: startDate
+                  },
+                  function(start, end, label) {
+                      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+                  });
+
+
+          $('#demo-empty1').daterangepicker(
+                  {
+                      allowEmpty: true
+                  },
+                  function(start, end, label) {
+                      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+                  });
+
+          $("#clear3").click(function(){
+              var drp = $('#demo-empty1').data('daterangepicker');
+              drp.clear();
+          });
+
+          $('#demo-empty2').daterangepicker(
+                  {
+                      startDate: startDate,
+                      allowEmpty: true
+                  },
+                  function(start, end, label) {
+                      console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+                  });
+
+          $("#clear4").click(function(){
+              var drp = $('#demo-empty2').data('daterangepicker');
+              drp.clear();
+          });
+
+      });
+      </script>
+
+   </body>
+</html>
