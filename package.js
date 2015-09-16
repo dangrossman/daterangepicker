@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'dangrossman:bootstrap-daterangepicker',
-  version: '2.0.9',
+  name: 'pcragone:pcr-bootstrap-daterangepicker',
+  version: '2.0.10',
   summary: 'Date range picker component for Bootstrap',
-  git: 'https://github.com/dangrossman/bootstrap-daterangepicker',
+  git: 'https://github.com/pcragone/bootstrap-daterangepicker',
   documentation: 'README.md'
 });
 
