@@ -975,6 +975,11 @@
         },
 
         updateFormInputs: function() {
+
+            //ignore mouse movements while an above-calendar text input has focus
+            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+                return;
+
             this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
             if (this.endDate)
                 this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
@@ -984,6 +989,7 @@
             } else {
                 this.container.find('button.applyBtn').attr('disabled', 'disabled');
             }
+
         },
 
         move: function() {
@@ -1125,6 +1131,11 @@
         },
 
         hoverRange: function(e) {
+
+            //ignore mouse movements while an above-calendar text input has focus
+            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+                return;
+
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
@@ -1133,6 +1144,7 @@
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
+            
         },
 
         clickRange: function(e) {
