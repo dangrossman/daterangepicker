@@ -4,6 +4,7 @@
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: https://www.improvely.com/
+* https://github.com/jeffersonbezerra/bootstrap-daterangepicker commit (1a43a9dde577649a904455b7e13f4158afab0c70)
 */
 
 (function(root, factory) {
@@ -123,56 +124,51 @@
     DateRangePicker.prototype = {
 
         constructor: DateRangePicker,
-		
-		setOptions: function(options, callback) {
-			this.setOptionsLocal(options, callback, false);
-		}, 
-        setOptionsLocal: function(options, callback, preservDefaults) {
-			if (preservDefaults == false) {
-			 
-				this.startDate = moment().startOf('day');
-				this.endDate = moment().endOf('day');
-				this.timeZone = moment().utcOffset();
-				this.minDate = false;
-				this.maxDate = false;
-				this.dateLimit = false;
-				this.dateLimitMin = false;
 
-				this.showDropdowns = false;
-				this.showWeekNumbers = false;
-				this.timePicker = false;
-				this.timePickerSeconds = false;
-				this.timePickerIncrement = 30;
-				this.timePicker12Hour = true;
-				this.autoApply = false;
-				this.singleDatePicker = false;
-				this.ranges = {};
+        setOptions: function(options, callback) {
 
-				this.opens = 'right';
-				if (this.element.hasClass('pull-right'))
-					this.opens = 'left';
+            this.startDate = moment().startOf('day');
+            this.endDate = moment().endOf('day');
+            this.timeZone = moment().utcOffset();
+            this.minDate = false;
+            this.maxDate = false;
+            this.dateLimit = false;
+            this.dateLimitMin = false;
 
-				this.buttonClasses = ['btn', 'btn-small btn-sm'];
-				this.applyClass = 'btn-success';
-				this.cancelClass = 'btn-default';
+            this.showDropdowns = false;
+            this.showWeekNumbers = false;
+            this.timePicker = false;
+            this.timePickerSeconds = false;
+            this.timePickerIncrement = 30;
+            this.timePicker12Hour = true;
+            this.autoApply = false;
+            this.singleDatePicker = false;
+            this.ranges = {};
 
-				this.format = 'MM/DD/YYYY';
-				this.separator = ' - ';
+            this.opens = 'right';
+            if (this.element.hasClass('pull-right'))
+                this.opens = 'left';
 
-				this.locale = {
-					applyLabel: 'Apply',
-					cancelLabel: 'Cancel',
-					fromLabel: 'From',
-					toLabel: 'To',
-					weekLabel: 'W',
-					customRangeLabel: 'Custom Range',
-					daysOfWeek: moment.weekdaysMin(),
-					monthNames: moment.monthsShort(),
-					firstDay: moment.localeData()._week.dow
-				};
-				this.cb = function() {};
-			}
+            this.buttonClasses = ['btn', 'btn-small btn-sm'];
+            this.applyClass = 'btn-success';
+            this.cancelClass = 'btn-default';
 
+            this.format = 'MM/DD/YYYY';
+            this.separator = ' - ';
+
+            this.locale = {
+                applyLabel: 'Apply',
+                cancelLabel: 'Cancel',
+                fromLabel: 'From',
+                toLabel: 'To',
+                weekLabel: 'W',
+                customRangeLabel: 'Custom Range',
+                daysOfWeek: moment.weekdaysMin(),
+                monthNames: moment.monthsShort(),
+                firstDay: moment.localeData()._week.dow
+            };
+
+            this.cb = function() {};
 
             if (typeof options.format === 'string')
                 this.format = options.format;
@@ -388,7 +384,7 @@
                 this.container.find('.ranges').prepend(list);
             }
 
-            if (typeof callback === 'function'  && preservDefaults == false) {
+            if (typeof callback === 'function') {
                 this.cb = callback;
             }
 
@@ -409,7 +405,7 @@
                 }
                 if (!this.container.find('.calendar.right').hasClass('single'))
                     this.container.find('.calendar.right').addClass('single');
-            } else if (this.isShowing == false){
+            } else {
                 this.container.removeClass('single');
                 this.container.find('.calendar.right').removeClass('single');
                 this.container.find('.ranges').show();
@@ -491,6 +487,18 @@
                 this.endDate = this.endDate.endOf('day');
 
             this.oldEndDate = this.endDate.clone();
+
+            this.updateView();
+            this.updateCalendars();
+            this.updateInputText();
+        },
+        
+        setDateLimitMin: function(dateLimitMin) {
+            if (typeof dateLimitMin === 'number')
+                this.dateLimitMin = {days: dateLimitMin};
+
+            if (typeof dateLimitMin === 'object')
+                this.dateLimitMin = dateLimitMin;
 
             this.updateView();
             this.updateCalendars();
