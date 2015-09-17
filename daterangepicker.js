@@ -123,51 +123,56 @@
     DateRangePicker.prototype = {
 
         constructor: DateRangePicker,
+		
+		setOptions: function(options, callback) {
+			this.setOptionsLocal(options, callback, false);
+		}, 
+        setOptionsLocal: function(options, callback, preservDefaults) {
+			if (preservDefaults == false) {
+			 
+				this.startDate = moment().startOf('day');
+				this.endDate = moment().endOf('day');
+				this.timeZone = moment().utcOffset();
+				this.minDate = false;
+				this.maxDate = false;
+				this.dateLimit = false;
+				this.dateLimitMin = false;
 
-        setOptions: function(options, callback) {
+				this.showDropdowns = false;
+				this.showWeekNumbers = false;
+				this.timePicker = false;
+				this.timePickerSeconds = false;
+				this.timePickerIncrement = 30;
+				this.timePicker12Hour = true;
+				this.autoApply = false;
+				this.singleDatePicker = false;
+				this.ranges = {};
 
-            this.startDate = moment().startOf('day');
-            this.endDate = moment().endOf('day');
-            this.timeZone = moment().utcOffset();
-            this.minDate = false;
-            this.maxDate = false;
-            this.dateLimit = false;
-            this.dateLimitMin = false;
+				this.opens = 'right';
+				if (this.element.hasClass('pull-right'))
+					this.opens = 'left';
 
-            this.showDropdowns = false;
-            this.showWeekNumbers = false;
-            this.timePicker = false;
-            this.timePickerSeconds = false;
-            this.timePickerIncrement = 30;
-            this.timePicker12Hour = true;
-            this.autoApply = false;
-            this.singleDatePicker = false;
-            this.ranges = {};
+				this.buttonClasses = ['btn', 'btn-small btn-sm'];
+				this.applyClass = 'btn-success';
+				this.cancelClass = 'btn-default';
 
-            this.opens = 'right';
-            if (this.element.hasClass('pull-right'))
-                this.opens = 'left';
+				this.format = 'MM/DD/YYYY';
+				this.separator = ' - ';
 
-            this.buttonClasses = ['btn', 'btn-small btn-sm'];
-            this.applyClass = 'btn-success';
-            this.cancelClass = 'btn-default';
+				this.locale = {
+					applyLabel: 'Apply',
+					cancelLabel: 'Cancel',
+					fromLabel: 'From',
+					toLabel: 'To',
+					weekLabel: 'W',
+					customRangeLabel: 'Custom Range',
+					daysOfWeek: moment.weekdaysMin(),
+					monthNames: moment.monthsShort(),
+					firstDay: moment.localeData()._week.dow
+				};
+				this.cb = function() {};
+			}
 
-            this.format = 'MM/DD/YYYY';
-            this.separator = ' - ';
-
-            this.locale = {
-                applyLabel: 'Apply',
-                cancelLabel: 'Cancel',
-                fromLabel: 'From',
-                toLabel: 'To',
-                weekLabel: 'W',
-                customRangeLabel: 'Custom Range',
-                daysOfWeek: moment.weekdaysMin(),
-                monthNames: moment.monthsShort(),
-                firstDay: moment.localeData()._week.dow
-            };
-
-            this.cb = function() {};
 
             if (typeof options.format === 'string')
                 this.format = options.format;
@@ -383,7 +388,7 @@
                 this.container.find('.ranges').prepend(list);
             }
 
-            if (typeof callback === 'function') {
+            if (typeof callback === 'function'  && preservDefaults == false) {
                 this.cb = callback;
             }
 
@@ -404,7 +409,7 @@
                 }
                 if (!this.container.find('.calendar.right').hasClass('single'))
                     this.container.find('.calendar.right').addClass('single');
-            } else {
+            } else if (this.isShowing == false){
                 this.container.removeClass('single');
                 this.container.find('.calendar.right').removeClass('single');
                 this.container.find('.ranges').show();
