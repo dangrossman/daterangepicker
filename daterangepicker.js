@@ -40,6 +40,7 @@
         this.element = $(element);
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
+        this.useTimeZone = true;
         this.timeZone = moment().utcOffset();
         this.minDate = false;
         this.maxDate = false;
@@ -147,22 +148,22 @@
                 this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
 
             if (typeof options.locale.monthNames === 'object')
-              this.locale.monthNames = options.locale.monthNames.slice();
+                this.locale.monthNames = options.locale.monthNames.slice();
 
             if (typeof options.locale.firstDay === 'number')
-              this.locale.firstDay = options.locale.firstDay;
+                this.locale.firstDay = options.locale.firstDay;
 
             if (typeof options.locale.applyLabel === 'string')
-              this.locale.applyLabel = options.locale.applyLabel;
+                this.locale.applyLabel = options.locale.applyLabel;
 
             if (typeof options.locale.cancelLabel === 'string')
-              this.locale.cancelLabel = options.locale.cancelLabel;
+                this.locale.cancelLabel = options.locale.cancelLabel;
 
             if (typeof options.locale.weekLabel === 'string')
-              this.locale.weekLabel = options.locale.weekLabel;
+                this.locale.weekLabel = options.locale.weekLabel;
 
             if (typeof options.locale.customRangeLabel === 'string')
-              this.locale.customRangeLabel = options.locale.customRangeLabel;
+                this.locale.customRangeLabel = options.locale.customRangeLabel;
 
         }
 
@@ -288,6 +289,10 @@
             }
         }
 
+        if (typeof options.useTimeZone === 'boolean') {
+            this.useTimeZone = options.useTimeZone;
+        }
+
         // bind the time zone used to build the calendar to either the timeZone passed in through the options or the zone of the startDate (which will be the local time zone by default)
         if (typeof options.timeZone === 'string' || typeof options.timeZone === 'number') {
             if (typeof options.timeZone === 'string' && typeof moment.tz !== 'undefined') {
@@ -295,8 +300,11 @@
             } else {
                 this.timeZone = options.timeZone;
             }
-          this.startDate.utcOffset(this.timeZone);
-          this.endDate.utcOffset(this.timeZone);
+
+            if(this.useTimeZone === true) {
+                this.startDate.utcOffset(this.timeZone);
+                this.endDate.utcOffset(this.timeZone);
+            }
         } else {
             this.timeZone = moment(this.startDate).utcOffset();
         }
@@ -450,8 +458,12 @@
         constructor: DateRangePicker,
 
         setStartDate: function(startDate) {
-            if (typeof startDate === 'string')
-                this.startDate = moment(startDate, this.locale.format).utcOffset(this.timeZone);
+            if (typeof startDate === 'string') {
+                this.startDate = moment(startDate, this.locale.format);
+                if(this.useTimeZone === true) {
+                    this.startDate.utcOffset(this.timeZone);
+                }
+            }
 
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
@@ -475,8 +487,12 @@
         },
 
         setEndDate: function(endDate) {
-            if (typeof endDate === 'string')
-                this.endDate = moment(endDate, this.locale.format).utcOffset(this.timeZone);
+            if (typeof endDate === 'string') {
+                this.endDate = moment(endDate, this.locale.format);
+                if(this.useTimeZone === true) {
+                    this.endDate.utcOffset(this.timeZone);
+                }
+            }
 
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
@@ -546,7 +562,7 @@
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
-                
+
             } else {
                 if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
@@ -657,7 +673,10 @@
                 startDay = daysInLastMonth - 6;
 
             // Possible patch for issue #626 https://github.com/dangrossman/bootstrap-daterangepicker/issues/626
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]).utcOffset(this.timeZone); // .utcOffset(this.timeZone);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]); // .utcOffset(this.timeZone);
+            if(this.useTimeZone === true) {
+                curDate.utcOffset(this.timeZone);
+            }
 
             var col, row;
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
@@ -1144,7 +1163,7 @@
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
-            
+
         },
 
         clickRange: function(e) {
@@ -1404,8 +1423,12 @@
 
         formInputsChanged: function(e) {
             var isRight = $(e.target).closest('.calendar').hasClass('right');
-            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format).utcOffset(this.timeZone);
-            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format).utcOffset(this.timeZone);
+            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
+            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
+            if(this.useTimeZone === true) {
+                start.utcOffset(this.timeZone);
+                end.utcOffset(this.timeZone);
+            }
 
             if (start.isValid() && end.isValid()) {
 
@@ -1439,12 +1462,19 @@
                 end = null;
 
             if (dateString.length === 2) {
-                start = moment(dateString[0], this.locale.format).utcOffset(this.timeZone);
-                end = moment(dateString[1], this.locale.format).utcOffset(this.timeZone);
+                start = moment(dateString[0], this.locale.format);
+                end = moment(dateString[1], this.locale.format);
+                if(this.useTimeZone === true) {
+                    start.utcOffset(this.timeZone);
+                    end.utcOffset(this.timeZone);
+                }
             }
 
             if (this.singleDatePicker || start === null || end === null) {
-                start = moment(this.element.val(), this.locale.format).utcOffset(this.timeZone);
+                start = moment(this.element.val(), this.locale.format);
+                if(this.useTimeZone === true) {
+                    start.utcOffset(this.timeZone)
+                }
                 end = start;
             }
 
