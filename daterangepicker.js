@@ -39,7 +39,9 @@
         this.parentEl = 'body';
         this.element = $(element);
         this.startDate = moment().startOf('day');
+        this.startDateIsNull = false;
         this.endDate = moment().endOf('day');
+        this.endDateIsNull = false;
         this.timeZone = moment().utcOffset();
         this.minDate = false;
         this.maxDate = false;
@@ -189,6 +191,15 @@
 
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
+        
+        // Check if there is no startDate in options    
+        if (!options.startDate) {
+          this.startDateIsNull = true;
+        }
+        // Check if there is no endDate in options    
+        if (!options.endDate) {
+          this.endDateIsNull = true;
+        }
 
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
@@ -1085,8 +1096,11 @@
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate) || this.startDateIsNull || this.endDateIsNull) {
+                this.endDateIsNull = false; 
+                this.startDateIsNull = false;
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
+            }
 
             //if picker is attached to a text input, update it
             this.updateElement();
