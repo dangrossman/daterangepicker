@@ -1,10 +1,9 @@
 /**
-* @version: 1.3.19
+* @version: 1.4.0
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: https://www.improvely.com/
-* https://github.com/jeffersonbezerra/bootstrap-daterangepicker commit (1a43a9dde577649a904455b7e13f4158afab0c70)
 */
 
 (function(root, factory) {
