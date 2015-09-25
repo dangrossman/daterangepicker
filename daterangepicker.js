@@ -144,6 +144,8 @@
             this.autoApply = false;
             this.singleDatePicker = false;
             this.ranges = {};
+            this.holidays = {}
+            
 
             this.opens = 'right';
             if (this.element.hasClass('pull-right'))
@@ -382,6 +384,14 @@
                 list += '</ul>';
                 this.container.find('.ranges ul').remove();
                 this.container.find('.ranges').prepend(list);
+            }
+            
+            if (typeof options.holidays === 'object'){
+            	this.holidays = {};
+    			for (var holidayIndex=0; holidayIndex<options.holidays.length; holidayIndex++) {
+    				var holiday = options.holidays[holidayIndex];
+    				this.holidays[moment(holiday.date).hour(12).format('YYYYMMDD')] = holiday;
+    			}
             }
 
             if (typeof callback === 'function') {
@@ -1004,11 +1014,13 @@
         },
 
         updateCalendars: function () {
+        	this.container.find('td.holiday').popover('destroy');
+        	
             this.leftCalendar.calendar = this.buildCalendar(this.leftCalendar.month.month(), this.leftCalendar.month.year(), this.leftCalendar.month.hour(), this.leftCalendar.month.minute(), this.leftCalendar.month.second(), 'left');
             this.rightCalendar.calendar = this.buildCalendar(this.rightCalendar.month.month(), this.rightCalendar.month.year(), this.rightCalendar.month.hour(), this.rightCalendar.month.minute(), this.rightCalendar.month.second(), 'right');
             this.container.find('.calendar.left').empty().html(this.renderCalendar(this.leftCalendar.calendar, this.startDate, this.minDate, this.maxDate, 'left'));
             this.container.find('.calendar.right').empty().html(this.renderCalendar(this.rightCalendar.calendar, this.endDate, this.singleDatePicker ? this.minDate : this.startDate, this.maxDate, 'right'));
-
+           
 
             this.container.find('.ranges li').removeClass('active');
             var customRange = true;
@@ -1034,6 +1046,15 @@
                 this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
                 this.showCalendars();
             }
+            this.container.find('td.holiday').popover(
+            		{
+            			'placement': 'top', 
+            			'trigger': 'hover', 
+            			'container' : 'body',
+            			'title' : '',
+            			'content': function(){
+            	return $(this).data('holidayDescription');
+            }});
         },
 
         buildCalendar: function (month, year, hour, minute, second, side) {
@@ -1197,9 +1218,19 @@
                             cname += ' end-date ';
                         }
                     }
+                    
+                    var holidayDescription="";
+                    if (calendar[row][col].format('YYYYMMDD') in this.holidays){
+                    	cname += ' holiday ';
+            			holidayDescription = this.holidays[calendar[row][col].format('YYYYMMDD')].description;
+                    }
 
                     var title = 'r' + row + 'c' + col;
-                    html += '<td class="' + cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1') + '" data-title="' + title + '">' + calendar[row][col].date() + '</td>';
+                    if (holidayDescription !== ""){
+                    	html += '<td class="' + cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1') + '" data-title="' + title + '" data-holiday-description="' + holidayDescription + '">' + calendar[row][col].date() + '</td>';
+                    } else {
+                    	html += '<td class="' + cname.replace(/\s+/g, ' ').replace(/^\s?(.*?)\s?$/, '$1') + '" data-title="' + title + '">' + calendar[row][col].date() + '</td>';
+                    }
                 }
                 html += '</tr>';
             }

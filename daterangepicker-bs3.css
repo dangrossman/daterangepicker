@@ -332,3 +332,7 @@
   vertical-align: top;
   margin: 5px;
 }
+
+.daterangepicker td.holiday {
+    font-weight: bold;
+}
