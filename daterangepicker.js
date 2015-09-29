@@ -420,6 +420,14 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
+
+        console.log(this.container.find('input[name="daterangepicker_end"]'))
+        this.container.find('input[name="daterangepicker_end"]')
+          .on('keydown.daterangepicker_end', $.proxy(this.hidekeydown, this))
+
+        this.container.find('input[name="daterangepicker_start"]').addClass('active')
+          .on('keydown.daterangepicker_start', $.proxy(this.hidekeydown, this))
+
         if (this.element.is('input')) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
@@ -546,7 +554,7 @@
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
-                
+
             } else {
                 if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
@@ -1144,7 +1152,7 @@
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
-            
+
         },
 
         clickRange: function(e) {
@@ -1456,6 +1464,13 @@
         keydown: function(e) {
             //hide on tab or enter
             if ((e.keyCode === 9) || (e.keyCode === 13)) {
+                this.hide();
+            }
+        },
+
+        hidekeydown: function(e) {
+            //hide on tab or enter
+            if (e.keyCode === 13) {
                 this.hide();
             }
         },
