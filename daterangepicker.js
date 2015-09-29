@@ -421,7 +421,6 @@
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
 
-        console.log(this.container.find('input[name="daterangepicker_end"]'))
         this.container.find('input[name="daterangepicker_end"]')
           .on('keydown.daterangepicker_end', $.proxy(this.hidekeydown, this))
 
