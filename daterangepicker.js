@@ -334,9 +334,21 @@
                 this.ranges[range] = [start, end];
             }
 
-            var list = '<ul>';
-            for (range in this.ranges) {
-                list += '<li>' + range + '</li>';
+            if (options.rangesRows) {
+                var _rangeIndex = 0;
+                var list = '<ul class="multi">';
+                for (range in this.ranges) {
+                    if (++_rangeIndex > options.rangesRows) {
+                        list += '</ul><ul class="multi">';
+                        _rangeIndex = 1;
+                    }
+                    list += '<li>' + range + '</li>';
+                }
+            } else {
+                var list = '<ul>';
+                for (range in this.ranges) {
+                    list += '<li>' + range + '</li>';
+                }
             }
             list += '<li>' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
