@@ -4,6 +4,10 @@ body {
     position: relative;
     margin: 0;
 }
+.container {
+    width: 95%;
+    max-width: 1200px;
+}
 p, pre {
     margin-bottom: 2em;
 }
