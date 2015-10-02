@@ -322,6 +322,15 @@
   padding: 0;
   width: 160px;
 }
+.daterangepicker .ranges ul.multi {
+    float: left;
+    margin-left: 5px;
+    width: auto;
+    max-width: 160px;
+}
+.daterangepicker .ranges ul.multi:first-child {
+    margin-left: 0;
+}
 
 .daterangepicker .ranges li {
   font-size: 13px;
