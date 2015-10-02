@@ -336,10 +336,10 @@
 
             if (options.rangesRows) {
                 var _rangeIndex = 0;
-                var list = '<ul class="pull-left" style="width:auto;margin-right:5px">';
+                var list = '<ul class="multi">';
                 for (range in this.ranges) {
                     if (++_rangeIndex > options.rangesRows) {
-                        list += '</ul><ul class="pull-left" style="width:auto;margin-right:5px">';
+                        list += '</ul><ul class="multi">';
                         _rangeIndex = 1;
                     }
                     list += '<li>' + range + '</li>';
