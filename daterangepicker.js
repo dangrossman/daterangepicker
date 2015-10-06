@@ -32,7 +32,7 @@
     root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
   }
 
-}(this, function(root, daterangepicker, moment, $) {
+}(this || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
 
     var DateRangePicker = function(element, options, cb) {
 
