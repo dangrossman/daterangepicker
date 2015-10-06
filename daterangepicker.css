@@ -124,14 +124,11 @@
 .daterangepicker .calendar {
   display: none;
   max-width: 270px;
+  margin: 4px;
 }
 
 .daterangepicker.show-calendar .calendar {
   display: block;
-}
-
-.daterangepicker .calendar.right {
-  margin-top: 4px;
 }
 
 .daterangepicker .calendar.single .calendar-table {
@@ -350,7 +347,6 @@
   }
 
   .daterangepicker .calendar.right {
-    margin-top: 0;
     margin-left: 0;
   }
 
