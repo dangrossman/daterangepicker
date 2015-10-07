@@ -1,5 +1,5 @@
 /**
-* @version: 2.0.13
+* @version: 2.0.14
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -41,7 +41,6 @@
         this.element = $(element);
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
-        this.timeZone = moment().utcOffset();
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
@@ -289,19 +288,6 @@
             }
         }
 
-        // bind the time zone used to build the calendar to either the timeZone passed in through the options or the zone of the startDate (which will be the local time zone by default)
-        if (typeof options.timeZone === 'string' || typeof options.timeZone === 'number') {
-            if (typeof options.timeZone === 'string' && typeof moment.tz !== 'undefined') {
-                this.timeZone = moment.tz.zone(options.timeZone).parse(new Date) * -1;  // Offset is positive if the timezone is behind UTC and negative if it is ahead.
-            } else {
-                this.timeZone = options.timeZone;
-            }
-          this.startDate.utcOffset(this.timeZone);
-          this.endDate.utcOffset(this.timeZone);
-        } else {
-            this.timeZone = moment(this.startDate).utcOffset();
-        }
-
         if (typeof options.ranges === 'object') {
             for (range in options.ranges) {
 
@@ -452,7 +438,7 @@
 
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
-                this.startDate = moment(startDate, this.locale.format).utcOffset(this.timeZone);
+                this.startDate = moment(startDate, this.locale.format);
 
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
@@ -477,7 +463,7 @@
 
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
-                this.endDate = moment(endDate, this.locale.format).utcOffset(this.timeZone);
+                this.endDate = moment(endDate, this.locale.format);
 
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
@@ -657,8 +643,7 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            // Possible patch for issue #626 https://github.com/dangrossman/bootstrap-daterangepicker/issues/626
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]).utcOffset(this.timeZone); // .utcOffset(this.timeZone);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
 
             var col, row;
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
@@ -1405,8 +1390,8 @@
 
         formInputsChanged: function(e) {
             var isRight = $(e.target).closest('.calendar').hasClass('right');
-            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format).utcOffset(this.timeZone);
-            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format).utcOffset(this.timeZone);
+            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
+            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
 
             if (start.isValid() && end.isValid()) {
 
@@ -1440,12 +1425,12 @@
                 end = null;
 
             if (dateString.length === 2) {
-                start = moment(dateString[0], this.locale.format).utcOffset(this.timeZone);
-                end = moment(dateString[1], this.locale.format).utcOffset(this.timeZone);
+                start = moment(dateString[0], this.locale.format);
+                end = moment(dateString[1], this.locale.format);
             }
 
             if (this.singleDatePicker || start === null || end === null) {
-                start = moment(this.element.val(), this.locale.format).utcOffset(this.timeZone);
+                start = moment(this.element.val(), this.locale.format);
                 end = start;
             }
 
