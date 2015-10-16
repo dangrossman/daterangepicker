@@ -430,6 +430,15 @@
             this.element.trigger('change');
         }
 
+        //
+        // Verion of the move function whose this is bound to the DateRangePicker object
+        //
+
+        this._moveBoundToThis = (function (that) {
+            return function () {
+                that.move.call(that);
+            }
+        }(this));
     };
 
     DateRangePicker.prototype = {
@@ -1059,6 +1068,7 @@
             this.move();
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
+            $(window).on('resize', this._moveBoundToThis);
         },
 
         hide: function(e) {
@@ -1081,6 +1091,7 @@
             this.container.hide();
             this.element.trigger('hide.daterangepicker', this);
             this.isShowing = false;
+            $(window).off('resize', this._moveBoundToThis);
         },
 
         toggle: function(e) {
