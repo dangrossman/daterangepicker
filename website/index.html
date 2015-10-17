@@ -448,6 +448,12 @@
                                 </label>
                               </div>
 
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="useHtml5Calendar"> useHtml5Calendar
+                                </label>
+                              </div>
+
                             </div>
                             <div class="col-md-4">
 
@@ -590,6 +596,12 @@
                                 <code>autoUpdateInput</code>: (boolean) Indicates whether the date range picker should
                                 automatically update the value of an <code>&lt;input&gt;</code> element it's attached to
                                 at initialization and when the selected dates change.
+                            </li>
+                            <li>
+                                <code>useHtml5Calendar</code>: (boolean) Indicates whether the date range picker should
+                                hide the dropdown calendars and use HTML5 date input fields instead of text fields.
+                                This provides a better user experience on mobiles. On responsive sites, have JavaScript check
+                                the size of the window and switch on this option if it is very narrow.
                             </li>
                         </ul>
 

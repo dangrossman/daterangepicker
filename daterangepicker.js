@@ -54,6 +54,7 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.useHtml5Calendar = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -95,30 +96,37 @@
         //data-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
 
+        if (typeof options.useHtml5Calendar === 'boolean')
+            this.useHtml5Calendar = options.useHtml5Calendar;
+
         //html template for the picker UI
+
+        var inputType = this.useHtml5Calendar ? 'date' : 'text';
+        var calendarTableHtml = this.useHtml5Calendar ? '' : '<div class="calendar-table"></div>';
+
         if (typeof options.template !== 'string')
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+                      '<input class="input-mini" type="' + inputType + '" name="daterangepicker_start" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
                       '</div>' +
                     '</div>' +
-                    '<div class="calendar-table"></div>' +
+                    calendarTableHtml +
                 '</div>' +
                 '<div class="calendar right">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+                      '<input class="input-mini" type="' + inputType + '" name="daterangepicker_end" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
                       '</div>' +
                     '</div>' +
-                    '<div class="calendar-table"></div>' +
+                    calendarTableHtml +
                 '</div>' +
                 '<div class="ranges">' +
                     '<div class="range_inputs">' +
@@ -430,11 +438,29 @@
             this.element.trigger('change');
         }
 
+        //
+        // Version of the move function whose this is bound to the DateRangePicker object
+        //
+
+        this._moveBoundToThis = (function (that) {
+            return function () {
+                that.move.call(that);
+            }
+        }(this));
     };
 
     DateRangePicker.prototype = {
 
         constructor: DateRangePicker,
+
+        _dateInputFormat: function() {
+            return this.useHtml5Calendar ? 'YYYY-MM-DD' : this.locale.format;
+        },
+
+        _setDateInput: function(inputName, date) {
+            var dateValue = date.format(this._dateInputFormat());
+            this.container.find('input[name='+inputName+']').val(dateValue);
+        },
 
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
@@ -543,6 +569,8 @@
         },
 
         updateCalendars: function() {
+
+            if (this.useHtml5Calendar) { return; }
 
             if (this.timePicker) {
                 var hour, minute, second;
@@ -966,9 +994,10 @@
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
 
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
+            this._setDateInput('daterangepicker_start', this.startDate);
+
             if (this.endDate)
-                this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
+                this._setDateInput('daterangepicker_end', this.endDate);
 
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
@@ -1063,6 +1092,7 @@
             this.move();
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
+            $(window).on('resize', this._moveBoundToThis);
         },
 
         hide: function(e) {
@@ -1086,6 +1116,7 @@
             this.container.hide();
             this.element.trigger('hide.daterangepicker', this);
             this.isShowing = false;
+            $(window).off('resize', this._moveBoundToThis);
         },
 
         toggle: function(e) {
@@ -1132,8 +1163,9 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
+
+                this._setDateInput('daterangepicker_start', dates[0]);
+                this._setDateInput('daterangepicker_end', dates[1]);
             }
             
         },
@@ -1199,9 +1231,9 @@
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             if (this.endDate) {
-                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+                this._setDateInput('daterangepicker_start', date);
             } else {
-                this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                this._setDateInput('daterangepicker_end', date);
             }
 
             //highlight the dates between the start date and the date being hovered as a potential end date
@@ -1398,8 +1430,8 @@
 
         formInputsChanged: function(e) {
             var isRight = $(e.target).closest('.calendar').hasClass('right');
-            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
-            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
+            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this._dateInputFormat());
+            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this._dateInputFormat());
 
             if (start.isValid() && end.isValid()) {
 
@@ -1410,11 +1442,10 @@
                 this.setEndDate(end);
 
                 if (isRight) {
-                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
+                    this._setDateInput('daterangepicker_start', this.startDate);
                 } else {
-                    this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
+                    this._setDateInput('daterangepicker_end', this.endDate);
                 }
-
             }
 
             this.updateCalendars();

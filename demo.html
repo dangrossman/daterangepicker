@@ -2,7 +2,7 @@
 <html dir="ltr" lang="en-US">
    <head>
       <meta charset="UTF-8" />
-      <title>A date range picker for Bootstrap</title>
+       <meta name="viewport" content="width=device-width, initial-scale=1">      <title>A date range picker for Bootstrap</title>
       <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -125,6 +125,12 @@
               <div class="checkbox">
                 <label>
                   <input type="checkbox" id="autoUpdateInput" checked="checked"> autoUpdateInput
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="useHtml5Calendar"> useHtml5Calendar
                 </label>
               </div>
 
@@ -252,7 +258,7 @@
             options.autoApply = true;
 
           if ($('#dateLimit').is(':checked'))
-            options.dateLimit = { days: 7 };
+              options.dateLimit = { days: 7 };
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {
@@ -285,6 +291,9 @@
 
           if (!$('#autoUpdateInput').is(':checked'))
             options.autoUpdateInput = false;
+
+          if ($('#useHtml5Calendar').is(':checked'))
+              options.useHtml5Calendar = true;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();
