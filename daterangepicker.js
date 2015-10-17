@@ -316,8 +316,13 @@
                 // after the maximum, don't display this range option at all.
                 if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
                     continue;
+                
+                //Support unicode chars in the range names.
+                var elem = document.createElement('textarea');
+                elem.innerHTML = range;
+                rangeHtml = elem.value;
 
-                this.ranges[range] = [start, end];
+                this.ranges[rangeHtml] = [start, end];
             }
 
             var list = '<ul>';
