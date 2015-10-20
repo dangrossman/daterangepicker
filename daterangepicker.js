@@ -69,12 +69,12 @@
         this.cancelClass = 'btn-default';
 
         this.locale = {
-            format: 'MM/DD/YYYY',
+            format: 'DD/MM/YYYY',
             separator: ' - ',
-            applyLabel: 'Apply',
-            cancelLabel: 'Cancel',
-            weekLabel: 'W',
-            customRangeLabel: 'Custom Range',
+            applyLabel: 'Aceptar',
+            cancelLabel: 'Cancelar',
+            weekLabel: 'Sem',
+            customRangeLabel: '- Elegir periodo -',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
             firstDay: moment.localeData().firstDayOfWeek()
@@ -96,12 +96,14 @@
         options = $.extend(this.element.data(), options);
 
         //html template for the picker UI
+		//RPG Oct 2015. Se añade la clase hidden a los text que muestran la fecha.
+        //Puede añadirse dinamicamente a la clase input-mini
         if (typeof options.template !== 'string')
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      '<input class="input-mini hidden" type="text" name="daterangepicker_start" value="" />' +
+                      '<i class="fa fa-calendar glyphicon glyphicon-calendar hidden"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
@@ -111,8 +113,8 @@
                 '</div>' +
                 '<div class="calendar right">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      '<input class="input-mini hidden" type="text" name="daterangepicker_end" value="" />' +
+                      '<i class="fa fa-calendar glyphicon glyphicon-calendar hidden"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
@@ -330,7 +332,7 @@
                 list += '<li>' + range + '</li>';
             }
             list += '<li>' + this.locale.customRangeLabel + '</li>';
-            list += '</ul>';
+            list += '</ul><hr>';
             this.container.find('.ranges').prepend(list);
         }
 
@@ -684,7 +686,7 @@
             var maxDate = this.maxDate;
             var selected = side == 'left' ? this.startDate : this.endDate;
 
-            var html = '<table class="table-condensed">';
+            var html = '<table class="table table-condensed">';
             html += '<thead>';
             html += '<tr>';
 
