@@ -421,8 +421,9 @@
             });
         } else {
             this.element.on({
-                'click.daterangepicker': $.proxy(this.toggle, this),
-                'focus.daterangepicker': $.proxy(this.show, this)
+                'click.daterangepicker': $.proxy(this.show, this),
+                'focus.daterangepicker': $.proxy(this.show, this),
+                'blur.daterangepicker': $.proxy(this.hide, this)
             });
         }
 
