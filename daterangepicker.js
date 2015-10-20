@@ -420,7 +420,10 @@
                 'keydown.daterangepicker': $.proxy(this.keydown, this)
             });
         } else {
-            this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
+            this.element.on({
+                'click.daterangepicker': $.proxy(this.toggle, this),
+                'focus.daterangepicker': $.proxy(this.show, this)
+            });
         }
 
         //
