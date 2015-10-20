@@ -423,7 +423,7 @@
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'blur.daterangepicker': $.proxy(this.hide, this)
+                'keydown.daterangepicker': $.proxy(this.keydown, this)
             });
         }
 
