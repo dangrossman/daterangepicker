@@ -55,6 +55,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.ranges = {};
+        this.daysOfWeekDisabled = [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -165,6 +166,9 @@
               this.locale.customRangeLabel = options.locale.customRangeLabel;
 
         }
+
+        if(typeof options.daysOfWeekDisabled === 'object')
+            this.daysOfWeekDisabled = options.daysOfWeekDisabled;
 
         if (typeof options.startDate === 'string')
             this.startDate = moment(options.startDate, this.locale.format);
@@ -316,7 +320,7 @@
                 // after the maximum, don't display this range option at all.
                 if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
                     continue;
-                
+
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
                 elem.innerHTML = range;
@@ -538,7 +542,7 @@
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
-                
+
             } else {
                 if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
@@ -789,6 +793,9 @@
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
+                        classes.push('off', 'disabled');
+
+                    if(this.daysOfWeekDisabled.indexOf(calendar[row][col].day()) > -1)
                         classes.push('off', 'disabled');
 
                     //don't allow selection of dates after the maximum date
@@ -1140,7 +1147,7 @@
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
-            
+
         },
 
         clickRange: function(e) {
