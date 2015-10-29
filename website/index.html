@@ -128,6 +128,7 @@
                                     <li><a href="#ex2">Date and Time</a></li>
                                     <li><a href="#ex3">Single Date Picker</a></li>
                                     <li><a href="#ex4">Predefined Ranges</a></li>
+                                    <li><a href="#ex5">Initially Empty Input</a></li>
                                 </ul>
                             </li>
                             <li><a href="#config">Configuration Generator</a></li>
@@ -314,29 +315,52 @@
 
                         </div>
 
+                        <div id="ex5" name="ex5">
+
+                            <h3>Input Initially Empty</h3>
+
+                            <p>
+                                If you're using a date range as a filter, you may want to attach a picker to an 
+                                input but leave it empty by default. This example shows how to accomplish that
+                                using the <code>autoUpdateInput</code> setting, and the <code>apply</code> and 
+                                <code>cancel</code> events.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-9 col-xs-12">
+                                    <script src="https://gist.github.com/dangrossman/de22909c4d24f3f3508c.js"></script>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="datefilter" value="10/24/1984" />
+                                </div>
+                            </div>
+
+
+                        </div>
+
                         <script type="text/javascript">
                         $(function() {
 
-                            function cb(start, end) {
-                                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                            }
-                            cb(moment().subtract(29, 'days'), moment());
-
-                            $('#reportrange').daterangepicker({
-                                ranges: {
-                                   'Today': [moment(), moment()],
-                                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                                   'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            $('input[name="datefilter"]').daterangepicker({
+                                autoUpdateInput: false,
+                                locale: {
+                                    cancelLabel: 'clear'
                                 }
-                            }, cb);
+                            }, function(start, end) {
+                                $('input[name="datefilter"]').val(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+                            });
+
+                            $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+                                $('input[name="datefilter"]').val('');
+                            });
 
                         });
                         </script>
 
                     </div>
+
+
 
                     <div id="config" name="config">
 
