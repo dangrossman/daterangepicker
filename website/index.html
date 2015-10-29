@@ -347,8 +347,10 @@
                                 locale: {
                                     cancelLabel: 'Clear'
                                 }
-                            }, function(start, end) {
-                                $('input[name="datefilter"]').val(start.format('MM/DD/YYYY') + ' - ' + end.format('MM/DD/YYYY'));
+                            });
+
+                            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+                                $('input[name="datefilter"]').val(picke.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
                             });
 
                             $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
