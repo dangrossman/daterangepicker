@@ -54,6 +54,8 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        // Property to define wheter is possible to alter only one date (if is neither singleDatePicker nor autoApply)
+        this.allowSingleSelect = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -251,6 +253,9 @@
 
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
+
+        if (typeof options.allowSingleSelect === 'boolean')
+            this.allowSingleSelect = options.allowSingleSelect;
 
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
@@ -1253,40 +1258,37 @@
             // * if autoapply is enabled, and an end date was chosen, apply the selection
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             //
+            // * if allow single select is enabled and neither single date picker nor auto apply are enabled, 
+            // *    updates only the date based on the calendar being clicked
+            //
 
-            if (this.endDate || date.isBefore(this.startDate)) {
-                if (this.timePicker) {
-                    var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
-                    if (!this.timePicker24Hour) {
-                        var ampm = cal.find('.ampmselect').val();
-                        if (ampm === 'PM' && hour < 12)
-                            hour += 12;
-                        if (ampm === 'AM' && hour === 12)
-                            hour = 0;
+            if (this.allowSingleSelect && !this.singleDatePicker && !this.autoApply) {
+                if (cal.hasClass('left')) {
+                    if (this.timePicker) {
+                        date = this.updateTime(date, 'left');
                     }
-                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
-                    var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
+                    this.setStartDate(date.clone());
+                } else {
+                    if (this.timePicker) {
+                        date = this.updateTime(date, 'right');
+                    }
+                    this.setEndDate(date.clone());
                 }
-                this.endDate = null;
-                this.setStartDate(date.clone());
             } else {
-                if (this.timePicker) {
-                    var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
-                    if (!this.timePicker24Hour) {
-                        var ampm = this.container.find('.right .ampmselect').val();
-                        if (ampm === 'PM' && hour < 12)
-                            hour += 12;
-                        if (ampm === 'AM' && hour === 12)
-                            hour = 0;
+                if (this.endDate || date.isBefore(this.startDate)) {
+                    if (this.timePicker) {
+                        date = this.updateTime(date, 'left');
                     }
-                    var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
-                    var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
+                    this.endDate = null;
+                    this.setStartDate(date.clone());
+                } else {
+                    if (this.timePicker) {
+                        date = this.updateTime(date, 'right');
+                    }
+                    this.setEndDate(date.clone());
+                    if (this.autoApply)
+                        this.clickApply();
                 }
-                this.setEndDate(date.clone());
-                if (this.autoApply)
-                    this.clickApply();
             }
 
             if (this.singleDatePicker) {
@@ -1297,6 +1299,20 @@
 
             this.updateView();
 
+        },
+
+        updateTime: function(date, side){
+            var hour = parseInt(this.container.find('.' + side + ' .hourselect').val(), 10);
+            if (!this.timePicker24Hour) {
+                var ampm = this.container.find('.' + side + ' .ampmselect').val();
+                if (ampm === 'PM' && hour < 12)
+                    hour += 12;
+                if (ampm === 'AM' && hour === 12)
+                    hour = 0;
+            }
+            var minute = parseInt(this.container.find('.' + side + ' .minuteselect').val(), 10);
+            var second = this.timePickerSeconds ? parseInt(this.container.find('.' + side + ' .secondselect').val(), 10) : 0;
+            return date.clone().hour(hour).minute(minute).second(second);
         },
 
         clickApply: function(e) {
