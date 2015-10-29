@@ -350,7 +350,7 @@
                             });
 
                             $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-                                $('input[name="datefilter"]').val(picke.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                                $('input[name="datefilter"]').val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
                             });
 
                             $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
