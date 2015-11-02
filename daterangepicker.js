@@ -846,6 +846,13 @@
             } else if (side == 'right') {
                 selected = this.endDate ? this.endDate.clone() : this.startDate.clone();
                 minDate = this.startDate;
+
+                var timeSelector = this.container.find('.calendar.right .calendar-time div');
+                if(timeSelector.html() != '') {
+                  selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
+                  selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
+                  selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
+                }
             }
 
             //
