@@ -1282,6 +1282,11 @@
                     }
                     var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
+                    if(hour == 0 && minute == 0 && second == 0){
+                      hour = 23;
+                      minute = 59;
+                      second = 59;
+                    }
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.setEndDate(date.clone());
