@@ -1,0 +1,12 @@
+.dropdown-menu {
+  display: none;
+  border: 1px solid #D1D6D8;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+.daterangepicker .calendar th, .daterangepicker .calendar td {
+  min-width: auto;
+}
+
+.daterangepicker input[type='text'] {
+  box-sizing: border-box;
+}
