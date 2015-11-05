@@ -179,9 +179,18 @@
         <div class="row">
 
           <div class="col-md-4 col-md-offset-2 demo">
-            <h4>Your Date Range Picker</h4>
-            <input type="text" id="config-demo" class="form-control">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+            <div class="row">
+              <div class="col-md-12">
+                <h4>Your Date Range Picker</h4>
+                <input type="text" id="config-demo" class="form-control">
+                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div id="config-demo-div" class="btn" tabindex="0">Pick a range</div>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-6">
@@ -325,7 +334,8 @@
           $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
           $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
-          
+
+          $('#config-demo-div').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
         }
 
       });
