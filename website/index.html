@@ -5,7 +5,7 @@
         <title>Date Range Picker for Bootstrap</title>
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <script src="moment.min.js"></script>         
 
@@ -14,6 +14,12 @@
 
         <script src="website.js"></script>
         <link rel="stylesheet" type="text/css" href="website.css" />
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
         <meta name="google-site-verification" content="1fP-Eo9i1ozV4MUlqZv2vsLv1r7tvYutUb6i38v0_vg" />
     </head>
@@ -122,6 +128,7 @@
                                     <li><a href="#ex2">Date and Time</a></li>
                                     <li><a href="#ex3">Single Date Picker</a></li>
                                     <li><a href="#ex4">Predefined Ranges</a></li>
+                                    <li><a href="#ex5">Input Initially Empty</a></li>
                                 </ul>
                             </li>
                             <li><a href="#config">Configuration Generator</a></li>
@@ -306,31 +313,78 @@
                                 </div>
                             </div>
 
+			    <script type="text/javascript">
+                            $(function() {
+
+                                function cb(start, end) {
+                                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                                }
+                                cb(moment().subtract(29, 'days'), moment());
+
+                                $('#reportrange').daterangepicker({
+                                    ranges: {
+                                       'Today': [moment(), moment()],
+                                       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                                       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                                       'This Month': [moment().startOf('month'), moment().endOf('month')],
+                                       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                    }
+                                }, cb);
+
+                            });
+                            </script>
+
+                        </div>
+
+                        <div id="ex5" name="ex5">
+
+                            <h3>Input Initially Empty</h3>
+
+                            <p>
+                                If you're using a date range as a filter, you may want to attach a picker to an 
+                                input but leave it empty by default. This example shows how to accomplish that
+                                using the <code>autoUpdateInput</code> setting, and the <code>apply</code> and 
+                                <code>cancel</code> events.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-9 col-xs-12">
+                                    <script src="https://gist.github.com/dangrossman/de22909c4d24f3f3508c.js"></script>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="datefilter" value="" />
+                                </div>
+                            </div>
+
+
                         </div>
 
                         <script type="text/javascript">
                         $(function() {
 
-                            function cb(start, end) {
-                                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                            }
-                            cb(moment().subtract(29, 'days'), moment());
-
-                            $('#reportrange').daterangepicker({
-                                ranges: {
-                                   'Today': [moment(), moment()],
-                                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                                   'This Month': [moment().startOf('month'), moment().endOf('month')],
-                                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                            $('input[name="datefilter"]').daterangepicker({
+                                autoUpdateInput: false,
+                                locale: {
+                                    cancelLabel: 'Clear'
                                 }
-                            }, cb);
+                            });
+
+                            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+                                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                            });
+
+                            $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+                                $(this).val('');
+                            });
 
                         });
                         </script>
 
                     </div>
+
+
 
                     <div id="config" name="config">
 
