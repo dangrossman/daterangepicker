@@ -1489,5 +1489,7 @@
         });
         return this;
     };
+    
+    return DateRangePicker;
 
 }));
