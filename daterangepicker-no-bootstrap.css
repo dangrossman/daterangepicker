@@ -10,3 +10,13 @@
 .daterangepicker input[type='text'] {
   box-sizing: border-box;
 }
+
+.daterangepicker th.prev::before {
+  content: '←';
+  font-weight: bold;
+}
+
+.daterangepicker th.next::before {
+  content: '→';
+  font-weight: bold;
+}
