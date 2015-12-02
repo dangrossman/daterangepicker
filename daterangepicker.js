@@ -320,7 +320,7 @@
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
                 elem.innerHTML = range;
-                rangeHtml = elem.value;
+                var rangeHtml = elem.value;
 
                 this.ranges[rangeHtml] = [start, end];
             }
