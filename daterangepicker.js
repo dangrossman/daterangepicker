@@ -1489,5 +1489,8 @@
         });
         return this;
     };
+    
+    daterangepicker = DateRangePicker;
+    return daterangepicker;
 
 }));
