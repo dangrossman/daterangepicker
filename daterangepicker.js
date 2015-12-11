@@ -53,6 +53,7 @@
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
+        this.synchronizeTimes = false;
         this.autoUpdateInput = true;
         this.ranges = {};
 
@@ -242,6 +243,9 @@
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
+
+        if (typeof options.synchronizeTimes == 'boolean')
+            this.synchronizeTimes = options.synchronizeTimes;
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
@@ -1264,7 +1268,7 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             //
 
-            if (this.endDate || date.isBefore(this.startDate)) {
+            if (!this.settingDateRange && (this.endDate || date.isBefore(this.startDate))) {
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     if (!this.timePicker24Hour) {
@@ -1278,7 +1282,10 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.endDate = null;
+                if (this.synchronizeTimes) {
+                  this.endDate = null;
+                }
+                this.settingDateRange = true;
                 this.setStartDate(date.clone());
             } else {
                 if (this.timePicker) {
@@ -1295,6 +1302,7 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.setEndDate(date.clone());
+                this.settingDateRange = false;
                 if (this.autoApply)
                     this.clickApply();
             }
