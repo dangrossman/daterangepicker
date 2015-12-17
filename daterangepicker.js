@@ -1,9 +1,8 @@
 /**
-* @version: 2.1.14
+* @version: 2.1.15
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
-* @website: https://www.improvely.com/
 */
 
 (function(root, factory) {
@@ -464,6 +463,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            this.element.trigger('startDateSelected.daterangepicker', this);
         },
 
         setEndDate: function(endDate) {
@@ -492,6 +492,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            this.element.trigger('endDateSelected.daterangepicker', this);
         },
 
         isInvalidDate: function() {
