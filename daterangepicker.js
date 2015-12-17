@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.16
+* @version: 2.1.17
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -488,6 +488,8 @@
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
 
+            this.previousRightTime = this.endDate.clone();
+
             if (!this.isShowing)
                 this.updateElement();
 
@@ -844,7 +846,7 @@
                 selected = this.startDate.clone();
                 minDate = this.minDate;
             } else if (side == 'right') {
-                selected = this.endDate ? this.endDate.clone() : this.startDate.clone();
+                selected = this.endDate ? this.endDate.clone() : this.previousRightTime.clone();
                 minDate = this.startDate;
 
                 //Preserve the time already selected
@@ -1086,6 +1088,7 @@
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
+            this.previousRightTime = this.endDate.clone();
 
             this.updateView();
             this.container.show();
@@ -1278,7 +1281,7 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             //
 
-            if (this.endDate || date.isBefore(this.startDate)) {
+            if (this.endDate || date.isBefore(this.startDate, 'day')) {
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     if (!this.timePicker24Hour) {
@@ -1294,6 +1297,10 @@
                 }
                 this.endDate = null;
                 this.setStartDate(date.clone());
+            } else if (!this.endDate && date.isBefore(this.startDate)) {
+                //special case: clicking the same date for start/end, 
+                //but the time of the end date is before the start date
+                this.setEndDate(this.startDate.clone());
             } else {
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
