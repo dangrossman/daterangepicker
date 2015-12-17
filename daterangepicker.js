@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.14
+* @version: 2.1.15
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -850,11 +850,25 @@
                 //Preserve the time already selected
                 var timeSelector = this.container.find('.calendar.right .calendar-time div');
                 if (timeSelector.html() != '') {
-                  selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
-                  selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
-                  selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
-                  if (selected.isAfter(maxDate))
-                    selected = maxDate.clone();
+
+                    selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
+                    selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
+                    selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
+
+                    if (!this.timePicker24Hour) {
+                        var ampm = timeSelector.find('.ampmselect option:selected').val();
+                        if (ampm === 'PM' && selected.hour() < 12)
+                            selected.hour(selected.hour() + 12);
+                        if (ampm === 'AM' && selected.hour() === 12)
+                            selected.hour(0);
+                    }
+
+                    if (selected.isBefore(this.startDate))
+                        selected = this.startDate.clone();
+
+                    if (selected.isAfter(maxDate))
+                        selected = maxDate.clone();
+
                 }
             }
 
