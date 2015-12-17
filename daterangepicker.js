@@ -863,9 +863,6 @@
                             selected.hour(0);
                     }
 
-                    if (selected.isBefore(this.startDate))
-                        selected = this.startDate.clone();
-
                     if (selected.isAfter(maxDate))
                         selected = maxDate.clone();
 
