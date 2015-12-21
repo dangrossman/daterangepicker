@@ -1,5 +1,5 @@
 {
-  "name": "bootstrap-daterangepicker",
+  "name": "sm-bootstrap-daterangepicker",
   "main": [
     "daterangepicker.js",
     "daterangepicker.css"
