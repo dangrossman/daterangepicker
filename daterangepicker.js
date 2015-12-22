@@ -1,9 +1,8 @@
 /**
-* @version: 2.1.17
+* @version: 2.1.18
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
-* @website: https://www.improvely.com/
 */
 
 (function(root, factory) {
@@ -96,7 +95,7 @@
         options = $.extend(this.element.data(), options);
 
         //html template for the picker UI
-        if (typeof options.template !== 'string')
+        if (typeof options.template !== 'string' && !options.template instanceof jQuery)
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
@@ -464,6 +463,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            this.element.trigger('startDateSelected.daterangepicker', this);
         },
 
         setEndDate: function(endDate) {
@@ -494,6 +494,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            this.element.trigger('endDateSelected.daterangepicker', this);
         },
 
         isInvalidDate: function() {
