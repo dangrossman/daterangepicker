@@ -42,3 +42,19 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
+
+## Things added for TBB custom calendar
+
+--
+
+### Events
+- `startDateSelected.daterangepicker`: Triggered when check in date is
+  selected
+- `endDateSelected.daterangepicker`: Triggered when check out date is
+  selected
+### Options
+- template now can receive jQuery object. This enable tamplate to have
+  angular directive.
+  ```
+  options = { template: $compile(templateHTML)(scope)  }
+  ```
