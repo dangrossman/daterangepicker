@@ -254,6 +254,10 @@
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
 
+        if (typeof options.dateCellClass === 'function')
+            this.dateCellClass = options.dateCellClass;
+
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -813,6 +817,13 @@
                     //highlight dates in-between the selected dates
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
+
+                    //custom classes from given dateCellClass function
+                    if (this.dateCellClass) {
+                        var customClasses = this.dateCellClass(calendar[row][col], this.startDate, this.endDate);
+                        if (typeof customClasses === 'string')
+                          Array.prototype.push.apply(classes, customClasses.split(/\s+/));
+                    }
 
                     var cname = '', disabled = false;
                     for (var i = 0; i < classes.length; i++) {

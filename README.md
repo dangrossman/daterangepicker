@@ -52,9 +52,19 @@ THE SOFTWARE.
   selected
 
 ### Options
-- template now can receive jQuery object. This enable tamplate to have
+- `template` now can receive jQuery object. This enable `tamplate` to have
   angular directive.
 
   ```
   options = { template: $compile(templateHTML)(scope)  }
+  ```
+- `dateCellClass`: function taht receives `moment` as a param and needs
+  to return string classes which will add to each date cell.
+
+  ```
+  options = {
+    dateCellClass: function(date) {
+      return "class1 class2";
+    }
+  }
   ```
