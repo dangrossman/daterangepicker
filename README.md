@@ -45,16 +45,16 @@ THE SOFTWARE.
 
 ## Things added for TBB custom calendar
 
---
-
 ### Events
 - `startDateSelected.daterangepicker`: Triggered when check in date is
   selected
 - `endDateSelected.daterangepicker`: Triggered when check out date is
   selected
+
 ### Options
 - template now can receive jQuery object. This enable tamplate to have
   angular directive.
+
   ```
   options = { template: $compile(templateHTML)(scope)  }
   ```
