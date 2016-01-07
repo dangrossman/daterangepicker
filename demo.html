@@ -118,6 +118,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="alwaysShowCalendars"> alwaysShowCalendars
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="locale"> locale (with example settings)
                 </label>
               </div>
@@ -270,6 +276,9 @@
               'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             };
           }
+
+          if ($('#alwaysShowCalendars').is(':checked'))
+            options.alwaysShowCalendars = true;
 
           if ($('#locale').is(':checked')) {
             options.locale = {
