@@ -1285,7 +1285,7 @@
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     if (!this.timePicker24Hour) {
-                        var ampm = cal.find('.ampmselect').val();
+                        var ampm = this.container.find('.left .ampmselect').val();
                         if (ampm === 'PM' && hour < 12)
                             hour += 12;
                         if (ampm === 'AM' && hour === 12)
