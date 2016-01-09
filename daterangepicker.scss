@@ -1,0 +1,540 @@
+//
+// A stylesheet for use with Bootstrap 3.x
+// @author: Dan Grossman http://www.dangrossman.info/
+// @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
+// @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
+// @website: https://www.improvely.com/
+//
+
+//
+// VARIABLES
+//
+
+//
+// Settings
+
+// The class name to contain everything within.
+$prefix-class: daterangepicker;
+
+//
+// Colors
+$datepicker-color:                      inherit !default;
+$datepicker-bg-color:                   #fff !default;
+
+$datepicker-cell-color:                 $datepicker-color !default;
+$datepicker-cell-border-color:          transparent !default;
+$datepicker-cell-bg-color:              $datepicker-bg-color !default;
+
+$datepicker-cell-hover-color:           $datepicker-color !default;
+$datepicker-cell-hover-border-color:    $datepicker-cell-border-color !default;
+$datepicker-cell-hover-bg-color:        #eee !default;
+
+$datepicker-in-range-color:             #000 !default;
+$datepicker-in-range-border-color:      transparent !default;
+$datepicker-in-range-bg-color:          #ebf4f8 !default;
+
+$datepicker-active-color:               #fff !default;
+$datepicker-active-bg-color:            #357ebd !default;
+$datepicker-active-border-color:        transparent !default;
+
+$datepicker-unselected-color:           #999 !default;
+$datepicker-unselected-border-color:    transparent !default;
+$datepicker-unselected-bg-color:        #fff !default;
+
+//
+// Datepicker
+$datepicker-width:          278px !default;
+$datepicker-padding:        4px !default;
+$datepicker-z-index:        3000 !default;
+
+$datepicker-border-size:    1px !default;
+$datepicker-border-color:   #ccc !default;
+$datepicker-border-radius:  4px !default;
+
+$datepicker-arrow-size:     7px !default;
+
+//
+// Calendar
+$datepicker-calendar-margin:              $datepicker-padding !default;
+$datepicker-calendar-bg-color:            $datepicker-bg-color !default;
+
+$datepicker-calendar-border-size:         1px !default;
+$datepicker-calendar-border-color:        $datepicker-bg-color !default;
+$datepicker-calendar-border-radius:       $datepicker-border-radius !default;
+
+//
+// Calendar Cells
+$datepicker-cell-size:           20px !default;
+$datepicker-cell-width:          $datepicker-cell-size !default;
+$datepicker-cell-height:         $datepicker-cell-size !default;
+
+$datepicker-cell-border-radius:  $datepicker-calendar-border-radius !default;
+$datepicker-cell-border-size:    1px !default;
+
+//
+// Dropdowns
+$datepicker-dropdown-z-index: $datepicker-z-index + 1 !default;
+
+//
+// Controls
+$datepicker-control-height:               30px !default;
+$datepicker-control-line-height:          $datepicker-control-height !default;
+$datepicker-control-color:                #555 !default;
+
+$datepicker-control-border-size:          1px !default;
+$datepicker-control-border-color:         #ccc !default;
+$datepicker-control-border-radius:        4px !default;
+
+$datepicker-control-active-border-size:   1px !default;
+$datepicker-control-active-border-color:  $datepicker-active-border-color !default;
+$datepicker-control-active-border-radius: $datepicker-control-border-radius !default;
+
+$datepicker-control-disabled-color:       #ccc !default;
+
+//
+// Ranges
+$datepicker-ranges-color:                #08c !default;
+$datepicker-ranges-bg-color:             #f5f5f5 !default;
+
+$datepicker-ranges-border-size:          1px !default;
+$datepicker-ranges-border-color:         $datepicker-ranges-bg-color !default;
+$datepicker-ranges-border-radius:        $datepicker-border-radius !default;
+
+$datepicker-ranges-hover-color:          #fff !default;
+$datepicker-ranges-hover-bg-color:       $datepicker-ranges-color !default;
+$datepicker-ranges-hover-border-size:    $datepicker-ranges-border-size !default;
+$datepicker-ranges-hover-border-color:   $datepicker-ranges-hover-bg-color !default;
+$datepicker-ranges-hover-border-radius:  $datepicker-border-radius !default;
+
+$datepicker-ranges-active-border-size:   $datepicker-ranges-border-size !default;
+$datepicker-ranges-active-border-color:  $datepicker-ranges-bg-color !default;
+$datepicker-ranges-active-border-radius: $datepicker-border-radius !default;
+
+//
+// STYLESHEETS
+//
+.#{$prefix-class} {
+  position: absolute;
+  color: $datepicker-color;
+  background: $datepicker-bg-color;
+  border-radius: $datepicker-border-radius;
+  width: $datepicker-width;
+  padding: $datepicker-padding;
+  margin-top: $datepicker-border-size;
+
+  // TODO: Should these be parameterized??
+  top: 100px;
+  left: 20px;
+
+  $arrow-prefix-size: $datepicker-arrow-size;
+  $arrow-suffix-size: ($datepicker-arrow-size - $datepicker-border-size);
+
+  &:before, &:after {
+    position: absolute;
+    display: inline-block;
+
+    border-bottom-color: rgba(0, 0, 0, 0.2);
+    content: '';
+  }
+
+  &:before {
+    top: -$arrow-prefix-size;
+
+    border-right: $arrow-prefix-size solid transparent;
+    border-left: $arrow-prefix-size solid transparent;
+    border-bottom: $arrow-prefix-size solid $datepicker-border-color;
+  }
+
+  &:after {
+    top: -$arrow-suffix-size;
+
+    border-right: $arrow-suffix-size solid transparent;
+    border-bottom: $arrow-suffix-size solid $datepicker-bg-color;
+    border-left: $arrow-suffix-size solid transparent;
+  }
+
+  &.opensleft {
+    &:before {
+      // TODO: Make this relative to prefix size.
+      right: $arrow-prefix-size + 2px;
+    }
+
+    &:after {
+      // TODO: Make this relative to suffix size.
+      right: $arrow-suffix-size + 4px;
+    }
+  }
+
+  &.openscenter {
+    &:before {
+      left: 0;
+      right: 0;
+      width: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &:after {
+      left: 0;
+      right: 0;
+      width: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  &.opensright {
+    &:before {
+      // TODO: Make this relative to prefix size.
+      left: $arrow-prefix-size + 2px;
+    }
+
+    &:after {
+      // TODO: Make this relative to suffix size.
+      left: $arrow-suffix-size + 4px;
+    }
+  }
+
+  &.dropup {
+    margin-top: -5px;
+
+    // NOTE: Note sure why these are special-cased.
+    &:before {
+      top: initial;
+      bottom: -$arrow-prefix-size;
+      border-bottom: initial;
+      border-top: $arrow-prefix-size solid $datepicker-border-color;
+    }
+
+    &:after {
+      top: initial;
+      bottom:-$arrow-suffix-size;
+      border-bottom: initial;
+      border-top: $arrow-suffix-size solid $datepicker-bg-color;
+    }
+  }
+
+  &.dropdown-menu {
+    max-width: none;
+    z-index: $datepicker-dropdown-z-index;
+  }
+
+  &.single {
+    .ranges, .calendar {
+      float: none;
+    }
+  }
+
+  /* Calendars */
+  &.show-calendar {
+    .calendar {
+      display: block;
+    }
+  }
+
+  .calendar {
+    display: none;
+    max-width: $datepicker-width - ($datepicker-calendar-margin * 2);
+    margin: $datepicker-calendar-margin;
+
+    &.single {
+      .calendar-table {
+        border: none;
+      }
+    }
+
+    th, td {
+      white-space: nowrap;
+      text-align: center;
+
+      // TODO: Should this actually be hard-coded?
+      min-width: 32px;
+    }
+  }
+
+  .calendar-table {
+    border: $datepicker-calendar-border-size solid $datepicker-calendar-border-color;
+    padding: $datepicker-calendar-margin;
+    border-radius: $datepicker-calendar-border-radius;
+    background: $datepicker-calendar-bg-color;
+  }
+
+  table {
+    width: 100%;
+    margin: 0;
+  }
+
+  td, th {
+    text-align: center;
+    width: $datepicker-cell-width;
+    height: $datepicker-cell-height;
+    border-radius: $datepicker-cell-border-radius;
+    border: $datepicker-cell-border-size solid $datepicker-cell-border-color;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &.available {
+      &:hover {
+        background: $datepicker-cell-hover-bg-color;
+      }
+    }
+
+    &.week {
+      font-size: 80%;
+      color: #ccc;
+    }
+  }
+
+  td {
+    &.off {
+      &, &.in-range, &.start-date, &.end-date {
+        background-color: $datepicker-unselected-bg-color;
+        border-color: $datepicker-unselected-border-color;
+        color: $datepicker-unselected-color;
+      }
+    }
+
+    //
+    // Date Range
+    &.in-range {
+      background-color: $datepicker-in-range-bg-color;
+      border-color: $datepicker-in-range-border-color;
+      color: $datepicker-in-range-color;
+
+      // TODO: Should this be static or should it be parameterized?
+      border-radius: 0;
+    }
+
+    &.start-date {
+      border-radius: $datepicker-cell-border-radius 0 0 $datepicker-cell-border-radius;
+    }
+
+    &.end-date {
+      border-radius: 0 $datepicker-cell-border-radius $datepicker-cell-border-radius 0;
+    }
+
+    &.start-date.end-date {
+      border-radius: $datepicker-cell-border-radius;
+    }
+
+    &.active {
+      &, &:hover {
+        background-color: $datepicker-active-bg-color;
+        border-color: $datepicker-active-border-color;
+        color: $datepicker-active-color;
+      }
+    }
+  }
+
+  th {
+    &.month {
+      width: auto;
+    }
+  }
+
+  //
+  // Disabled Controls
+  //
+  td, option {
+    &.disabled {
+      color: #999;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+  }
+
+  select {
+    &.monthselect, &.yearselect {
+      font-size: 12px;
+      padding: 1px;
+      height: auto;
+      margin: 0;
+      cursor: default;
+    }
+
+    &.monthselect {
+      margin-right: 2%;
+      width: 56%;
+    }
+
+    &.yearselect {
+      width: 40%;
+    }
+
+    &.hourselect, &.minuteselect, &.secondselect, &.ampmselect {
+      width: 50px;
+      margin-bottom: 0;
+    }
+  }
+
+  //
+  // Text Input Controls (above calendar)
+  //
+  .input-mini {
+    border: $datepicker-control-border-size solid $datepicker-control-border-color;
+    border-radius: $datepicker-control-border-radius;
+    color: $datepicker-control-color;
+    height: $datepicker-control-line-height;
+    line-height: $datepicker-control-height;
+    display: block;
+    vertical-align: middle;
+
+    // TODO: Should these all be static, too??
+    margin: 0 0 5px 0;
+    padding: 0 6px 0 28px;
+    width: 100%;
+
+    &.active {
+      border: $datepicker-control-active-border-size solid $datepicker-control-active-border-color;
+      border-radius: $datepicker-control-active-border-radius;
+    }
+  }
+
+  .daterangepicker_input {
+    position: relative;
+
+    i {
+      position: absolute;
+
+      // NOTE: These appear to be eyeballed to me...
+      left: 8px;
+      top: 8px;
+    }
+  }
+
+  //
+  // Time Picker
+  //
+  .calendar-time {
+    text-align: center;
+    margin: 5px auto;
+    line-height: $datepicker-control-line-height;
+    position: relative;
+    padding-left: 28px;
+
+    select {
+      &.disabled {
+        color: $datepicker-control-disabled-color;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+//
+// Predefined Ranges
+//
+
+.ranges {
+  font-size: 11px;
+  float: none;
+  margin: 4px;
+  text-align: left;
+
+  ul {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+  }
+
+  li {
+    font-size: 13px;
+    background: $datepicker-ranges-bg-color;
+    border: $datepicker-ranges-border-size solid $datepicker-ranges-border-color;
+    border-radius: $datepicker-ranges-border-radius;
+    color: $datepicker-ranges-color;
+    padding: 3px 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: $datepicker-ranges-hover-bg-color;
+      border: $datepicker-ranges-hover-border-size solid $datepicker-ranges-hover-border-color;
+      color: $datepicker-ranges-hover-color;
+    }
+
+    &.active {
+      background: $datepicker-ranges-hover-bg-color;
+      border: $datepicker-ranges-hover-border-size solid $datepicker-ranges-hover-border-color;
+      color: $datepicker-ranges-hover-color;
+    }
+  }
+}
+
+/*  Larger Screen Styling */
+@media (min-width: 564px) {
+  .#{$prefix-class} {
+    width: auto;
+
+    .ranges {
+      ul {
+        width: 160px;
+      }
+    }
+
+    &.single {
+      .ranges {
+        ul {
+          width: 100%;
+        }
+      }
+
+      .calendar.left {
+        clear: none;
+      }
+
+      .ranges, .calendar {
+        float:left;
+      }
+    }
+
+    .calendar{
+      &.left {
+        clear: left;
+        margin-right: 0;
+
+        .calendar-table {
+          border-right: none;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+      }
+
+      &.right {
+        margin-left: 0;
+
+        .calendar-table {
+          border-left: none;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+      }
+    }
+
+    .left .daterangepicker_input {
+      padding-right: 12px;
+    }
+
+    .calendar.left .calendar-table {
+      padding-right: 12px;
+    }
+
+    .ranges, .calendar {
+      float: left;
+    }
+  }
+}
+
+@media (min-width: 730px) {
+  .#{$prefix-class} {
+    .ranges {
+      width: auto;
+      float: left;
+    }
+
+    .calendar.left {
+      clear: none;
+    }
+  }
+}
