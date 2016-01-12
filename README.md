@@ -45,6 +45,8 @@ THE SOFTWARE.
 
 ## Things added for TBB custom calendar
 
+You can see [code diff](https://github.com/siteminder-au/bootstrap-daterangepicker/compare/v2.1.17...siteminder-au:master) from the original fork (`v2.1.7`)
+
 ### Events
 - `startDateSelected.daterangepicker`: Triggered when check in date is
   selected
@@ -58,7 +60,7 @@ THE SOFTWARE.
   ```
   options = { template: $compile(templateHTML)(scope)  }
   ```
-- `dateCellClass`: function taht receives `moment` as a param and needs
+- `dateCellClass`: function that receives `moment` as a param and needs
   to return string classes which will add to each date cell.
 
   ```
