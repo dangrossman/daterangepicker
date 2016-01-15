@@ -1327,7 +1327,8 @@
             }
 
             this.updateView();
-
+            this.element.trigger('clickDate.daterangepicker', this);
+            
         },
 
         clickApply: function(e) {
