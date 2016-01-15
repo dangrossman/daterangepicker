@@ -46,6 +46,7 @@
         this.dateLimit = false;
         this.autoApply = false;
         this.singleDatePicker = false;
+        this.singleDate = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
         this.timePicker = false;
@@ -229,6 +230,10 @@
             this.singleDatePicker = options.singleDatePicker;
             if (this.singleDatePicker)
                 this.endDate = this.startDate.clone();
+        }
+        
+        if (typeof options.singleDate === 'boolean') {
+            this.singleDate = options.singleDate;
         }
 
         if (typeof options.timePicker === 'boolean')
@@ -462,8 +467,14 @@
 
             if (!this.isShowing)
                 this.updateElement();
-
-            this.updateMonthsInView();
+                
+            if (this.singleDate) {
+                this.setEndDate(this.startDate);
+                this.updateMonthsInView();
+                this.hide();
+            } else {
+                this.updateMonthsInView();
+            }
         },
 
         setEndDate: function(endDate) {
@@ -492,7 +503,7 @@
 
             if (!this.isShowing)
                 this.updateElement();
-
+            
             this.updateMonthsInView();
         },
 
