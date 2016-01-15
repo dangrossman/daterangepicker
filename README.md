@@ -45,13 +45,20 @@ THE SOFTWARE.
 
 ## Things added for TBB custom calendar
 
-You can see [code diff](https://github.com/siteminder-au/bootstrap-daterangepicker/compare/v2.1.17...siteminder-au:master) from the original fork (`v2.1.7`)
+You can see [code diff](https://github.com/siteminder-au/bootstrap-daterangepicker/compare/v2.1.17...siteminder-au:master) from the original fork (`v2.1.17`)
+
+### DOM element
+- Each date cell in the calendars now have date value (`YYYY-DD-MM`
+  format) set to `data-date` attribute. This make it easier to select
+  date cell from date string.
 
 ### Events
 - `startDateSelected.daterangepicker`: Triggered when check in date is
   selected
 - `endDateSelected.daterangepicker`: Triggered when check out date is
   selected
+- `updateCalendar.daterangepicker`: Triggered when calendar view is
+  updated
 
 ### Options
 - `template` now can receive jQuery object. This enable `tamplate` to have
@@ -59,14 +66,4 @@ You can see [code diff](https://github.com/siteminder-au/bootstrap-daterangepick
 
   ```
   options = { template: $compile(templateHTML)(scope)  }
-  ```
-- `dateCellClass`: function that receives `moment` as a param and needs
-  to return string classes which will add to each date cell.
-
-  ```
-  options = {
-    dateCellClass: function(date) {
-      return "class1 class2";
-    }
-  }
   ```

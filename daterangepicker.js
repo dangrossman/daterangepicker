@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.18
+* @version: 2.1.20
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -253,10 +253,6 @@
 
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
-
-        if (typeof options.dateCellClass === 'function')
-            this.dateCellClass = options.dateCellClass;
-
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -590,6 +586,8 @@
 
             //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
+            this.element.trigger('updateCalendar.daterangepicker', this);
+
             if (this.endDate == null) return;
 
             var customRange = true;
@@ -818,13 +816,6 @@
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
 
-                    //custom classes from given dateCellClass function
-                    if (this.dateCellClass) {
-                        var customClasses = this.dateCellClass(calendar[row][col], this.startDate, this.endDate);
-                        if (typeof customClasses === 'string')
-                          Array.prototype.push.apply(classes, customClasses.split(/\s+/));
-                    }
-
                     var cname = '', disabled = false;
                     for (var i = 0; i < classes.length; i++) {
                         cname += classes[i] + ' ';
@@ -834,7 +825,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" data-date="' + calendar[row][col].format('YYYY-MM-DD') + '">' + calendar[row][col].date() + '</td>';
 
                 }
                 html += '</tr>';
