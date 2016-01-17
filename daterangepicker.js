@@ -4,39 +4,18 @@
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
  * @website: https://www.improvely.com/
- *
- * NOTE:
- * copy of modified bower component
- * Why? Bower components will be switched to modified ones in future because on custom modification
+ */
+
+/**
+ * NOTE
+ * * This file is edited
  */
 
 (function(root, factory) {
 
-    if (typeof define === 'function' && define.amd) {
-        define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-            root.daterangepicker = factory(root, exports, momentjs, $);
-        });
+    root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
 
-    } else if (typeof exports !== 'undefined') {
-        var momentjs = require('moment');
-        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;  //isomorphic issue
-        if (!jQuery) {
-            try {
-                jQuery = require('jquery');
-                if (!jQuery.fn) jQuery.fn = {}; //isomorphic issue
-            } catch (err) {
-                if (!jQuery) throw new Error('jQuery dependency not found');
-            }
-        }
-
-        factory(root, exports, momentjs, jQuery);
-
-        // Finally, as a browser global.
-    } else {
-        root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
-    }
-
-}(this || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
+}(window || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
 
     var DateRangePicker = function(element, options, cb) {
 
