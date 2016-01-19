@@ -68,7 +68,7 @@
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
 
-        this.locale = {
+        this.locale = $.extend({
             format: 'MM/DD/YYYY',
             separator: ' - ',
             applyLabel: 'Apply',
@@ -78,7 +78,7 @@
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
             firstDay: moment.localeData().firstDayOfWeek()
-        };
+        }, $.fn.daterangepicker.defaults.locale);
 
         this.callback = function() { };
 
@@ -1519,6 +1519,10 @@
             el.data('daterangepicker', new DateRangePicker(el, options, callback));
         });
         return this;
+    };
+
+    $.fn.daterangepicker.defaults = {
+
     };
     
     return DateRangePicker;
