@@ -54,6 +54,8 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.autoApplyRange = true;
+        this.outsideClickCancels = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -248,6 +250,12 @@
 
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
+
+        if (typeof options.autoApplyRange === 'boolean')
+            this.autoApplyRange = options.autoApplyRange;
+
+        if (typeof options.outsideClickCancels === 'boolean')
+            this.outsideClickCancels = options.outsideClickCancels;
 
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
@@ -1139,7 +1147,11 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
-            this.hide();
+            if (this.outsideClickCancels) {
+                this.clickCancel();
+            } else {
+                this.hide();
+            }
         },
 
         showCalendars: function() {
@@ -1186,7 +1198,11 @@
                 }
 
                 this.hideCalendars();
-                this.clickApply();
+                if (this.autoApplyRange) {
+                    this.clickApply();
+                } else {
+                    this.updateView();
+                }
             }
         },
 
