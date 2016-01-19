@@ -54,6 +54,7 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.autoApplyRange = true;
         this.ranges = {};
 
         this.opens = 'right';
@@ -248,6 +249,9 @@
 
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
+
+        if (typeof options.autoApplyRange === 'boolean')
+            this.autoApplyRange = options.autoApplyRange;
 
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
@@ -1186,7 +1190,11 @@
                 }
 
                 this.hideCalendars();
-                this.clickApply();
+                if (this.autoApplyRange) {
+                    this.clickApply();
+                } else {
+                    this.updateView();
+                }
             }
         },
 
