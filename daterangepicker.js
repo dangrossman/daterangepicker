@@ -365,7 +365,11 @@
             }
         }
 
-        if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
+        if (options.alwaysShowCalendars) {
+            this.alwaysShowCalendars = true
+        }
+
+        if ((typeof options.ranges === 'undefined' || this.alwaysShowCalendars) && !this.singleDatePicker) {
             this.container.addClass('show-calendar');
         }
 
@@ -1185,7 +1189,10 @@
                     this.endDate.endOf('day');
                 }
 
-                this.hideCalendars();
+                if (!this.alwaysShowCalendars) {
+                    this.hideCalendars();
+                }
+
                 this.clickApply();
             }
         },
