@@ -64,6 +64,14 @@ You can see [code diff](https://github.com/siteminder-au/bootstrap-daterangepick
 - `template` now can receive jQuery object. This enable `tamplate` to have
   angular directive.
 
-  ```
+  ```javascript
   options = { template: $compile(templateHTML)(scope)  }
+  ```
+  
+### Methods
+- `updateMomentLocale`: update view to the given moment locale key
+
+  ```javascript
+  // e.g. to update the view and inputs to Thai language
+  this.updateMomentLocale('th')
   ```
