@@ -1507,6 +1507,20 @@
             this.container.remove();
             this.element.off('.daterangepicker');
             this.element.removeData();
+        },
+
+        updateMomentLocale: function(key) {
+          moment.locale(key);
+          this.locale.daysOfWeek = moment.weekdaysMin();
+          this.locale.monthNames = moment.monthsShort();
+          this.locale.firstDay = moment.localeData().firstDayOfWeek;
+          for (var attr in this) {
+            if (this[attr] && this[attr] instanceof moment().constructor) {
+              this[attr].locale(key);
+            }
+          }
+          this.updateView();
+          this.updateElement();
         }
 
     };
