@@ -1458,6 +1458,12 @@
                 }
 
             }
+            else if (!start.isValid()) {
+                this.container.find('input[name="daterangepicker_start"]').val(this.oldStartDate.format(this.locale.format));
+            }
+            else if (!end.isValid()) {
+                this.container.find('input[name="daterangepicker_end"]').val(this.oldEndDate.format(this.locale.format));
+            }
 
             this.updateCalendars();
             if (this.timePicker) {
