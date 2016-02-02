@@ -1446,9 +1446,9 @@
                 this.setEndDate(end);
 
                 if (isRight) {
-                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
-                } else {
                     this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
+                } else {
+                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
                 }
 
             }
