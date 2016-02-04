@@ -167,16 +167,16 @@
         }
 
         if (typeof options.startDate === 'string')
-            this.startDate = moment(options.startDate, this.locale.format);
+            this.startDate = moment(options.startDate, [moment.ISO_8601, this.locale.format]);
 
         if (typeof options.endDate === 'string')
-            this.endDate = moment(options.endDate, this.locale.format);
+            this.endDate = moment(options.endDate, [moment.ISO_8601, this.locale.format]);
 
         if (typeof options.minDate === 'string')
-            this.minDate = moment(options.minDate, this.locale.format);
+            this.minDate = moment(options.minDate, [moment.ISO_8601, this.locale.format]);
 
         if (typeof options.maxDate === 'string')
-            this.maxDate = moment(options.maxDate, this.locale.format);
+            this.maxDate = moment(options.maxDate, [moment.ISO_8601, this.locale.format]);
 
         if (typeof options.startDate === 'object')
             this.startDate = moment(options.startDate);
@@ -292,12 +292,12 @@
             for (range in options.ranges) {
 
                 if (typeof options.ranges[range][0] === 'string')
-                    start = moment(options.ranges[range][0], this.locale.format);
+                    start = moment(options.ranges[range][0], [moment.ISO_8601, this.locale.format]);
                 else
                     start = moment(options.ranges[range][0]);
 
                 if (typeof options.ranges[range][1] === 'string')
-                    end = moment(options.ranges[range][1], this.locale.format);
+                    end = moment(options.ranges[range][1], [moment.ISO_8601, this.locale.format]);
                 else
                     end = moment(options.ranges[range][1]);
 
@@ -443,7 +443,7 @@
 
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
-                this.startDate = moment(startDate, this.locale.format);
+                this.startDate = moment(startDate, [moment.ISO_8601, this.locale.format]);
 
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
@@ -468,7 +468,7 @@
 
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
-                this.endDate = moment(endDate, this.locale.format);
+                this.endDate = moment(endDate, [moment.ISO_8601, this.locale.format]);
 
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
