@@ -54,6 +54,7 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.showWithRanges = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -249,6 +250,9 @@
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
 
+        if (typeof options.showWithRanges === 'boolean')
+            this.showWithRanges = options.showWithRanges;
+
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
@@ -329,7 +333,11 @@
             for (range in this.ranges) {
                 list += '<li>' + range + '</li>';
             }
-            list += '<li>' + this.locale.customRangeLabel + '</li>';
+            if(this.showWithRanges === false)
+              list += '<li>' + this.locale.customRangeLabel + '</li>';
+            else
+              list += '<li style="display: none;">' + this.locale.customRangeLabel + '</li>';
+            
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
@@ -365,7 +373,7 @@
             }
         }
 
-        if (typeof options.ranges === 'undefined' && !this.singleDatePicker) {
+        if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.showWithRanges) {
             this.container.addClass('show-calendar');
         }
 
@@ -1185,7 +1193,9 @@
                     this.endDate.endOf('day');
                 }
 
-                this.hideCalendars();
+                if(!this.showWithRanges) {
+                  this.hideCalendars();
+                }
                 this.clickApply();
             }
         },
