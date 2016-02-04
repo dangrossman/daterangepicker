@@ -67,6 +67,8 @@ You can see [code diff](https://github.com/siteminder-au/bootstrap-daterangepick
   ```javascript
   options = { template: $compile(templateHTML)(scope)  }
   ```
+- `startDateInput`: jQuery or selector string that overrides default start date input
+- `endDateInput`: jQuery or selector string that overrides default end date input
   
 ### Methods
 - `updateMomentLocale`: update view to the given moment locale key
