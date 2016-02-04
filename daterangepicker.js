@@ -130,6 +130,20 @@
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);
 
+        this.startDateInput = this.container.find('input[name="daterangepicker_start"]');
+        if (options.startDateInput instanceof jQuery) {
+            this.startDateInput = options.startDateInput;
+        } else if (typeof options.startDateInput === 'string' && $(options.startDateInput).length) {
+            this.startDateInput = $(options.startDateInput);
+        }
+
+        this.endDateInput = this.container.find('input[name="daterangepicker_end"]');
+        if (options.endDateInput instanceof jQuery) {
+            this.endDateInput = options.endDateInput;
+        } else if (typeof options.endDateInput === 'string' && $(options.endDateInput).length) {
+            this.endDateInput = $(options.endDateInput);
+        }
+
         //
         // handle all the possible options overriding defaults
         //
@@ -512,11 +526,11 @@
                 }
             }
             if (this.endDate) {
-                this.container.find('input[name="daterangepicker_end"]').removeClass('active');
-                this.container.find('input[name="daterangepicker_start"]').addClass('active');
+                this.endDateInput.removeClass('active');
+                this.startDateInput.addClass('active');
             } else {
-                this.container.find('input[name="daterangepicker_end"]').addClass('active');
-                this.container.find('input[name="daterangepicker_start"]').removeClass('active');
+                this.endDateInput.addClass('active');
+                this.startDateInput.removeClass('active');
             }
             this.updateMonthsInView();
             this.updateCalendars();
@@ -997,12 +1011,12 @@
         updateFormInputs: function() {
 
             //ignore mouse movements while an above-calendar text input has focus
-            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+            if (this.startDateInput.is(":focus") || this.endDateInput.is(":focus"))
                 return;
 
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
+            this.startDateInput.val(this.startDate.format(this.locale.format));
             if (this.endDate)
-                this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
+                this.endDateInput.val(this.endDate.format(this.locale.format));
 
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
@@ -1159,7 +1173,7 @@
         hoverRange: function(e) {
 
             //ignore mouse movements while an above-calendar text input has focus
-            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+            if (this.startDateInput.is(":focus") || this.endDateInput.is(":focus"))
                 return;
 
             var label = e.target.innerHTML;
@@ -1167,8 +1181,8 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
+                this.startDateInput.val(dates[0].format(this.locale.format));
+                this.endDateInput.val(dates[1].format(this.locale.format));
             }
             
         },
@@ -1220,7 +1234,7 @@
         hoverDate: function(e) {
 
             //ignore mouse movements while an above-calendar text input has focus
-            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
+            if (this.startDateInput.is(":focus") || this.endDateInput.is(":focus"))
                 return;
 
             //ignore dates that can't be selected
@@ -1234,9 +1248,9 @@
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             if (this.endDate) {
-                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+                this.startDateInput.val(date.format(this.locale.format));
             } else {
-                this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                this.endDateInput.val(date.format(this.locale.format));
             }
 
             //highlight the dates between the start date and the date being hovered as a potential end date
@@ -1437,8 +1451,8 @@
 
         formInputsChanged: function(e) {
             var isRight = $(e.target).closest('.calendar').hasClass('right');
-            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
-            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
+            var start = moment(this.startDateInput.val(), this.locale.format);
+            var end = moment(this.endDateInput.val(), this.locale.format);
 
             if (start.isValid() && end.isValid()) {
 
@@ -1449,9 +1463,9 @@
                 this.setEndDate(end);
 
                 if (isRight) {
-                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
+                    this.startDateInput.val(this.startDate.format(this.locale.format));
                 } else {
-                    this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
+                    this.endDateInput.val(this.endDate.format(this.locale.format));
                 }
 
             }
