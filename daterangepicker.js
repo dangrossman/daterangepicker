@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.17
+* @version: 2.1.18
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -163,7 +163,10 @@
 
             if (typeof options.locale.customRangeLabel === 'string')
               this.locale.customRangeLabel = options.locale.customRangeLabel;
+        }
 
+        if (typeof options.rangesLabels === 'object') {
+            this.locale = $.extend(this.locale, options.rangesLabels);
         }
 
         if (typeof options.startDate === 'string')
@@ -317,6 +320,9 @@
                 if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
                     continue;
                 
+                if(typeof this.locale[range] === 'string')
+                    range = this.locale[range];
+
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
                 elem.innerHTML = range;
