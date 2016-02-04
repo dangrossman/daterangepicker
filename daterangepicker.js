@@ -335,6 +335,9 @@
             }
             if(this.showWithRanges === false)
               list += '<li>' + this.locale.customRangeLabel + '</li>';
+            else
+              list += '<li style="display: none;">' + this.locale.customRangeLabel + '</li>';
+            
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
