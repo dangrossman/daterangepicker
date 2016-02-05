@@ -1290,6 +1290,8 @@
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
+            var needApplying = false;
+
             //
             // this function needs to do a few things:
             // * alternate between selecting a start and end date for the range,
@@ -1334,17 +1336,20 @@
                 }
                 this.setEndDate(date.clone());
                 if (this.autoApply)
-                    this.clickApply();
+                    needApplying = true;
             }
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
                 if (!this.timePicker)
-                    this.clickApply();
+                    needApplying = true;
             }
 
             this.updateView();
 
+            if (needApplying) {
+              this.clickApply();
+            }
         },
 
         clickApply: function(e) {
