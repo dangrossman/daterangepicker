@@ -1353,15 +1353,15 @@
         },
 
         clickApply: function(e) {
-            this.hide();
             this.element.trigger('apply.daterangepicker', this);
+            this.hide();
         },
 
         clickCancel: function(e) {
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
-            this.hide();
             this.element.trigger('cancel.daterangepicker', this);
+            this.hide();
         },
 
         monthOrYearChanged: function(e) {
