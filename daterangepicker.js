@@ -1281,6 +1281,8 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             //
 
+            var needApplying = false;
+
             if (this.endDate || date.isBefore(this.startDate, 'day')) {
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1317,16 +1319,19 @@
                 }
                 this.setEndDate(date.clone());
                 if (this.autoApply)
-                    this.clickApply();
+                    needApplying = true;
             }
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
                 if (!this.timePicker)
-                    this.clickApply();
+                    needApplying = true;
             }
 
             this.updateView();
+
+            if (needApplying)
+                this.clickApply();
 
         },
 
