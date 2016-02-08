@@ -418,7 +418,7 @@
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
         this.triggerElements.each($.proxy(function(index, trigger) {
-            if (trigger === this.element.get(0) && this.element.is('input')) {
+            if (trigger === this.element.get(0) && this.element.is('input:enabled:not([readonly])')) {
                 $(trigger).on({
                     'click.daterangepicker': $.proxy(this.show, this),
                     'focus.daterangepicker': $.proxy(this.show, this),
