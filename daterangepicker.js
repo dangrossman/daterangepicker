@@ -131,17 +131,13 @@
         this.container = $(options.template).appendTo(this.parentEl);
 
         this.startDateInput = this.container.find('input[name="daterangepicker_start"]');
-        if (options.startDateInput instanceof jQuery) {
-            this.startDateInput = options.startDateInput;
-        } else if (typeof options.startDateInput === 'string' && $(options.startDateInput).length) {
-            this.startDateInput = $(options.startDateInput);
+        if (options.startDateInput && $(options.startDateInput).length) {
+          this.startDateInput = $(options.startDateInput);
         }
 
         this.endDateInput = this.container.find('input[name="daterangepicker_end"]');
-        if (options.endDateInput instanceof jQuery) {
-            this.endDateInput = options.endDateInput;
-        } else if (typeof options.endDateInput === 'string' && $(options.endDateInput).length) {
-            this.endDateInput = $(options.endDateInput);
+        if (options.endDateInput && $(options.endDateInput).length) {
+          this.endDateInput = $(options.endDateInput);
         }
 
         //
