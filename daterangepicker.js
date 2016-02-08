@@ -130,6 +130,11 @@
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);
 
+        this.triggerElements = this.element;
+        if (options.triggerElements && $(options.triggerElements).length) {
+          this.triggerElements = $(options.triggerElements);
+        }
+
         this.startDateInput = this.container.find('input[name="daterangepicker_start"]');
         if (options.startDateInput && $(options.startDateInput).length) {
           this.startDateInput = $(options.startDateInput);
@@ -421,16 +426,18 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        if (this.element.is('input')) {
-            this.element.on({
-                'click.daterangepicker': $.proxy(this.show, this),
-                'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.elementChanged, this),
-                'keydown.daterangepicker': $.proxy(this.keydown, this)
-            });
-        } else {
-            this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
-        }
+        this.triggerElements.each($.proxy(function(index, trigger) {
+            if (trigger === this.element.get(0) && this.element.is('input:enabled:not([readonly])')) {
+                $(trigger).on({
+                    'click.daterangepicker': $.proxy(this.show, this),
+                    'focus.daterangepicker': $.proxy(this.show, this),
+                    'keyup.daterangepicker': $.proxy(this.elementChanged, this),
+                    'keydown.daterangepicker': $.proxy(this.keydown, this)
+                });
+            } else {
+                $(trigger).on('click.daterangepicker', $.proxy(this.toggle, this));
+            }
+        }, this));
 
         //
         // if attached to a text input, set the initial value
@@ -1148,7 +1155,7 @@
             if (
                 // ie modal dialog fix
                 e.type == "focusin" ||
-                target.closest(this.element).length ||
+                target.closest(this.triggerElements).length ||
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
