@@ -134,6 +134,11 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="triggerElements"> triggerElements (with icon inside the input)
+                </label>
+              </div>
             </div>
             <div class="col-md-4">
 
@@ -214,10 +219,6 @@
           updateConfig();
         });
 
-        $('.demo i').click(function() {
-          $(this).parent().find('input').click();
-        });
-
         $('#startDate').daterangepicker({
           singleDatePicker: true,
           startDate: moment().subtract(6, 'days')
@@ -232,6 +233,9 @@
 
         function updateConfig() {
           var options = {};
+
+          if ($('#triggerElements').is(':checked'))
+            options.triggerElements = '.demo input, .demo i';
 
           if ($('#singleDatePicker').is(':checked'))
             options.singleDatePicker = true;
