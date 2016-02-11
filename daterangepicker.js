@@ -92,21 +92,17 @@
     if (typeof options.template !== 'string' && !(options.template instanceof jQuery))
 
       options.template = '<div class="daterangepicker dropdown-menu">' +
-        '<div class="daterangepicker_inputs">' +
-          '<div class="daterangepicker_input">' +
-            '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
-            '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-            '<div class="calendar-time">' +
-              '<div></div>' +
-              '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+        '<div class="daterangepicker_inputs row">' +
+          '<div class="col-md-6">' +
+            '<div class="daterangepicker_input">' +
+              '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+              '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
             '</div>' +
           '</div>' +
-          '<div class="daterangepicker_input">' +
-            '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
-            '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-            '<div class="calendar-time">' +
-              '<div></div>' +
-              '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+          '<div class="col-md-6">' +
+            '<div class="daterangepicker_input">' +
+              '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+              '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -332,7 +328,6 @@
 
       this.startDate = this.startDate.startOf('day');
       this.endDate = this.endDate.endOf('day');
-      this.container.find('.calendar-time').hide();
 
       //can't be used together for now
       if (this.autoApply)
@@ -541,7 +536,6 @@
       var customRange = true;
       var i = 0;
       for (var range in this.ranges) {
-        //ignore times when comparing dates if time picker is not enabled
         if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
           customRange = false;
           this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
@@ -645,7 +639,7 @@
       var dateHtml = this.locale.monthNames[calMatrix[1][1].month()] + calMatrix[1][1].format(" YYYY");
 
       html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-      if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (index == this.numberOfMonths - 1 || this.singleDatePicker)) {
+      if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (index == this.numberOfMonths - 1)) {
         html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
       } else {
         html += '<th></th>';
@@ -1018,7 +1012,6 @@
       //
       // this function needs to do a few things:
       // * alternate between selecting a start and end date for the range,
-      // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
       // * if autoapply is enabled, and an end date was chosen, apply the selection
       // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
       //

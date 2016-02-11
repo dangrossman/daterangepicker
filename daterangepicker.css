@@ -124,7 +124,6 @@
 .daterangepicker .calendar {
   display: none;
   max-width: 270px;
-  margin: 4px;
 }
 
 .daterangepicker.show-calendar .calendar {
@@ -133,6 +132,14 @@
 
 .daterangepicker .calendar.single .calendar-table {
   border: none;
+}
+
+.daterangepicker .daterangepicker_inputs {
+  display: none;
+}
+
+.daterangepicker.show-calendar .daterangepicker_inputs {
+  display: block;
 }
 
 /* Calendars */
@@ -148,6 +155,11 @@
   padding: 4px;
   border-radius: 4px;
   background: #fff;
+}
+
+.daterangepicker.single .calendar-table {
+  border: none;
+  border-radius: none;
 }
 
 .daterangepicker table {
@@ -282,7 +294,7 @@
 .daterangepicker .ranges {
   font-size: 11px;
   float: none;
-  margin: 4px;
+  margin: 4px 0;
   text-align: left;
 }
 
@@ -322,40 +334,32 @@
   .daterangepicker.single .ranges ul {
     width: 100%;
   }
-  .daterangepicker .calendar.left .calendar-table {
+  .daterangepicker .calendar:first-child .calendar-table {
     border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
 
-  .daterangepicker .calendar.right .calendar-table {
+  .daterangepicker .calendar:last-child .calendar-table {
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
-  .daterangepicker .calendar.left {
-    clear: left;
-    margin-right: 0;
+  .daterangepicker .calendar:not(:last-child):not(:first-child) .calendar-table {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
   }
-  .daterangepicker.single .calendar.left {
-    clear: none;
+
+  .daterangepicker .calendar:only-child .calendar-table {
+    border: none;
+    border-radius: none;
   }
+
   .daterangepicker.single .ranges,
   .daterangepicker.single .calendar{
     float:left;
-  }
-
-  .daterangepicker .calendar.right {
-    margin-left: 0;
-  }
-
-  .daterangepicker .left .daterangepicker_input {
-    padding-right: 12px;
-  }
-
-  .daterangepicker .calendar.left .calendar-table {
-    padding-right: 12px;
   }
 
   .daterangepicker .ranges,
@@ -371,5 +375,11 @@
   }
   .daterangepicker .calendar.left {
     clear: none;
+  }
+}
+@media (max-width: 563px) {
+  .daterangepicker .calendar .calendar-table {
+    border: none;
+    border-radius: none;
   }
 }
