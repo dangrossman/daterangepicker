@@ -104,6 +104,11 @@
                   <input type="checkbox" id="triggerElements"> triggerElements (with icon inside the input)
                 </label>
               </div>
+
+              <div class="form-group">
+                <label for="numberOfMonths">numberOfMonths</label>
+                <input type="text" class="form-control" id="numberOfMonths" value="2">
+              </div>
             </div>
             <div class="col-md-4">
 
@@ -257,6 +262,9 @@
 
           if ($('#maxDate').val().length)
             options.maxDate = $('#maxDate').val();
+
+          if ($('#numberOfMonths').val().length)
+            options.numberOfMonths = parseInt($('#numberOfMonths').val(), 10);
 
           if ($('#opens').val().length && $('#opens').val() != 'right')
             options.opens = $('#opens').val();

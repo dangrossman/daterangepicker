@@ -48,6 +48,7 @@
     this.showWeekNumbers = false;
     this.autoUpdateInput = true;
     this.ranges = {};
+    this.numberOfMonths = 2;
 
     this.opens = 'right';
     if (this.element.hasClass('pull-right'))
@@ -78,7 +79,6 @@
     //some state information
     this.isShowing = false;
     this.calendars = [];
-    this.numberOfMonths = 3;
 
     //custom options from user
     if (typeof options !== 'object' || options === null)
@@ -172,6 +172,9 @@
           this.locale.customRangeLabel = options.locale.customRangeLabel;
 
       }
+
+      if (typeof options.numberOfMonths === 'number')
+        this.numberOfMonths = options.numberOfMonths;
 
       if (typeof options.startDate === 'string')
         this.startDate = moment(options.startDate, this.locale.format);
