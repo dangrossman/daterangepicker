@@ -329,10 +329,6 @@
       this.startDate = this.startDate.startOf('day');
       this.endDate = this.endDate.endOf('day');
 
-      //can't be used together for now
-      if (this.autoApply)
-        this.autoApply = false;
-
       if (this.autoApply && typeof options.ranges !== 'object') {
         this.container.find('.ranges').hide();
       } else if (this.autoApply) {
