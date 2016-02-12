@@ -1052,8 +1052,9 @@
 
     formInputsChanged: function(e) {
       var isEndDate = $(e.target).prop('name') === 'daterangepicker_end';
-      var start = moment(this.startDateInput.val(), this.locale.format);
-      var end = moment(this.endDateInput.val(), this.locale.format);
+      var newDate = $(e.target).val();
+      var start = isEndDate ? this.startDate : moment(newDate, this.locale.format);
+      var end = isEndDate ? moment(newDate, this.locale.format) : this.endDate;
 
       if (start.isValid() && end.isValid()) {
 
