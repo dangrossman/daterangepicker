@@ -82,19 +82,25 @@
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="dateLimit"> dateLimit (with example date range span)
+                  <input type="checkbox" id="dateLimit"> dateLimit <span class="text-muted">(with example date range span)</span>
                 </label>
               </div>
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
+                  <input type="checkbox" id="ranges"> ranges <span class="text-muted">(with example predefined ranges)</span>
                 </label>
               </div>
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="locale"> locale (with example settings)
+                  <input type="checkbox" id="locale"> locale <span class="text-muted">(with example settings)</span>
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="triggerElements"> triggerElements <span class="text-muted">(with icon inside the input)</span>
                 </label>
               </div>
 
@@ -106,10 +112,9 @@
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="triggerElements"> triggerElements (with icon inside the input)
+                  <input type="checkbox" id="navigable" checked="checked"> navigable <span class="text-muted">(to disable navigation, minDate and maxDate are required)</span>
                 </label>
               </div>
-
             </div>
             <div class="col-md-4">
 
@@ -248,6 +253,9 @@
 
           if (!$('#autoUpdateInput').is(':checked'))
             options.autoUpdateInput = false;
+
+          if (!$('#navigable').is(':checked'))
+            options.navigable = false;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();

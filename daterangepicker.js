@@ -49,6 +49,7 @@
     this.autoUpdateInput = true;
     this.ranges = {};
     this.numberOfMonths = 2;
+    this.navigable = true;
 
     this.opens = 'right';
     if (this.element.hasClass('pull-right'))
@@ -242,6 +243,18 @@
 
       if (typeof options.isInvalidDate === 'function')
         this.isInvalidDate = options.isInvalidDate;
+
+      // minDate and maxDate are required to use in non navigable mode
+      // as it will render calendar from minDate to maxDate
+      if (typeof options.navigable === 'boolean' && this.maxDate && this.minDate)
+        this.navigable = options.navigable;
+
+      // ignore numberOfMonths if it is in non navigable mode
+      if (!this.navigable) {
+        var maxMonth = this.maxDate.clone().endOf('month');
+        var minMonth = this.minDate.clone().startOf('month');
+        this.numberOfMonths = Math.ceil(maxMonth.diff(minMonth, 'month', true));
+      }
 
       // update day names order to firstDay
       if (this.locale.firstDay != 0) {
@@ -508,9 +521,10 @@
 
       if (initMonths) {
         this.calendars = [];
+        var startDate = this.navigable ? this.startDate : this.minDate;
         for (var i = 0; i < this.numberOfMonths; i++) {
           this.calendars.push({
-            month: this.startDate.clone().date(2).add(i, 'month')
+            month: startDate.clone().date(2).add(i, 'month')
           })
         }
       }
@@ -626,7 +640,7 @@
       if (this.showWeekNumbers)
         html += '<th></th>';
 
-      if ((!minDate || minDate.isBefore(calendar.firstDay)) && index == 0) {
+      if (this.navigable && index == 0 && (!minDate || minDate.isBefore(calendar.firstDay))) {
         html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
       } else {
         html += '<th></th>';
@@ -635,7 +649,7 @@
       var dateHtml = this.locale.monthNames[calMatrix[1][1].month()] + calMatrix[1][1].format(" YYYY");
 
       html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-      if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (index == this.numberOfMonths - 1)) {
+      if (this.navigable && (index == this.numberOfMonths - 1) && (!maxDate || maxDate.isAfter(calendar.lastDay))) {
         html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
       } else {
         html += '<th></th>';
@@ -934,6 +948,9 @@
     },
 
     clickPrev: function() {
+      if (!this.navigable)
+        return;
+
       for (var index in this.calendars) {
         this.calendars[index].month.subtract(1, 'month');
       }
@@ -941,6 +958,9 @@
     },
 
     clickNext: function() {
+      if (!this.navigable)
+        return;
+
       for (var index in this.calendars) {
         this.calendars[index].month.add(1, 'month');
       }
