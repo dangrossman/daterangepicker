@@ -54,6 +54,8 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.leftIconClass = 'fa fa-chevron-left';
+        this.rightIconClass = 'fa fa-chevron-right';
         this.ranges = {};
 
         this.opens = 'right';
@@ -251,6 +253,12 @@
 
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
+      
+        if (typeOf options.leftIconClass === 'string')
+            this.leftIconClass = options.leftIconClass;
+        
+        if(typeOf options.rightIconClass === 'string')
+            this.rightIconClass = options.rightIconClass;
 
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
@@ -695,7 +703,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
+                html += '<th class="prev available"><i class="'+ this.leftIconClass + 'glyphicon glyphicon-chevron-left"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -737,7 +745,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
+                html += '<th class="next available"><i class="'+ this.rightIconClass +'glyphicon glyphicon-chevron-right"></i></th>';
             } else {
                 html += '<th></th>';
             }
