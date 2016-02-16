@@ -54,7 +54,6 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
-        this.clear = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -68,14 +67,12 @@
         this.buttonClasses = 'btn btn-sm';
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
-        this.clearClass = 'btn-default';
 
         this.locale = {
             format: 'MM/DD/YYYY',
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
-            clearLabel: 'Clear',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
@@ -127,7 +124,6 @@
                     '<div class="range_inputs">' +
                         '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                         '<button class="cancelBtn" type="button"></button>' +
-                        '<button class="clearBtn" type="button"></button>' +
                     '</div>' +
                 '</div>' +
             '</div>';
@@ -161,9 +157,6 @@
 
             if (typeof options.locale.cancelLabel === 'string')
               this.locale.cancelLabel = options.locale.cancelLabel;
-
-            if (typeof options.locale.clearLabel === 'string')
-                this.locale.clearLabel = options.locale.clearLabel;
 
             if (typeof options.locale.weekLabel === 'string')
               this.locale.weekLabel = options.locale.weekLabel;
@@ -211,9 +204,6 @@
         if (typeof options.cancelClass === 'string')
             this.cancelClass = options.cancelClass;
 
-        if (typeof options.clearClass === 'string')
-            this.clearClass = options.clearClass;
-
         if (typeof options.dateLimit === 'object')
             this.dateLimit = options.dateLimit;
 
@@ -255,9 +245,6 @@
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
-
-        if (typeof options.clear === 'boolean')
-            this.clear = options.clear;
 
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
@@ -367,12 +354,6 @@
             this.container.find('.applyBtn, .cancelBtn').addClass('hide');
         }
 
-        console.log("Clear", this.clear);
-
-        if (!this.clear) {
-            this.container.find('.clearBtn').hide();
-        }
-
         if (this.singleDatePicker) {
             this.container.addClass('single');
             this.container.find('.calendar.left').addClass('single');
@@ -399,16 +380,13 @@
         }
 
         //apply CSS classes and labels to buttons
-        this.container.find('.applyBtn, .cancelBtn, .clearBtn').addClass(this.buttonClasses);
+        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
         if (this.applyClass.length)
             this.container.find('.applyBtn').addClass(this.applyClass);
         if (this.cancelClass.length)
             this.container.find('.cancelBtn').addClass(this.cancelClass);
-        if (this.clearClass.length)
-            this.container.find('.clearBtn').addClass(this.clearClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
-        this.container.find('.clearBtn').html(this.locale.clearLabel);
 
         //
         // event listeners
@@ -430,7 +408,6 @@
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
-            .on('click.daterangepicker', 'button.clearBtn', $.proxy(this.clickClear, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
@@ -1128,7 +1105,7 @@
             if (!this.isShowing) return;
 
             //incomplete date selection, revert to last values
-            if (!this.clear && !this.endDate) {
+            if (!this.endDate) {
                 this.startDate = this.oldStartDate.clone();
                 this.endDate = this.oldEndDate.clone();
             }
@@ -1367,14 +1344,6 @@
             this.endDate = this.oldEndDate;
             this.hide();
             this.element.trigger('cancel.daterangepicker', this);
-        },
-
-        clickClear: function(e) {
-            delete this.startDate;
-            delete this.endDate;
-            console.log("Clear", this);
-            this.hide();
-            this.element.trigger('clear.daterangepicker', this);
         },
 
         monthOrYearChanged: function(e) {

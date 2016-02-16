@@ -64,12 +64,6 @@
               </div>
 
               <div class="checkbox">
-                  <label>
-                      <input type="checkbox" id="clear"> clear
-                  </label>
-              </div>
-
-              <div class="checkbox">
                 <label>
                   <input type="checkbox" id="singleDatePicker"> singleDatePicker
                 </label>
@@ -175,11 +169,6 @@
                 <input type="text" class="form-control" id="cancelClass" value="btn-default">
               </div>
 
-              <div class="form-group">
-                  <label for="clearClass">clearClass</label>
-                  <input type="text" class="form-control" id="clearClass" value="btn-default">
-              </div>
-
             </div>
 
           </div>
@@ -268,9 +257,6 @@
           if ($('#autoApply').is(':checked'))
             options.autoApply = true;
 
-          if ($('#clear').is(':checked'))
-              options.clear = true;
-
           if ($('#dateLimit').is(':checked'))
             options.dateLimit = { days: 7 };
 
@@ -335,9 +321,6 @@
 
           if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
             options.cancelClass = $('#cancelClass').val();
-
-          if ($('#clearClass').val().length && $('#clearClass').val() != 'btn-default')
-              options.clearClass = $('#clearClass').val();
 
           $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
