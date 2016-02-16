@@ -496,6 +496,13 @@
             this.updateMonthsInView();
         },
 
+        clearDates: function () {
+            this.startDate = undefined;
+            this.oldStartDate = undefined;
+            this.endDate = undefined;
+            this.oldEndDate = undefined;
+        },
+
         isInvalidDate: function() {
             return false;
         },
@@ -1105,7 +1112,7 @@
             if (!this.isShowing) return;
 
             //incomplete date selection, revert to last values
-            if (!this.endDate) {
+            if (!this.endDate && this.oldEndDate) {
                 this.startDate = this.oldStartDate.clone();
                 this.endDate = this.oldEndDate.clone();
             }
@@ -1239,6 +1246,9 @@
             } else {
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
             }
+
+            // Don't highlight a range if both start and end date is undefined
+            if (!this.startDate && !this.endDate) return;
 
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
@@ -1466,7 +1476,13 @@
 
         elementChanged: function() {
             if (!this.element.is('input')) return;
-            if (!this.element.val().length) return;
+
+            if (!this.element.val().length) {
+                this.clearDates();
+                //this.hide();
+                return;
+            }
+
             if (this.element.val().length < this.locale.format.length) return;
 
             var dateString = this.element.val().split(this.locale.separator),
