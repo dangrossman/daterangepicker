@@ -354,12 +354,29 @@
 
         this.container.addClass('opens' + this.opens);
 
-        //swap the position of the predefined ranges if opens right
-        if (typeof options.ranges !== 'undefined' && this.opens == 'right') {
-            var ranges = this.container.find('.ranges');
-            var html = ranges.clone();
-            ranges.remove();
-            this.container.find('.calendar.left').parent().prepend(html);
+      html = '<select class="hourselect">';
+
+      var start = this.timePicker24Hour ? 0 : 1;
+      var end = this.timePicker24Hour ? 23 : 12;
+
+      for (var i = start; i <= end; i++) {
+        var i_in_24 = i;
+        if (!this.timePicker24Hour)
+          i_in_24 = selected.hour() >= 12 ? (i == 12 ? 12 : i + 12) : (i == 12 ? 0 : i);
+
+        var time = selected.clone().hour(i_in_24);
+        var disabled = false;
+        if (minDate && time.minute(59).isBefore(minDate))
+          disabled = true;
+        if (maxDate && time.minute(0).isAfter(maxDate))
+          disabled = true;
+
+        if (i_in_24 == selected.hour() && !disabled) {
+          html += '<option value="' + i + '" selected="selected">' + i + ':00</option>';
+        } else if (disabled) {
+          html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + ':00</option>';
+        } else {
+          html += '<option value="' + i + '">' + i + ':00</option>';
         }
 
         //apply CSS classes and labels to buttons
