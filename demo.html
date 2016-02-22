@@ -83,6 +83,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="showISOWeekNumbers"> showISOWeekNumbers
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="timePicker"> timePicker
                 </label>
               </div>
@@ -247,6 +253,9 @@
 
           if ($('#showWeekNumbers').is(':checked'))
             options.showWeekNumbers = true;
+
+          if ($('#showISOWeekNumbers').is(':checked'))
+            options.showISOWeekNumbers = true;
 
           if ($('#timePicker').is(':checked'))
             options.timePicker = true;

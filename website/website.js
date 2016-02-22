@@ -36,6 +36,9 @@ $(document).ready(function() {
       if ($('#showWeekNumbers').is(':checked'))
         options.showWeekNumbers = true;
 
+      if ($('#showISOWeekNumbers').is(':checked'))
+        options.showISOWeekNumbers = true;
+
       if ($('#timePicker').is(':checked'))
         options.timePicker = true;
       
