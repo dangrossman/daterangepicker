@@ -48,6 +48,7 @@
         this.singleDatePicker = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
+        this.isoForWeekNumbers = false;
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
@@ -216,6 +217,9 @@
 
         if (typeof options.showWeekNumbers === 'boolean')
             this.showWeekNumbers = options.showWeekNumbers;
+
+        if (typeof options.isoForWeekNumbers === 'boolean')
+            this.isoForWeekNumbers = options.isoForWeekNumbers;
 
         if (typeof options.buttonClasses === 'string')
             this.buttonClasses = options.buttonClasses;
@@ -752,7 +756,7 @@
 
                 // add week number
                 if (this.showWeekNumbers)
-                    html += '<td class="week">' + calendar[row][0].week() + '</td>';
+                    html += '<td class="week">' + (this.isoForWeekNumbers ? calendar[row][0].isoWeek() : calendar[row][0].week()) + '</td>';
 
                 for (var col = 0; col < 7; col++) {
 
