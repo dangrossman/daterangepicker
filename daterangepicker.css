@@ -145,7 +145,7 @@
     padding: 0 6px 0 28px;
     width: 100%; }
     .daterangepicker .input-mini.active {
-      border: 1px solid transparent;
+      border: 1px solid #08c;
       border-radius: 4px; }
   .daterangepicker .daterangepicker_input {
     position: relative; }
