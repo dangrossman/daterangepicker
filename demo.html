@@ -134,6 +134,12 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="alwaysShowCalendars"> alwaysShowCalendars
+                </label>
+              </div>
+
             </div>
             <div class="col-md-4">
 
@@ -291,6 +297,9 @@
 
           if (!$('#autoUpdateInput').is(':checked'))
             options.autoUpdateInput = false;
+
+          if ($('#alwaysShowCalendars').is(':checked'))
+            options.alwaysShowCalendars = true;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();

@@ -86,6 +86,9 @@ $(document).ready(function() {
       if (!$('#autoUpdateInput').is(':checked'))
         options.autoUpdateInput = false;
 
+      if ($('#alwaysShowCalendars').is(':checked'))
+        options.alwaysShowCalendars = true;
+
       if ($('#parentEl').val().length)
         options.parentEl = $('#parentEl').val();
 
