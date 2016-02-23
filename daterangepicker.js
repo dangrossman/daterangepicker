@@ -555,6 +555,10 @@
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
             }
+            if (this.linkedCalendars && this.rightCalendar.month > this.maxDate) {
+              this.rightCalendar.month = this.maxDate.clone().date(2);
+              this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+            }
         },
 
         updateCalendars: function() {
