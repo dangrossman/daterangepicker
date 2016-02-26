@@ -354,29 +354,12 @@
 
         this.container.addClass('opens' + this.opens);
 
-      html = '<select class="hourselect">';
-
-      var start = this.timePicker24Hour ? 0 : 1;
-      var end = this.timePicker24Hour ? 23 : 12;
-
-      for (var i = start; i <= end; i++) {
-        var i_in_24 = i;
-        if (!this.timePicker24Hour)
-          i_in_24 = selected.hour() >= 12 ? (i == 12 ? 12 : i + 12) : (i == 12 ? 0 : i);
-
-        var time = selected.clone().hour(i_in_24);
-        var disabled = false;
-        if (minDate && time.minute(59).isBefore(minDate))
-          disabled = true;
-        if (maxDate && time.minute(0).isAfter(maxDate))
-          disabled = true;
-
-        if (i_in_24 == selected.hour() && !disabled) {
-          html += '<option value="' + i + '" selected="selected">' + i + ':00</option>';
-        } else if (disabled) {
-          html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + ':00</option>';
-        } else {
-          html += '<option value="' + i + '">' + i + ':00</option>';
+        //swap the position of the predefined ranges if opens right
+        if (typeof options.ranges !== 'undefined' && this.opens == 'right') {
+            var ranges = this.container.find('.ranges');
+            var html = ranges.clone();
+            ranges.remove();
+            this.container.find('.calendar.left').parent().prepend(html);
         }
 
         //apply CSS classes and labels to buttons
@@ -871,7 +854,7 @@
                 if (i_in_24 == selected.hour() && !disabled) {
                     html += '<option value="' + i + '" selected="selected">' + i + ':00</option>';
                 } else if (disabled) {
-                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + '</option>';
+                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + ':00</option>';
                 } else {
                     html += '<option value="' + i + '">' + i + ':00</option>';
                 }
@@ -984,8 +967,11 @@
 
         move: function() {
             var parentOffset = { top: 0, left: 0 },
-                containerTop;
-            var parentRightEdge = $(window).width();
+                containerTop, containerLeft, containerRight;
+            var parentRightEdge = $(window).width()
+            var windowBottom = $(window).height() + $(window).scrollTop()
+            var windowRight = $(window).width() + $(window).scrollLeft()
+
             if (!this.parentEl.is('body')) {
                 parentOffset = {
                     top: this.parentEl.offset().top - this.parentEl.scrollTop(),
@@ -998,13 +984,21 @@
                 containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
             else
                 containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+
             this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
 
+            var calendarBottom = this.parentEl.offset().top + containerTop + this.container.outerHeight(true)
+            if (calendarBottom > windowBottom)
+                containerTop -= calendarBottom - windowBottom + 10
+
             if (this.opens == 'left') {
+                containerLeft = 'auto'
+                containerRight = parentRightEdge - this.element.offset().left - this.element.outerWidth()
+
                 this.container.css({
                     top: containerTop,
-                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto'
+                    left: containerLeft,
+                    right: containerRight
                 });
                 if (this.container.offset().left < 0) {
                     this.container.css({
@@ -1013,11 +1007,17 @@
                     });
                 }
             } else if (this.opens == 'center') {
+                containerLeft = this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2 - this.container.outerWidth() / 2
+                containerRight = 'auto'
+
+                var calendarRight = this.parentEl.offset().left + containerLeft + this.container.outerWidth(true)
+                if (calendarRight > windowRight)
+                    containerLeft -= calendarRight - windowRight + 10
+
                 this.container.css({
                     top: containerTop,
-                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
-                        - this.container.outerWidth() / 2,
-                    right: 'auto'
+                    left: containerLeft,
+                    right: containerRight
                 });
                 if (this.container.offset().left < 0) {
                     this.container.css({
@@ -1026,10 +1026,13 @@
                     });
                 }
             } else {
+                containerLeft = this.element.offset().left - parentOffset.left
+                containerRight = 'auto'
+
                 this.container.css({
                     top: containerTop,
-                    left: this.element.offset().left - parentOffset.left,
-                    right: 'auto'
+                    left: containerLeft,
+                    right: containerRight
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
                     this.container.css({
@@ -1058,6 +1061,8 @@
 
             // Reposition the picker if the window is resized while it's open
             $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
+
+            $(window).on('scroll', $.proxy(function(e) { this.move(e); }, this));
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
