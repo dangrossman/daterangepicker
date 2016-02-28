@@ -528,6 +528,8 @@
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
+            
+            this.element.trigger('updateView.daterangepicker', this);
         },
 
         updateMonthsInView: function() {
