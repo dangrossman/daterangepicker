@@ -991,6 +991,11 @@
             if (calendarBottom > windowBottom)
                 containerTop -= calendarBottom - windowBottom + 10
 
+            if (containerTop < 0)
+                $('.calendar-arrow', this.container).hide()
+            else
+                $('.calendar-arrow', this.container).show()
+
             if (this.opens == 'left') {
                 containerLeft = 'auto'
                 containerRight = parentRightEdge - this.element.offset().left - this.element.outerWidth()
@@ -1011,8 +1016,14 @@
                 containerRight = 'auto'
 
                 var calendarRight = this.parentEl.offset().left + containerLeft + this.container.outerWidth(true)
+                var diff = 0
                 if (calendarRight > windowRight)
-                    containerLeft -= calendarRight - windowRight + 10
+                    diff = calendarRight - windowRight + 10
+                containerLeft -= diff
+
+                $('.calendar-arrow', this.container).css({
+                    left: diff*2
+                })
 
                 this.container.css({
                     top: containerTop,
