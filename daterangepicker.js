@@ -1126,7 +1126,8 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
-            this.hide();
+
+            setTimeout(this.hide.bind(this), 0);
         },
 
         showCalendars: function() {
