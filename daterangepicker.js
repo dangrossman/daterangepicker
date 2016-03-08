@@ -1055,56 +1055,62 @@
         },
 
         show: function(e) {
-            if (this.isShowing) return;
+            var _this = this;
+            setTimeout(function showTimeout(){
+                if (_this.isShowing) return;
 
-            // Create a click proxy that is private to this instance of datepicker, for unbinding
-            this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
+                // Create a click proxy that is private to this instance of datepicker, for unbinding
+                _this._outsideClickProxy = $.proxy(function(e) { _this.outsideClick(e); }, _this);
 
-            // Bind global datepicker mousedown for hiding and
-            $(document)
-              .on('mousedown.daterangepicker', this._outsideClickProxy)
-              // also support mobile devices
-              .on('touchend.daterangepicker', this._outsideClickProxy)
-              // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-              .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
-              // and also close when focus changes to outside the picker (eg. tabbing between controls)
-              .on('focusin.daterangepicker', this._outsideClickProxy);
+                // Bind global datepicker mousedown for hiding and
+                $(document)
+                  .on('mousedown.daterangepicker', _this._outsideClickProxy)
+                  // also support mobile devices
+                  .on('touchend.daterangepicker', _this._outsideClickProxy)
+                  // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
+                  .on('click.daterangepicker', '[data-toggle=dropdown]', _this._outsideClickProxy)
+                  // and also close when focus changes to outside the picker (eg. tabbing between controls)
+                  .on('focusin.daterangepicker', _this._outsideClickProxy);
 
-            // Reposition the picker if the window is resized while it's open
-            $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
+                // Reposition the picker if the window is resized while it's open
+                $(window).on('resize.daterangepicker', $.proxy(function(e) { _this.move(e); }, _this));
 
-            this.oldStartDate = this.startDate.clone();
-            this.oldEndDate = this.endDate.clone();
-            this.previousRightTime = this.endDate.clone();
+                _this.oldStartDate = _this.startDate.clone();
+                _this.oldEndDate = _this.endDate.clone();
+                _this.previousRightTime = _this.endDate.clone();
 
-            this.updateView();
-            this.container.show();
-            this.move();
-            this.element.trigger('show.daterangepicker', this);
-            this.isShowing = true;
+                _this.updateView();
+                _this.container.show();
+                _this.move();
+                _this.element.trigger('show.daterangepicker', _this);
+                _this.isShowing = true;
+            }, 0);
         },
 
         hide: function(e) {
-            if (!this.isShowing) return;
+            var _this = this;
+            setTimeout(function hideTimeout() {
+                if (!_this.isShowing) return;
 
-            //incomplete date selection, revert to last values
-            if (!this.endDate) {
-                this.startDate = this.oldStartDate.clone();
-                this.endDate = this.oldEndDate.clone();
-            }
+                //incomplete date selection, revert to last values
+                if (!_this.endDate) {
+                  _this.startDate = _this.oldStartDate.clone();
+                  _this.endDate = _this.oldEndDate.clone();
+                }
 
-            //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.callback(this.startDate, this.endDate, this.chosenLabel);
+                //if a new date range was selected, invoke the user callback function
+                if (!_this.startDate.isSame(_this.oldStartDate) || !_this.endDate.isSame(_this.oldEndDate))
+                  _this.callback(_this.startDate, _this.endDate, _this.chosenLabel);
 
-            //if picker is attached to a text input, update it
-            this.updateElement();
+                //if picker is attached to a text input, update it
+                _this.updateElement();
 
-            $(document).off('.daterangepicker');
-            $(window).off('.daterangepicker');
-            this.container.hide();
-            this.element.trigger('hide.daterangepicker', this);
-            this.isShowing = false;
+                $(document).off('.daterangepicker');
+                $(window).off('.daterangepicker');
+                _this.container.hide();
+                _this.element.trigger('hide.daterangepicker', _this);
+                _this.isShowing = false;
+            }, 0);
         },
 
         toggle: function(e) {
