@@ -855,7 +855,7 @@
                     if (selected.isBefore(this.startDate))
                         selected = this.startDate.clone();
 
-                    if (selected.isAfter(maxDate))
+                    if (maxDate && selected.isAfter(maxDate))
                         selected = maxDate.clone();
 
                 }
