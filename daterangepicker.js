@@ -528,8 +528,6 @@
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
-            
-            this.element.trigger('updateView.daterangepicker', this);
         },
 
         updateMonthsInView: function() {
@@ -592,6 +590,8 @@
 
             this.renderCalendar('left');
             this.renderCalendar('right');
+            
+            this.element.trigger('updateView.daterangepicker', this);
 
             //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
