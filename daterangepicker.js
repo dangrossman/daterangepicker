@@ -9,10 +9,9 @@
 (function(root, factory) {
 
   if (typeof define === 'function' && define.amd) {
-    define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-      root.daterangepicker = factory(root, exports, momentjs, $);
+    define(['moment', 'jquery'], function (moment, jquery) {
+        return (root.daterangepicker = factory(moment, jquery));
     });
-
   } else if (typeof exports !== 'undefined') {
       var momentjs = require('moment');
       var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;  //isomorphic issue
@@ -25,14 +24,14 @@
           }
       }
 
-    factory(root, exports, momentjs, jQuery);
+    module.exports = factory(momentjs, jQuery);
 
   // Finally, as a browser global.
   } else {
-    root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
+    root.daterangepicker = factory(root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
   }
 
-}(this || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
+}(this || {}, function(moment, $) { // 'this' doesn't exist on a server
 
     var DateRangePicker = function(element, options, cb) {
 
