@@ -227,6 +227,13 @@
         if (typeof options.buttonClasses === 'object')
             this.buttonClasses = options.buttonClasses.join(' ');
 
+        if (typeof options.singleClasses === 'string')
+            this.singleClasses = options.singleClasses;
+
+        if (typeof options.singleClasses === 'object')
+            this.singleClasses = options.singleClasses.join(' ');
+
+
         if (typeof options.showDropdowns === 'boolean')
             this.showDropdowns = options.showDropdowns;
 
@@ -364,6 +371,9 @@
 
         if (this.singleDatePicker) {
             this.container.addClass('single');
+            if (this.singleClasses) {
+                this.container.addClass(this.singleClasses);
+            }
             this.container.find('.calendar.left').addClass('single');
             this.container.find('.calendar.left').show();
             this.container.find('.calendar.right').hide();
