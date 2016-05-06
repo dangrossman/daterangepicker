@@ -1126,6 +1126,8 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
+            this.clickCancel();
+            this.updateView();
             this.hide();
         },
 
