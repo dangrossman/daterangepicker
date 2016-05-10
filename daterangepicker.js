@@ -853,7 +853,9 @@
                     }
 
                     if (selected.isBefore(this.startDate))
-                        selected = this.startDate.clone();
+                        selected = this.startDate.clone().startOf('day').add(moment.duration({'hour' : selected.hour(), 'minute': selected.minute(), 'second': selected.second()}));
+                        if(selected.isBefore(this.startDate))
+                            selected = selected.add(moment.duration({'day' : 1}));
 
                     if (maxDate && selected.isAfter(maxDate))
                         selected = maxDate.clone();
