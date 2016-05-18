@@ -504,6 +504,62 @@
             this.updateMonthsInView();
         },
 
+        setMinDate: function(minDate) {
+            if (typeof minDate === 'string')
+                this.minDate = moment(minDate, this.locale.format);
+
+            if (typeof minDate === 'object')
+                this.minDate = moment(minDate);
+
+            if (!this.timePicker)
+                this.minDate = this.minDate.endOf('day');
+
+            if (this.timePicker && this.timePickerIncrement)
+                this.minDate.minute(Math.round(this.minDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+
+            if (this.maxDate && this.maxDate.isBefore(this.minDate))
+                this.maxDate = this.minDate.clone();
+
+            if (this.startDate.isBefore(this.minDate))
+                this.startDate = this.minDate.clone();
+
+            if (this.endDate.isBefore(this.startDate))
+                this.endDate = this.startDate.clone();
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+        },
+
+        setMaxDate: function(maxDate) {
+            if (typeof maxDate === 'string')
+                this.maxDate = moment(maxDate, this.locale.format);
+
+            if (typeof maxDate === 'object')
+                this.maxDate = moment(maxDate);
+
+            if (!this.timePicker)
+                this.maxDate = this.maxDate.endOf('day');
+
+            if (this.timePicker && this.timePickerIncrement)
+                this.maxDate.minute(Math.round(this.maxDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+
+            if (this.minDate && this.minDate.isAfter(this.maxDate))
+                this.minDate = this.maxDate.clone();
+
+            if (this.endDate.isAfter(this.maxDate))
+                this.endDate = this.maxDate.clone();
+
+            if (this.startDate.isAfter(this.endDate))
+                this.startDate = this.endDate.clone();
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+        },
+
         isInvalidDate: function() {
             return false;
         },
