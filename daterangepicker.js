@@ -462,11 +462,17 @@
             if (this.timePicker && this.timePickerIncrement)
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
 
-            if (this.minDate && this.startDate.isBefore(this.minDate))
+            if (this.minDate && this.startDate.isBefore(this.minDate)) {
                 this.startDate = this.minDate;
+                if (this.timePicker && this.timePickerIncrement)
+                    this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
 
-            if (this.maxDate && this.startDate.isAfter(this.maxDate))
+            if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
                 this.startDate = this.maxDate;
+                if (this.timePicker && this.timePickerIncrement)
+                    this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
 
             if (!this.isShowing)
                 this.updateElement();
