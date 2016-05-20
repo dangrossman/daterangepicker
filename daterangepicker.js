@@ -57,6 +57,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.boxOffset = 0;
         this.ranges = {};
 
         this.opens = 'right';
@@ -212,6 +213,9 @@
 
         if (typeof options.minimumSelection === 'number')
             this.minimumSelection = options.minimumSelection;
+
+        if(typeof options.boxOffset === 'number')
+            this.boxOffset = options.boxOffset;
 
         if (typeof options.opens === 'string')
             this.opens = options.opens;
@@ -1018,9 +1022,10 @@
             }
 
             if (this.drops == 'up')
-                containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+                containerTop = this.element.offset().top - this.container.outerHeight() - this.boxOffset - parentOffset.top;
             else
-                containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+                containerTop = this.element.offset().top + this.element.outerHeight() + this.boxOffset - parentOffset.top;
+
             this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
 
             if (this.opens == 'left') {

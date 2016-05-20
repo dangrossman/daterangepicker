@@ -124,6 +124,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="boxOffset"> boxOffset (distance increment between the element and the box)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
                 </label>
               </div>
@@ -283,6 +289,9 @@
 
           if ($('#minimumSelection').is(':checked'))
             options.minimumSelection = 4;
+
+          if ($('#boxOffset').is(':checked'))
+            options.boxOffset = 20;
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {
