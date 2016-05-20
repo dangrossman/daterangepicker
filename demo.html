@@ -118,6 +118,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="minimumSelection"> munimumSelection
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
                 </label>
               </div>
@@ -274,6 +280,9 @@
 
           if ($('#dateLimit').is(':checked'))
             options.dateLimit = { days: 7 };
+
+          if ($('#minimumSelection').is(':checked'))
+            options.minimumSelection = 4;
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {

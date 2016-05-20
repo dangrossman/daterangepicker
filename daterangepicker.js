@@ -44,6 +44,7 @@
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
+        this.minimumSelection = false;
         this.autoApply = false;
         this.singleDatePicker = false;
         this.showDropdowns = false;
@@ -208,6 +209,9 @@
 
         if (typeof options.dateLimit === 'object')
             this.dateLimit = options.dateLimit;
+
+        if (typeof options.minimumSelection === 'number')
+            this.minimumSelection = options.minimumSelection;
 
         if (typeof options.opens === 'string')
             this.opens = options.opens;
@@ -751,6 +755,7 @@
                 }
             }
 
+
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
 
@@ -787,6 +792,10 @@
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
                         classes.push('off', 'disabled');
+
+                    //don't allow selection of date if is less thant the minimun selection
+                    if (this.minimumSelection && calendar[row][col].isBetween(this.startDate, this.startDate.clone().add(this.minimumSelection, 'days'))) 
+                        classes.push('off', 'disabled', 'low-limit');
 
                     //highlight the currently selected start date
                     if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
@@ -1269,6 +1278,7 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             //
 
+
             if (this.endDate || date.isBefore(this.startDate, 'day')) {
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1315,7 +1325,7 @@
                 if (!this.timePicker)
                     this.clickApply();
             }
-
+            
             this.updateView();
 
         },
