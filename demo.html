@@ -130,6 +130,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="applyOnRangesClick"> applyOnRangesClick (default: true)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
                 </label>
               </div>
@@ -292,6 +298,9 @@
 
           if ($('#boxOffset').is(':checked'))
             options.boxOffset = 20;
+
+          if($('#applyOnRangesClick').is(':checked'))
+            options.applyOnRangesClick = false;
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {

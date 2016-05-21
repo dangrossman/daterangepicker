@@ -45,6 +45,7 @@
         this.maxDate = false;
         this.dateLimit = false;
         this.minimumSelection = false;
+        this.applyOnRangesClick = true;
         this.autoApply = false;
         this.singleDatePicker = false;
         this.showDropdowns = false;
@@ -216,6 +217,9 @@
 
         if(typeof options.boxOffset === 'number')
             this.boxOffset = options.boxOffset;
+
+        if(typeof options.applyOnRangesClick === 'boolean') 
+            this.applyOnRangesClick = options.applyOnRangesClick;
 
         if (typeof options.opens === 'string')
             this.opens = options.opens;
@@ -1188,7 +1192,12 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                this.clickApply();
+
+                if(this.applyOnRangesClick) {
+                    this.clickApply();
+                } else {
+                    this.updateView();
+                }
             }
         },
 
