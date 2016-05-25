@@ -656,6 +656,11 @@
                                 that date should be available for selection or not.
                             </li>
                             <li>
+                                <code>isCustomDate</code>: (function) A function that is passed each date in the two
+                                calendars before they are displayed, and may return a string or array of CSS class names
+                                to apply to that date's calendar cell.
+                            </li>
+                            <li>
                                 <code>autoUpdateInput</code>: (boolean) Indicates whether the date range picker should
                                 automatically update the value of an <code>&lt;input&gt;</code> element it's attached to
                                 at initialization and when the selected dates change.
