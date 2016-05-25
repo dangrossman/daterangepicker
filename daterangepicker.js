@@ -1246,7 +1246,7 @@
                     var cal = $(el).parents('.calendar');
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
 
-                    if (dt.isAfter(startDate) && dt.isBefore(date)) {
+                    if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
