@@ -61,6 +61,7 @@
         this.buttonClasses = 'btn btn-sm';
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
+        this.invalidDateClasses = ['off', 'disabled'];
 
         this.locale = {
             direction: 'ltr',
@@ -256,6 +257,12 @@
 
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
+
+        if (typeof options.invalidDateClasses === 'string')
+            this.invalidDateClasses = options.invalidDateClasses.split(" ");
+
+        if (typeof options.invalidDateClasses === 'object')
+            this.invalidDateClasses = options.invalidDateClasses;
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
@@ -792,7 +799,9 @@
 
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
-                        classes.push('off', 'disabled');
+                        for(var i=0; i < this.invalidDateClasses.length; i++)
+                            classes.push(this.invalidDateClasses[i]);
+
 
                     //highlight the currently selected start date
                     if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
