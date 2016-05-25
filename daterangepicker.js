@@ -5,35 +5,27 @@
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: https://www.improvely.com/
 */
-
-(function(root, factory) {
-
-  if (typeof define === 'function' && define.amd) {
-    define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-      root.daterangepicker = factory(root, exports, momentjs, $);
-    });
-
-  } else if (typeof exports !== 'undefined') {
-      var momentjs = require('moment');
-      var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;  //isomorphic issue
-      if (!jQuery) {
-          try {
-              jQuery = require('jquery');
-              if (!jQuery.fn) jQuery.fn = {}; //isomorphic issue
-          } catch (err) {
-              if (!jQuery) throw new Error('jQuery dependency not found');
-          }
-      }
-
-    factory(root, exports, momentjs, jQuery);
-
-  // Finally, as a browser global.
-  } else {
-    root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
-  }
-
-}(this || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
-
+// Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Make globaly available as well
+        define(['moment', 'jquery'], function (moment, jquery) {
+            return (root.daterangepicker = factory(moment, jquery));
+        });
+    } else if (typeof module === 'object' && module.exports) {
+        // Node / Browserify
+        //isomorphic issue
+        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;
+        if (!jQuery) {
+            jQuery = require('jquery');
+            if (!jQuery.fn) jQuery.fn = {};
+        }
+        module.exports = factory(require('moment'), jQuery);
+    } else {
+        // Browser globals
+        root.daterangepicker = factory(root.moment, root.jQuery);
+    }
+}(this, function(moment, $) {
     var DateRangePicker = function(element, options, cb) {
 
         //default settings for options
