@@ -90,7 +90,9 @@
     white-space: nowrap;
     cursor: pointer; }
     .daterangepicker td.available:hover, .daterangepicker th.available:hover {
-      background: #eee; }
+      background-color: #eee;
+      border-color: transparent;
+      color: inherit; }
     .daterangepicker td.week, .daterangepicker th.week {
       font-size: 80%;
       color: #ccc; }
