@@ -38,6 +38,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.ranges = {};
+        this.unavailableRanges= [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -237,6 +238,12 @@
 
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
+
+        if (typeof options.isUnavailableDate === 'function')
+            this.isUnavailableDate = options.isUnavailableDate;
+
+        if (typeof options.unavailableRanges === 'object')
+            this.unavailableRanges = options.unavailableRanges;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -481,6 +488,20 @@
             return false;
         },
 
+        isUnavailableDate: function(aDate) {
+            var arrayLength = this.unavailableRanges.length;
+
+            for (var range = 0; range < arrayLength; range++) {
+                var startDate = this.unavailableRanges[range][0];
+                var endDate = this.unavailableRanges[range][1];
+
+                if (aDate.isAfter(startDate) && aDate.isBefore(endDate)) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
         updateView: function() {
             if (this.timePicker) {
                 this.renderTimePicker('left');
@@ -777,6 +798,10 @@
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
                         classes.push('off', 'disabled');
+
+                    //don't allow selection of dates after the maximum date
+                    if (this.isUnavailableDate(calendar[row][col]))
+                        classes.push('unavailable', 'disabled');
 
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
