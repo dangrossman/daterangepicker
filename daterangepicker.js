@@ -48,6 +48,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.topDateMargin = 5;
+        this.bottomDateMargin= 50;
         this.ranges = {};
 
         this.opens = 'right';
@@ -262,6 +264,12 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.topDateMargin=== 'number')
+            this.topDateMargin = options.topDateMargin;
+
+        if (typeof options.bottomDateMargin === 'number')
+            this.bottomDateMargin = options.bottomDateMargin;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -703,8 +711,8 @@
             if (this.showDropdowns) {
                 var currentMonth = calendar[1][1].month();
                 var currentYear = calendar[1][1].year();
-                var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-                var minYear = (minDate && minDate.year()) || (currentYear - 50);
+                var maxYear = (maxDate && maxDate.year()) || (currentYear + this.topDateMargin);
+                var minYear = (minDate && minDate.year()) || (currentYear - this.bottomDateMargin);
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
