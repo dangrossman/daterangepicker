@@ -790,7 +790,7 @@
                         classes.push('off');
 
                     //don't allow selection of dates before the minimum date
-                    if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
+                    if ((this.minDate && calendar[row][col].isBefore(this.minDate, 'day')) || (!this.endDate && calendar[row][col].isBefore(this.startDate, 'day')))
                         classes.push('off', 'disabled');
 
                     //don't allow selection of dates after the maximum date
