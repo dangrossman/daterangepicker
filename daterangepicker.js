@@ -262,6 +262,12 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+        
+        if (typeof options.dropDownNextYearCount === 'number')
+            this.dropDownNextYearCount = options.dropDownNextYearCount;
+            
+        if (typeof options.dropDownPreviousYearCount === 'number')
+            this.dropDownPreviousYearCount = options.dropDownPreviousYearCount;    
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -703,8 +709,17 @@
             if (this.showDropdowns) {
                 var currentMonth = calendar[1][1].month();
                 var currentYear = calendar[1][1].year();
-                var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-                var minYear = (minDate && minDate.year()) || (currentYear - 50);
+                var nextYearCount = 5, previousYearCount = 50;
+                if(this.dropDownNextYearCount){
+                  nextYearCount = this.dropDownNextYearCount;
+                }
+        
+                if(this.dropDownPreviousYearCount){
+                  previousYearCount = this.dropDownPreviousYearCount;
+                }
+        
+                var maxYear = (maxDate && maxDate.year()) || (currentYear + nextYearCount);
+                var minYear = (minDate && minDate.year()) || (currentYear - previousYearCount);
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
