@@ -1096,9 +1096,9 @@
                 .on('focusin.daterangepicker', this._outsideClickProxy);
 
             // Reposition the picker if the window is resized while it's open
-            $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
-
-            $(window).on('scroll', $.proxy(function(e) { this.move(e); }, this));
+            // ISSUE: This code impacts the performance a lot.
+            //$(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
+            //$(window).on('scroll', $.proxy(function(e) { this.move(e); }, this));
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
