@@ -48,6 +48,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.dropDownNextYearCount = 5;
+        this.dropDownPreviousYearCount = 50;
         this.ranges = {};
 
         this.opens = 'right';
@@ -710,16 +712,9 @@
                 var currentMonth = calendar[1][1].month();
                 var currentYear = calendar[1][1].year();
                 var nextYearCount = 5, previousYearCount = 50;
-                if(this.dropDownNextYearCount){
-                  nextYearCount = this.dropDownNextYearCount;
-                }
-        
-                if(this.dropDownPreviousYearCount){
-                  previousYearCount = this.dropDownPreviousYearCount;
-                }
-        
-                var maxYear = (maxDate && maxDate.year()) || (currentYear + nextYearCount);
-                var minYear = (minDate && minDate.year()) || (currentYear - previousYearCount);
+          
+                var maxYear = (maxDate && maxDate.year()) || (currentYear + this.dropDownNextYearCount);
+                var minYear = (minDate && minDate.year()) || (currentYear - this.dropDownPreviousYearCount);
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
