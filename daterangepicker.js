@@ -6,34 +6,9 @@
  * @website: https://www.improvely.com/
  */
 
-(function (root, factory) {
-
-    if (typeof define === 'function' && define.amd) {
-        define(['moment', 'jquery', 'exports'], function (momentjs, $, exports) {
-            root.daterangepicker = factory(root, exports, momentjs, $);
-        });
-
-    } else if (typeof exports !== 'undefined') {
-        var momentjs = require('moment');
-        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;  //isomorphic issue
-        if (!jQuery) {
-            try {
-                jQuery = require('jquery');
-                if (!jQuery.fn) jQuery.fn = {}; //isomorphic issue
-            } catch (err) {
-                if (!jQuery) throw new Error('jQuery dependency not found');
-            }
-        }
-
-        factory(root, exports, momentjs, jQuery);
-
-        // Finally, as a browser global.
-    } else {
-        root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
-    }
-
-}(this || {}, function (root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
-
+!function (root, factory) {
+    root.daterangepicker = factory(root, {}, root.moment, (root.jQuery));
+}(this, function (root, daterangepicker, moment, $) {
     var DateRangePicker = function (element, options, cb) {
 
         //default settings for options
@@ -1285,5 +1260,4 @@
     };
 
     return DateRangePicker;
-
-}));
+});
