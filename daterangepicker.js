@@ -61,7 +61,7 @@
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
 
-        this.buttonClasses = 'btn btn-sm';
+        this.buttonClasses = '';
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
 
@@ -416,16 +416,6 @@
 
         updateMonthsInView: function () {
             if (this.endDate) {
-
-                //if both dates are visible already, do nothing
-                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
-                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                    &&
-                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                ) {
-                    return;
-                }
-
                 this.leftCalendar.month = this.startDate.clone().date(2);
                 if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
@@ -859,8 +849,8 @@
                 }
             } else {
                 this.container.css({
-                    top: containerTop,
-                    left: this.element.offset().left - parentOffset.left,
+                    top: containerTop + 6,
+                    left: this.element.offset().left - parentOffset.left - 2,
                     right: 'auto'
                 });
                 if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
@@ -909,16 +899,6 @@
         hide: function (e) {
             if (!this.isShowing) return;
 
-            //incomplete date selection, revert to last values
-            if (!this.endDate) {
-                this.startDate = this.oldStartDate.clone();
-                this.endDate = this.oldEndDate.clone();
-            }
-
-            //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.callback(this.startDate, this.endDate, this.chosenLabel);
-
             //if picker is attached to a text input, update it
             this.updateElement();
 
@@ -948,7 +928,11 @@
             target.closest(this.container).length ||
             target.closest('.calendar-table').length
             ) return;
+
+            this.startDate = this.oldStartDate;
+            this.endDate = this.oldEndDate;
             this.hide();
+            this.element.trigger('cancel.daterangepicker', this);
         },
 
         showCalendars: function () {
@@ -1101,6 +1085,16 @@
         },
 
         clickApply: function (e) {
+            if (!this.isShowing) return;
+
+            //incomplete date selection, revert to last values
+            if (!this.endDate) {
+                this.startDate = this.oldStartDate.clone();
+                this.endDate = this.oldEndDate.clone();
+            }
+
+            this.callback(this.startDate, this.endDate, this.chosenLabel);
+
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
         },
