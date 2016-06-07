@@ -13,7 +13,8 @@
     "website",
     "moment.js",
     "moment.min.js",
-    "demo.html"
+    "demo.html",
+    "drp.png"
   ],
   "dependencies": {
     "jquery": ">=1.10",
