@@ -10,8 +10,10 @@
     "bower_components",
     "test",
     "tests",
+    "website",
     "moment.js",
-    "moment.min.js"
+    "moment.min.js",
+    "demo.html"
   ],
   "dependencies": {
     "jquery": ">=1.10",
