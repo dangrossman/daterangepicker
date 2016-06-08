@@ -502,7 +502,7 @@
 
             return false;
         },
-        updateView: function() {
+        updateView: function(startShowing) {
             if (this.timePicker) {
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
@@ -515,9 +515,21 @@
             if (this.endDate) {
                 this.container.find('input[name="daterangepicker_end"]').removeClass('active');
                 this.container.find('input[name="daterangepicker_start"]').addClass('active');
+
+                // Find input on the element, not in the calendar container and remove the background.
+                this.element.find('input[name="daterangepicker_end"]').removeClass('active');
+                if (startShowing) {
+                    // Only run with the show function.
+                    this.element.find('input[name="daterangepicker_start"]').addClass('active');
+                }
             } else {
                 this.container.find('input[name="daterangepicker_end"]').addClass('active');
                 this.container.find('input[name="daterangepicker_start"]').removeClass('active');
+
+                // Find input on the element, not in the calendar container and decorate the background.
+                this.element.find('input[name="daterangepicker_end"]').addClass('active');
+                this.element.find('input[name="daterangepicker_start"]').removeClass('active');
+
             }
             this.updateMonthsInView();
             this.updateCalendars();
@@ -1103,7 +1115,8 @@
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
 
-            this.updateView();
+            this.updateView(true);
+
             this.container.show();
             this.move();
             this.element.trigger('show.daterangepicker', this);
