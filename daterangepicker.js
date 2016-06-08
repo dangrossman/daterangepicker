@@ -1139,6 +1139,10 @@
             //if picker is attached to a text input, update it
             this.updateElement();
 
+            // Remove inputs highlighting
+            this.element.find('input[name="daterangepicker_start"]').removeClass('active');
+            this.element.find('input[name="daterangepicker_end"]').removeClass('active');
+
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
             this.container.hide();
