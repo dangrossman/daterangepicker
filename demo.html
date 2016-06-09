@@ -118,6 +118,24 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="minimumSelection"> munimumSelection
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="boxOffset"> boxOffset (distance increment between the element and the box)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="applyOnRangesClick"> applyOnRangesClick (default: true)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
                 </label>
               </div>
@@ -277,6 +295,15 @@
 
           if ($('#dateLimit').is(':checked'))
             options.dateLimit = { days: 7 };
+
+          if ($('#minimumSelection').is(':checked'))
+            options.minimumSelection = 4;
+
+          if ($('#boxOffset').is(':checked'))
+            options.boxOffset = 20;
+
+          if($('#applyOnRangesClick').is(':checked'))
+            options.applyOnRangesClick = false;
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {
