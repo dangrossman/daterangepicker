@@ -46,8 +46,8 @@
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
             customRangeLabel: 'Custom Range',
-            daysOfWeek: moment.weekdaysMin(),
-            monthNames: moment.monthsShort(),
+            daysOfWeek: moment.weekdaysShort(),
+            monthNames: moment.months(),
             firstDay: moment.localeData().firstDayOfWeek()
         };
 
@@ -519,20 +519,21 @@
             html += '<thead>';
             html += '<tr>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="icon-common-arrow arrow arrow-left"></i></th>';
-            } else {
-                html += '<th></th>';
-            }
-
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
 
-            html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="icon-common-arrow arrow arrow-right"></i></th>';
-            } else {
-                html += '<th></th>';
+            html += '<th colspan="7" class="month">';
+
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+                html += '<i class="prev available icon-common-arrow arrow arrow-left"></i>';
             }
+
+            html += '<span class="month-name">' + dateHtml + '</span>';
+
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+                html += '<i class="next available icon-common-arrow arrow arrow-right"></i>';
+            }
+
+            html += '</th>';
 
             html += '</tr>';
             html += '<tr>';
@@ -824,7 +825,7 @@
                 }
             } else {
                 this.container.css({
-                    top: containerTop + 6,
+                    top: containerTop + 2,
                     left: this.element.offset().left - parentOffset.left - 2,
                     right: 'auto'
                 });
