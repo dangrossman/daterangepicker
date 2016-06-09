@@ -132,9 +132,6 @@
 
         if (typeof options.locale === 'object') {
 
-            if (typeof options.locale.autoRange === 'number')
-                this.locale.autoRange = options.locale.autoRange;
-
             if (typeof options.locale.direction === 'string')
                 this.locale.direction = options.locale.direction;
 
@@ -191,6 +188,9 @@
 
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
+
+        if (typeof options.autoRange === 'number')
+            this.autoRange = options.autoRange;
 
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
@@ -1295,9 +1295,9 @@
             // * if autoapply is enabled, and an end date was chosen, apply the selection
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             // 
-            if (this.locale.autoRange){
+            if (this.autoRange){
                 var start_date = date;
-                var end_date = moment(date.format("YYYY-MM-DD")).add(6, 'day');
+                var end_date = moment(date.format("YYYY-MM-DD")).add(this.autoRange, 'day');
                 this.setStartDate(start_date.clone());
                 this.setEndDate(end_date.clone());
             } else {
