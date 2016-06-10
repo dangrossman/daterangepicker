@@ -26,7 +26,12 @@
         root.daterangepicker = factory(root.moment, root.jQuery);
     }
 }(this, function(moment, $) {
+    var origMoment = moment;
     var DateRangePicker = function(element, options, cb) {
+
+        //different timezone constructor?
+	if (options.moment)
+	    moment = options.moment;
 
         //default settings for options
         this.parentEl = 'body';
@@ -70,9 +75,9 @@
             cancelLabel: 'Cancel',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
-            daysOfWeek: moment.weekdaysMin(),
-            monthNames: moment.monthsShort(),
-            firstDay: moment.localeData().firstDayOfWeek()
+            daysOfWeek: origMoment.weekdaysMin(),
+            monthNames: origMoment.monthsShort(),
+            firstDay: origMoment.localeData().firstDayOfWeek()
         };
 
         this.callback = function() { };
