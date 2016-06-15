@@ -647,30 +647,6 @@
             } else if (side == 'right') {
                 selected = this.endDate ? this.endDate.clone() : this.previousRightTime.clone();
                 minDate = this.startDate;
-
-                //Preserve the time already selected
-                var timeSelector = this.container.find('.calendar.right .calendar-time div');
-                if (timeSelector.html() != '') {
-
-                    selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
-                    selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
-                    selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
-
-                    if (!this.timePicker24Hour) {
-                        var ampm = timeSelector.find('.ampmselect option:selected').val();
-                        if (ampm === 'PM' && selected.hour() < 12)
-                            selected.hour(selected.hour() + 12);
-                        if (ampm === 'AM' && selected.hour() === 12)
-                            selected.hour(0);
-                    }
-
-                    if (selected.isBefore(this.startDate))
-                        selected = this.startDate.clone();
-
-                    if (maxDate && selected.isAfter(maxDate))
-                        selected = maxDate.clone();
-
-                }
             }
 
             //
@@ -783,47 +759,21 @@
         move: function () {
             var parentOffset = {top: 0, left: 0},
                 containerTop;
-            var parentRightEdge = $(window).width();
+
             if (!this.parentEl.is('body')) {
                 parentOffset = {
-                    top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+                    top: this.parentEl.offset().top - this.parentEl.scrollTop() + 20,
                     left: this.parentEl.offset().left - this.parentEl.scrollLeft()
                 };
-                parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
-            }
 
-            if (this.drops == 'up')
-                containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
-            else
-                containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
-            this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
-
-            if (this.opens == 'left') {
-                this.container.css({
-                    top: containerTop,
-                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto'
-                });
-                if (this.container.offset().left < 0) {
-                    this.container.css({
-                        right: 'auto',
-                        left: 9
-                    });
-                }
-            } else if (this.opens == 'center') {
-                this.container.css({
-                    top: containerTop,
-                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
-                    - this.container.outerWidth() / 2,
-                    right: 'auto'
-                });
-                if (this.container.offset().left < 0) {
-                    this.container.css({
-                        right: 'auto',
-                        left: 9
-                    });
-                }
+                this.container.css(parentOffset);
             } else {
+                if (this.drops == 'up')
+                    containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+                else
+                    containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+                this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
+
                 this.container.css({
                     top: containerTop + 2,
                     left: this.element.offset().left - parentOffset.left - 2,
