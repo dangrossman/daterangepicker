@@ -1292,7 +1292,22 @@
             }
 
         },
+        isDateIntervalWithin: function(dateStartA, dateEndA, dateStartB, dateEndB) {
+            if (dateStartB.isBetween(dateStartA, dateEndA, null, '[]'))
+                return true;
 
+            if (dateEndB.isBetween(dateStartA, dateEndA, null, '[]'))
+                return true;
+            return false;
+        },
+        isIntervalUnavailable: function(dateInterval, listOfIntervals) {
+            for (var i = 0; i < listOfIntervals.length; i++) {
+                if(this.isDateIntervalWithin(dateInterval['from'], dateInterval['to'], listOfIntervals[i][0], listOfIntervals[i][1])) {
+                    return true;
+                }
+            }
+            return false;
+        },
         clickDate: function(e) {
 
             if (!$(e.target).hasClass('available')) return;
