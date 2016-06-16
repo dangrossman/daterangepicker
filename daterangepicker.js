@@ -1491,11 +1491,7 @@
 
             }
 
-            this.updateCalendars();
-            if (this.timePicker) {
-                this.renderTimePicker('left');
-                this.renderTimePicker('right');
-            }
+            this.updateView();
         },
 
         formInputsFocused: function(e) {
