@@ -495,8 +495,7 @@
                 var startDate = this.unavailableRanges[range][0];
                 var endDate = this.unavailableRanges[range][1];
 
-                // TODO: On the new moment there is isBetween or isSameOrAfter.
-                if (aDate.isAfter(startDate) && aDate.isBefore(endDate) || aDate.isSame(startDate) || aDate.isSame(endDate)){
+                if (aDate.isBetween(startDate, endDate, null, '[]')) {
                     return true;
                 }
             }
