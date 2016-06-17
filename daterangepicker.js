@@ -336,9 +336,9 @@
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li>' + range + '</li>';
+                list += '<li data-range-key="' + range + '">' + range + '</li>';
             }
-            list += '<li>' + this.locale.customRangeLabel + '</li>';
+            list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
@@ -1168,7 +1168,8 @@
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
 
-            var label = e.target.innerHTML;
+            var label = e.target.getAttribute('data-range-key');
+
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
             } else {
@@ -1180,7 +1181,7 @@
         },
 
         clickRange: function(e) {
-            var label = e.target.innerHTML;
+            var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
