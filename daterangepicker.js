@@ -1141,10 +1141,6 @@
         hide: function(e) {
             if (!this.isShowing) return;
 
-            if(this.container.find('div[class="datepicker-error-message"]')[0]) {
-                this.container.find('div[class="datepicker-error-message"]').hide();
-            }
-
             // Remove inputs highlighting
             this.element.find('input[name="daterangepicker_start"]').removeClass('active');
             this.element.find('input[name="daterangepicker_end"]').removeClass('active');
@@ -1376,6 +1372,7 @@
                     }
 
                 } else if (this.autoApply) {
+                    this.container.find('div[class="datepicker-error-message"]').hide();
                     this.clickApply();
                 }
 
