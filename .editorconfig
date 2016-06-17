@@ -1,5 +1,5 @@
 # highest level .editorconfig file
-root = true
+root = false
 
 # general rules - UNIX style
 [*[!.go]]
