@@ -1141,8 +1141,8 @@
         hide: function(e) {
             if (!this.isShowing) return;
 
-            if(this.container.find('div[class="error"]')[0]) {
-                this.container.find('div[class="error"]').remove();
+            if(this.container.find('div[class="datepicker-error-message"]')[0]) {
+                this.container.find('div[class="datepicker-error-message"]').hide();
             }
 
             // Remove inputs highlighting
@@ -1371,11 +1371,8 @@
 
                     this.element.find('input[name="daterangepicker_start"]').addClass('active');
 
-                    // Push trough the config the layout.
-                    if(this.container.find('div[class="error"]')[0]) {
-                        this.container.find('div[class="error"]').replaceWith( "<div class='error'>Please choose another range.</div>" );
-                    } else {
-                        this.container.append( "<div class='error'>Please choose another range.</div>" );
+                    if(this.container.find('div[class="datepicker-error-message"]')[0]) {
+                        this.container.find('div[class="datepicker-error-message"]').show();
                     }
 
                 } else if (this.autoApply) {
