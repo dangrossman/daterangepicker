@@ -1122,11 +1122,10 @@
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
         },
+        updateDates: function(e) {
+            // incomplete date selection, revert to last values
 
-        hide: function(e) {
-            if (!this.isShowing) return;
 
-            //incomplete date selection, revert to last values
             if (!this.endDate) {
                 this.startDate = this.oldStartDate.clone();
                 this.endDate = this.oldEndDate.clone();
@@ -1138,6 +1137,13 @@
 
             //if picker is attached to a text input, update it
             this.updateElement();
+        },
+        hide: function(e) {
+            if (!this.isShowing) return;
+
+            if(this.container.find('div[class="error"]')[0]) {
+                this.container.find('div[class="error"]').remove();
+            }
 
             // Remove inputs highlighting
             this.element.find('input[name="daterangepicker_start"]').removeClass('active');
@@ -1169,7 +1175,7 @@
                     target.closest(this.container).length ||
                     target.closest('.calendar-table').length
             ) return;
-            this.hide();
+            this.clickApply();
         },
 
         showCalendars: function() {
@@ -1357,8 +1363,25 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.setEndDate(date.clone());
-                if (this.autoApply)
+
+
+                if(this.isIntervalUnavailable({'from': this.startDate, 'to': date}, this.unavailableRanges)) {
+                    this.updateDates();
+                    this.element.trigger('apply.daterangepicker', this);
+
+                    this.element.find('input[name="daterangepicker_start"]').addClass('active');
+
+                    // Push trough the config the layout.
+                    if(this.container.find('div[class="error"]')[0]) {
+                        this.container.find('div[class="error"]').replaceWith( "<div class='error'>Please choose another range.</div>" );
+                    } else {
+                        this.container.append( "<div class='error'>Please choose another range.</div>" );
+                    }
+
+                } else if (this.autoApply) {
                     this.clickApply();
+                }
+
             }
 
             if (this.singleDatePicker) {
@@ -1372,8 +1395,9 @@
         },
 
         clickApply: function(e) {
-            this.hide();
+            this.updateDates();
             this.element.trigger('apply.daterangepicker', this);
+            this.hide();
         },
 
         clickCancel: function(e) {
