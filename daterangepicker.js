@@ -495,7 +495,8 @@
                 var startDate = this.unavailableRanges[range][0];
                 var endDate = this.unavailableRanges[range][1];
 
-                if (aDate.isAfter(startDate) && aDate.isBefore(endDate)) {
+                // TODO: On the new moment there is isBetween or isSameOrAfter.
+                if (aDate.isAfter(startDate) && aDate.isBefore(endDate) || aDate.isSame(startDate) || aDate.isSame(endDate)){
                     return true;
                 }
             }
@@ -811,7 +812,7 @@
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
                         classes.push('off', 'disabled');
 
-                    //don't allow selection of dates after the maximum date
+                    //don't allow selection of dates inside in a unavailable list of dates.
                     if (this.isUnavailableDate(calendar[row][col]))
                         classes.push('unavailable', 'disabled');
 
