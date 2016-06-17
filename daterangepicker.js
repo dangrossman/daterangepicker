@@ -338,7 +338,9 @@
             for (range in this.ranges) {
                 list += '<li>' + range + '</li>';
             }
+            if (!this.alwaysShowCalendars) {
             list += '<li>' + this.locale.customRangeLabel + '</li>';
+            }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
