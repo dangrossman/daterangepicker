@@ -495,8 +495,7 @@
                 var startDate = this.unavailableRanges[range][0];
                 var endDate = this.unavailableRanges[range][1];
 
-                // TODO: On the new moment there is isBetween or isSameOrAfter.
-                if (aDate.isAfter(startDate) && aDate.isBefore(endDate) || aDate.isSame(startDate) || aDate.isSame(endDate)){
+                if (aDate.isBetween(startDate, endDate, null, '[]')) {
                     return true;
                 }
             }
@@ -1123,11 +1122,10 @@
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
         },
+        updateDates: function(e) {
+            // incomplete date selection, revert to last values
 
-        hide: function(e) {
-            if (!this.isShowing) return;
 
-            //incomplete date selection, revert to last values
             if (!this.endDate) {
                 this.startDate = this.oldStartDate.clone();
                 this.endDate = this.oldEndDate.clone();
@@ -1139,6 +1137,9 @@
 
             //if picker is attached to a text input, update it
             this.updateElement();
+        },
+        hide: function(e) {
+            if (!this.isShowing) return;
 
             // Remove inputs highlighting
             this.element.find('input[name="daterangepicker_start"]').removeClass('active');
@@ -1170,7 +1171,7 @@
                     target.closest(this.container).length ||
                     target.closest('.calendar-table').length
             ) return;
-            this.hide();
+            this.clickApply();
         },
 
         showCalendars: function() {
@@ -1293,7 +1294,22 @@
             }
 
         },
+        isDateIntervalWithin: function(dateStartA, dateEndA, dateStartB, dateEndB) {
+            if (dateStartB.isBetween(dateStartA, dateEndA, null, '[]'))
+                return true;
 
+            if (dateEndB.isBetween(dateStartA, dateEndA, null, '[]'))
+                return true;
+            return false;
+        },
+        isIntervalUnavailable: function(dateInterval, listOfIntervals) {
+            for (var i = 0; i < listOfIntervals.length; i++) {
+                if(this.isDateIntervalWithin(dateInterval['from'], dateInterval['to'], listOfIntervals[i][0], listOfIntervals[i][1])) {
+                    return true;
+                }
+            }
+            return false;
+        },
         clickDate: function(e) {
 
             if (!$(e.target).hasClass('available')) return;
@@ -1343,8 +1359,23 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.setEndDate(date.clone());
-                if (this.autoApply)
+
+
+                if(this.isIntervalUnavailable({'from': this.startDate, 'to': date}, this.unavailableRanges)) {
+                    this.updateDates();
+                    this.element.trigger('apply.daterangepicker', this);
+
+                    this.element.find('input[name="daterangepicker_start"]').addClass('active');
+
+                    if(this.container.find('div[class="datepicker-error-message"]')[0]) {
+                        this.container.find('div[class="datepicker-error-message"]').show();
+                    }
+
+                } else if (this.autoApply) {
+                    this.container.find('div[class="datepicker-error-message"]').hide();
                     this.clickApply();
+                }
+
             }
 
             if (this.singleDatePicker) {
@@ -1358,8 +1389,9 @@
         },
 
         clickApply: function(e) {
-            this.hide();
+            this.updateDates();
             this.element.trigger('apply.daterangepicker', this);
+            this.hide();
         },
 
         clickCancel: function(e) {
