@@ -1112,8 +1112,13 @@
             //$(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
             //$(window).on('scroll', $.proxy(function(e) { this.move(e); }, this));
 
-            this.oldStartDate = this.startDate.clone();
-            this.oldEndDate = this.endDate.clone();
+            if(this.startDate && this.endDate) {
+                this.oldStartDate = this.startDate.clone();
+                this.oldEndDate = this.endDate.clone();
+            } else {
+                this.startDate = this.oldStartDate;
+                this.endDate = this.oldEndDate;
+            }
 
             this.updateView(true);
 
