@@ -322,7 +322,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -904,7 +904,7 @@
                 if (maxDate && time.minute(0).isAfter(maxDate))
                     disabled = true;
 
-                if (i_in_24 == selected.hour() && !disabled) {
+                if (i_in_24 == selected.hour()) {
                     html += '<option value="' + i + '" selected="selected">' + i + '</option>';
                 } else if (disabled) {
                     html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + '</option>';
@@ -931,7 +931,7 @@
                 if (maxDate && time.second(0).isAfter(maxDate))
                     disabled = true;
 
-                if (selected.minute() == i && !disabled) {
+                if (selected.minute() == i) {
                     html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
                 } else if (disabled) {
                     html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
@@ -959,7 +959,7 @@
                     if (maxDate && time.isAfter(maxDate))
                         disabled = true;
 
-                    if (selected.second() == i && !disabled) {
+                    if (selected.second() == i) {
                         html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
                     } else if (disabled) {
                         html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
@@ -1501,7 +1501,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
