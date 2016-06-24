@@ -395,7 +395,8 @@
                 if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
-                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                    this.leftCalendar.month = this.endDate.clone().date(2).subtract(1, 'month');
+                    this.rightCalendar.month = this.endDate.clone().date(2);
                 }
 
             } else {
@@ -410,7 +411,7 @@
 
             if (this.timePicker) {
                 var hour, minute, second;
-                if (this.endDate) {
+                if (!this.endDate) {
                     hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
                     if (!this.timePicker24Hour) {
@@ -645,7 +646,7 @@
                 selected = this.startDate.clone();
                 minDate = this.minDate;
             } else if (side == 'right') {
-                selected = this.endDate ? this.endDate.clone() : this.previousRightTime.clone();
+                selected = this.endDate ? this.endDate.clone() : this.previousRightTime.clone().date(this.startDate.date()).month(this.startDate.month()).year(this.startDate.year());
                 minDate = this.startDate;
             }
 
@@ -698,7 +699,7 @@
                     disabled = true;
 
                 if (!disabled) {
-                    if (selected.minute() == i) {
+                    if (selected.minute() == i || (selected.minute() >= i && selected.minute() <= i + this.timePickerIncrement)) {
                         html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
                     } else {
                         html += '<option value="' + i + '">' + padded + '</option>';
