@@ -57,7 +57,7 @@ $(document).ready(function() {
       if ($('#dateLimit').is(':checked'))
         options.dateLimit = { days: 7 };
 
-      if ($('#ranges').is(':checked')) {
+      if ($('#ranges').is(':checked') || $('#rangesWithHideCustomDateRange').is(':checked')) {
         options.ranges = {
           'Today': [moment(), moment()],
           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -66,6 +66,10 @@ $(document).ready(function() {
           'This Month': [moment().startOf('month'), moment().endOf('month')],
           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         };
+      }
+
+      if ($('#rangesWithHideCustomDateRange').is(':checked')) {
+	options.showCustomDateRange = false;
       }
 
       if ($('#locale').is(':checked')) {
@@ -122,6 +126,8 @@ $(document).ready(function() {
 
       if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
         options.cancelClass = $('#cancelClass').val();
+
+      console.log(JSON.stringify(options, null, '    '))
 
       $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
