@@ -264,7 +264,7 @@
 
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);
-	    this.container.addClass(this.locale.direction);
+	this.container.addClass(this.locale.direction);
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
