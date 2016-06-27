@@ -342,9 +342,9 @@
                 list += '<li data-range-key="' + range + '">' + range + '</li>';
             }
 
-	    if (this.showCustomDateRange) {
-            	list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
-	    }
+            if (this.showCustomDateRange) {
+                list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
+            }
 
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
