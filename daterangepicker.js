@@ -341,13 +341,11 @@
             for (range in this.ranges) {
                 list += '<li data-range-key="' + range + '">' + range + '</li>';
             }
-<<<<<<< HEAD
+
 	    if (this.showCustomDateRange) {
             	list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
 	    }
-=======
-            list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
->>>>>>> a58f32d82bc46542c6613afa7db60c1df7d05193
+
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
@@ -1523,7 +1521,6 @@
                 this.endDate = null;
                 this.setStartDate(this.startDate.clone());
                 this.updateView();
-<<<<<<< HEAD
             }
 
         },
@@ -1543,29 +1540,6 @@
                     this.updateView();
                 }
             }
-
-=======
-            }
-
-        },
-
-        formInputsBlurred: function(e) {
-
-            // this function has one purpose right now: if you tab from the first
-            // text input to the second in the UI, the endDate is nulled so that
-            // you can click another, but if you tab out without clicking anything
-            // or changing the input value, the old endDate should be retained
-
-            if (!this.endDate) {
-                var val = this.container.find('input[name="daterangepicker_end"]').val();
-                var end = moment(val, this.locale.format);
-                if (end.isValid()) {
-                    this.setEndDate(end);
-                    this.updateView();
-                }
-            }
-
->>>>>>> a58f32d82bc46542c6613afa7db60c1df7d05193
         },
 
         elementChanged: function() {
