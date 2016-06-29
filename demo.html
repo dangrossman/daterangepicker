@@ -136,6 +136,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="hideOnClickOutside" checked="checked"> hideOnClickOutside (default: true)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
                 </label>
               </div>
@@ -301,6 +307,9 @@
 
           if($('#applyOnRangesClick').is(':checked'))
             options.applyOnRangesClick = false;
+
+          if(!$('#hideOnClickOutside').is(':checked'))
+            options.hideOnClickOutside = false;
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {

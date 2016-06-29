@@ -59,6 +59,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.boxOffset = 0;
+        this.hideOnClickOutside = true;
         this.ranges = {};
 
         this.opens = 'right';
@@ -220,6 +221,9 @@
 
         if(typeof options.applyOnRangesClick === 'boolean') 
             this.applyOnRangesClick = options.applyOnRangesClick;
+
+        if(typeof options.hideOnClickOutside === 'boolean') 
+            this.hideOnClickOutside = options.hideOnClickOutside;
 
         if (typeof options.opens === 'string')
             this.opens = options.opens;
@@ -1144,7 +1148,9 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
-            this.hide();
+            if(this.hideOnClickOutside) {
+                this.hide();
+            }
         },
 
         showCalendars: function() {
