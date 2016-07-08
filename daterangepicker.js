@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.23
+* @version: 2.1.24-beta
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2016 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -1157,6 +1157,7 @@
                 target.closest('.calendar-table').length
                 ) return;
             this.hide();
+            this.element.trigger('outsideClick.daterangepicker', this);
         },
 
         showCalendars: function() {
