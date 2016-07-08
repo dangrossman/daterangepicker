@@ -245,6 +245,9 @@
         if (typeof options.unavailableRanges === 'object')
             this.unavailableRanges = options.unavailableRanges;
 
+        if (typeof options.duplicatedNavigation === 'boolean')
+            this.duplicatedNavigation = options.duplicatedNavigation;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
