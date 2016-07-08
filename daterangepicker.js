@@ -18,7 +18,6 @@
 }(window || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
 
     var DateRangePicker = function(element, options, cb) {
-
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
@@ -38,7 +37,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.ranges = {};
-        this.unavailableRanges= [];
+        this.unavailableRanges = [];
+        this.duplicatedNavigation = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -410,6 +410,7 @@
                 'keydown.daterangepicker': $.proxy(this.keydown, this)
             });
         } else {
+
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
         }
 
@@ -708,7 +709,7 @@
             if (this.showWeekNumbers)
                 html += '<th></th>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left' || this.duplicatedNavigation)) {
                 html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
             } else {
                 html += '<th></th>';
@@ -750,7 +751,7 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker || this.duplicatedNavigation)) {
                 html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
                 html += '<th></th>';
@@ -1144,6 +1145,8 @@
             this.updateElement();
         },
         hide: function(e) {
+
+
             if (!this.isShowing) return;
 
             // Remove inputs highlighting
@@ -1169,6 +1172,7 @@
             var target = $(e.target);
             // if the page is clicked anywhere except within the daterangerpicker/button
             // itself then call this.hide()
+
             if (
                 // ie modal dialog fix
                 e.type == "focusin" ||
