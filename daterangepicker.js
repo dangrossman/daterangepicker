@@ -712,8 +712,8 @@
             if (this.showWeekNumbers)
                 html += '<th></th>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left' || this.duplicatedNavigation)) {
-                var previousMonthName = this.locale.monthNames[calendar[1][1].month() - 1];
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+                var previousMonthName = calendar[1][1].subtract(2, 'months').format("MMM");
                 html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i> \
                 <span class="previous-month-shortname">' +
                 previousMonthName + '</span></th>';
@@ -758,7 +758,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker || this.duplicatedNavigation)) {
-                var nextMonthName = this.locale.monthNames[calendar[1][1].month() + 1];
+                var nextMonthName = calendar[1][1].add(1, 'months').format("MMM");
                 html += '<th class="next available"><span class="previous-month-shortname">' +
                 nextMonthName + '</span><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
@@ -1393,12 +1393,6 @@
                     this.clickApply();
                 }
 
-            }
-
-            if (this.singleDatePicker) {
-                this.setEndDate(this.startDate);
-                if (!this.timePicker)
-                    this.clickApply();
             }
 
             this.updateView();
