@@ -713,7 +713,10 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left' || this.duplicatedNavigation)) {
-                html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
+                var previousMonthName = this.locale.monthNames[calendar[1][1].month() - 1];
+                html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i> \
+                <span class="previous-month-shortname">' +
+                previousMonthName + '</span></th>';
             } else {
                 html += '<th></th>';
             }
@@ -755,7 +758,9 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker || this.duplicatedNavigation)) {
-                html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
+                var nextMonthName = this.locale.monthNames[calendar[1][1].month() + 1];
+                html += '<th class="next available"><span class="previous-month-shortname">' +
+                nextMonthName + '</span><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
                 html += '<th></th>';
             }
