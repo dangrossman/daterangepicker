@@ -38,7 +38,6 @@
         this.autoUpdateInput = true;
         this.ranges = {};
         this.unavailableRanges = [];
-        this.duplicatedNavigation = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -244,9 +243,6 @@
 
         if (typeof options.unavailableRanges === 'object')
             this.unavailableRanges = options.unavailableRanges;
-
-        if (typeof options.duplicatedNavigation === 'boolean')
-            this.duplicatedNavigation = options.duplicatedNavigation;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -713,7 +709,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                var previousMonthName = calendar[1][1].subtract(2, 'months').format("MMM");
+                var previousMonthName = moment(calendar[1][1]).subtract(1, 'months').format('MMM');
                 html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i> \
                 <span class="previous-month-shortname">' +
                 previousMonthName + '</span></th>';
@@ -757,9 +753,9 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker || this.duplicatedNavigation)) {
-                var nextMonthName = calendar[1][1].add(1, 'months').format("MMM");
-                html += '<th class="next available"><span class="previous-month-shortname">' +
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+                var nextMonthName = moment(calendar[1][1]).add(1, 'months').format('MMM');
+                html += '<th class="next available"><span class="next-month-shortname">' +
                 nextMonthName + '</span><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
                 html += '<th></th>';
