@@ -136,6 +136,9 @@
 
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);
+        if($('.daterangepicker-overlay').length <= 0) {
+            $('<div></div>').addClass('daterangepicker-overlay').insertBefore(this.container);
+        }
 
         //
         // handle all the possible options overriding defaults
@@ -1079,6 +1082,9 @@
         show: function(e) {
             if (this.isShowing) return;
 
+            //add a overlay
+            $('.daterangepicker-overlay').css('display', 'block');
+
             // Create a click proxy that is private to this instance of datepicker, for unbinding
             this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
 
@@ -1109,6 +1115,7 @@
         hide: function(e) {
             if (!this.isShowing) return;
 
+            $('.daterangepicker-overlay').css('display', 'none');
             //incomplete date selection, revert to last values
             if (!this.endDate) {
                 this.startDate = this.oldStartDate.clone();
