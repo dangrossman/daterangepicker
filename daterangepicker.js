@@ -394,6 +394,8 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
+            this.container.on('click.daterangepicker', 'button.hideBtn', $.proxy(this.clickCancel, this))
+
         if (this.element.is('input')) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
@@ -1395,6 +1397,7 @@
         },
 
         clickCancel: function(e) {
+            console.log("clicked");
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
             this.hide();
