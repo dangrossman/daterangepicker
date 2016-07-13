@@ -691,6 +691,8 @@
             // Display the calendar
             //
 
+            var presentlyShownDate = calendar[1][1];
+
             var minDate = side == 'left' ? this.minDate : this.startDate;
             var maxDate = this.maxDate;
             var selected = side == 'left' ? this.startDate : this.endDate;
@@ -704,7 +706,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                var previousMonthName = moment(calendar[1][1]).subtract(1, 'months').format('MMM');
+                var previousMonthName = moment(presentlyShownDate).subtract(1, 'months').format('MMM');
                 html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i> \
                 <span class="previous-month-shortname">' +
                 previousMonthName + '</span></th>';
@@ -712,11 +714,11 @@
                 html += '<th></th>';
             }
 
-            var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+            var dateHtml = this.locale.monthNames[presentlyShownDate.month()] + presentlyShownDate.format(" YYYY");
 
             if (this.showDropdowns) {
-                var currentMonth = calendar[1][1].month();
-                var currentYear = calendar[1][1].year();
+                var currentMonth = presentlyShownDate.month();
+                var currentYear = presentlyShownDate.year();
                 var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
                 var minYear = (minDate && minDate.year()) || (currentYear - 50);
                 var inMinYear = currentYear == minYear;
@@ -749,7 +751,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                var nextMonthName = moment(calendar[1][1]).add(1, 'months').format('MMM');
+                var nextMonthName = moment(presentlyShownDate).add(1, 'months').format('MMM');
                 html += '<th class="next available"><span class="next-month-shortname">' +
                 nextMonthName + '</span><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
             } else {
@@ -800,7 +802,7 @@
                         classes.push('weekend');
 
                     //grey out the dates in other months displayed at beginning and end of this calendar
-                    if (calendar[row][col].month() != calendar[1][1].month())
+                    if (calendar[row][col].month() != presentlyShownDate.month())
                         classes.push('off', 'other-month');
 
                     //don't allow selection of dates before the minimum date
