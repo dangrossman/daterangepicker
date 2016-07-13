@@ -403,7 +403,7 @@
         this.container.find('.calendar')
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
-            .on('click.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
+            .on('mousedown.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
             .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
             .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
@@ -1299,6 +1299,7 @@
             // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
             // * if autoapply is enabled, and an end date was chosen, apply the selection
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
+            // * if one of the inputs above the calendars was focused, cancel that manual input
             //
 
             if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
@@ -1349,6 +1350,7 @@
             }
 
             this.updateView();
+            e.stopPropagation();
 
         },
 
