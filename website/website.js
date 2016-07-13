@@ -48,6 +48,12 @@ $(document).ready(function() {
       if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
         options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
 
+      if ($('#topDateMargin').val().length && $('#topDateMargin').val() != 5)
+        options.topDateMargin= parseInt($('#topDateMargin').val(), 10);
+
+      if ($('#bottomDateMargin').val().length && $('#bottomDateMargin').val() != 50)
+        options.bottomDateMargin= parseInt($('#bottomDateMargin').val(), 10);
+
       if ($('#timePickerSeconds').is(':checked'))
         options.timePickerSeconds = true;
       
