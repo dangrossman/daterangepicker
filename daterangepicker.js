@@ -394,7 +394,7 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-            this.container.on('click.daterangepicker', 'button.hideBtn', $.proxy(this.clickCancel, this))
+            this.container.on('click.daterangepicker', 'button.hideBtn', $.proxy(this.hide, this))
 
         if (this.element.is('input')) {
             this.element.on({
