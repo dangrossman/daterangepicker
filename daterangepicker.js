@@ -1397,7 +1397,6 @@
         },
 
         clickCancel: function(e) {
-            console.log("clicked");
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
             this.hide();
