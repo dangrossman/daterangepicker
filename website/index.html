@@ -497,6 +497,12 @@
                               </div>
 
                               <div class="checkbox">
+                		<label>
+		                  <input type="checkbox" id="rangesWithHideCustomDateRange"> ranges (with example predefined ranges with hidden custom date range)
+		                </label>
+		              </div>
+
+		              <div class="checkbox">
                                 <label>
                                   <input type="checkbox" id="locale"> locale (with example settings)
                                 </label>
@@ -625,6 +631,10 @@
                             </li>
                             <li>
                                 <code>ranges</code>: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
+                            </li>
+                            <li>
+                                <code>showCustomDateRange</code>: (boolean) Normally, if you use the <code>ranges</code>
+                                option to specify pre-defined date ranges and don't want calendars for choosing a custom date range. When this option is set to false, the custom range button for choosing a custom date range will not show.
                             </li>
                             <li>
                                 <code>opens</code>: (string</code>: 'left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to

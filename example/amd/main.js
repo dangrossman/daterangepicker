@@ -66,7 +66,7 @@ $(document).ready(function() {
     if ($('#dateLimit').is(':checked'))
       options.dateLimit = { days: 7 };
 
-    if ($('#ranges').is(':checked')) {
+    if ($('#ranges').is(':checked') || $('#rangesWithHideCustomDateRange').is(':checked')) {
       options.ranges = {
         'Today': [moment(), moment()],
         'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -75,6 +75,10 @@ $(document).ready(function() {
         'This Month': [moment().startOf('month'), moment().endOf('month')],
         'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       };
+    }
+
+    if ($('#rangesWithHideCustomDateRange').is(':checked')) {
+	options.showCustomDateRange = false;
     }
 
     if ($('#locale').is(':checked')) {
