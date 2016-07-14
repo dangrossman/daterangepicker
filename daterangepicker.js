@@ -487,10 +487,11 @@
             var arrayLength = this.unavailableRanges.length;
 
             for (var range = 0; range < arrayLength; range++) {
-                var startDate = this.unavailableRanges[range][0];
-                var endDate = this.unavailableRanges[range][1];
+                var beginning = this.unavailableRanges[range][0];
+                var end = this.unavailableRanges[range][1];
 
-                if (aDate.isBetween(startDate, endDate, null, '[]')) {
+                var normalized = moment(aDate).startOf('day');
+                if (normalized.isBetween(beginning, end, null, '[]')) {
                     return true;
                 }
             }
@@ -790,7 +791,6 @@
                     html += '<td class="week">' + calendar[row][0].week() + '</td>';
 
                 for (var col = 0; col < 7; col++) {
-
                     var classes = [];
 
                     //highlight today's date
