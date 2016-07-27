@@ -289,6 +289,34 @@
                             });
                             </script>
 
+                            <p>
+                                If you do not wish to keep default value for the single date picker and your 
+                                field is optional, You may set the <code>autoUpdateInput</code> to false and
+                                use the callback function to set the value of the input when user selects date.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-9 col-xs-12">
+                                    <script src="https://gist.github.com/gauravmak/c26b276bf03e969dc40beaef0e6f9b77.js"></script>
+                                </div>
+                                <div class="col-md-3 col-xs-12">
+                                    <h4>Demo:</h4>
+                                    <input class="pull-right" type="text" name="birthdate2" />
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                            $(function() {
+                                $('input[name="birthdate2"]').daterangepicker({
+                                    autoUpdateInput: false,
+                                    singleDatePicker: true
+                                }, 
+                                function(chosen_date) {
+                                    $('input[name="birthdate2"]').val(chosen_date.format('YYYY-MM-DD'));
+                                });
+                            });
+                            </script>
+
                         </div>
 
                         <div id="ex4" name="ex4">
