@@ -77,6 +77,7 @@
         };
 
         this.callback = function() { };
+        this.beforeDisplay = function(self) { return true; };
 
         //some state information
         this.isShowing = false;
@@ -266,6 +267,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+            
+        if (typeof options.beforeDisplay === 'function')
+            this.beforeDisplay = options.beforeDisplay;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1092,6 +1096,8 @@
 
         show: function(e) {
             if (this.isShowing) return;
+
+            if (this.beforeDisplay(this) === false) { return; }
 
             // Create a click proxy that is private to this instance of datepicker, for unbinding
             this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
