@@ -441,15 +441,7 @@
         //
         // if attached to a text input, set the initial value
         //
-
-        if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-            this.element.trigger('change');
-        } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
-            this.element.trigger('change');
-        }
-
+        this.updateElement();
     };
 
     DateRangePicker.prototype = {
@@ -485,6 +477,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            !this.autoUpdateInput && this.callback(this.startDate, this.endDate, this.chosenLabel);
         },
 
         setEndDate: function(endDate) {
@@ -515,6 +508,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            !this.autoUpdateInput && this.callback(this.startDate, this.endDate, this.chosenLabel);
         },
 
         isInvalidDate: function() {
@@ -1130,7 +1124,7 @@
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (!this.autoUpdateInput || !this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
