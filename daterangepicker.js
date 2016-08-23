@@ -1362,30 +1362,34 @@
 
         },
 
-        calculateChosenLabel: function() {
-          var customRange = true;
-          var i = 0;
-          for (var range in this.ranges) {
-              if (this.timePicker) {
-                  if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
-                      customRange = false;
-                      this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
-                      break;
-                  }
-              } else {
-                  //ignore times when comparing dates if time picker is not enabled
-                  if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
-                      customRange = false;
-                      this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
-                      break;
-                  }
-              }
-              i++;
-          }
-          if (customRange && this.showCustomRangeLabel) {
-              this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
-              this.showCalendars();
-          }
+        calculateChosenLabel: function () {
+            var customRange = true;
+            var i = 0;
+            for (var range in this.ranges) {
+                if (this.timePicker) {
+                    if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
+                        customRange = false;
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        break;
+                    }
+                } else {
+                    //ignore times when comparing dates if time picker is not enabled
+                    if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
+                        customRange = false;
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        break;
+                    }
+                }
+                i++;
+            }
+            if (customRange) {
+                if (this.showCustomRangeLabel) {
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                } else {
+                    this.chosenLabel = null;
+                }
+                this.showCalendars();
+            }
         },
 
         clickApply: function(e) {
