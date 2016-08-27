@@ -49,6 +49,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.compactElementDisplay = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -267,6 +268,9 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.compactElementDisplay === 'boolean')
+            this.compactElementDisplay = options.compactElementDisplay;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -289,7 +293,7 @@
                 if (split.length == 2) {
                     start = moment(split[0], this.locale.format);
                     end = moment(split[1], this.locale.format);
-                } else if (this.singleDatePicker && val !== "") {
+                } else if ((this.singleDatePicker || this.compactElementDisplay) && val !== "") {
                     start = moment(val, this.locale.format);
                     end = moment(val, this.locale.format);
                 }
@@ -443,7 +447,14 @@
         //
 
         if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            var startString = this.startDate.format(this.locale.format);
+            var endString = this.endDate.format(this.locale.format)
+            if (this.compactElementDisplay && startString == endString) {
+                this.element.val(startString);
+            }
+            else {
+                this.element.val(startString + this.locale.separator + endString);
+            }
             this.element.trigger('change');
         } else if (this.element.is('input') && this.autoUpdateInput) {
             this.element.val(this.startDate.format(this.locale.format));
@@ -1566,7 +1577,7 @@
                 end = moment(dateString[1], this.locale.format);
             }
 
-            if (this.singleDatePicker || start === null || end === null) {
+            if (this.singleDatePicker || (dateString.length === 1 && this.compactElementDisplay) || start === null || end === null) {
                 start = moment(this.element.val(), this.locale.format);
                 end = start;
             }
@@ -1587,7 +1598,14 @@
 
         updateElement: function() {
             if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                var startString = this.startDate.format(this.locale.format);
+                var endString = this.endDate.format(this.locale.format);
+                if (this.compactElementDisplay && startString == endString) {
+                    this.element.val(startString);
+                }
+                else {
+                    this.element.val(startString + this.locale.separator + endString);
+                }
                 this.element.trigger('change');
             } else if (this.element.is('input') && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format));
