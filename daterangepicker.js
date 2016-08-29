@@ -333,10 +333,10 @@
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea'),
                     rangeLabel = options.ranges[range][2];
-                elem.innerHTML = rangeLabel;
                 if ( (typeof rangeLabel === 'undefined') || (rangeLabel == null) || (rangeLabel.length == 0) ) {
-                    elem.innerHTML = range;
+                    rangeLabel = range;
                 }
+                elem.innerHTML = rangeLabel;
                 rangeLabel = elem.value;
                 this.ranges[range] = [start, end, rangeLabel];
             }
