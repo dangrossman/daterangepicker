@@ -365,8 +365,9 @@
             this.container.find('.calendar-time').hide();
         }
 
-        //can't be used together for now
-        if (this.timePicker && this.autoApply)
+        // can't be used together for now
+        // You can only use it with inline option
+        if (this.timePicker && this.autoApply && !this.inline)
             this.autoApply = false;
 
         if (this.autoApply && typeof options.ranges !== 'object') {
@@ -1483,6 +1484,10 @@
                 end.second(second);
                 this.setEndDate(end);
             }
+
+            // Update the parent element with the autoplay option in inline mode
+            if (this.inline && this.autoApply)
+              this.updateElement()
 
             //update the calendars so all clickable dates reflect the new time component
             this.updateCalendars();
