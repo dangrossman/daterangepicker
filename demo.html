@@ -23,7 +23,7 @@
         <h1 style="margin: 0 0 20px 0">Configuration Builder</h1>
 
         <div class="well configurator">
-           
+
           <form>
           <div class="row">
 
@@ -137,6 +137,11 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="inline"> inline
+                </label>
+              </div>
             </div>
             <div class="col-md-4">
 
@@ -199,17 +204,17 @@
 
         <div class="row">
 
-          <div class="col-md-4 col-md-offset-2 demo">
-            <h4>Your Date Range Picker</h4>
+          <div class="col-md-8 demo-range-picker">
+            <h4 style="display: inline-block">Your Date Range Picker</h4>
+            <i class="glyphicon glyphicon-calendar fa fa-calendar input-calendar"></i>
             <input type="text" id="config-demo" class="form-control">
-            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
           </div>
 
-          <div class="col-md-6">
+          <div class="col-md-4">
             <h4>Configuration</h4>
 
             <div class="well">
-              <textarea id="config-text" style="height: 300px; width: 100%; padding: 10px"></textarea>
+              <textarea id="config-text"></textarea>
             </div>
           </div>
 
@@ -218,10 +223,14 @@
       </div>
 
       <style type="text/css">
-      .demo { position: relative; }
-      .demo i {
-        position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer;
-      }
+        #config-text {
+          height: 300px;
+          width: 100%;
+          padding: 10px;
+        }
+        .input-calendar {
+          margin-left: 8px;
+        }
       </style>
 
       <script type="text/javascript">
@@ -230,12 +239,12 @@
         $('#config-text').keyup(function() {
           eval($(this).val());
         });
-        
+
         $('.configurator input, .configurator select').change(function() {
           updateConfig();
         });
 
-        $('.demo i').click(function() {
+        $('.demo-range-picker i.input-calendar').click(function() {
           $(this).parent().find('input').click();
         });
 
@@ -256,7 +265,7 @@
 
           if ($('#singleDatePicker').is(':checked'))
             options.singleDatePicker = true;
-          
+
           if ($('#showDropdowns').is(':checked'))
             options.showDropdowns = true;
 
@@ -268,7 +277,7 @@
 
           if ($('#timePicker').is(':checked'))
             options.timePicker = true;
-          
+
           if ($('#timePicker24Hour').is(':checked'))
             options.timePicker24Hour = true;
 
@@ -277,7 +286,7 @@
 
           if ($('#timePickerSeconds').is(':checked'))
             options.timePickerSeconds = true;
-          
+
           if ($('#autoApply').is(':checked'))
             options.autoApply = true;
 
@@ -326,15 +335,18 @@
           if ($('#alwaysShowCalendars').is(':checked'))
             options.alwaysShowCalendars = true;
 
+          if ($('#inline').is(':checked'))
+            options.inline = true;
+
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();
 
-          if ($('#startDate').val().length) 
+          if ($('#startDate').val().length)
             options.startDate = $('#startDate').val();
 
           if ($('#endDate').val().length)
             options.endDate = $('#endDate').val();
-          
+
           if ($('#minDate').val().length)
             options.minDate = $('#minDate').val();
 
@@ -359,7 +371,7 @@
           $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
           $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
-          
+
         }
 
       });
