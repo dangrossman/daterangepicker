@@ -1523,6 +1523,10 @@
             }
 
             this.updateView();
+
+            // Update the parent element with the autoplay option in inline mode
+            if (this.inline && this.autoApply)
+              this.updateElement()
         },
 
         formInputsFocused: function(e) {
