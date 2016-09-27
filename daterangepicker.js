@@ -509,22 +509,22 @@
                 }
             }
             if (this.endDate) {
-                this.container.find('input[name="daterangepicker_end"]').removeClass('active');
-                this.container.find('input[name="daterangepicker_start"]').addClass('active');
+                this.container.find('[name="daterangepicker_end"]').removeClass('active');
+                this.container.find('[name="daterangepicker_start"]').addClass('active');
 
                 // Find input on the element, not in the calendar container and remove the background.
-                this.element.find('input[name="daterangepicker_end"]').removeClass('active');
+                this.element.find('[name="daterangepicker_end"]').removeClass('active');
                 if (startShowing) {
                     // Only run with the show function.
-                    this.element.find('input[name="daterangepicker_start"]').addClass('active');
+                    this.element.find('[name="daterangepicker_start"]').addClass('active');
                 }
             } else {
-                this.container.find('input[name="daterangepicker_end"]').addClass('active');
-                this.container.find('input[name="daterangepicker_start"]').removeClass('active');
+                this.container.find('[name="daterangepicker_end"]').addClass('active');
+                this.container.find('[name="daterangepicker_start"]').removeClass('active');
 
                 // Find input on the element, not in the calendar container and decorate the background.
-                this.element.find('input[name="daterangepicker_end"]').addClass('active');
-                this.element.find('input[name="daterangepicker_start"]').removeClass('active');
+                this.element.find('[name="daterangepicker_end"]').addClass('active');
+                this.element.find('[name="daterangepicker_start"]').removeClass('active');
 
             }
             this.updateMonthsInView();
@@ -1147,8 +1147,8 @@
             if (!this.isShowing) return;
 
             // Remove inputs highlighting
-            this.element.find('input[name="daterangepicker_start"]').removeClass('active');
-            this.element.find('input[name="daterangepicker_end"]').removeClass('active');
+            this.element.find('[name="daterangepicker_start"]').removeClass('active');
+            this.element.find('[name="daterangepicker_end"]').removeClass('active');
 
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
@@ -1371,7 +1371,7 @@
                     this.updateDates();
                     this.element.trigger('apply.daterangepicker', this);
 
-                    this.element.find('input[name="daterangepicker_start"]').addClass('active');
+                    this.element.find('[name="daterangepicker_start"]').addClass('active');
 
                     if(this.container.find('div[class="datepicker-error-message"]')[0]) {
                         this.container.find('div[class="datepicker-error-message"]').show();
