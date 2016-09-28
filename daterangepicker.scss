@@ -122,6 +122,7 @@ $arrow-suffix-size: ($arrow-size - $daterangepicker-border-size);
 }
 .#{$prefix-class}-tooltip {
   position: absolute;
+  background: $daterangepicker-bg-color;
 
   // TODO: Should these be parameterized??
   top: 100px;
@@ -153,7 +154,6 @@ $arrow-suffix-size: ($arrow-size - $daterangepicker-border-size);
 }
 .#{$prefix-class} {
   color: $daterangepicker-color;
-  background: $daterangepicker-bg-color;
   border-radius: $daterangepicker-border-radius;
   width: $daterangepicker-width;
   padding: $daterangepicker-padding;

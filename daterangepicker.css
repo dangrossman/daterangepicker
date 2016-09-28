@@ -3,6 +3,7 @@
 
 .daterangepicker-tooltip {
   position: absolute;
+  background: #fff;
   top: 100px;
   left: 20px; }
   .daterangepicker-tooltip:before, .daterangepicker-tooltip:after {
@@ -23,7 +24,6 @@
 
 .daterangepicker {
   color: inherit;
-  background: #fff;
   border-radius: 4px;
   width: 278px;
   padding: 4px;
