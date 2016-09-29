@@ -1594,8 +1594,8 @@
         },
 
         keydown: function(e) {
-            //hide on tab or enter
-            if ((e.keyCode === 9) || (e.keyCode === 13)) {
+            //hide on tab or enter if it's not inline
+            if (!this.inline && (e.keyCode === 9) || (e.keyCode === 13)) {
                 this.hide();
             }
         },
