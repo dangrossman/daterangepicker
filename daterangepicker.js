@@ -48,6 +48,8 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.updateInputOnDayHover = false;
+        this.updateInputOnRangeHover = false;
         this.alwaysShowCalendars = false;
         this.ranges = {};
 
@@ -264,6 +266,13 @@
         if (typeof options.isCustomDate === 'function')
             this.isCustomDate = options.isCustomDate;
 
+        if (typeof options.updateInputOnDayHover === 'boolean')
+            this.updateInputOnDayHover = options.updateInputOnDayHover;
+
+        if (typeof options.updateInputOnRangeHover === 'boolean')
+            this.updateInputOnRangeHover = options.updateInputOnRangeHover;
+
+
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
@@ -326,7 +335,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -410,8 +419,6 @@
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
             .on('mousedown.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
-            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
-            .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this))
@@ -420,12 +427,27 @@
             .on('blur.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsBlurred, this))
             .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this));
 
+        // if updateInputOnDayHover is true, the calendar input is updated while the
+        // user hover on the days.
+        if(this.updateInputOnDayHover){
+          this.container.find('.calendar')
+          .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
+          .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
+        }
+
+
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
-            .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
-            .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
-            .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+            .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this));
+
+        // if updateInputOnDayHover is true, the calendar input is updated while the
+        // user hover on the defined ranges.
+        if(this.updateInputOnRangeHover){
+          this.container.find('.ranges')
+          .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
+          .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+        }
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
@@ -1520,7 +1542,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
