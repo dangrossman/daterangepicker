@@ -470,13 +470,13 @@
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
 
             if (this.minDate && this.startDate.isBefore(this.minDate)) {
-                this.startDate = this.minDate;
+                this.startDate = this.minDate.clone();
                 if (this.timePicker && this.timePickerIncrement)
                     this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
 
             if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
-                this.startDate = this.maxDate;
+                this.startDate = this.maxDate.clone();
                 if (this.timePicker && this.timePickerIncrement)
                     this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
@@ -504,7 +504,7 @@
                 this.endDate = this.startDate.clone();
 
             if (this.maxDate && this.endDate.isAfter(this.maxDate))
-                this.endDate = this.maxDate;
+                this.endDate = this.maxDate.clone();
 
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
