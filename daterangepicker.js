@@ -65,7 +65,7 @@
 
         this.locale = {
             direction: 'ltr',
-            format: 'MM/DD/YYYY',
+            format: moment.localeData().longDateFormat('L'),
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
