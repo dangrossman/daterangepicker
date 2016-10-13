@@ -104,8 +104,15 @@ input[type="text"] {
 #jumbo .btn {
     border-radius: 0;
 }
-#config .demo { position: relative; }
-#config .demo i { position: absolute; bottom: 10px; right: 24px; top: auto; cursor: pointer; }
+
+#config-text {
+  height: 300px;
+  width: 100%;
+  padding: 10px;
+}
+.input-calendar {
+  margin-left: 8px;
+}
 
 #rightcol {
     margin-left: 330px;

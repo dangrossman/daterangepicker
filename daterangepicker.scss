@@ -110,24 +110,23 @@ $daterangepicker-ranges-active-border-size:   $daterangepicker-ranges-border-siz
 $daterangepicker-ranges-active-border-color:  $daterangepicker-ranges-bg-color !default;
 $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !default;
 
+$arrow-prefix-size: $arrow-size;
+$arrow-suffix-size: ($arrow-size - $daterangepicker-border-size);
+
 //
 // STYLESHEETS
 //
-.#{$prefix-class} {
+
+.#{$prefix-class}-inline {
+  position: relative;
+}
+.#{$prefix-class}-tooltip {
   position: absolute;
-  color: $daterangepicker-color;
   background: $daterangepicker-bg-color;
-  border-radius: $daterangepicker-border-radius;
-  width: $daterangepicker-width;
-  padding: $daterangepicker-padding;
-  margin-top: $daterangepicker-border-size;
 
   // TODO: Should these be parameterized??
   top: 100px;
   left: 20px;
-
-  $arrow-prefix-size: $arrow-size;
-  $arrow-suffix-size: ($arrow-size - $daterangepicker-border-size);
 
   &:before, &:after {
     position: absolute;
@@ -152,6 +151,13 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     border-bottom: $arrow-suffix-size solid $daterangepicker-bg-color;
     border-left: $arrow-suffix-size solid transparent;
   }
+}
+.#{$prefix-class} {
+  color: $daterangepicker-color;
+  border-radius: $daterangepicker-border-radius;
+  width: $daterangepicker-width;
+  padding: $daterangepicker-padding;
+  margin-top: $daterangepicker-border-size;
 
   &.opensleft {
     &:before {

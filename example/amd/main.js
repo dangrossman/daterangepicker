@@ -101,6 +101,9 @@ $(document).ready(function() {
     if ($('#alwaysShowCalendars').is(':checked'))
       options.alwaysShowCalendars = true;
 
+    if ($('#inline').is(':checked'))
+      options.inline = true;
+
     if ($('#parentEl').val().length)
       options.parentEl = $('#parentEl').val();
 
