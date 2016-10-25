@@ -222,10 +222,10 @@
         if(typeof options.boxOffset === 'number')
             this.boxOffset = options.boxOffset;
 
-        if(typeof options.applyOnRangesClick === 'boolean') 
+        if(typeof options.applyOnRangesClick === 'boolean')
             this.applyOnRangesClick = options.applyOnRangesClick;
 
-        if(typeof options.hideOnClickOutside === 'boolean') 
+        if(typeof options.hideOnClickOutside === 'boolean')
             this.hideOnClickOutside = options.hideOnClickOutside;
 
         if (typeof options.opens === 'string')
@@ -343,7 +343,7 @@
                 // after the maximum, don't display this range option at all.
                 if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
                     continue;
-                
+
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
                 elem.innerHTML = range;
@@ -561,13 +561,13 @@
                     return;
                 }
 
-                this.leftCalendar.month = this.endDate.clone().date(2).subtract(1, 'month');
+                this.leftCalendar.month = (this.singleDatePicker ? this.endDate.clone().date(2) : this.endDate.clone().date(2).subtract(1, 'month'));
                 if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 }
-                
+
             } else {
                 if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
@@ -809,7 +809,7 @@
                         classes.push('off', 'disabled');
 
                     //don't allow selection of date if is less thant the minimun selection
-                    if (this.minimumSelection && calendar[row][col].isBetween(this.startDate, this.startDate.clone().add(this.minimumSelection, 'days'))) 
+                    if (this.minimumSelection && calendar[row][col].isBetween(this.startDate, this.startDate.clone().add(this.minimumSelection, 'days')))
                         classes.push('off', 'disabled', 'low-limit');
 
                     //highlight the currently selected start date
@@ -1185,7 +1185,7 @@
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
-            
+
         },
 
         clickRange: function(e) {
@@ -1323,7 +1323,7 @@
                 this.endDate = null;
                 this.setStartDate(date.clone());
             } else if (!this.endDate && date.isBefore(this.startDate)) {
-                //special case: clicking the same date for start/end, 
+                //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
                 this.setEndDate(this.startDate.clone());
             } else {
@@ -1352,7 +1352,7 @@
                 if (!this.timePicker)
                     this.clickApply();
             }
-            
+
             this.updateView();
 
         },
@@ -1573,7 +1573,7 @@
         });
         return this;
     };
-    
+
     return DateRangePicker;
 
 }));
