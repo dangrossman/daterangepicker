@@ -816,24 +816,14 @@
                     if (calendar[row][col].month() != calendar[1][1].month())
                         classes.push('off');
 
-                    // this.outOfRangeTooltipMessage = false;
-                    // this.beforeMinDateTooltipMessage = false;
-                    // this.afterMaxDateTooltipMessage = false;
-
-                    //v2 comment this shit out
-                    // html += '<td class="' + cname.replace(/^\s+|\s+$/g, '')
-                    //      + '" data-toggle="' + 'tooltip' + '" data-placement="' + 'top' + '"title="' + 'Just testing tooltips'
-                    //      + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
-
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day')){
                         classes.push('off', 'disabled');
 
-                        console.log('%c beforeMinDateTooltipMessage: ', 'background: orange', beforeMinDateTooltipMessage);
+                        //xavtodo: the tooltips are ther ebut they are not visible, they have a lower z-index than daterangepicker
+
                         if(beforeMinDateTooltipMessage){
-                            //tooltipAttributes = '" data-toggle="' + 'tooltip' + '" data-placement="' + 'top' + '" title="' + beforeMinDateTooltipMessage + "'";
-                            //tooltipAttributes = '" data-toggle="tooltip"' + ' data-placement="top"' + ' title="something"';
-                            tooltipAttributes = ' data-toggle="tooltip" data-placement="top" title="something"';
+                            tooltipAttributes = ' data-toggle="tooltip" data-placement="top" title="' + beforeMinDateTooltipMessage + '"';
                         }
                     }
 
@@ -841,11 +831,8 @@
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day')) {
                         classes.push('off', 'disabled');
 
-                        console.log('%c afterMaxDateTooltipMessage: ', 'background: orange', afterMaxDateTooltipMessage);
                         if(afterMaxDateTooltipMessage){
-                            //tooltipAttributes = '" data-toggle="' + 'tooltip' + '" data-placement="' + 'top' + '" title="' + afterMaxDateTooltipMessage + "'";
-                            //tooltipAttributes = '" data-toggle="tooltip"' + ' data-placement="top"' + ' title="else"';
-                            tooltipAttributes = ' data-toggle="tooltip" data-placement="top" title="else"';
+                            tooltipAttributes = ' data-toggle="tooltip" data-placement="top" title="' + afterMaxDateTooltipMessage + '"';
                         }
                     }
 
@@ -853,11 +840,8 @@
                     if (this.isInvalidDate(calendar[row][col])) {
                         classes.push('off', 'disabled');
 
-                        console.log('%c outOfRangeTooltipMessage: ', 'background: orange', outOfRangeTooltipMessage);
                         if(outOfRangeTooltipMessage){
-                            //tooltipAttributes = '" data-toggle="' + 'tooltip' + '" data-placement="' + 'top' + '" title="' + outOfRangeTooltipMessage + "'";
-                            //tooltipAttributes = '" data-toggle="tooltip"' + ' data-placement="top' + ' title="other"';
-                            tooltipAttributes = ' data-toggle="tooltip" data-placement="top" title="other"';
+                            tooltipAttributes = ' data-toggle="tooltip" data-placement="top" title="' + outOfRangeTooltipMessage + '"';
                         }
                     }
 
@@ -894,12 +878,6 @@
                     html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '"'
                         + tooltipAttributes
                         + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
-
-                    console.info('%c tooltipAttributes: ', 'background: limegreen ', tooltipAttributes);
-                    //v2
-                    // html += '<td class="' + cname.replace(/^\s+|\s+$/g, '')
-                    // + '" data-toggle="' + 'tooltip' + '" data-placement="' + 'top' + '"title="' + 'Just testing tooltips'
-                    // + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
 
                     //orig
                     //html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
@@ -1679,10 +1657,6 @@
                 el.data('daterangepicker').remove();
             el.data('daterangepicker', new DateRangePicker(el, options, callback));
         });
-
-        //not working
-        // console.log('DDDDDD INITING TOOLTIPS');
-        // $('[data-toggle="tooltip"]').tooltip(); //init tooltips//xavtodo: find a better place for this
 
         return this;
     };
