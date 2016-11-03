@@ -1322,8 +1322,18 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.endDate = null;
-                this.setStartDate(date.clone());
+                if (this.endDate) {
+                    this.endDate = null;
+                    this.setStartDate(date.clone());
+                } else { // date is before start date, use that for the range
+                    this.setEndDate(this.startDate.clone());
+                    this.setStartDate(date);
+
+                    if (this.autoApply) {
+                        this.calculateChosenLabel();
+                        this.clickApply();
+                    }
+                }
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
