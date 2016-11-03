@@ -1266,6 +1266,13 @@
             var leftCalendar = this.leftCalendar;
             var rightCalendar = this.rightCalendar;
             var startDate = this.startDate;
+
+            var rangeStart = startDate;
+            var rangeEnd = date;
+            if (startDate.isAfter(date)) {
+                rangeStart = date;
+                rangeEnd = startDate;
+            }
             if (!this.endDate) {
                 this.container.find('.calendar td').each(function(index, el) {
 
@@ -1278,7 +1285,7 @@
                     var cal = $(el).parents('.calendar');
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
 
-                    if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
+                    if ((dt.isAfter(rangeStart) && dt.isBefore(rangeEnd)) || dt.isSame(date, 'day')) {
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
