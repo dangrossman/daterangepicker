@@ -702,7 +702,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="arrow | svg ' + arrow.left + '"></i></th>';
+                html += '<th class="prev available"><i class="arrow | svg ' + arrow.left + '"><svg><use xlink:href="#i-caret"></use></svg></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -744,13 +744,13 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="arrow | svg ' + arrow.right + '"></i></th>';
+                html += '<th class="next available"><i class="arrow | svg ' + arrow.right + '"><svg><use xlink:href="#i-caret"></use></svg></i></th>';
             } else {
                 html += '<th></th>';
             }
 
-            html += '</tr>';
-            html += '<tr>';
+            html += '</tr></thead></table>';
+            html += '<table class="table-condensed the-calendar"><thead><tr>';
 
             // add week number label
             if (this.showWeekNumbers || this.showISOWeekNumbers)
@@ -840,7 +840,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '"><span>' + calendar[row][col].date() + '</span></td>';
 
                 }
                 html += '</tr>';
