@@ -1289,78 +1289,100 @@
 
         },
 
-        clickDate: function(e) {
-
-            if (!$(e.target).hasClass('available')) return;
-
-            var title = $(e.target).attr('data-title');
-            var row = title.substr(1, 1);
-            var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
-            var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
-
-            //
-            // this function needs to do a few things:
-            // * alternate between selecting a start and end date for the range,
-            // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
-            // * if autoapply is enabled, and an end date was chosen, apply the selection
-            // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
-            // * if one of the inputs above the calendars was focused, cancel that manual input
-            //
-
-            if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
-                if (this.timePicker) {
-                    var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
-                    if (!this.timePicker24Hour) {
-                        var ampm = this.container.find('.left .ampmselect').val();
-                        if (ampm === 'PM' && hour < 12)
-                            hour += 12;
-                        if (ampm === 'AM' && hour === 12)
-                            hour = 0;
-                    }
-                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
-                    var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
-                }
-                this.endDate = null;
-                this.setStartDate(date.clone());
-            } else if (!this.endDate && date.isBefore(this.startDate)) {
-                //special case: clicking the same date for start/end,
-                //but the time of the end date is before the start date
-                this.setEndDate(this.startDate.clone());
-            } else { // picking end
-                if (this.timePicker) {
-                    var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
-                    if (!this.timePicker24Hour) {
-                        var ampm = this.container.find('.right .ampmselect').val();
-                        if (ampm === 'PM' && hour < 12)
-                            hour += 12;
-                        if (ampm === 'AM' && hour === 12)
-                            hour = 0;
-                    }
-                    var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
-                    var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
-                }
-                this.setEndDate(date.clone());
-                if (this.autoApply) {
-                  this.calculateChosenLabel();
-                  this.clickApply();
-                }
-            }
-
-            if (this.singleDatePicker) {
-                this.setEndDate(this.startDate);
-                if (!this.timePicker)
-                    this.clickApply();
-            }
-
-            this.updateView();
-
-            //This is to cancel the blur event handler if the mouse was in one of the inputs
-            e.stopPropagation();
-
-        },
+         clickDate: function(e) {
+ +
+ +            if (!$(e.target).hasClass('available')) return;
+ +
+ +            var title = $(e.target).attr('data-title');
+ +            var row = title.substr(1, 1);
+ +            var col = title.substr(3, 1);
+ +            var cal = $(e.target).parents('.calendar');
+ +            var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+ +
+ +            //
+ +            // this function needs to do a few things:
+ +            // * alternate between selecting a start and end date for the range,
+ +            // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
+ +            // * if autoapply is enabled, and an end date was chosen, apply the selection
+ +            // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
+ +            // * if one of the inputs above the calendars was focused, cancel that manual input
+ +            //
+ +
+ +            //if one date selected && date later than earliest, end = latest
+ +            if(!this.endDate && date.isAfter(this.startDate)){
+ +                if (this.timePicker) {
+ +                    var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
+ +                    if (!this.timePicker24Hour) {
+ +                        var ampm = this.container.find('.right .ampmselect').val();
+ +                        if (ampm === 'PM' && hour < 12)
+ +                            hour += 12;
+ +                        if (ampm === 'AM' && hour === 12)
+ +                            hour = 0;
+ +                    }
+ +                    var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
+ +                    var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
+ +                    date = date.clone().hour(hour).minute(minute).second(second);
+ +                }
+ +                this.setEndDate(date.clone());
+ +                if (this.autoApply) {
+ +                  this.calculateChosenLabel();
+ +                  this.clickApply();
+ +                }
+ +            }
+ +            
+ +            //if one date selected && date earlier than earliest, end = start && start = date
+ +            else if(!this.endDate && date.isBefore(this.startDate)){
+ +                if (this.timePicker) {
+ +                    var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
+ +                    if (!this.timePicker24Hour) {
+ +                        var ampm = this.container.find('.left .ampmselect').val();
+ +                        if (ampm === 'PM' && hour < 12)
+ +                            hour += 12;
+ +                        if (ampm === 'AM' && hour === 12)
+ +                            hour = 0;
+ +                    }
+ +                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
+ +                    var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+ +                    date = date.clone().hour(hour).minute(minute).second(second);
+ +                }
+ +                this.setEndDate(this.startDate.clone());
+ +                this.setStartDate(date.clone());
+ +            }
+ +
+ +            //if one date selected && date same as one of selected, make single day
+ +            else if(this.startDate.isSame(date) || this.endDate.isSame(date,'day')){
+ +                this.setEndDate(date.clone());
+ +                this.setStartDate(date.clone());
+ +            }
+ +
+ +            //if two date selected && date later then latest, new latest
+ +            else if(this.endDate && date.isAfter(this.endDate)){
+ +                this.setEndDate(date.clone());
+ +            }
+ +
+ +            //if two date selected && date earlier than earliest, new earliest
+ +            else if(this.endDate && date.isBefore(this.startDate)){
+ +                this.setStartDate(date.clone());
+ +            }
+ +
+ +            //if two date selected && date between latest and earliest,  
+ +            else if(this.startDate && this.endDate && date.isBefore(this.endDate) && date.isAfter(this.startDate) && !date.isSame(this.startDate) && !date.isSame(this.endDate)){
+ +                this.setStartDate(date.clone());
+ +                this.setEndDate(date.clone());
+ +            }
+ +
+ +            if (this.singleDatePicker) {
+ +                this.setEndDate(this.startDate);
+ +                if (!this.timePicker)
+ +                    this.clickApply();
+ +            }
+ +
+ +            this.updateView();
+ +
+ +            //This is to cancel the blur event handler if the mouse was in one of the inputs
+ +            e.stopPropagation();
+ +
+ +        },
 
         calculateChosenLabel: function () {
             var customRange = true;
