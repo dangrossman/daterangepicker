@@ -1240,20 +1240,23 @@
             this.updateCalendars();
         },
 
+        findTargetElement: function(e) {
+            if ($(e.target).hasClass('available'))
+                return e.target;
+            else if ($(e.target.parentElement).hasClass('available')) {
+                return e.target.parentElement;
+            }
+        },
+
         hoverDate: function(e) {
-
-            //ignore mouse movements while an above-calendar text input has focus
-            //if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
-            //    return;
-
-            //ignore dates that can't be selected
-            if (!$(e.target).hasClass('available')) return;
+            var targetElement = this.findTargetElement(e);
+            if (!targetElement) return;
 
             //have the text inputs above calendars reflect the date being hovered over
-            var title = $(e.target).attr('data-title');
+            var title = $(targetElement).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
+            var cal = $(targetElement).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
@@ -1297,13 +1300,13 @@
         },
 
         clickDate: function(e) {
+            var targetElement = this.findTargetElement(e);
+            if (!targetElement) return;
 
-            if (!$(e.target).hasClass('available')) return;
-
-            var title = $(e.target).attr('data-title');
+            var title = $(targetElement).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
-            var cal = $(e.target).parents('.calendar');
+            var cal = $(targetElement).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             //
