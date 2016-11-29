@@ -3,7 +3,8 @@
    <head>
       <meta charset="UTF-8" />
       <title>A date range picker for Bootstrap</title>
-      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" />
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
       <link rel="stylesheet" type="text/css" media="all" href="daterangepicker.css" />
       <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
       <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -190,6 +191,26 @@
                 <input type="text" class="form-control" id="cancelClass" value="btn-default">
               </div>
 
+              <div class="form-group">
+                <label for="calendarClasses">calendarClasses</label>
+                <input type="text" class="form-control" id="calendarClasses" value="fa fa-calendar glyphicon glyphicon-calendar">
+              </div>
+
+              <div class="form-group">
+                <label for="clockClasses">clockClasses</label>
+                <input type="text" class="form-control" id="clockClasses" value="fa fa-clock-o glyphicon glyphicon-time">
+              </div>
+
+              <div class="form-group">
+                <label for="arrowLeftClasses">arrowLeftClasses</label>
+                <input type="text" class="form-control" id="arrowLeftClasses" value="fa fa-chevron-left glyphicon glyphicon-chevron-left">
+              </div>
+
+              <div class="form-group">
+                <label for="arrowRightClasses">arrowRightClasses</label>
+                <input type="text" class="form-control" id="arrowRightClasses" value="fa fa-chevron-right glyphicon glyphicon-chevron-right">
+              </div>
+
             </div>
 
           </div>
@@ -355,6 +376,18 @@
 
           if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
             options.cancelClass = $('#cancelClass').val();
+
+          if ($('#calendarClasses').val().length && $('#calendarClasses').val() != 'fa fa-calendar glyphicon glyphicon-calendar')
+            options.calendarClasses = $('#calendarClasses').val();
+
+          if ($('#clockClasses').val().length && $('#clockClasses').val() != 'fa fa-clock-o glyphicon glyphicon-time')
+            options.clockClasses = $('#clockClasses').val();
+
+          if ($('#arrowLeftClasses').val().length && $('#arrowLeftClasses').val() != 'fa fa-chevron-left glyphicon glyphicon-chevron-left')
+            options.arrowLeftClasses = $('#arrowLeftClasses').val();
+
+          if ($('#arrowRightClasses').val().length && $('#arrowRightClasses').val() != 'fa fa-chevron-right glyphicon glyphicon-chevron-right')
+            options.arrowRightClasses = $('#arrowRightClasses').val();
 
           $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
