@@ -4,6 +4,8 @@
 * @copyright: Copyright (c) 2012-2016 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: https://www.improvely.com/
+*
+* forked and modified by Erik Uetz
 */
 // Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
 (function (root, factory) {
@@ -49,6 +51,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.extraContrast = false;
+        this.showInputLabels = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -70,6 +74,8 @@
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
             weekLabel: 'W',
+            fromLabel: 'From',
+            toLabel: 'To',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
@@ -92,12 +98,13 @@
         options = $.extend(this.element.data(), options);
 
         //html template for the picker UI
-        if (typeof options.template !== 'string' && !(options.template instanceof $))
+        if (typeof options.template !== 'string' && !(options.template instanceof $)) {
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                        '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
+                        '<label class="input-label fromLabel"></label>' +
+                     '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
@@ -108,7 +115,8 @@
                 '<div class="calendar right">' +
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                        '<label class="input-label toLabel"></label>' +
+                     '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
@@ -123,7 +131,8 @@
                     '</div>' +
                 '</div>' +
             '</div>';
-
+        }
+        
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);
 
@@ -159,6 +168,12 @@
 
             if (typeof options.locale.weekLabel === 'string')
               this.locale.weekLabel = options.locale.weekLabel;
+
+            if (typeof options.locale.fromLabel === 'string')
+              this.locale.fromLabel = options.locale.fromLabel;
+
+            if (typeof options.locale.toLabel === 'string')
+              this.locale.toLabel = options.locale.toLabel;
 
             if (typeof options.locale.customRangeLabel === 'string')
               this.locale.customRangeLabel = options.locale.customRangeLabel;
@@ -267,6 +282,12 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.extraContrast === 'boolean')
+            this.extraContrast = options.extraContrast;
+
+        if (typeof options.showInputLabels === 'boolean')
+            this.showInputLabels = options.showInputLabels;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -358,6 +379,10 @@
             this.endDate = this.endDate.endOf('day');
             this.container.find('.calendar-time').hide();
         }
+        
+        if (!this.showInputLabels) {
+          this.container.find('.input-label').hide();
+        }
 
         //can't be used together for now
         if (this.timePicker && this.autoApply)
@@ -401,6 +426,11 @@
             this.container.find('.cancelBtn').addClass(this.cancelClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+        this.container.find('.fromLabel').html(this.locale.fromLabel);
+        this.container.find('.toLabel').html(this.locale.toLabel);
+        if (this.extraContrast) {
+            this.container.addClass('extra-contrast');
+        }
 
         //
         // event listeners
@@ -457,17 +487,21 @@
         constructor: DateRangePicker,
 
         setStartDate: function(startDate) {
-            if (typeof startDate === 'string')
+            if (typeof startDate === 'string') {
                 this.startDate = moment(startDate, this.locale.format);
+            }
 
-            if (typeof startDate === 'object')
+            if (typeof startDate === 'object') {
                 this.startDate = moment(startDate);
+            }
 
-            if (!this.timePicker)
+            if (!this.timePicker) {
                 this.startDate = this.startDate.startOf('day');
+            }
 
-            if (this.timePicker && this.timePickerIncrement)
+            if (this.timePicker && this.timePickerIncrement) {
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
 
             if (this.minDate && this.startDate.isBefore(this.minDate)) {
                 this.startDate = this.minDate.clone();
@@ -481,8 +515,9 @@
                     this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
 
-            if (!this.isShowing)
+            if (!this.isShowing) {
                 this.updateElement();
+            }
 
             this.updateMonthsInView();
         },
