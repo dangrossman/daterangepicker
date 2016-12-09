@@ -121,7 +121,7 @@
     color: #999;
     cursor: not-allowed;
     text-decoration: line-through; }
-  .daterangepicker select.monthselect, .daterangepicker select.yearselect {
+  .daterangepicker select.monthselect, .daterangepicker select.yearselect, .daterangepicker select.intervalselect {
     font-size: 12px;
     padding: 1px;
     height: auto;
@@ -199,6 +199,16 @@
       border: 1px solid #08c;
       color: #fff; }
 
+.intervals {
+  width: 160px;
+  display: block;
+  padding: 3px 12px; }
+  .intervals label {
+    font-size: 12px;
+    padding: 1px;
+    margin-right: 1em;
+    height: auto; }
+
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   .daterangepicker {
@@ -258,6 +268,7 @@
       .daterangepicker.rtl .ranges, .daterangepicker.rtl .calendar {
         text-align: right;
         float: right; } }
+
 @media (min-width: 730px) {
   .daterangepicker .ranges {
     width: auto; }
@@ -267,3 +278,4 @@
     float: right; }
   .daterangepicker .calendar.left {
     clear: none !important; } }
+

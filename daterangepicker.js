@@ -71,6 +71,7 @@
             cancelLabel: 'Cancel',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
+            intervalLabel: 'Interval',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
             firstDay: moment.localeData().firstDayOfWeek()
@@ -162,6 +163,9 @@
 
             if (typeof options.locale.customRangeLabel === 'string')
               this.locale.customRangeLabel = options.locale.customRangeLabel;
+
+            if (typeof options.locale.intervalLabel === 'string')
+              this.locale.intervalLabel = options.locale.intervalLabel;
 
         }
         this.container.addClass(this.locale.direction);
@@ -267,6 +271,9 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.interval === 'string')
+            this.interval = options.interval;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -349,6 +356,18 @@
             this.container.find('.ranges').prepend(list);
         }
 
+        if (typeof options.intervals === 'object') {
+            var intervalHtml = '<div class="intervals"><label for="intervalselect">' + this.locale.intervalLabel + '</label>' +
+                '<select class="intervalselect">';
+            for (i in options.intervals) {
+                intervalHtml += '<option value="' + i + '"' +
+                    (i === this.interval ? ' selected="selected"' : '') +
+                    '>' + options.intervals[i] + '</option>';
+            }
+            intervalHtml += '</select></div>';
+            this.container.find('.range_inputs').prepend(intervalHtml);
+        }
+
         if (typeof cb === 'function') {
             this.callback = cb;
         }
@@ -425,7 +444,8 @@
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
-            .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+            .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this))
+            .on('change.daterangepicker', 'select.intervalselect', $.proxy(this.intervalChanged, this));
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
@@ -515,6 +535,13 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+        },
+
+        setInterval: function(interval) {
+            if (typeof interval === 'string') {
+                this.interval = interval;
+                this.container.find('.intervalselect').val(this.interval);
+            }
         },
 
         isInvalidDate: function() {
@@ -1444,6 +1471,11 @@
                     this.leftCalendar.month = this.rightCalendar.month.clone().subtract(1, 'month');
             }
             this.updateCalendars();
+        },
+
+        intervalChanged: function(e) {
+            var ranges = $(e.target).closest('.ranges');
+            this.interval = ranges.find('.intervalselect').val();
         },
 
         timeChanged: function(e) {
