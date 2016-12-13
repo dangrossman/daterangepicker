@@ -5,7 +5,8 @@
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
   "scripts": {
-    "scss": "node-sass daterangepicker.scss > daterangepicker.css",
+    "scss": "node-sass daterangepicker-fnd.scss > daterangepicker-fnd.css",
+    "scss-old": "node-sass daterangepicker-bs.scss > daterangepicker-bs.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

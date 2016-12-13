@@ -3,14 +3,13 @@
    <head>
       <meta charset="UTF-8" />
       <title>A date range picker for Bootstrap</title>
-
-      <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" media="all" href="daterangepicker-fnd.css" />
+      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" media="all" href="daterangepicker-bs.css" />
 
       <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.2.4/foundation-fnd.js"></script>
+      <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
       <script type="text/javascript" src="moment.js"></script>
-      <script type="text/javascript" src="daterangepicker-fnd.js"></script>
+      <script type="text/javascript" src="daterangepicker-bs.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -29,7 +28,7 @@
           <form>
           <div class="row">
 
-            <div class="medium-4 columns">
+            <div class="col-md-4">
 
               <div class="form-group">
                 <label for="parentEl">parentEl</label>
@@ -57,7 +56,7 @@
               </div>
 
             </div>
-            <div class="medium-4 columns">
+            <div class="col-md-4">
 
               <div class="checkbox">
                 <label>
@@ -140,7 +139,7 @@
               </div>
 
             </div>
-            <div class="medium-4 columns">
+            <div class="col-md-4">
 
               <div class="checkbox">
                 <label>
@@ -201,13 +200,13 @@
 
         <div class="row">
 
-          <div class="medium-4 columns callout">
+          <div class="col-md-4 col-md-offset-2 demo">
             <h4>Your Date Range Picker</h4>
             <input type="text" id="config-demo" class="form-control">
             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
           </div>
 
-          <div class="medium-8 columns callout">
+          <div class="col-md-6">
             <h4>Configuration</h4>
 
             <div class="well">
