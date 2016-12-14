@@ -127,6 +127,10 @@
     height: auto;
     margin: 0;
     cursor: default; }
+  .daterangepicker select.intervalselect {
+    position: absolute;
+    right: 0px;
+    height: calc(100% - 8px); }
   .daterangepicker select.monthselect {
     margin-right: 2%;
     width: 56%; }
@@ -202,12 +206,13 @@
 .intervals {
   width: 160px;
   display: block;
-  padding: 3px 2px; }
+  position: relative;
+  height: 30px;
+  margin: 4px 0; }
   .intervals label {
     font-size: 12px;
-    padding: 1px;
-    margin-right: 1em;
-    height: auto; }
+    height: 100%;
+    margin: 2px 0 0; }
 
 /*  Larger Screen Styling */
 @media (min-width: 564px) {

@@ -354,6 +354,12 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       cursor: default;
     }
 
+    &.intervalselect {
+      position: absolute;
+      right: 0px;
+      height: calc(100% - 8px);
+    }
+
     &.monthselect {
       margin-right: 2%;
       width: 56%;
@@ -477,13 +483,14 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 .intervals {
   width: 160px;
   display: block;
-  padding: 3px 2px;
+  position: relative;
+  height: 30px;
+  margin: 4px 0;
 
   label {
     font-size: 12px;
-    padding: 1px;
-    margin-right: 1em;
-    height: auto;
+    height: 100%;
+    margin: 2px 0 0
   }
 }
 
