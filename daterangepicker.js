@@ -50,6 +50,9 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.disabledDates = new Array();
+		this.disabledDays = new Array(); // Mon, Tue, Wed, Thu, Fri, Sat, Sun
+
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -266,6 +269,19 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+        
+        
+        if(typeof options.disabledDates !== 'undefined'){	
+			if(options.disabledDates.length > 0)	{
+				this.disabledDates = options.disabledDates;
+			}
+		}
+		
+		if(typeof options.disabledDays !== 'undefined'){	
+			if(options.disabledDays.length > 0)	{
+				this.disabledDays = options.disabledDays;
+			}
+		}
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -785,6 +801,9 @@
                 for (var col = 0; col < 7; col++) {
 
                     var classes = [];
+                    var disabledDate;
+					var disabledDay;
+					var locFormat = this.locale.format;
 
                     //highlight today's date
                     if (calendar[row][col].isSame(new Date(), "day"))
@@ -809,6 +828,22 @@
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
                         classes.push('off', 'disabled');
+                    
+                    if(this.disabledDates.length > 0)	{
+						$.each(this.disabledDates, function( index, value ) {
+						  disabledDate = moment(value, locFormat);
+						  if (calendar[row][col].format('YYYY-MM-DD') == disabledDate.format('YYYY-MM-DD'))
+                        	classes.push('off', 'disabled');
+						});
+					}	
+					
+					if(this.disabledDays.length > 0)	{
+						$.each(this.disabledDays, function( index, value ) {
+						  disabledDay = moment(value, locFormat);
+						  if (calendar[row][col].format('ddd') == value)
+                        	classes.push('off', 'disabled');
+						});
+					}
 
                     //highlight the currently selected start date
                     if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
