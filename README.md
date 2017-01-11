@@ -1,4 +1,6 @@
-# Date Range Picker for Bootstrap
+# Date Range Picker for Bootstrap based on Dan Grossman's awesome [daterangepicker](https://github.com/dangrossman/bootstrap-daterangepicker)
+
+The biggest difference is in how the plugin behaves when the new date range is selected but the user clicks outside the calendar modal window. The original daterangepicker will execute the callback function as if the user clicked 'Apply' button. This plugin will not execute the callback.
 
 ![Improvely.com](http://i.imgur.com/LbAMf3D.png)
 
@@ -10,7 +12,7 @@ Features include limiting the selectable date range, localizable strings and dat
 a single date picker mode, optional time picker (for e.g. making appointments or reservations),
 and styles that match the default Bootstrap 3 theme.
 
-## [Documentation and Live Usage Examples](http://www.daterangepicker.com)
+## [Original Daterangepicker Documentation and Live Usage Examples](http://www.daterangepicker.com)
 
 ## [See It In a Live Application](https://awio.iljmp.com/5/drpdemogh)
 
