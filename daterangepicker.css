@@ -115,6 +115,8 @@
     background-color: #357ebd;
     border-color: transparent;
     color: #fff; }
+  .daterangepicker td.hidden {
+    visibility: hidden; }
   .daterangepicker th.month {
     width: auto; }
   .daterangepicker td.disabled, .daterangepicker option.disabled {

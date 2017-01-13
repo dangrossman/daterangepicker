@@ -796,7 +796,7 @@
 
                     //grey out the dates in other months displayed at beginning and end of this calendar
                     if (calendar[row][col].month() != calendar[1][1].month())
-                        classes.push('off');
+                        classes.push('off', 'hidden');
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
