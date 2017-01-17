@@ -877,7 +877,7 @@
 
                 //Preserve the time already selected
                 var timeSelector = this.container.find('.calendar.right .calendar-time div');
-                if (!this.endDate && timeSelector.html() != '') {
+                if (timeSelector.html() != '') {
 
                     selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
                     selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
