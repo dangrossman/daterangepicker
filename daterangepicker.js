@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.24
+* @version: 2.1.25-rc
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2016 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -431,7 +431,9 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        if (this.element.is('input') || this.element.is('button')) {
+    	var input_or_textarea = this.element.is('input') || this.element.is('textarea'); 
+    	
+        if (input_or_textarea || this.element.is('button')) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
@@ -446,10 +448,10 @@
         // if attached to a text input, set the initial value
         //
 
-        if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+        if (input_or_textarea && !this.singleDatePicker && this.autoUpdateInput) {
             this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
             this.element.trigger('change');
-        } else if (this.element.is('input') && this.autoUpdateInput) {
+        } else if (input_or_textarea && this.autoUpdateInput) {
             this.element.val(this.startDate.format(this.locale.format));
             this.element.trigger('change');
         }
@@ -1561,7 +1563,9 @@
         },
 
         elementChanged: function() {
-            if (!this.element.is('input')) return;
+        	var input_or_textarea = this.element.is('input') || this.element.is('textarea'); 
+
+            if (!input_or_textarea) return;
             if (!this.element.val().length) return;
             if (this.element.val().length < this.locale.format.length) return;
 
@@ -1594,10 +1598,11 @@
         },
 
         updateElement: function() {
-            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+        	var input_or_textarea = this.element.is('input') || this.element.is('textarea'); 
+            if (input_or_textarea && !this.singleDatePicker && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 this.element.trigger('change');
-            } else if (this.element.is('input') && this.autoUpdateInput) {
+            } else if (input_or_textarea && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format));
                 this.element.trigger('change');
             }
