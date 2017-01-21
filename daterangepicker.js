@@ -170,7 +170,7 @@
             }
         }
         this.container.addClass(this.locale.direction);
-
+		
         if (typeof options.startDate === 'string')
             this.startDate = moment(options.startDate, this.locale.format);
 
@@ -195,6 +195,9 @@
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
 
+		if (typeof options.disableInputHover === 'boolean')
+			this.disableInputHover = options.disableInputHover;
+			
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
             this.startDate = this.minDate.clone();
