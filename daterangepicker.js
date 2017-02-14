@@ -50,6 +50,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.flag = true;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -1023,7 +1024,6 @@
             //ignore mouse movements while an above-calendar text input has focus
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
-
             this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
             if (this.endDate)
                 this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
@@ -1260,13 +1260,19 @@
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-            if(this.endDate && this.container.find('input[name=daterangepicker_start]').is(":active")){
+            console.log("Flag=",this.flag);
+            if(this.flag || this.container.find('input[name=daterangepicker_start]').is(":focus")){
+                console.log("Active", this.flag);
+                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+            }
+
+            if (this.endDate && this.container.find('input[name=daterangepicker_start]').is(":active")){
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
-            }else if(!this.endDate && this.container.find('input[name=daterangepicker_start]').is(":focus")){
+            } else if(!this.endDate && this.container.find('input[name=daterangepicker_start]').is(":focus")){
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
-            }else if(!this.endDate && this.container.find('input[name=daterangepicker_end]')){
+            } else if(!this.endDate && this.container.find('input[name=daterangepicker_end]')){
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
-            }else if(this.startDate && this.container.find('input[name=daterangepicker_start]').is(":active") ){
+            } else if(this.startDate && this.container.find('input[name=daterangepicker_start]').is(":active")){
                 this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
             }
             //highlight the dates between the start date and the date being hovered as a potential end date
@@ -1314,7 +1320,6 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
-
             if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1330,6 +1335,8 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.endDate = null;
+                this.flag = false;
+                console.log("Flag after start =", this.flag);
                 this.setStartDate(date.clone());
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
@@ -1354,7 +1361,10 @@
                   this.calculateChosenLabel();
                   this.clickApply();
                 }
+                //this.flag = true;
+                //console.log("Flag after end =", this.flag);
             }
+
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
