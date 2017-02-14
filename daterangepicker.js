@@ -1260,12 +1260,9 @@
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-            console.log("Flag=",this.flag);
             if(this.flag || this.container.find('input[name=daterangepicker_start]').is(":focus")){
-                console.log("Active", this.flag);
                 this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
             }
-
             if (this.endDate && this.container.find('input[name=daterangepicker_start]').is(":active")){
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
             } else if(!this.endDate && this.container.find('input[name=daterangepicker_start]').is(":focus")){
@@ -1336,7 +1333,6 @@
                 }
                 this.endDate = null;
                 this.flag = false;
-                console.log("Flag after start =", this.flag);
                 this.setStartDate(date.clone());
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
@@ -1361,8 +1357,6 @@
                   this.calculateChosenLabel();
                   this.clickApply();
                 }
-                //this.flag = true;
-                //console.log("Flag after end =", this.flag);
             }
 
 
