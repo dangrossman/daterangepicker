@@ -1287,13 +1287,27 @@
                     var col = title.substr(3, 1);
                     var cal = $(el).parents('.calendar');
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
-
                     if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
                     }
 
+                });
+            } else if(this.flag || this.container.find('input[name=daterangepicker_start]').is(":focus")) {
+                this.container.find('.calendar tbody td').each(function(index, el) {
+
+                    //skip week numbers, only look at dates
+                    if ($(el).hasClass('week')) return;
+
+                    var title = $(el).attr('data-title');
+                    var row = title.substr(1, 1);
+                    var col = title.substr(3, 1);
+                    var cal = $(el).parents('.calendar');
+                    var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
+                    if(date.isAfter(startDate)){
+                        $(el).removeClass('in-range');
+                    }
                 });
             }
 
