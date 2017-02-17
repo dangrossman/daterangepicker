@@ -50,10 +50,12 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+
         this.flag = true;
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
+
         this.config = options.config ? options.config : false;
         this.drops = 'down';
         if (this.element.hasClass('dropup'))
@@ -1023,6 +1025,7 @@
             //ignore mouse movements while an above-calendar text input has focus
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
+
             this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
             if (this.endDate)
                 this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
@@ -1279,6 +1282,7 @@
                     this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
                 }
             }
+
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
             var rightCalendar = this.rightCalendar;
@@ -1340,6 +1344,7 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
+
             if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1381,7 +1386,6 @@
                   this.clickApply();
                 }
             }
-
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
