@@ -440,6 +440,7 @@
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
+            this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
         }
 
         //
@@ -1589,6 +1590,14 @@
         keydown: function(e) {
             //hide on tab or enter
             if ((e.keyCode === 9) || (e.keyCode === 13)) {
+                this.hide();
+            }
+
+            //hide on esc and prevent propagation
+            if (e.keyCode === 27) {
+                e.preventDefault();
+                e.stopPropagation();
+
                 this.hide();
             }
         },
