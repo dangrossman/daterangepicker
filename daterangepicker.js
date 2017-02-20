@@ -440,7 +440,7 @@
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
-            this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
+            this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));
         }
 
         //
