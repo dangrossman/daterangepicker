@@ -1,6 +1,6 @@
 /**
- * @version: 2.1.19
- * @author: Dan Grossman http://www.dangrossman.info/
+ * @version: 2.1.31
+ * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
  * @website: https://www.improvely.com/
@@ -100,6 +100,9 @@
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
+                '<div class="clearfix wrapper">' +
+                '<div class="calendars-and-buttons">' +
+                '<div class="clearfix">' +
                 '<div class="calendar left">' +
                 '<div class="daterangepicker_input">' +
                 '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
@@ -122,10 +125,13 @@
                 '</div>' +
                 '<div class="calendar-table"></div>' +
                 '</div>' +
-                '<div class="ranges">' +
-                '<div class="range_inputs">' +
+                '</div>' +
+                '<div class="apply-cancel-buttons">' +
                 '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '<button class="cancelBtn" type="button"></button>' +
+                '</div>' +
+                '</div>' +
+                '<div class="ranges">' +
                 '</div>' +
                 '</div>' +
                 '</div>';
@@ -414,11 +420,15 @@
             .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this));
 
         this.container.find('.ranges')
-            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
-            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+            // .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
+            // .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+
+        this.container.find('.apply-cancel-buttons')
+            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
+            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
 
         if (this.element.is('input')) {
             this.element.on({
@@ -1338,10 +1348,8 @@
         },
 
         clickApply: function(e) {
-
             //incomplete date selection, do nothing
             if (!this.endDate) return;
-
 
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.callback(this.startDate, this.endDate, this.chosenLabel);

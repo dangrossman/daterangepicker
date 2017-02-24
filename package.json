@@ -1,32 +1,93 @@
 {
-  "name": "bootstrap-daterangepicker-v2",
-  "version": "2.1.30",
-  "description": "Date range picker component for Bootstrap based on Dan Grossman awesome daterangepicker",
-  "main": "daterangepicker.js",
-  "style": "daterangepicker.css",
-  "scripts": {
-    "scss": "node-sass daterangepicker.scss > daterangepicker.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "_args": [
+    [
+      {
+        "raw": "bootstrap-daterangepicker-v2@2.1.31",
+        "scope": null,
+        "escapedName": "bootstrap-daterangepicker-v2",
+        "name": "bootstrap-daterangepicker-v2",
+        "rawSpec": "2.1.31",
+        "spec": "2.1.31",
+        "type": "version"
+      },
+      "C:\\work\\FrontServices\\Spike2\\public\\analytics"
+    ]
+  ],
+  "_from": "bootstrap-daterangepicker-v2@2.1.31",
+  "_id": "bootstrap-daterangepicker-v2@2.1.31",
+  "_inCache": true,
+  "_location": "/bootstrap-daterangepicker-v2",
+  "_nodeVersion": "6.9.1",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/bootstrap-daterangepicker-v2-2.1.30.tgz_1484136840864_0.5536052826792002"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/codeepic/bootstrap-daterangepicker-v2.git"
+  "_npmUser": {
+    "name": "codeepic",
+    "email": "ksaweryglab@gmail.com"
   },
+  "_npmVersion": "3.10.8",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "bootstrap-daterangepicker-v2@2.1.31",
+    "scope": null,
+    "escapedName": "bootstrap-daterangepicker-v2",
+    "name": "bootstrap-daterangepicker-v2",
+    "rawSpec": "2.1.31",
+    "spec": "2.1.31",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/bootstrap-daterangepicker-v2/-/bootstrap-daterangepicker-v2-2.1.31.tgz",
+  "_shasum": "9f3449aaadd3ad7c8bef97e80fd4dc3edebc8e17",
+  "_shrinkwrap": null,
+  "_spec": "bootstrap-daterangepicker-v2@2.1.31",
+  "_where": "C:\\work\\FrontServices\\Spike2\\public\\analytics",
   "author": {
     "name": "codeepic",
     "email": "ksaweryglab@gmail.com",
     "url": "http://www.codeepic.com"
   },
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/codeepic/bootstrap-daterangepicker-v2/issues"
   },
-  "homepage": "https://github.com/codeepic/bootstrap-daterangepicker-v2",
   "dependencies": {
     "jquery": ">=1.10",
     "moment": "^2.9.0"
   },
+  "description": "Date range picker component for Bootstrap based on Dan Grossman awesome daterangepicker",
   "devDependencies": {
     "node-sass": "^3.4.2"
-  }
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "9f3449aaadd3ad7c8bef97e80fd4dc3edebc8e17",
+    "tarball": "https://registry.npmjs.org/bootstrap-daterangepicker-v2/-/bootstrap-daterangepicker-v2-2.1.30.tgz"
+  },
+  "gitHead": "30514d3ebe5de6ba791a963b79935b91db5df400",
+  "homepage": "https://github.com/codeepic/bootstrap-daterangepicker-v2",
+  "license": "MIT",
+  "main": "daterangepicker.js",
+  "maintainers": [
+    {
+      "name": "codeepic",
+      "email": "ksaweryglab@gmail.com"
+    }
+  ],
+  "name": "bootstrap-daterangepicker-v2",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeepic/bootstrap-daterangepicker-v2.git"
+  },
+  "scripts": {
+    "scss": "node-sass daterangepicker.scss > daterangepicker.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "style": "daterangepicker.css",
+  "version": "2.1.31"
 }
