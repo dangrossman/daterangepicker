@@ -140,10 +140,10 @@
               this.locale.monthNames = options.locale.monthNames.slice();
 
             if(typeof options.locale.oneWay === 'string')
-              this.locale.oneWay = options.locale.oneWay.slice();
+              this.locale.oneWay = options.locale.oneWay;
 
             if(typeof options.locale.roundTrip === 'string')
-              this.locale.roundtrip = options.locale.roundTrip.slice();
+              this.locale.roundtrip = options.locale.roundTrip;
 
             if (typeof options.locale.firstDay === 'number')
               this.locale.firstDay = options.locale.firstDay;
@@ -1151,6 +1151,7 @@
 
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
+            //UI delay to date change purely for visual improvement
             this.container.delay(200).hide({
               duration: 0,
               queue: true
