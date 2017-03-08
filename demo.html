@@ -112,6 +112,12 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="liveUpdating"> liveUpdating (inputs trigger live calendar updates)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="dateLimit"> dateLimit (with example date range span)
                 </label>
               </div>
@@ -281,6 +287,9 @@
           if ($('#autoApply').is(':checked'))
             options.autoApply = true;
 
+          if ($('#liveUpdating').is(':checked'))
+            options.liveUpdating = true;
+          
           if ($('#dateLimit').is(':checked'))
             options.dateLimit = { days: 7 };
 

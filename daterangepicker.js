@@ -35,6 +35,7 @@
         this.endDate = moment().endOf('day');
         this.minDate = false;
         this.maxDate = false;
+        this.liveUpdating = false;
         this.dateLimit = false;
         this.autoApply = false;
         this.singleDatePicker = false;
@@ -207,6 +208,9 @@
 
         if (typeof options.cancelClass === 'string')
             this.cancelClass = options.cancelClass;
+
+        if (typeof options.liveUpdating === 'boolean')
+            this.liveUpdating = options.liveUpdating;
 
         if (typeof options.dateLimit === 'object')
             this.dateLimit = options.dateLimit;
@@ -430,6 +434,11 @@
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+
+        if(this.liveUpdating){
+            this.container.find('[name=daterangepicker_start]').add('[name=daterangepicker_end]')
+                .on('keyup.daterangepicker', $.proxy(this.formInputsChanged, this));
+        }
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
@@ -1503,7 +1512,17 @@
             var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
             var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
 
-            if (start.isValid() && end.isValid()) {
+            // Moment.js doesn't validate the length of years which can cause formatting issues
+            var yearLengthsAreValid = 0;
+            if(this.liveUpdating){
+                if (start.year().toString().length + end.year().toString().length === 8){
+                    yearLengthsAreValid = 1;
+                }
+            } else {
+                yearLengthsAreValid = 1;
+            }
+
+            if (start.isValid() && end.isValid() && yearLengthsAreValid) {
 
                 if (isRight && end.isBefore(start))
                     start = end.clone();
