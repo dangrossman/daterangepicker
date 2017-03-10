@@ -83,6 +83,9 @@
         this.leftCalendar = {};
         this.rightCalendar = {};
 
+        //other options
+        this.updateFromValue = 'start'; //possible options 'start', 'end'
+
         //custom options from user
         if (typeof options !== 'object' || options === null)
             options = {};
@@ -193,6 +196,9 @@
 
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
+
+        if (typeof options.updateFromValue === 'string')
+            this.updateFromValue = options.updateFromValue;
 
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
@@ -450,7 +456,11 @@
             this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
             this.element.trigger('change');
         } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
+            if (this.updateFromValue == 'start')
+                this.element.val(this.startDate.format(this.locale.format));
+            else if (this.updateFromValue == 'end')
+                this.element.val(this.endDate.format(this.locale.format));
+
             this.element.trigger('change');
         }
 
@@ -1648,7 +1658,11 @@
                 this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 this.element.trigger('change');
             } else if (this.element.is('input') && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format));
+                if (this.updateFromValue == 'start')
+                    this.element.val(this.startDate.format(this.locale.format));
+                else if (this.updateFromValue == 'end')
+                    this.element.val(this.endDate.format(this.locale.format));
+
                 this.element.trigger('change');
             }
         },
