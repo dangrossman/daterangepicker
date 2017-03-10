@@ -1123,8 +1123,8 @@
             $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
 
             this.oldStartDate = this.startDate.clone();
-            this.oldEndDate = this.endDate.clone();
-            this.previousRightTime = this.endDate.clone();
+            this.oldEndDate = this.endDate ? this.endDate.clone() : this.startDate.clone();
+            this.previousRightTime = this.endDate ? this.endDate.clone() : this.startDate.clone();
 
             this.updateView();
             this.container.show();
