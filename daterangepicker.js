@@ -38,6 +38,7 @@
         this.maxDate = false;
         this.dateLimit = false;
         this.autoApply = false;
+        this.autoApplyOnHide = true;
         this.singleDatePicker = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
@@ -256,6 +257,9 @@
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
+
+        if (typeof options.autoApplyOnHide === 'boolean')
+            this.autoApplyOnHide = options.autoApplyOnHide;
 
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
@@ -1138,8 +1142,8 @@
             if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
-            //if picker is attached to a text input, update it
-            this.updateElement();
+            if (this.autoApplyOnHide)
+                this.updateElement(); //if picker is attached to a text input, update it
 
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
@@ -1398,6 +1402,9 @@
         },
 
         clickApply: function(e) {
+            if (!this.autoApplyOnHide)
+                this.updateElement();
+
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
         },
