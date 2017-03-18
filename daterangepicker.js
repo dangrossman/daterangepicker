@@ -37,6 +37,7 @@
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
+        this.dateLimitMin = false;
         this.autoApply = false;
         this.singleDatePicker = false;
         this.showDropdowns = false;
@@ -212,6 +213,9 @@
         if (typeof options.dateLimit === 'object')
             this.dateLimit = options.dateLimit;
 
+        if (typeof options.dateLimitMin === 'object')
+            this.dateLimitMin = options.dateLimitMin;
+
         if (typeof options.opens === 'string')
             this.opens = options.opens;
 
@@ -328,6 +332,15 @@
                     maxDate = start.clone().add(this.dateLimit);
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
+                
+                // if dateLimitMin is set, set the length to the minimum
+                // note that this could conflict with maxDate
+                if (this.dateLimitMin) {
+                    var minEndDate = moment(startDate).add(this.dateLimitMin);
+                    if (endDate.isBefore(minEndDate)) {
+                        endDate = minEndDate.clone();
+                    }
+                }
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
@@ -513,6 +526,9 @@
 
             if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.dateLimit);
+
+            if (this.dateLimitMin && this.startDate.clone().add(this.dateLimitMin).isAfter(this.endDate))
+                this.endDate = this.startDate.clone().add(this.dateLimitMin);
 
             this.previousRightTime = this.endDate.clone();
 
@@ -777,6 +793,11 @@
                     maxDate = maxLimit;
                 }
             }
+            
+            // if dateLimitMin is set, calculate minimum end date
+            if (this.endDate == null && this.dateLimitMin) {
+                var minEndDate = this.startDate.clone().add(this.dateLimitMin).endOf('day');                
+            }
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
@@ -826,6 +847,12 @@
                     //highlight dates in-between the selected dates
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
+
+                    // don't allow selection if the date is before the minimum end date
+                    if (minEndDate && calendar[row][col].isBefore(minEndDate, 'day') && 
+                        classes.indexOf('start-date') < 0) {
+                        classes.push('off', 'disabled');
+                    }
 
                     //apply custom classes for this date
                     var isCustom = this.isCustomDate(calendar[row][col]);
