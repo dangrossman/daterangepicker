@@ -74,7 +74,9 @@
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
-            firstDay: moment.localeData().firstDayOfWeek()
+            firstDay: moment.localeData().firstDayOfWeek(),
+            startLabelText: '',
+            endLabelText: ''
         };
 
         this.callback = function() { };
@@ -96,6 +98,7 @@
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
+                    '<label for="daterangepicker_start"></label>' +
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
@@ -107,6 +110,7 @@
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="calendar right">' +
+                    '<label for="daterangepicker_end"></label>' +
                     '<div class="daterangepicker_input">' +
                       '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
@@ -160,6 +164,12 @@
 
             if (typeof options.locale.weekLabel === 'string')
               this.locale.weekLabel = options.locale.weekLabel;
+
+            if (typeof options.locale.startLabelText === 'string')
+              this.locale.startLabelText = options.locale.startLabelText
+
+            if (typeof options.locale.endLabelText === 'string')
+              this.locale.endLabelText = options.locale.endLabelText
 
             if (typeof options.locale.customRangeLabel === 'string'){
                 //Support unicode chars in the custom range name.
@@ -331,7 +341,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -406,6 +416,18 @@
             this.container.find('.cancelBtn').addClass(this.cancelClass);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+
+        //apply label text if given. if not hide them
+        if (this.locale.startLabelText.length > 0) {
+            this.container.find('label[for="daterangepicker_start"]').html(this.locale.startLabelText)
+        } else {
+            this.container.find('label[for="daterangepicker_start"]').css('display', 'none')
+        }
+        if (this.locale.endLabelText.length > 0) {
+            this.container.find('label[for="daterangepicker_end"]').html(this.locale.endLabelText)
+        } else {
+            this.container.find('label[for="daterangepicker_end"]').css('display', 'none')
+        }
 
         //
         // event listeners
@@ -1529,7 +1551,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
