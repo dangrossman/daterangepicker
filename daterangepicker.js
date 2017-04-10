@@ -461,6 +461,42 @@
 
         constructor: DateRangePicker,
 
+        setMinDate: function(minDate) {
+            if (typeof minDate === 'string')
+                this.minDate = moment(minDate, this.locale.format);
+
+            if (typeof minDate === 'object')
+                this.minDate = moment(minDate);
+
+            // sanity check for bad options
+            if (this.minDate && this.startDate.isBefore(this.minDate))
+                this.startDate = this.minDate.clone();
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+
+        },
+
+        setMaxDate: function(maxDate){
+            if (typeof maxDate === 'string')
+                this.maxDate = moment(maxDate, this.locale.format);
+
+            if (typeof maxDate === 'object')
+                this.maxDate = moment(maxDate);
+
+            // sanity check for bad options
+            if (this.maxDate && this.endDate.isAfter(this.maxDate))
+                this.endDate = this.maxDate.clone();
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+
+        },
+
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
                 this.startDate = moment(startDate, this.locale.format);
