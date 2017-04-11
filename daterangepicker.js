@@ -50,6 +50,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.dateFormatOnTd = 'YYYY-MM-DD HH:mm:00';
         this.ranges = {};
 
         this.opens = 'right';
@@ -271,7 +272,10 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
-
+        
+        if (typeof options.dateFormatOnTd === 'string')
+            this.dateFormatOnTd = options.dateFormatOnTd;
+        
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -845,7 +849,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" data-date="'+calendar[row][col].format(this.dateFormatOnTd)+'">' + calendar[row][col].date() + '</td>';
 
                 }
                 html += '</tr>';
