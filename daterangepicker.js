@@ -254,6 +254,13 @@
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
 
+        function fixTime(hour){
+            return Math.max(this.timePicker24Hour ? 0 : 1, Math.min(this.timePicker24Hour ? 23 : 12, hour));
+        }
+
+        this.minTime = typeof options.minTime === 'number' ? fixTime(options.minTime) : (this.timePicker24Hour ? 0 : 1);
+        this.maxTime = typeof options.maxTime === 'number' ? fixTime(options.maxTime) : (this.timePicker24Hour ? 23 : 12);
+
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
 
@@ -908,8 +915,8 @@
 
             html = '<select class="hourselect">';
 
-            var start = this.timePicker24Hour ? 0 : 1;
-            var end = this.timePicker24Hour ? 23 : 12;
+            var start = this.minTime;
+            var end = this.maxTime;
 
             for (var i = start; i <= end; i++) {
                 var i_in_24 = i;
