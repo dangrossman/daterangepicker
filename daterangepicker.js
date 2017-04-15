@@ -1612,11 +1612,14 @@
 
     };
 
+    $.daterangepickerDefultsOptions = {};
+
     $.fn.daterangepicker = function(options, callback) {
         this.each(function() {
             var el = $(this);
             if (el.data('daterangepicker'))
                 el.data('daterangepicker').remove();
+            options = $.extend(true, {}, $.daterangepickerDefultsOptions, options);
             el.data('daterangepicker', new DateRangePicker(el, options, callback));
         });
         return this;
