@@ -337,19 +337,26 @@
                     continue;
 
                 //Support unicode chars in the range names.
-                var elem = document.createElement('textarea');
-                elem.innerHTML = range;
-                var rangeHtml = elem.value;
-
-                this.ranges[rangeHtml] = [start, end];
+                var elem = document.createElement('textarea'),
+                    rangeLabel = options.ranges[range][2];
+                if ( (typeof rangeLabel === 'undefined') || (rangeLabel == null) || (rangeLabel.length == 0) ) {
+                    rangeLabel = range;
+                }
+                elem.innerHTML = rangeLabel;
+                rangeLabel = elem.value;
+                this.ranges[range] = [start, end, rangeLabel];
             }
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li data-range-key="' + range + '">' + range + '</li>';
+                var rangeLabel = options.ranges[range][2];
+                if ( (typeof rangeLabel === 'undefined') || (rangeLabel == null) || (rangeLabel.length == 0) ) {
+                    rangeLabel = range;
+                }
+                list += '<li data-range-key="' + range + '">' + rangeLabel + '</li>';
             }
             if (this.showCustomRangeLabel) {
-                list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
+                list += '<li data-range-key="customRange">' + this.locale.customRangeLabel + '</li>';
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
@@ -1189,12 +1196,12 @@
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
 
-            var label = e.target.getAttribute('data-range-key');
+            var range = e.target.getAttribute('data-range-key');
 
-            if (label == this.locale.customRangeLabel) {
+            if (range == 'customRange') {
                 this.updateView();
             } else {
-                var dates = this.ranges[label];
+                var dates = this.ranges[range];
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
@@ -1202,12 +1209,12 @@
         },
 
         clickRange: function(e) {
-            var label = e.target.getAttribute('data-range-key');
-            this.chosenLabel = label;
-            if (label == this.locale.customRangeLabel) {
+            var range = e.target.getAttribute('data-range-key');
+            this.chosenLabel = range;
+            if (range == 'customRange') {
                 this.showCalendars();
             } else {
-                var dates = this.ranges[label];
+                var dates = this.ranges[range];
                 this.startDate = dates[0];
                 this.endDate = dates[1];
 
