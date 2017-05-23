@@ -493,6 +493,22 @@
             this.updateMonthsInView();
         },
 
+        setMinDate: function(minDate) {
+            if (typeof minDate === 'string')
+                this.minDate = moment(minDate, this.locale.format);
+
+            if (typeof startDate === 'object')
+                this.minDate = moment(minDate);
+        },
+
+        setMaxDate: function(maxDate) {
+            if (typeof maxDate === 'string')
+                this.maxDate = moment(maxDate, this.locale.format);
+
+            if (typeof maxDate === 'object')
+                this.maxDate = moment(maxDate);
+        },
+
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
                 this.endDate = moment(endDate, this.locale.format);
