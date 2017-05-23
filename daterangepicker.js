@@ -644,6 +644,8 @@
             var lastYear = moment(firstDay).subtract(1, 'month').year();
             var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
             var dayOfWeek = firstDay.day();
+            var timezone = calendar.month.tz();
+            var today = moment.tz(timezone);
 
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = [];
@@ -662,7 +664,7 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
+            var curDate = moment.tz([lastYear, lastMonth, startDay, 12, minute, second], timezone);
 
             var col, row;
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
@@ -793,7 +795,7 @@
                     var classes = [];
 
                     //highlight today's date
-                    if (calendar[row][col].isSame(new Date(), "day"))
+                    if (calendar[row][col].isSame(today, "day"))
                         classes.push('today');
 
                     //highlight weekends
