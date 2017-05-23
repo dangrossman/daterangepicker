@@ -516,6 +516,12 @@
                                 </label>
                               </div>
 
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="dismissOnOutsideClick"> dismissOnOutsideClick
+                                </label>
+                              </div>
+
                             </div>
                             <div class="col-md-4">
 
@@ -680,6 +686,10 @@
                             <li>
                                 <code>parentEl</code>: (string) jQuery selector of the parent element that the date range picker will be added to, if not provided this will be 'body'
                             </li>
+                            <li>
+                                <code>dismissOnOutsideClick</code>: (boolean) Indicates whether the date range picker should be dismissed when clicking outside of it.
+                            </li>
+
                         </ul>
 
                     </div>
@@ -741,6 +751,9 @@
                             </li>
                             <li>
                                 <code>cancel.daterangepicker</code>: Triggered when the cancel button is clicked
+                            </li>
+                            <li>
+                                <code>outsideClick.daterangepicker</code>: Triggered when the user clicks outside the date range picker. Please note that it won't be triggered if <code>dismissOnOutsideClick</code> is false.
                             </li>
                         </ul>
 
