@@ -53,10 +53,12 @@
         this.alwaysShowCalendars = false;
         this.ranges = {};
 
+        this.flag = true;
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
 
+        this.config = options.config ? options.config : false;
         this.drops = 'down';
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
@@ -1262,10 +1264,25 @@
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-            if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
-                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
-            } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
-                this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+            if(this.config){
+                if(this.flag || this.container.find('input[name=daterangepicker_start]').is(":focus")){
+                    this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+                }
+                if (this.endDate && this.container.find('input[name=daterangepicker_start]').is(":active")){
+                    this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                } else if(!this.endDate && this.container.find('input[name=daterangepicker_start]').is(":focus")){
+                    this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                } else if(!this.endDate && this.container.find('input[name=daterangepicker_end]')){
+                    this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                } else if(this.startDate && this.container.find('input[name=daterangepicker_start]').is(":active")){
+                    this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+                }
+            }else{
+                if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
+                    this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
+                } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
+                    this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
+                }
             }
 
             //highlight the dates between the start date and the date being hovered as a potential end date
@@ -1290,6 +1307,23 @@
                         $(el).removeClass('in-range');
                     }
 
+                });
+            } else if(this.flag || this.container.find('input[name=daterangepicker_start]').is(":focus")) {
+                this.container.find('.calendar tbody td').each(function(index, el) {
+
+                    //skip week numbers, only look at dates
+                    if ($(el).hasClass('week')) return;
+
+                    var title = $(el).attr('data-title');
+                    var row = title.substr(1, 1);
+                    var col = title.substr(3, 1);
+                    var cal = $(el).parents('.calendar');
+                    var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
+                    $(el).removeClass('in-range');
+                    /*if(date.isAfter(startDate)){
+                        $(el).removeClass('in-range');
+                    }
+                    */
                 });
             }
 
@@ -1329,6 +1363,7 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.endDate = null;
+                this.flag = false;
                 this.setStartDate(date.clone());
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
