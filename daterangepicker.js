@@ -34,7 +34,13 @@
         this.parentEl = 'body';
         this.element = $(element);
         this.startDate = moment().startOf('day');
+        this.startOfToday = moment().startOf('day');
+        this.startOfYesterday = moment().subtract( 1, 'days' ).startOf('day');
+        this.startOfTomorrow = moment().add( 1, 'days' ).startOf('day')
         this.endDate = moment().endOf('day');
+        this.endOfToday = moment().endOf('day');
+        this.endOfYesterday = moment().subtract( 1, 'days' ).endOf('day');
+        this.endOfTomorrow = moment().add( 1, 'days' ).endOf('day');
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
@@ -448,13 +454,7 @@
         // if attached to a text input, set the initial value
         //
 
-        if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-            this.element.trigger('change');
-        } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
-            this.element.trigger('change');
-        }
+        this.updateElement();
 
     };
 
@@ -1597,7 +1597,26 @@
 
         updateElement: function() {
             if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                var startIsToday = this.startDate.diff(this.startOfToday) === 0;
+                var endIsToday = this.endDate.diff(this.endOfToday) === 0;
+                var startIsTomorrow = this.startDate.diff(this.startOfTomorrow) === 0;
+                var endIsTomorrow = this.endDate.diff(this.endOfTomorrow) === 0;
+                var startIsYesterday = this.startDate.diff(this.startOfYesterday) === 0;
+                var endIsYesterday = this.endDate.diff(this.endOfYesterday) === 0;
+
+                var inputValue;
+
+                if (startIsToday && endIsToday) {
+                    inputValue = 'Today';
+                } else if (startIsTomorrow && endIsTomorrow) {
+                    inputValue = 'Tomorrow';
+                } else if (startIsYesterday && endIsYesterday) {
+                    inputValue = 'Yesterday'
+                } else {
+                    inputValue = this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format);
+                }
+
+                this.element.val(inputValue);
                 this.element.trigger('change');
             } else if (this.element.is('input') && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format));
