@@ -33,6 +33,7 @@
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
+        this.iniInputWithStartDate = true;
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
         this.minDate = false;
@@ -171,6 +172,9 @@
             }
         }
         this.container.addClass(this.locale.direction);
+
+        if (typeof options.iniInputWithStartDate === 'boolean')
+            this.iniInputWithStartDate = options.iniInputWithStartDate;
 
         if (typeof options.startDate === 'string')
             this.startDate = moment(options.startDate, this.locale.format);
@@ -449,10 +453,14 @@
         //
 
         if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            if (this.iniInputWithStartDate) {
+                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            }
             this.element.trigger('change');
         } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
+            if (this.iniInputWithStartDate) {
+                this.element.val(this.startDate.format(this.locale.format));
+            }
             this.element.trigger('change');
         }
 
