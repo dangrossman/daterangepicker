@@ -51,6 +51,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.dismissOnOutsideClick = true;
         this.ranges = {};
 
         this.opens = 'right';
@@ -272,6 +273,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.dismissOnOutsideClick === 'boolean')
+            this.dismissOnOutsideClick = options.dismissOnOutsideClick;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1099,18 +1103,20 @@
         show: function(e) {
             if (this.isShowing) return;
 
-            // Create a click proxy that is private to this instance of datepicker, for unbinding
-            this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
+            // Bind global datepicker mousedown for hiding unless option dismissOnOutsideClick is true
+            if (!this.dismissOnOutsideClick) {
+                // Create a click proxy that is private to this instance of datepicker, for unbinding
+                this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
 
-            // Bind global datepicker mousedown for hiding and
-            $(document)
-              .on('mousedown.daterangepicker', this._outsideClickProxy)
-              // also support mobile devices
-              .on('touchend.daterangepicker', this._outsideClickProxy)
-              // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-              .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
-              // and also close when focus changes to outside the picker (eg. tabbing between controls)
-              .on('focusin.daterangepicker', this._outsideClickProxy);
+                $(document)
+                  .on('mousedown.daterangepicker', this._outsideClickProxy)
+                  // also support mobile devices
+                  .on('touchend.daterangepicker', this._outsideClickProxy)
+                  // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
+                  .on('click.daterangepicker', '[data-toggle=dropdown]', this._outsideClickProxy)
+                  // and also close when focus changes to outside the picker (eg. tabbing between controls)
+                  .on('focusin.daterangepicker', this._outsideClickProxy);
+            }
 
             // Reposition the picker if the window is resized while it's open
             $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));

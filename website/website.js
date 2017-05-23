@@ -90,6 +90,9 @@ $(document).ready(function() {
       if (!$('#autoUpdateInput').is(':checked'))
         options.autoUpdateInput = false;
 
+      if ($('#dismissOnOutsideClick').is(':checked'))
+        options.dismissOnOutsideClick = true;
+
       if (!$('#showCustomRangeLabel').is(':checked'))
         options.showCustomRangeLabel = false;
 
