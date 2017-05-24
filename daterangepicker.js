@@ -463,8 +463,15 @@
         constructor: DateRangePicker,
 
         setStartDate: function(startDate) {
-            if (typeof startDate === 'string')
-                this.startDate = moment(startDate, this.locale.format);
+            if (typeof startDate === 'string') {
+                var d = moment(startDate, this.locale.format);
+                if (!d.isValid()) {
+                    d = moment(startDate);
+                }
+                if (d.isValid()) {
+                    this.startDate = d;
+                }
+            }
 
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
@@ -494,8 +501,15 @@
         },
 
         setEndDate: function(endDate) {
-            if (typeof endDate === 'string')
-                this.endDate = moment(endDate, this.locale.format);
+            if (typeof endDate === 'string') {
+                var d = moment(endDate, this.locale.format);
+                if (!d.isValid()) {
+                    d = moment(endDate);
+                }
+                if (d.isValid()) {
+                    this.endDate = d;
+                }
+            }
 
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
