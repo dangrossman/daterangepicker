@@ -27,7 +27,7 @@
         // Browser globals
         root.daterangepicker = factory(root.moment, root.jQuery);
     }
-}(this, function(moment, $) {
+}(this || window, function(moment, $) {
     var DateRangePicker = function(element, options, cb) {
 
         //default settings for options
