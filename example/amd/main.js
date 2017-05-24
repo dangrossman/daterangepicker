@@ -131,6 +131,18 @@ $(document).ready(function() {
     if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
       options.cancelClass = $('#cancelClass').val();
 
+    if ($('#calendarClasses').val().length && $('#calendarClasses').val() != 'fa fa-calendar glyphicon glyphicon-calendar')
+      options.calendarClasses = $('#calendarClasses').val();
+
+    if ($('#clockClasses').val().length && $('#clockClasses').val() != 'fa fa-clock-o glyphicon glyphicon-time')
+      options.clockClasses = $('#clockClasses').val();
+
+    if ($('#arrowLeftClasses').val().length && $('#arrowLeftClasses').val() != 'fa fa-chevron-left glyphicon glyphicon-chevron-left')
+      options.arrowLeftClasses = $('#arrowLeftClasses').val();
+
+    if ($('#arrowRightClasses').val().length && $('#arrowRightClasses').val() != 'fa fa-chevron-right glyphicon glyphicon-chevron-right')
+      options.arrowRightClasses = $('#arrowRightClasses').val();
+
     $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
     $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });

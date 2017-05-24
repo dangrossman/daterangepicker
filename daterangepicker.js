@@ -65,6 +65,11 @@
         this.applyClass = 'btn-success';
         this.cancelClass = 'btn-default';
 
+        this.calendarClasses = 'fa fa-calendar glyphicon glyphicon-calendar';
+        this.clockClasses = 'fa fa-clock-o glyphicon glyphicon-time';
+        this.arrowLeftClasses ='fa fa-chevron-left glyphicon glyphicon-chevron-left';
+        this.arrowRightClasses = 'fa fa-chevron-right glyphicon glyphicon-chevron-right';
+
         this.locale = {
             direction: 'ltr',
             format: moment.localeData().longDateFormat('L'),
@@ -92,42 +97,6 @@
         //allow setting options with data attributes
         //data-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
-
-        //html template for the picker UI
-        if (typeof options.template !== 'string' && !(options.template instanceof $))
-            options.template = '<div class="daterangepicker dropdown-menu">' +
-                '<div class="calendar left">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
-                    '<div class="calendar-table"></div>' +
-                '</div>' +
-                '<div class="calendar right">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
-                    '<div class="calendar-table"></div>' +
-                '</div>' +
-                '<div class="ranges">' +
-                    '<div class="range_inputs">' +
-                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                        '<button class="cancelBtn" type="button"></button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>';
-
-        this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
-        this.container = $(options.template).appendTo(this.parentEl);
 
         //
         // handle all the possible options overriding defaults
@@ -170,7 +139,6 @@
                 this.locale.customRangeLabel = rangeHtml;
             }
         }
-        this.container.addClass(this.locale.direction);
 
         if (typeof options.startDate === 'string')
             this.startDate = moment(options.startDate, this.locale.format);
@@ -209,6 +177,30 @@
 
         if (typeof options.cancelClass === 'string')
             this.cancelClass = options.cancelClass;
+
+        if (typeof options.calendarClasses === 'string')
+            this.calendarClasses = options.calendarClasses;
+
+        if (typeof options.calendarClasses === 'object')
+            this.calendarClasses = options.calendarClasses.join(' ');
+
+        if (typeof options.clockClasses === 'string')
+            this.clockClasses = options.clockClasses;
+
+        if (typeof options.clockClasses === 'object')
+            this.clockClasses = options.clockClasses.join(' ');
+
+        if (typeof options.arrowLeftClasses === 'string')
+            this.arrowLeftClasses = options.arrowLeftClasses;
+
+        if (typeof options.arrowLeftClasses === 'object')
+            this.arrowLeftClasses = options.arrowLeftClasses.join(' ');
+
+        if (typeof options.arrowRightClasses === 'string')
+            this.arrowRightClasses = options.arrowRightClasses;
+
+        if (typeof options.arrowRightClasses === 'object')
+            this.arrowRightClasses = options.arrowRightClasses.join(' ');
 
         if (typeof options.dateLimit === 'object')
             this.dateLimit = options.dateLimit;
@@ -272,6 +264,43 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        //html template for the picker UI
+        if (typeof options.template !== 'string' && !(options.template instanceof $))
+            options.template = '<div class="daterangepicker dropdown-menu">' +
+                '<div class="calendar left">' +
+                    '<div class="daterangepicker_input">' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
+                      '<i class="' + this.calendarClasses + '"></i>' +
+                      '<div class="calendar-time">' +
+                        '<div></div>' +
+                        '<i class="' + this.clockClasses + '"></i>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="calendar-table"></div>' +
+                '</div>' +
+                '<div class="calendar right">' +
+                    '<div class="daterangepicker_input">' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
+                      '<i class="' + this.calendarClasses + '"></i>' +
+                      '<div class="calendar-time">' +
+                        '<div></div>' +
+                        '<i class="' + this.clockClasses + '"></i>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div class="calendar-table"></div>' +
+                '</div>' +
+                '<div class="ranges">' +
+                    '<div class="range_inputs">' +
+                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+                        '<button class="cancelBtn" type="button"></button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
+        this.container = $(options.template).appendTo(this.parentEl);
+        this.container.addClass(this.locale.direction);
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -697,7 +726,7 @@
             var minDate = side == 'left' ? this.minDate : this.startDate;
             var maxDate = this.maxDate;
             var selected = side == 'left' ? this.startDate : this.endDate;
-            var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
+            var arrow = this.locale.direction == 'ltr' ? {left: this.arrowLeftClasses, right: this.arrowRightClasses} : {left: this.arrowRightClasses, right: this.arrowLeftClasses};
 
             var html = '<table class="table-condensed">';
             html += '<thead>';
@@ -708,7 +737,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
+                html += '<th class="prev available"><i class="' + arrow.left + '"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -750,7 +779,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
+                html += '<th class="next available"><i class="' + arrow.right + '"></i></th>';
             } else {
                 html += '<th></th>';
             }
