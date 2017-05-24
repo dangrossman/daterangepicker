@@ -52,6 +52,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+		this.initialized = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -626,7 +627,10 @@
         },
 
         renderCalendar: function(side) {
-
+            if (!this.initialized) {
+                this.element.trigger('init.daterangepicker', this);
+                this.initialized = true;
+            }
             //
             // Build the matrix of dates that will populate the calendar
             //
