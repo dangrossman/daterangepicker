@@ -286,7 +286,7 @@
 
         //if no start/end dates set, check if an input element contains initial values
         if (typeof options.startDate === 'undefined' && typeof options.endDate === 'undefined') {
-            if ($(this.element).is('input[type=text]')) {
+            if ($(this.element).is('input')) {
                 var val = $(this.element).val(),
                     split = val.split(this.locale.separator);
 
