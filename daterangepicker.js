@@ -40,6 +40,7 @@
         this.dateLimit = false;
         this.autoApply = false;
         this.singleDatePicker = false;
+        this.singleCalendar = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
@@ -98,7 +99,7 @@
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
+                      (this.singleCalendar ? '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" /><input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' : '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />') +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
@@ -386,6 +387,14 @@
             } else {
                 this.container.find('.ranges').hide();
             }
+        }
+
+        
+        if (this.singleCalendar) {
+            this.container.addClass('single');
+            this.container.find('.calendar.left').addClass('single');
+            this.container.find('.calendar.left').show();
+            this.container.find('.calendar.right').hide();
         }
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
@@ -749,7 +758,8 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker || this.singleCalendar)) {
                 html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
             } else {
                 html += '<th></th>';
@@ -1362,7 +1372,6 @@
             }
 
             this.updateView();
-
             //This is to cancel the blur event handler if the mouse was in one of the inputs
             e.stopPropagation();
 
