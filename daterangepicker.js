@@ -424,7 +424,8 @@
             .on('click.daterangepicker', '.daterangepicker_input input', $.proxy(this.showCalendars, this))
             .on('focus.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsFocused, this))
             .on('blur.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsBlurred, this))
-            .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this));
+            .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this))
+            .on('click.daterangepicker', '.month', $.proxy(this.clickMonth, this));
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
@@ -714,6 +715,7 @@
             }
 
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+            var firstDateOfMonth = calendar[1][1].format("YYYY-MM");
 
             if (this.showDropdowns) {
                 var currentMonth = calendar[1][1].month();
@@ -748,7 +750,7 @@
                 dateHtml = monthHtml + yearHtml;
             }
 
-            html += '<th colspan="5" class="month">' + dateHtml + '</th>';
+            html += '<th colspan="5" class="month" data-date="' + firstDateOfMonth + '">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
                 html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
             } else {
@@ -1199,6 +1201,22 @@
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
 
+        },
+
+        clickMonth: function(e) {
+            if (this.singleDatePicker) {
+                return;
+            }
+
+            var date = moment( $(e.target).data('date') + '-01' );
+            this.setStartDate(date.startOf("month") );
+            this.setEndDate( date.endOf("month") );
+            if (this.autoApply) {
+              this.calculateChosenLabel();
+              this.clickApply();
+              return;
+            }
+            this.updateView();
         },
 
         clickRange: function(e) {
