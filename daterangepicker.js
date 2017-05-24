@@ -523,6 +523,13 @@
             this.updateMonthsInView();
         },
 
+        clearDates: function () {
+            this.startDate = undefined;
+            this.oldStartDate = undefined;
+            this.endDate = undefined;
+            this.oldEndDate = undefined;
+        },
+
         isInvalidDate: function() {
             return false;
         },
@@ -573,7 +580,10 @@
                 }
 
             } else {
-                if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
+                if (!this.startDate || !this.endDate) {
+                    this.leftCalendar.month = moment().date(2);
+                    this.rightCalendar.month = moment().date(2).add(1, 'month');
+                } else if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
@@ -817,7 +827,7 @@
                         classes.push('off', 'disabled');
 
                     //highlight the currently selected start date
-                    if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
+                    if (this.startDate && calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
                         classes.push('active', 'start-date');
 
                     //highlight the currently selected end date
@@ -825,7 +835,7 @@
                         classes.push('active', 'end-date');
 
                     //highlight dates in-between the selected dates
-                    if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
+                    if (this.startDate != null && this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
 
                     //apply custom classes for this date
@@ -1026,7 +1036,8 @@
             if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
                 return;
 
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
+            if (this.startDate)
+                this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
             if (this.endDate)
                 this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
 
@@ -1115,9 +1126,9 @@
             // Reposition the picker if the window is resized while it's open
             $(window).on('resize.daterangepicker', $.proxy(function(e) { this.move(e); }, this));
 
-            this.oldStartDate = this.startDate.clone();
-            this.oldEndDate = this.endDate.clone();
-            this.previousRightTime = this.endDate.clone();
+            this.oldStartDate = this.startDate && this.startDate.clone();
+            this.oldEndDate = this.endDate && this.endDate.clone();
+            this.previousRightTime = this.endDate && this.endDate.clone();
 
             this.updateView();
             this.container.show();
@@ -1130,14 +1141,14 @@
             if (!this.isShowing) return;
 
             //incomplete date selection, revert to last values
-            if (!this.endDate) {
+            if (!this.endDate && this.oldEndDate) {
                 this.startDate = this.oldStartDate.clone();
                 this.endDate = this.oldEndDate.clone();
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.callback(this.startDate, this.endDate, this.chosenLabel);
+            if ((!this.startDate && this.startDate !== this.oldStartDate) || (this.startDate && !this.startDate.isSame(this.oldStartDate)) || (this.endDate && this.endDate !== this.oldEndDate) || (this.endDate && !this.endDate.isSame(this.oldEndDate)))
+                    this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
             this.updateElement();
@@ -1195,8 +1206,8 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
+                this.container.find('input[name=daterangepicker_start]').val(dates[0] && dates[0].format(this.locale.format));
+                this.container.find('input[name=daterangepicker_end]').val(dates[1] && dates[1].format(this.locale.format));
             }
 
         },
@@ -1267,6 +1278,9 @@
             } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
             }
+
+            // Don't highlight a range if both start and end date is undefined
+            if (!this.startDate && !this.endDate) return;
 
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
@@ -1564,7 +1578,13 @@
 
         elementChanged: function() {
             if (!this.element.is('input')) return;
-            if (!this.element.val().length) return;
+
+            if (!this.element.val().length) {
+                this.clearDates();
+                //this.hide();
+                return;
+            }
+
             if (this.element.val().length < this.locale.format.length) return;
 
             var dateString = this.element.val().split(this.locale.separator),
@@ -1597,7 +1617,11 @@
 
         updateElement: function() {
             if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                if (this.startDate && this.endDate) {
+                    this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                } else {
+                    this.element.val("");
+                }
                 this.element.trigger('change');
             } else if (this.element.is('input') && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format));
