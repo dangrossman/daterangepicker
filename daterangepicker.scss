@@ -326,6 +326,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
         color: $daterangepicker-active-color;
       }
     }
+
+    &.hidden {
+      visibility: hidden;
+    }
   }
 
   th {
