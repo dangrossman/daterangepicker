@@ -31,8 +31,8 @@
     var DateRangePicker = function(element, options, cb) {
 
         //default settings for options
-        this.parentEl = 'body';
         this.element = $(element);
+        this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : this.element.parent();
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
         this.minDate = false;
@@ -126,7 +126,6 @@
                 '</div>' +
             '</div>';
 
-        this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
         this.container = $(options.template).appendTo(this.parentEl);
 
         //
