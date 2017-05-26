@@ -309,15 +309,20 @@
         if (typeof options.ranges === 'object') {
             for (range in options.ranges) {
 
-                if (typeof options.ranges[range][0] === 'string')
-                    start = moment(options.ranges[range][0], this.locale.format);
-                else
-                    start = moment(options.ranges[range][0]);
+                if (Object.prototype.toString.call(options.ranges[range]) === '[object Object]') {
+                    start = moment(eval(options.ranges[range].start));
+                    end = moment(eval(options.ranges[range].end));
+                } else {
+                    if (typeof options.ranges[range][0] === 'string')
+                        start = moment(options.ranges[range][0], this.locale.format);
+                    else
+                        start = moment(options.ranges[range][0]);
 
-                if (typeof options.ranges[range][1] === 'string')
-                    end = moment(options.ranges[range][1], this.locale.format);
-                else
-                    end = moment(options.ranges[range][1]);
+                    if (typeof options.ranges[range][1] === 'string')
+                        end = moment(options.ranges[range][1], this.locale.format);
+                    else
+                        end = moment(options.ranges[range][1]);
+                }
 
                 // If the start or end date exceed those allowed by the minDate or dateLimit
                 // options, shorten the range to the allowable period.
