@@ -1349,6 +1349,7 @@
                 }
                 this.setEndDate(date.clone());
                 if (this.autoApply) {
+                  this.element.trigger('autoapply.daterangepicker', this);
                   this.calculateChosenLabel();
                   this.clickApply();
                 }
