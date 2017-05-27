@@ -47,6 +47,7 @@
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
+		this.timePickerQuickSelectIncrement = 15;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
@@ -251,6 +252,8 @@
 
         if (typeof options.timePickerIncrement === 'number')
             this.timePickerIncrement = options.timePickerIncrement;
+		if (typeof options.timePickerQuickSelectIncrement === 'number')
+			this.timePickerQuickSelectIncrement = options.timePickerQuickSelectIncrement;
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
@@ -938,9 +941,39 @@
             //
             // minutes
             //
+			
 
             html += ': <select class="minuteselect">';
+			
+			var quickSelectMatch = false;
+			
+			if (this.timePickerQuickSelectIncrement != 0) {
+				for (var i = 0; i < 60; i+= this.timePickerQuickSelectIncrement) {
+					var padded = i < 10 ? '0' + i : i;
+					var closestTime = this.timePickerQuickSelectIncrement * Math.round(selected.minute() / this.timePickerQuickSelectIncrement);
+					
+					
+					var disabled = false;
+					if (minDate && time.second(59).isBefore(minDate))
+						disabled = true;
+					if (maxDate && time.second(0).isAfter(maxDate))
+						disabled = true;
 
+					if (selected.minute() == i && !disabled) {
+						quickSelectMatch = true;
+						html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+					} else if (disabled) {
+						html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+					} else {
+						html += '<option value="' + i + '">' + padded + '</option>';
+					}
+				}
+				
+				html += "<option disabled>──────────</option>";
+			}
+
+			
+            //<option disabled>──────────</option>
             for (var i = 0; i < 60; i += this.timePickerIncrement) {
                 var padded = i < 10 ? '0' + i : i;
                 var time = selected.clone().minute(i);
@@ -951,7 +984,7 @@
                 if (maxDate && time.second(0).isAfter(maxDate))
                     disabled = true;
 
-                if (selected.minute() == i && !disabled) {
+                if (selected.minute() == i && !disabled && !quickSelectMatch) {
                     html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
                 } else if (disabled) {
                     html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
