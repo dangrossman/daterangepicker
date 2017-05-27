@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-        <script src="moment.min.js"></script>         
+        <script src="moment.min.js"></script>
 
         <script src="daterangepicker.js"></script>
         <link rel="stylesheet" type="text/css" href="daterangepicker.css" />
@@ -77,7 +77,7 @@
 
                         <h1 style="margin: 0 0 20px 0">Date Range Picker</h1>
                         <p style="font-size: 18px; margin-bottom: 0">
-                            A JavaScript component for choosing date ranges. 
+                            A JavaScript component for choosing date ranges.
                             <br />
                             Designed to work with the Bootstrap CSS framework.
                         </p>
@@ -152,7 +152,7 @@
                         </p>
 
                         <a style="display: block; height: 300px; background: url('drp.png') top right no-repeat; background-size: cover; border: 1px solid #ccc; margin-bottom: 20px" href="https://awio.iljmp.com/5/drpdemo" title="Click for a Live Demo"></a>
-                    
+
                     </div>
 
                     <div id="usage" name="usage">
@@ -174,7 +174,7 @@
                         <hr />
 
                         <p>
-                            You can customize Date Range Picker with <a href="#options">options</a>, and 
+                            You can customize Date Range Picker with <a href="#options">options</a>, and
                             get notified when the user chooses new dates by providing a callback function.
                         </p>
 
@@ -272,7 +272,7 @@
                                 $('input[name="birthdate"]').daterangepicker({
                                     singleDatePicker: true,
                                     showDropdowns: true
-                                }, 
+                                },
                                 function(start, end, label) {
                                     var years = moment().diff(start, 'years');
                                     alert("You are " + years + " years old.");
@@ -339,9 +339,9 @@
                             <h3>Input Initially Empty</h3>
 
                             <p>
-                                If you're using a date range as a filter, you may want to attach a picker to an 
+                                If you're using a date range as a filter, you may want to attach a picker to an
                                 input but leave it empty by default. This example shows how to accomplish that
-                                using the <code>autoUpdateInput</code> setting, and the <code>apply</code> and 
+                                using the <code>autoUpdateInput</code> setting, and the <code>apply</code> and
                                 <code>cancel</code> events.
                             </p>
 
@@ -388,7 +388,7 @@
                         <h2>Configuration Generator</h2>
 
                         <div class="well configurator">
-                                           
+
                           <form>
                           <div class="row">
 
@@ -691,14 +691,14 @@
                         <p>
                             You can programmatically update the <code>startDate</code> and <code>endDate</code>
                             in the picker using the <code>setStartDate</code> and <code>setEndDate</code> methods.
-                            You can access the Date Range Picker object and its functions and properties through 
+                            You can access the Date Range Picker object and its functions and properties through
                             data properties of the element you attached it to.
                         </p>
 
                         <script src="https://gist.github.com/dangrossman/8ff9b1220c9b5682e8bd.js"></script>
 
                         <br />
-                        
+
                         <ul class="nobullets">
                             <li>
                                 <code>setStartDate(Date/moment/string)</code>: Sets the date range picker's currently selected start date to the provided date
@@ -738,6 +738,9 @@
                             <li>
                                 <code>apply.daterangepicker</code>: Triggered when the apply button is clicked,
                                 or when a predefined range is clicked
+                            </li>
+                            <li>
+                              <code>autoapply.daterangepicker</code>: Triggered before auto apply occurred
                             </li>
                             <li>
                                 <code>cancel.daterangepicker</code>: Triggered when the cancel button is clicked
@@ -835,7 +838,7 @@
         <div id="footer">
             Copyright &copy; 2015 <a href="http://www.awio.com">Awio Web Services LLC</a>.
             &nbsp;
-            Developed and maintained by <a href="http://www.dangrossman.info/">Dan Grossman</a>. 
+            Developed and maintained by <a href="http://www.dangrossman.info/">Dan Grossman</a>.
             &nbsp;
         </div>
 
