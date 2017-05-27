@@ -1450,6 +1450,7 @@
                     this.leftCalendar.month = this.rightCalendar.month.clone().subtract(1, 'month');
             }
             this.updateCalendars();
+            this.element.trigger('change.daterangepicker');
         },
 
         timeChanged: function(e) {
