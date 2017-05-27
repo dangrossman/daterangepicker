@@ -47,6 +47,7 @@
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
+        this.timePickerMinutes = true;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
@@ -245,6 +246,9 @@
 
         if (typeof options.timePicker === 'boolean')
             this.timePicker = options.timePicker;
+
+        if (typeof options.timePickerMinutes === 'boolean')
+            this.timePickerMinutes = options.timePickerMinutes;
 
         if (typeof options.timePickerSeconds === 'boolean')
             this.timePickerSeconds = options.timePickerSeconds;
@@ -590,7 +594,7 @@
                 var hour, minute, second;
                 if (this.endDate) {
                     hour = parseInt(this.container.find('.left .hourselect').val(), 10);
-                    minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
+                    minute = this.timePickerMinutes ? parseInt(this.container.find('.left .minuteselect').val(), 10) : 0;
                     second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
                     if (!this.timePicker24Hour) {
                         var ampm = this.container.find('.left .ampmselect').val();
@@ -601,7 +605,7 @@
                     }
                 } else {
                     hour = parseInt(this.container.find('.right .hourselect').val(), 10);
-                    minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
+                    minute = this.timePickerMinutes ? parseInt(this.container.find('.right .minuteselect').val(), 10) : 0;
                     second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
                     if (!this.timePicker24Hour) {
                         var ampm = this.container.find('.right .ampmselect').val();
@@ -939,28 +943,30 @@
             // minutes
             //
 
-            html += ': <select class="minuteselect">';
-
-            for (var i = 0; i < 60; i += this.timePickerIncrement) {
-                var padded = i < 10 ? '0' + i : i;
-                var time = selected.clone().minute(i);
-
-                var disabled = false;
-                if (minDate && time.second(59).isBefore(minDate))
-                    disabled = true;
-                if (maxDate && time.second(0).isAfter(maxDate))
-                    disabled = true;
-
-                if (selected.minute() == i && !disabled) {
-                    html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
-                } else if (disabled) {
-                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
-                } else {
-                    html += '<option value="' + i + '">' + padded + '</option>';
+            if (this.timePickerMinutes) {
+                html += ': <select class="minuteselect">';
+    
+                for (var i = 0; i < 60; i += this.timePickerIncrement) {
+                    var padded = i < 10 ? '0' + i : i;
+                    var time = selected.clone().minute(i);
+    
+                    var disabled = false;
+                    if (minDate && time.second(59).isBefore(minDate))
+                        disabled = true;
+                    if (maxDate && time.second(0).isAfter(maxDate))
+                        disabled = true;
+    
+                    if (selected.minute() == i && !disabled) {
+                        html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+                    } else if (disabled) {
+                        html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+                    } else {
+                        html += '<option value="' + i + '">' + padded + '</option>';
+                    }
                 }
-            }
-
-            html += '</select> ';
+    
+                html += '</select> ';
+            }    
 
             //
             // seconds
@@ -1324,7 +1330,7 @@
                         if (ampm === 'AM' && hour === 12)
                             hour = 0;
                     }
-                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
+                    var minute = this.timePickerMinutes ? parseInt(this.container.find('.left .minuteselect').val(), 10) : 0;
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
@@ -1344,7 +1350,7 @@
                         if (ampm === 'AM' && hour === 12)
                             hour = 0;
                     }
-                    var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
+                    var minute = this.timePickerMinutes ? parseInt(this.container.find('.right .minuteselect').val(), 10) : 0;
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
@@ -1458,7 +1464,7 @@
                 isLeft = cal.hasClass('left');
 
             var hour = parseInt(cal.find('.hourselect').val(), 10);
-            var minute = parseInt(cal.find('.minuteselect').val(), 10);
+            var minute = this.timePickerMinutes ? parseInt(cal.find('.minuteselect').val(), 10) : 0;
             var second = this.timePickerSeconds ? parseInt(cal.find('.secondselect').val(), 10) : 0;
 
             if (!this.timePicker24Hour) {
