@@ -1502,8 +1502,8 @@
 
         formInputsChanged: function(e) {
             var isRight = $(e.target).closest('.calendar').hasClass('right');
-            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
-            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
+            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format, true);
+            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format, true);
 
             if (start.isValid() && end.isValid()) {
 
@@ -1514,11 +1514,17 @@
                 this.setEndDate(end);
 
                 if (isRight) {
-                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
-                } else {
                     this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
+                } else {
+                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
                 }
 
+            }
+            else if (!start.isValid()) {
+                this.container.find('input[name="daterangepicker_start"]').val(this.oldStartDate.format(this.locale.format));
+            }
+            else if (!end.isValid()) {
+                this.container.find('input[name="daterangepicker_end"]').val(this.oldEndDate.format(this.locale.format));
             }
 
             this.updateView();
