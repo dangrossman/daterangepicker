@@ -52,6 +52,9 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        //accepts array of 'special' dates that will be given 'specialClass' class
+        this.specialClass = 'special';
+        this.specialDates = [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -354,6 +357,14 @@
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
+        
+        if(typeof options.specialClass == 'string') {
+            this.specialClass = options.specialClass;
+        }
+
+        if(typeof options.specialDates == 'object') {
+            this.specialDates = options.specialDates;
+        }
 
         if (typeof cb === 'function') {
             this.callback = cb;
@@ -525,6 +536,15 @@
 
         isInvalidDate: function() {
             return false;
+        },
+        
+        isSpecialDate: function(date) {
+            var special = false;
+            $.each(this.specialDates, function() {
+                if(date.isSame(this))
+                    special = true;
+            });
+            return special ? true : false;
         },
 
         isCustomDate: function() {
@@ -811,6 +831,10 @@
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
                         classes.push('off', 'disabled');
+                        
+                    if (this.isSpecialDate(calendar[row][col])) {
+                        classes.push(this.specialClass);
+                    }    
 
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
