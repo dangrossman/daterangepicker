@@ -1098,7 +1098,10 @@
 
         show: function(e) {
             if (this.isShowing) return;
-
+            
+            // Allow for reconfigure prior to display.
+            this.element.trigger('before.daterangepicker', this);
+            
             // Create a click proxy that is private to this instance of datepicker, for unbinding
             this._outsideClickProxy = $.proxy(function(e) { this.outsideClick(e); }, this);
 
