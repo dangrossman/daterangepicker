@@ -45,7 +45,7 @@
         this.showISOWeekNumbers = false;
         this.showCustomRangeLabel = true;
         this.timePicker = false;
-        this.timePicker24Hour = false;
+        this.timePicker24Hour = moment.localeData().longDateFormat('LT').indexOf('A') == '-1' ? true : false;
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
