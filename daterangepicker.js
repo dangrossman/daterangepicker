@@ -1051,15 +1051,15 @@
             }
 
             if (this.drops == 'up')
-                containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+                containerTop = this.element.offset().top - this.container.outerHeight(false) - parentOffset.top;
             else
-                containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+                containerTop = this.element.offset().top + this.element.outerHeight(false) - parentOffset.top;
             this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('dropup');
 
             if (this.opens == 'left') {
                 this.container.css({
                     top: containerTop,
-                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
+                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(false),
                     left: 'auto'
                 });
                 if (this.container.offset().left < 0) {
@@ -1071,8 +1071,8 @@
             } else if (this.opens == 'center') {
                 this.container.css({
                     top: containerTop,
-                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
-                            - this.container.outerWidth() / 2,
+                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth(false) / 2
+                            - this.container.outerWidth(false) / 2,
                     right: 'auto'
                 });
                 if (this.container.offset().left < 0) {
@@ -1087,7 +1087,7 @@
                     left: this.element.offset().left - parentOffset.left,
                     right: 'auto'
                 });
-                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                if (this.container.offset().left + this.container.outerWidth(false) > $(window).width()) {
                     this.container.css({
                         left: 'auto',
                         right: 0
