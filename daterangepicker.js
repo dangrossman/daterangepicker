@@ -1218,7 +1218,9 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                this.clickApply();
+                    
+                if (this.autoApply)
+                    this.clickApply();
             }
         },
 
