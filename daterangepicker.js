@@ -28,7 +28,12 @@
         root.daterangepicker = factory(root.moment, root.jQuery);
     }
 }(this, function(moment, $) {
+    var origMoment = moment;
     var DateRangePicker = function(element, options, cb) {
+
+        //different timezone constructor?
+	if (options.moment)
+	    moment = options.moment;
 
         //default settings for options
         this.parentEl = 'body';
@@ -73,9 +78,9 @@
             cancelLabel: 'Cancel',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
-            daysOfWeek: moment.weekdaysMin(),
-            monthNames: moment.monthsShort(),
-            firstDay: moment.localeData().firstDayOfWeek()
+            daysOfWeek: origMoment.weekdaysMin(),
+            monthNames: origMoment.monthsShort(),
+            firstDay: origMoment.localeData().firstDayOfWeek()
         };
 
         this.callback = function() { };
@@ -469,8 +474,9 @@
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
 
-            if (!this.timePicker)
-                this.startDate = this.startDate.startOf('day');
+            this.startDate = this.startDate.startOf(!this.timePicker ? 'day' :
+                                                    this.timePickerSeconds ? 'second' :
+                                                    'minute');
 
             if (this.timePicker && this.timePickerIncrement)
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
@@ -500,8 +506,9 @@
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
 
-            if (!this.timePicker)
-                this.endDate = this.endDate.endOf('day');
+            this.endDate = this.endDate.endOf(!this.timePicker ? 'day' :
+                                              this.timePickerSeconds ? 'second' :
+                                              'minute');
 
             if (this.timePicker && this.timePickerIncrement)
                 this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);

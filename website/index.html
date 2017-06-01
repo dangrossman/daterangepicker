@@ -600,6 +600,9 @@
                                 <code>dateLimit</code>: (object) The maximum span between the selected start and end dates. Can have any property you can add to a moment object (i.e. days, months)
                             </li>
                             <li>
+                                <code>moment</code>: (function) A constructor for creating a moment.js Date. Allows for applying a custom time zone. Values could be <code>moment.utc</code> or <code>date => moment(date).utcOffset('+08:00')</code>
+                            </li>
+                            <li>
                                 <code>showDropdowns</code>: (boolean) Show year and month select boxes above calendars to jump to a specific month and year
                             </li>
                             <li>
