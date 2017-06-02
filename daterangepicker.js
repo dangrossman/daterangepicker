@@ -84,6 +84,15 @@
         this.isShowing = false;
         this.leftCalendar = {};
         this.rightCalendar = {};
+		
+		// if the format isn't working, just try and slam it in
+		function getMomentDate(date){
+			if (typeof date === 'string' && moment(date, this.locale.format).isValid()){
+				return moment(date, this.locale.format);
+			} else{
+				return moment(date);
+			}
+		}
 
         //custom options from user
         if (typeof options !== 'object' || options === null)
@@ -309,15 +318,8 @@
         if (typeof options.ranges === 'object') {
             for (range in options.ranges) {
 
-                if (typeof options.ranges[range][0] === 'string')
-                    start = moment(options.ranges[range][0], this.locale.format);
-                else
-                    start = moment(options.ranges[range][0]);
-
-                if (typeof options.ranges[range][1] === 'string')
-                    end = moment(options.ranges[range][1], this.locale.format);
-                else
-                    end = moment(options.ranges[range][1]);
+                start = getMomentDate(options.ranges[range][0]);
+                end = getMomentDate(options.ranges[range][1]);
 
                 // If the start or end date exceed those allowed by the minDate or dateLimit
                 // options, shorten the range to the allowable period.
