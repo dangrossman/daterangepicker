@@ -52,6 +52,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.daysOfWeekDisabled = [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -171,6 +172,9 @@
             }
         }
         this.container.addClass(this.locale.direction);
+
+        if(typeof options.daysOfWeekDisabled === 'object')
+            this.daysOfWeekDisabled = options.daysOfWeekDisabled;
 
         if (typeof options.startDate === 'string')
             this.startDate = moment(options.startDate, this.locale.format);
@@ -806,6 +810,9 @@
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
+                        classes.push('off', 'disabled');
+
+                    if(this.daysOfWeekDisabled.indexOf(calendar[row][col].day()) > -1)
                         classes.push('off', 'disabled');
 
                     //don't allow selection of dates after the maximum date
