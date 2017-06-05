@@ -1604,6 +1604,10 @@
                 this.element.trigger('change');
             }
         },
+        
+        updateInputText: function(){
+          this.updateElement();  
+        },
 
         remove: function() {
             this.container.remove();
