@@ -1,8 +1,8 @@
 Package.describe({
-  name: 'dangrossman:bootstrap-daterangepicker',
-  version: '2.1.24',
-  summary: 'Date range picker component for Bootstrap',
-  git: 'https://github.com/dangrossman/bootstrap-daterangepicker',
+  name: 'nwa-daterangepicker',
+  version: '1.0.0',
+  summary: 'Daterangepicker based on Dan Grossman\'s bootstrap-daterangepicker.',
+  git: 'https://github.com/NewsWhip/nwa-daterangepicker.git',
   documentation: 'README.md'
 });
 
