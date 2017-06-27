@@ -465,16 +465,23 @@
 
         constructor: DateRangePicker,
 
-        setDate: function(date) {
+        resetTempDates: function(){
+            this.date1 = null;
+            this.date2 = null;
+        },
 
-            if(!this.date1){
+        setDate: function(date) {
+            console.log('%c SETTING DATE: ', 'border: 1px solid red', date);
+
+            if(!this.date1){    //set 1st temp date
 
                 if (typeof date === 'string')
                     this.date1 = moment(date, this.locale.format);
 
                 if (typeof date === 'object')
                     this.date1 = moment(date);
-            }else{
+
+            }else{              //set 2nd temp date
 
                 if (typeof date === 'string')
                     this.date2 = moment(date, this.locale.format);
@@ -493,8 +500,8 @@
                 }
 
                 //reset
-                this.date1 = null;
-                this.date2 = null;
+                // this.date1 = null;
+                // this.date2 = null;
             }
         },
 
@@ -577,6 +584,64 @@
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
+        },
+
+        updateView2: function() {
+            if (this.timePicker) {
+                this.renderTimePicker('left');
+                this.renderTimePicker('right');
+                if (!this.endDate) {
+                    this.container.find('.right .calendar-time select').attr('disabled', 'disabled').addClass('disabled');
+                } else {
+                    this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
+                }
+            }
+            if (this.endDate) {
+                this.$endDateInput.removeClass('active');
+                this.$startDateInput.addClass('active');
+            } else {
+                this.$endDateInput.addClass('active');
+                this.$startDateInput.removeClass('active');
+            }
+            this.updateMonthsInView2();
+            this.updateCalendars();
+
+            if(this.date2)
+                this.resetTempDates();
+
+            this.updateFormInputs();
+        },
+
+        updateMonthsInView2: function() {
+            // if (this.endDate) {
+            if (this.date2) {
+                console.log('DATE 2 SET OKOKOKOKOK');
+                //if both dates are visible already, do nothing
+                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                    &&
+                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                ) {
+                    return;
+                }
+
+                //fix thi shit
+                this.leftCalendar.month = this.startDate.clone().date(2);
+                // this.leftCalendar.month = this.date1.clone().date(2); //xavtodo: you don't know yet whether it is leftCalendar or rightCalendar
+                if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
+                    this.rightCalendar.month = this.endDate.clone().date(2);
+                } else {
+                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                }
+
+            } else {
+                //instead of date1 was startDate
+                console.log('DATE 2 NOT SET YET ------------');
+                if (this.leftCalendar.month.format('YYYY-MM') != this.date1.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.date1.format('YYYY-MM')) {
+                    this.leftCalendar.month = this.date1.clone().date(2);
+                    this.rightCalendar.month = this.date1.clone().date(2).add(1, 'month');
+                }
+            }
         },
 
         updateMonthsInView: function() {
@@ -1366,7 +1431,7 @@
                     this.clickApply();
             }
 
-            this.updateView();
+            this.updateView2();
         },
 
         calculateChosenLabel: function() {
