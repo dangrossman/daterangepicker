@@ -498,10 +498,6 @@
                     this.setStartDate(this.date2);
                     this.setEndDate(this.date1)
                 }
-
-                //reset
-                // this.date1 = null;
-                // this.date2 = null;
             }
         },
 
@@ -564,7 +560,7 @@
             return false;
         },
 
-        updateView: function() {
+        updateView: function(onDateClick) {
             if (this.timePicker) {
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
@@ -574,6 +570,8 @@
                     this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
                 }
             }
+
+            //xavtodo: use toggleClass fn
             if (this.endDate) {
                 this.$endDateInput.removeClass('active');
                 this.$startDateInput.addClass('active');
@@ -581,38 +579,48 @@
                 this.$endDateInput.addClass('active');
                 this.$startDateInput.removeClass('active');
             }
-            this.updateMonthsInView();
+
+            if(onDateClick)
+                this.updateMonthsInViewOnDateClick();
+            else
+                this.updateMonthsInView();
+
             this.updateCalendars();
             this.updateFormInputs();
-        },
-
-        updateView2: function() {
-            if (this.timePicker) {
-                this.renderTimePicker('left');
-                this.renderTimePicker('right');
-                if (!this.endDate) {
-                    this.container.find('.right .calendar-time select').attr('disabled', 'disabled').addClass('disabled');
-                } else {
-                    this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
-                }
-            }
-            if (this.endDate) {
-                this.$endDateInput.removeClass('active');
-                this.$startDateInput.addClass('active');
-            } else {
-                this.$endDateInput.addClass('active');
-                this.$startDateInput.removeClass('active');
-            }
-            this.updateMonthsInView2();
-            this.updateCalendars();
 
             if(this.date2)
                 this.resetTempDates();
-
-            this.updateFormInputs();
         },
 
-        updateMonthsInView2: function() {
+        // updateViewOnDateClick: function() {
+        //     if (this.timePicker) {
+        //         this.renderTimePicker('left');
+        //         this.renderTimePicker('right');
+        //         if (!this.endDate) {
+        //             this.container.find('.right .calendar-time select').attr('disabled', 'disabled').addClass('disabled');
+        //         } else {
+        //             this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
+        //         }
+        //     }
+        //
+        //     //xavtodo: use toggleClass fn
+        //     if (this.endDate) {
+        //         this.$endDateInput.removeClass('active');
+        //         this.$startDateInput.addClass('active');
+        //     } else {
+        //         this.$endDateInput.addClass('active');
+        //         this.$startDateInput.removeClass('active');
+        //     }
+        //
+        //     this.updateMonthsInViewOnDateClick();
+        //     this.updateCalendars();
+        //     this.updateFormInputs();
+        //
+        //     if(this.date2)
+        //         this.resetTempDates();
+        // },
+
+        updateMonthsInViewOnDateClick: function() {
             // if (this.endDate) {
             if (this.date2) {
                 console.log('DATE 2 SET OKOKOKOKOK');
@@ -627,7 +635,6 @@
 
                 //fix thi shit
                 this.leftCalendar.month = this.startDate.clone().date(2);
-                // this.leftCalendar.month = this.date1.clone().date(2); //xavtodo: you don't know yet whether it is leftCalendar or rightCalendar
                 if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
@@ -635,8 +642,6 @@
                 }
 
             } else {
-                //instead of date1 was startDate
-                console.log('DATE 2 NOT SET YET ------------');
                 if (this.leftCalendar.month.format('YYYY-MM') != this.date1.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.date1.format('YYYY-MM')) {
                     this.leftCalendar.month = this.date1.clone().date(2);
                     this.rightCalendar.month = this.date1.clone().date(2).add(1, 'month');
@@ -1431,7 +1436,9 @@
                     this.clickApply();
             }
 
-            this.updateView2();
+            const onDateClick = true;
+
+            this.updateView(onDateClick);
         },
 
         calculateChosenLabel: function() {
