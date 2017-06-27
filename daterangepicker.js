@@ -461,9 +461,6 @@
         constructor: DateRangePicker,
 
         setDate: function(date) {
-            //reset --> NOT WORKING - too many elements of the plugin rely on these two dates
-            // this.startDate = null;
-            // this.endDate = null;
 
             if(!this.date1){
 
@@ -483,17 +480,14 @@
 
             if(this.date1 && this.date2){
                 if(this.date1.isBefore(this.date2)){
-                    console.log('%c date 1 is before: ', 'background: blue; color white;', this.date1, ' this.date2: ', this.date2);
                     this.setStartDate(this.date1);
                     this.setEndDate(this.date2)
                 }else{
-                    console.log('%c date 1 is before: ', 'background: purple; color white;', this.date1, ' this.date2: ', this.date2);
                     this.setStartDate(this.date2);
                     this.setEndDate(this.date1)
                 }
 
                 //reset
-                console.log('reset date1 date2 +++++++++++++++++++++++++++++');
                 this.date1 = null;
                 this.date2 = null;
             }
@@ -581,7 +575,6 @@
         },
 
         updateMonthsInView: function() {
-            console.log('updateMonthsInView 9999999999999999999');
             if (this.endDate) {
 
                 //if both dates are visible already, do nothing
@@ -609,7 +602,6 @@
         },
 
         updateCalendars: function() {
-            console.log('------------- updateCalendars ----------------');
             if (this.timePicker) {
                 var hour, minute, second;
                 if (this.endDate) {
@@ -650,7 +642,6 @@
         },
 
         renderCalendar: function(side) {
-            console.log('------------- render calendar ', side);
             //
             // Build the matrix of dates that will populate the calendar
             //
@@ -847,22 +838,17 @@
                     if (!this.date1 && (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')))
                         classes.push('active', 'end-date');
 
-                    //xavtodo //date-range-end --> NOT WORKING WORKING !!!!
                     if(this.date1 && calendar[row][col].format('YYYY-MM-DD') == this.date1.format('YYYY-MM-DD') ||
                         this.date2 && calendar[row][col].format('YYYY-MM-DD') == this.date2.format('YYYY-MM-DD')){
-                    // if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')){
                         classes.push('active', 'date-range-end');
-                        console.log('classes.push(active, date-range-end');
                     }
 
                     //highlight dates in-between the selected dates
                     if (!this.date1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
                         classes.push('in-range');
 
-                    //xavtodo: highlight dates in-between the selected dates --> NOT WORKING WORKING !!!!
                     if (this.date1 && this.date2 && ((this.date1.isBefore(this.date2) && calendar[row][col] > this.date1 && calendar[row][col] < this.date2) ||
                         this.date2.isBefore(this.date1) && calendar[row][col] > this.date2 && calendar[row][col] < this.date1)){
-                        console.log('classes.push(in-range);');
                         classes.push('in-range');
                     }
 
@@ -1322,95 +1308,7 @@
 
         },
 
-        //orig
-        // clickDate: function(e) {
-        //     console.info('%c clickDate', 'border: 1px solid red;');
-        //
-        //     //ignore dates that can't be selected
-        //     //xavtodo: this code repeats across the whole plugin
-        //     if (!$(e.target).hasClass('available')) return;
-        //
-        //     //xavtodo: this code repeats across the whole plugin
-        //     var title = $(e.target).attr('data-title');
-        //         row = title.substr(1, 1),
-        //         col = title.substr(3, 1),
-        //         cal = $(e.target).parents('.calendar'),
-        //         date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
-        //
-        //     //
-        //     // this function needs to do a few things:
-        //     // * alternate between selecting a start and end date for the range,
-        //     // * if the time picker is enabled, apply the hour/minute/second from the select boxes to the clicked date
-        //     // * if autoapply is enabled, and an end date was chosen, apply the selection
-        //     // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
-        //     //
-        //
-        //     if (this.endDate || date.isBefore(this.startDate, 'day')) {
-        //         console.info('%c clickDate', 'border: 1px solid green;');
-        //         //xavtodo: code here repeated below with the exception of css classes: .left
-        //         if (this.timePicker) {
-        //             var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
-        //
-        //             if (!this.timePicker24Hour) {
-        //
-        //                 var ampm = this.container.find('.left .ampmselect').val();
-        //
-        //                 if (ampm === 'PM' && hour < 12)
-        //                     hour += 12;
-        //
-        //                 if (ampm === 'AM' && hour === 12)
-        //                     hour = 0;
-        //             }
-        //
-        //             var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
-        //             var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
-        //             date = date.clone().hour(hour).minute(minute).second(second);
-        //         }
-        //
-        //         this.endDate = null;
-        //         this.setStartDate(date.clone());
-        //
-        //     } else if (!this.endDate && date.isBefore(this.startDate)) {
-        //         //special case: clicking the same date for start/end,
-        //         //but the time of the end date is before the start date
-        //         this.setEndDate(this.startDate.clone());
-        //     } else {
-        //         console.info('%c clickDate', 'border: 1px solid blue;');
-        //         //xavtodo: code here repeated above with the exception of css classes: .right
-        //         if (this.timePicker) {
-        //             var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
-        //             if (!this.timePicker24Hour) {
-        //                 var ampm = this.container.find('.right .ampmselect').val();
-        //                 if (ampm === 'PM' && hour < 12)
-        //                     hour += 12;
-        //                 if (ampm === 'AM' && hour === 12)
-        //                     hour = 0;
-        //             }
-        //             var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
-        //             var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
-        //             date = date.clone().hour(hour).minute(minute).second(second);
-        //         }
-        //         this.setEndDate(date.clone());
-        //         if (this.autoApply) {
-        //             this.calculateChosenLabel();
-        //             this.clickApply();
-        //         }
-        //     }
-        //
-        //     if (this.singleDatePicker) {
-        //         this.setEndDate(this.startDate);
-        //         if (!this.timePicker)
-        //             this.clickApply();
-        //     }
-        //
-        //     this.updateView();
-        //
-        // },
-
-        // v2
         clickDate: function(e) {
-            console.info('%c clickDate', 'border: 1px solid red;');
-
             //ignore dates that can't be selected
             //xavtodo: this code repeats across the whole plugin
             if (!$(e.target).hasClass('available')) return;
@@ -1423,10 +1321,6 @@
                 date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             if (this.endDate || date.isBefore(this.startDate, 'day')) {
-                console.info('%c clickDate::::::::::::', 'border: 1px solid green;');
-                console.info('%c this.endDate::::::::::::', 'border: 1px solid green;', this.endDate);
-                console.info('%c this.date::::::::::::', 'border: 1px solid green;', date);
-                console.info('%c this.startDate::::::::::::', 'border: 1px solid green;', this.startDate);
                 //xavtodo: code here repeated below with the exception of css classes: .left
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1442,8 +1336,9 @@
                             hour = 0;
                     }
 
-                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
-                    var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10),
+                        second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
 
@@ -1490,7 +1385,6 @@
             }
 
             this.updateView();
-
         },
 
         calculateChosenLabel: function() {
