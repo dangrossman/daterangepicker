@@ -571,7 +571,9 @@
                 }
             }
 
-            //xavtodo: use toggleClass fn
+            // xavtodo: use toggleClass fn - it is not working at the moment
+            // ideally on date hover you will now which input form to display the hovered over date
+            // depending whether yoo hover over after the first date or before and then which class to apply where
             if (this.endDate) {
                 this.$endDateInput.removeClass('active');
                 this.$startDateInput.addClass('active');
@@ -592,49 +594,20 @@
                 this.resetTempDates();
         },
 
-        // updateViewOnDateClick: function() {
-        //     if (this.timePicker) {
-        //         this.renderTimePicker('left');
-        //         this.renderTimePicker('right');
-        //         if (!this.endDate) {
-        //             this.container.find('.right .calendar-time select').attr('disabled', 'disabled').addClass('disabled');
-        //         } else {
-        //             this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
-        //         }
-        //     }
-        //
-        //     //xavtodo: use toggleClass fn
-        //     if (this.endDate) {
-        //         this.$endDateInput.removeClass('active');
-        //         this.$startDateInput.addClass('active');
-        //     } else {
-        //         this.$endDateInput.addClass('active');
-        //         this.$startDateInput.removeClass('active');
-        //     }
-        //
-        //     this.updateMonthsInViewOnDateClick();
-        //     this.updateCalendars();
-        //     this.updateFormInputs();
-        //
-        //     if(this.date2)
-        //         this.resetTempDates();
-        // },
+        areBothDatesVisibleInTheCalendars: function(){
+             return !this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+                (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM')) &&
+                (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'));
+        },
 
+        //xavtodo: a lot of duplication here with updateMonthsInView fn below
         updateMonthsInViewOnDateClick: function() {
             // if (this.endDate) {
             if (this.date2) {
-                console.log('DATE 2 SET OKOKOKOKOK');
-                //if both dates are visible already, do nothing
-                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
-                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                    &&
-                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                ) {
-                    return;
-                }
+                if(this.areBothDatesVisibleInTheCalendars()) return;
 
-                //fix thi shit
                 this.leftCalendar.month = this.startDate.clone().date(2);
+
                 if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
@@ -649,19 +622,13 @@
             }
         },
 
+        //xavtodo: a lot of duplication here with updateMonthsInViewOnDateClick fn above
         updateMonthsInView: function() {
             if (this.endDate) {
-
-                //if both dates are visible already, do nothing
-                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
-                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                    &&
-                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                ) {
-                    return;
-                }
+                if(this.areBothDatesVisibleInTheCalendars()) return;
 
                 this.leftCalendar.month = this.startDate.clone().date(2);
+
                 if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
