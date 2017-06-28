@@ -1,5 +1,5 @@
 /**
- * @version: 1.0.0
+ * @version: 1.0.2
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
  * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -1418,10 +1418,10 @@
                         break;
                     }
                 }
-                
+
                 i++;
             }
-            
+
             if (customRange) {
                 this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
                 this.showCalendars();
@@ -1563,6 +1563,7 @@
             }
 
             this.updateCalendars();
+
             if (this.timePicker) {
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
