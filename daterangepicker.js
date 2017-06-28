@@ -471,7 +471,6 @@
         },
 
         setDate: function(date) {
-            console.log('%c SETTING DATE: ', 'border: 1px solid red', date);
 
             if(!this.date1){    //set 1st temp date
 
@@ -646,10 +645,13 @@
         updateCalendars: function() {
             if (this.timePicker) {
                 var hour, minute, second;
+
                 if (this.endDate) {
+
                     hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
                     second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+
                     if (!this.timePicker24Hour) {
                         var ampm = this.container.find('.left .ampmselect').val();
                         if (ampm === 'PM' && hour < 12)
@@ -669,6 +671,7 @@
                             hour = 0;
                     }
                 }
+
                 this.leftCalendar.month.hour(hour).minute(minute).second(second);
                 this.rightCalendar.month.hour(hour).minute(minute).second(second);
             }
@@ -678,6 +681,7 @@
 
             //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
+
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
@@ -713,6 +717,7 @@
 
             //populate the calendar with date objects
             var startDay = daysInLastMonth - dayOfWeek + this.locale.firstDay + 1;
+
             if (startDay > daysInLastMonth)
                 startDay -= 7;
 
@@ -1333,6 +1338,29 @@
 
         },
 
+        setTime: function(sideClass, date){
+            if (!this.timePicker) return;
+
+            var hour = parseInt(this.container.find(sideClass + ' .hourselect').val(), 10);
+
+            if (!this.timePicker24Hour) {
+
+                var ampm = this.container.find(sideClass + ' .ampmselect').val();
+
+                if (ampm === 'PM' && hour < 12)
+                    hour += 12;
+
+                if (ampm === 'AM' && hour === 12)
+                    hour = 0;
+            }
+
+            var minute = parseInt(this.container.find('.left .minuteselect').val(), 10),
+                second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+
+            return date.clone().hour(hour).minute(minute).second(second);
+
+        },
+
         clickDate: function(e) {
             //ignore dates that can't be selected
             if (!$(e.target).hasClass('available')) return;
@@ -1340,29 +1368,9 @@
             var date = this.getDate(e);
 
             if (this.endDate || date.isBefore(this.startDate, 'day')) {
-                //xavtodo: code here repeated below with the exception of css classes: .left
-                if (this.timePicker) {
-                    var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
 
-                    if (!this.timePicker24Hour) {
+                date = this.setTime('.left', date);
 
-                        var ampm = this.container.find('.left .ampmselect').val();
-
-                        if (ampm === 'PM' && hour < 12)
-                            hour += 12;
-
-                        if (ampm === 'AM' && hour === 12)
-                            hour = 0;
-                    }
-
-                    var minute = parseInt(this.container.find('.left .minuteselect').val(), 10),
-                        second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
-
-                    date = date.clone().hour(hour).minute(minute).second(second);
-                }
-
-                // this.endDate = null; //xavtodo
-                // this.setStartDate(date.clone());
                 this.setDate(date.clone());
 
             } else if (!this.endDate && date.isBefore(this.startDate)) {
@@ -1370,22 +1378,8 @@
                 //but the time of the end date is before the start date
                 this.setEndDate(this.startDate.clone());
             } else {
-                //xavtodo: code here repeated above with the exception of css classes: .right
-                if (this.timePicker) {
-                    var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
-                    if (!this.timePicker24Hour) {
-                        var ampm = this.container.find('.right .ampmselect').val();
-                        if (ampm === 'PM' && hour < 12)
-                            hour += 12;
-                        if (ampm === 'AM' && hour === 12)
-                            hour = 0;
-                    }
-                    var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
-                    var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
-                }
+                date = this.setTime('.right', date);
 
-                // this.setEndDate(date.clone());
                 this.setDate(date.clone());
 
                 if (this.autoApply) {
@@ -1395,8 +1389,6 @@
             }
 
             if (this.singleDatePicker) {
-
-                // this.setEndDate(this.startDate);
                 this.setDate(date.clone());
 
                 if (!this.timePicker)
@@ -1404,13 +1396,13 @@
             }
 
             const onDateClick = true;
-
             this.updateView(onDateClick);
         },
 
         calculateChosenLabel: function() {
-            var customRange = true;
-            var i = 0;
+            var customRange = true,
+                i = 0;
+
             for (var range in this.ranges) {
                 if (this.timePicker) {
                     if (this.startDate.isSame(this.ranges[range][0]) && this.endDate.isSame(this.ranges[range][1])) {
@@ -1426,8 +1418,10 @@
                         break;
                     }
                 }
+                
                 i++;
             }
+            
             if (customRange) {
                 this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
                 this.showCalendars();
