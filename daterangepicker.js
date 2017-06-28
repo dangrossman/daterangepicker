@@ -1,7 +1,7 @@
 /**
- * @version: 1.0.3
+ * @version: 1.0.2
  * @author: Xavier Glab http://github.com/codeepic based on Dan Grossman's http://www.dangrossman.info/ package
- * @copyright: Copyright (c) 2016-2017 Xavier Glab. All rights reserved.
+ * @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
  * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
  * @website: https://www.improvely.com/
  */
@@ -60,8 +60,8 @@
 
         //temp dates before you figure out which is start which is end
         //to allow user to first select the end date and then the start date if going back in the calendar
-        this.date1;
-        this.date2;
+        this.tempDate1;
+        this.tempDate2;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -466,36 +466,36 @@
         constructor: DateRangePicker,
 
         resetTempDates: function(){
-            this.date1 = null;
-            this.date2 = null;
+            this.tempDate1 = null;
+            this.tempDate2 = null;
         },
 
         setDate: function(date) {
 
-            if(!this.date1){    //set 1st temp date
+            if(!this.tempDate1){    //set 1st temp date
 
                 if (typeof date === 'string')
-                    this.date1 = moment(date, this.locale.format);
+                    this.tempDate1 = moment(date, this.locale.format);
 
                 if (typeof date === 'object')
-                    this.date1 = moment(date);
+                    this.tempDate1 = moment(date);
 
             }else{              //set 2nd temp date
 
                 if (typeof date === 'string')
-                    this.date2 = moment(date, this.locale.format);
+                    this.tempDate2 = moment(date, this.locale.format);
 
                 if (typeof date === 'object')
-                    this.date2 = moment(date);
+                    this.tempDate2 = moment(date);
             }
 
-            if(this.date1 && this.date2){
-                if(this.date1.isBefore(this.date2)){
-                    this.setStartDate(this.date1);
-                    this.setEndDate(this.date2)
+            if(this.tempDate1 && this.tempDate2){
+                if(this.tempDate1.isBefore(this.tempDate2)){
+                    this.setStartDate(this.tempDate1);
+                    this.setEndDate(this.tempDate2)
                 }else{
-                    this.setStartDate(this.date2);
-                    this.setEndDate(this.date1)
+                    this.setStartDate(this.tempDate2);
+                    this.setEndDate(this.tempDate1)
                 }
             }
         },
@@ -571,7 +571,7 @@
             }
 
             // xavtodo: use toggleClass fn - it is not working at the moment
-            // ideally on date hover you will now which input form to display the hovered over date
+            // ideally on date hover you will know which input form to display the hovered over date
             // depending whether yoo hover over after the first date or before and then which class to apply where
             if (this.endDate) {
                 this.$endDateInput.removeClass('active');
@@ -589,7 +589,7 @@
             this.updateCalendars();
             this.updateFormInputs();
 
-            if(this.date2)
+            if(this.tempDate2)
                 this.resetTempDates();
         },
 
@@ -602,7 +602,7 @@
         //xavtodo: a lot of duplication here with updateMonthsInView fn below
         updateMonthsInViewOnDateClick: function() {
             // if (this.endDate) {
-            if (this.date2) {
+            if (this.tempDate2) {
                 if(this.areBothDatesVisibleInTheCalendars()) return;
 
                 this.leftCalendar.month = this.startDate.clone().date(2);
@@ -614,9 +614,9 @@
                 }
 
             } else {
-                if (this.leftCalendar.month.format('YYYY-MM') != this.date1.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.date1.format('YYYY-MM')) {
-                    this.leftCalendar.month = this.date1.clone().date(2);
-                    this.rightCalendar.month = this.date1.clone().date(2).add(1, 'month');
+                if (this.leftCalendar.month.format('YYYY-MM') != this.tempDate1.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.tempDate1.format('YYYY-MM')) {
+                    this.leftCalendar.month = this.tempDate1.clone().date(2);
+                    this.rightCalendar.month = this.tempDate1.clone().date(2).add(1, 'month');
                 }
             }
         },
@@ -878,24 +878,24 @@
                         classes.push('off', 'disabled');
 
                     //highlight the currently selected start date
-                    if (!this.date1 && (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')))
+                    if (!this.tempDate1 && (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')))
                         classes.push('active', 'start-date');
 
                     //highlight the currently selected end date
-                    if (!this.date1 && (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')))
+                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')))
                         classes.push('active', 'end-date');
 
-                    if(this.date1 && calendar[row][col].format('YYYY-MM-DD') == this.date1.format('YYYY-MM-DD') ||
-                        this.date2 && calendar[row][col].format('YYYY-MM-DD') == this.date2.format('YYYY-MM-DD')){
+                    if(this.tempDate1 && calendar[row][col].format('YYYY-MM-DD') == this.tempDate1.format('YYYY-MM-DD') ||
+                        this.tempDate2 && calendar[row][col].format('YYYY-MM-DD') == this.tempDate2.format('YYYY-MM-DD')){
                         classes.push('active', 'date-range-end');
                     }
 
                     //highlight dates in-between the selected dates
-                    if (!this.date1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
+                    if (!this.tempDate1 && (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate))
                         classes.push('in-range');
 
-                    if (this.date1 && this.date2 && ((this.date1.isBefore(this.date2) && calendar[row][col] > this.date1 && calendar[row][col] < this.date2) ||
-                        this.date2.isBefore(this.date1) && calendar[row][col] > this.date2 && calendar[row][col] < this.date1)){
+                    if (this.tempDate1 && this.tempDate2 && ((this.tempDate1.isBefore(this.tempDate2) && calendar[row][col] > this.tempDate1 && calendar[row][col] < this.tempDate2) ||
+                        this.tempDate2.isBefore(this.tempDate1) && calendar[row][col] > this.tempDate2 && calendar[row][col] < this.tempDate1)){
                         classes.push('in-range');
                     }
 
@@ -1443,8 +1443,7 @@
         },
 
         clickCancel: function(e) {
-            this.date1 = null;
-            this.date2 = null;
+            this.resetTempDates();
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
             this.hide();

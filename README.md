@@ -9,8 +9,7 @@ This daterangepicker is based on Dan Grossman's [daterangepicker](https://github
 ![Improvely.com](http://i.imgur.com/0otr1RF.png)
 
 This date range picker component for Bootstrap creates a dropdown menu from which a user can
-select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
-which needed a way to select date ranges for reports.
+select a range of dates.
 
 Features include limiting the selectable date range, localizable strings and date formats,
 a single date picker mode, optional time picker (for e.g. making appointments or reservations),
