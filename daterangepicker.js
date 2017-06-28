@@ -599,9 +599,7 @@
                 (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'));
         },
 
-        //xavtodo: a lot of duplication here with updateMonthsInView fn below
         updateMonthsInViewOnDateClick: function() {
-            // if (this.endDate) {
             if (this.tempDate2) {
                 if(this.areBothDatesVisibleInTheCalendars()) return;
 
@@ -621,7 +619,6 @@
             }
         },
 
-        //xavtodo: a lot of duplication here with updateMonthsInViewOnDateClick fn above
         updateMonthsInView: function() {
             if (this.endDate) {
                 if(this.areBothDatesVisibleInTheCalendars()) return;
