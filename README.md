@@ -1,8 +1,12 @@
-# Date Range Picker for Bootstrap based on Dan Grossman's awesome [daterangepicker](https://github.com/dangrossman/bootstrap-daterangepicker)
+# Date Range Picker for Bootstrap based on Dan Grossman's awesome 
 
-The biggest difference is in how the plugin behaves when the new date range is selected but the user clicks outside the calendar modal window. The original daterangepicker will execute the callback function as if the user clicked 'Apply' button. This plugin will not execute the callback.
+This daterangepicker is based on Dan Grossman's [daterangepicker](https://github.com/dangrossman/bootstrap-daterangepicker).
 
-![Improvely.com](http://i.imgur.com/LbAMf3D.png)
+# Main changes
+1. The daterangepicker will not execute the callback when clicking outside the calendar modal. The original daterangepicker will execute the callback function as if the user clicked 'Apply' button.
+2. User can select a date range by first clicking on a date and then choosing a date in the past. The plugin will determine which date should be a start date and set the end date accordingly. The original plugin would reset the selection, forcing the user to select the end.
+
+![Improvely.com](http://i.imgur.com/0otr1RF.png)
 
 This date range picker component for Bootstrap creates a dropdown menu from which a user can
 select a range of dates. I created it while building the UI for [Improvely](http://www.improvely.com), 
@@ -25,7 +29,7 @@ for convenience. It is available under the [MIT license](http://www.opensource.o
 
 The MIT License (MIT)
 
-Copyright (c) 2012-2016 Dan Grossman
+Copyright (c) 2016-2017 Xavier Glab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
