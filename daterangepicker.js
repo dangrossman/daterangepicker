@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.25
+* @version: 2.1.26
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2017 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -44,6 +44,7 @@
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
         this.showCustomRangeLabel = true;
+        this.showCalendarInputs = true;
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
@@ -237,6 +238,9 @@
         if (typeof options.showCustomRangeLabel === 'boolean')
             this.showCustomRangeLabel = options.showCustomRangeLabel;
 
+        if (typeof options.showCalendarInputs === 'boolean')
+            this.showCalendarInputs = options.showCalendarInputs;
+
         if (typeof options.singleDatePicker === 'boolean') {
             this.singleDatePicker = options.singleDatePicker;
             if (this.singleDatePicker)
@@ -386,6 +390,10 @@
             } else {
                 this.container.find('.ranges').hide();
             }
+        }
+
+        if (!this.showCalendarInputs) {
+            this.container.find('.daterangepicker_input').hide();
         }
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
