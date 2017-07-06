@@ -637,6 +637,14 @@
             var hour = calendar.month.hour();
             var minute = calendar.month.minute();
             var second = calendar.month.second();
+
+            //protection from bad field values
+            month = isNaN(month)?moment().month():month;
+            year = isNaN(year)?moment().year():year;
+            hour = isNaN(hour)?moment().hour():hour;
+            minute = isNaN(minute)?moment().minute():minute;
+            second = isNaN(second)?moment().second():second;
+
             var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
             var lastDay = moment([year, month, daysInMonth]);
