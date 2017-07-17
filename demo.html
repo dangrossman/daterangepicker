@@ -190,6 +190,26 @@
                 <input type="text" class="form-control" id="cancelClass" value="btn-default">
               </div>
 
+              <div class="form-group">
+                <label for="prevIconClass">prevIconClass</label>
+                <input type="text" class="form-control" id="prevIconClass">
+              </div>
+    
+              <div class="form-group">
+                <label for="nextIconClass">nextIconClass</label>
+                <input type="text" class="form-control" id="nextIconClass">
+              </div>
+
+              <div class="form-group">
+                <label for="calendarIconClass">calendarIconClass</label>
+                <input type="text" class="form-control" id="calendarIconClass">
+              </div>
+
+              <div class="form-group">
+                <label for="timeIconClass">timeIconClass</label>
+                <input type="text" class="form-control" id="timeIconClass">
+              </div>
+
             </div>
 
           </div>
@@ -355,6 +375,18 @@
 
           if ($('#cancelClass').val().length && $('#cancelClass').val() != 'btn-default')
             options.cancelClass = $('#cancelClass').val();
+
+          if ($('#prevIconClass').val().length && $('#prevIconClass').val() != 'btn-default')
+            options.prevIconClass = $('#prevIconClass').val();
+
+          if ($('#nextIconClass').val().length && $('#nextIconClass').val() != 'btn-default')
+            options.nextIconClass = $('#nextIconClass').val();
+
+          if ($('#calendarIconClass').val().length && $('#calendarIconClass').val() != 'btn-default')
+            options.calendarIconClass = $('#calendarIconClass').val();
+
+          if ($('#timeIconClass').val().length && $('#timeIconClass').val() != 'btn-default')
+            options.timeIconClass = $('#timeIconClass').val();
 
           $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
