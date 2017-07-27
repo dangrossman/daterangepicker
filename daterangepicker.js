@@ -98,6 +98,14 @@
         if (typeof options.noteditable === 'boolean')
             this.noteditable = options.noteditable;
 
+
+
+        if (typeof options.singleDatePicker === 'boolean') {
+            this.singleDatePicker = options.singleDatePicker;
+            //if (this.singleDatePicker)
+                //this.endDate = this.startDate.clone();
+        }
+
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
@@ -111,6 +119,16 @@
                         '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
                       '</div>' +
                     '</div>' +
+                    (this.singleDatePicker ?
+                    '<div class="daterangepicker_input">' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" ' +
+                      (this.noteditable && 'readonly') +' />' +
+                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
+                      '<div class="calendar-time">' +
+                        '<div></div>' +
+                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
+                      '</div>' +
+                    '</div>' : '') +
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="calendar right">' +
@@ -244,12 +262,6 @@
         if (typeof options.showCustomRangeLabel === 'boolean')
             this.showCustomRangeLabel = options.showCustomRangeLabel;
 
-        if (typeof options.singleDatePicker === 'boolean') {
-            this.singleDatePicker = options.singleDatePicker;
-            if (this.singleDatePicker)
-                this.endDate = this.startDate.clone();
-        }
-
         if (typeof options.timePicker === 'boolean')
             this.timePicker = options.timePicker;
 
@@ -302,7 +314,7 @@
                 if (split.length == 2) {
                     start = moment(split[0], this.locale.format);
                     end = moment(split[1], this.locale.format);
-                } else if (this.singleDatePicker && val !== "") {
+                } else if (val !== "") {
                     start = moment(val, this.locale.format);
                     end = moment(val, this.locale.format);
                 }
@@ -387,12 +399,12 @@
             this.container.find('.calendar.left').addClass('single');
             this.container.find('.calendar.left').show();
             this.container.find('.calendar.right').hide();
-            this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
-            if (this.timePicker) {
-                this.container.find('.ranges ul').hide();
-            } else {
-                this.container.find('.ranges').hide();
-            }
+            //this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
+            //if (this.timePicker) {
+            //    this.container.find('.ranges ul').hide();
+            //} else {
+            //    this.container.find('.ranges').hide();
+            //}
         }
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
@@ -455,11 +467,8 @@
         // if attached to a text input, set the initial value
         //
 
-        if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+        if (this.element.is('input') && this.autoUpdateInput) {
             this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
-            this.element.trigger('change');
-        } else if (this.element.is('input') && this.autoUpdateInput) {
-            this.element.val(this.startDate.format(this.locale.format));
             this.element.trigger('change');
         }
 
@@ -1362,11 +1371,11 @@
                 }
             }
 
-            if (this.singleDatePicker) {
-                this.setEndDate(this.startDate);
-                if (!this.timePicker)
-                    this.clickApply();
-            }
+            //if (this.singleDatePicker) {
+            //    this.setEndDate(this.startDate);
+            //    if (!this.timePicker)
+            //        this.clickApply();
+            //}
 
             this.updateView();
 
@@ -1583,7 +1592,7 @@
                 end = moment(dateString[1], this.locale.format);
             }
 
-            if (this.singleDatePicker || start === null || end === null) {
+            if (start === null || end === null) {
                 start = moment(this.element.val(), this.locale.format);
                 end = start;
             }
@@ -1603,12 +1612,12 @@
         },
 
         updateElement: function() {
-            if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+            if (this.element.is('input') && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 this.element.trigger('change');
-            } else if (this.element.is('input') && this.autoUpdateInput) {
-                this.element.val(this.startDate.format(this.locale.format));
-                this.element.trigger('change');
+            //} else if (this.element.is('input') && this.autoUpdateInput) {
+            //    this.element.val(this.startDate.format(this.locale.format));
+            //    this.element.trigger('change');
             }
         },
 
