@@ -1039,8 +1039,7 @@
         },
 
         move: function() {
-            var parentOffset = { top: 0, left: 0 },
-                containerTop;
+            var parentOffset, containerTop;
             var parentRightEdge = $(window).width();
             parentOffset = {
               top: this.parentEl.offset().top - this.parentEl.scrollTop(),
