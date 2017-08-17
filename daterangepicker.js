@@ -1042,13 +1042,11 @@
             var parentOffset = { top: 0, left: 0 },
                 containerTop;
             var parentRightEdge = $(window).width();
-            if (!this.parentEl.is('body')) {
-                parentOffset = {
-                    top: this.parentEl.offset().top - this.parentEl.scrollTop(),
-                    left: this.parentEl.offset().left - this.parentEl.scrollLeft()
-                };
-                parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
-            }
+            parentOffset = {
+              top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+              left: this.parentEl.offset().left - this.parentEl.scrollLeft()
+            };
+            parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
 
             if (this.drops == 'up')
                 containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
