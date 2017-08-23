@@ -1268,18 +1268,28 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+            var startInput = this.container.find('input[name=daterangepicker_start]');
+            var endInput =  this.container.find('input[name=daterangepicker_end]');
 
             var input = null;
             if (this.endpointCalendars) {
-                if (cal.hasClass('left') && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
-                  input = this.container.find('input[name=daterangepicker_start]');
-                } else if (cal.hasClass('right') && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
-                  input = this.container.find('input[name=daterangepicker_end]');
+                if (cal.hasClass('left') && !startInput.is(":focus")) {
+                  input = startInput;
+                  if (!endInput.is(":focus")) {
+                    endInput.removeClass('active');
+                    startInput.addClass('active');
+                  }
+                } else if (cal.hasClass('right') && !endInput.is(":focus")) {
+                  input = endInput;
+                  if (!startInput.is(":focus")) {
+                    startInput.removeClass('active');
+                    endInput.addClass('active');
+                  }
                 }
-            } else if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
-                input = this.container.find('input[name=daterangepicker_start]');
-            } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
-                input = this.container.find('input[name=daterangepicker_end]');
+            } else if (this.endDate && !startInput.is(":focus")) {
+                input = startInput;
+            } else if (!this.endDate && !endInput.is(":focus")) {
+                input = endInput;
             }
 
             if (input) {
