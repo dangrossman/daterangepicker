@@ -562,15 +562,18 @@
 
                 //if both dates are visible already, do nothing
                 if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
-                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || (!this.endpointCalendars && this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM')))
                     &&
-                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                    (this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM') || (!this.endpointCalendars && this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM')))
                     ) {
                     return;
                 }
 
                 this.leftCalendar.month = this.startDate.clone().date(2);
-                if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
+                if (this.endpointCalendars) {
+                    this.leftCalendar.month = this.startDate.clone().date(2);
+                    this.rightCalendar.month = this.endDate.clone().date(2);
+                } else if (!this.linkedCalendars && this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year()) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
