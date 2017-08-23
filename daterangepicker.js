@@ -1271,9 +1271,9 @@
 
             var input = null;
             if (this.endpointCalendars) {
-                if (cal.hasClass('left')) {
+                if (cal.hasClass('left') && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
                   input = this.container.find('input[name=daterangepicker_start]');
-                } else {
+                } else if (cal.hasClass('right') && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
                   input = this.container.find('input[name=daterangepicker_end]');
                 }
             } else if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
@@ -1561,7 +1561,7 @@
             // re-selecting the beginning, by clicking on the end date input then
             // using the calendar.
             var isRight = $(e.target).closest('.calendar').hasClass('right');
-            if (isRight) {
+            if (isRight && !this.endpointCalendars) {
                 this.endDate = null;
                 this.setStartDate(this.startDate.clone());
                 this.updateView();
