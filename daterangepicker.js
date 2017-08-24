@@ -1363,6 +1363,8 @@
 
             this.updateView();
 
+            this.element.trigger('clickdate.daterangepicker', this);
+
             //This is to cancel the blur event handler if the mouse was in one of the inputs
             e.stopPropagation();
 
