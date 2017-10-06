@@ -1144,7 +1144,7 @@
 
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
-            this.container.hide();
+            this.container.fadeOut();
             this.element.trigger('hide.daterangepicker', this);
             this.isShowing = false;
         },
