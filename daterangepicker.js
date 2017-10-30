@@ -51,6 +51,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.disableInput = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -261,6 +262,9 @@
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
 
+        if (typeof options.disableInput === 'boolean')
+            this.disableInput = options.disableInput;
+
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
@@ -390,6 +394,17 @@
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
             this.container.addClass('show-calendar');
+        }
+        
+        if (this.disableInput) {
+            var inputStart = this.container.find('.daterangepicker_input input[name=daterangepicker_start]');
+            if (inputStart) {
+                inputStart.attr('disabled', true);
+            }
+            var inputEnd = this.container.find('.daterangepicker_input input[name=daterangepicker_end]');
+            if (inputEnd) {
+                inputEnd.attr('disabled', true);
+            }
         }
 
         this.container.addClass('opens' + this.opens);
