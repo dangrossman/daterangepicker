@@ -52,6 +52,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.disableInput = false;
+        this.emitChangeOnSameDate = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -264,6 +265,9 @@
 
         if (typeof options.disableInput === 'boolean')
             this.disableInput = options.disableInput;
+
+        if (typeof options.emitChangeOnSameDate === 'boolean')
+            this.emitChangeOnSameDate = options.emitChangeOnSameDate;
 
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
@@ -1151,7 +1155,7 @@
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate) || this.emitChangeOnSameDate)
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it
