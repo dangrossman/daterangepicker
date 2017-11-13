@@ -336,9 +336,9 @@
                 // if dateLimitMin is set, set the length to the minimum
                 // note that this could conflict with maxDate
                 if (this.dateLimitMin) {
-                    var minEndDate = moment(startDate).add(this.dateLimitMin);
-                    if (endDate.isBefore(minEndDate)) {
-                        endDate = minEndDate.clone();
+                    var minEndDate = moment(this.startDate).add(this.dateLimitMin);
+                    if (this.endDate.isBefore(minEndDate)) {
+                        this.endDate = minEndDate.clone();
                     }
                 }
 
