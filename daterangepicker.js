@@ -30,6 +30,18 @@
 }(this, function(moment, $) {
     var DateRangePicker = function(element, options, cb) {
 
+        // Use moment-timezone if available
+        var momentFunc = moment;
+        var MomentMaybeTz = function() {
+            var args = Array.prototype.slice.call(arguments);
+            if (!momentFunc.tz) return momentFunc.apply(this, args);
+            args.push(options.timezone);
+            return momentFunc.tz.apply(this, args);
+        };
+
+        $.extend(MomentMaybeTz, moment);
+        moment = MomentMaybeTz;
+
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
@@ -52,6 +64,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.highLight = [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -195,6 +208,10 @@
 
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
+
+        // set array of Highlight Dates
+        if (typeof options.highLight === 'object')
+            this.highLight = options.highLight;
 
         // sanity check for bad options
         if (this.minDate && this.startDate.isBefore(this.minDate))
@@ -523,6 +540,11 @@
             this.updateMonthsInView();
         },
 
+        setHighLightDays: function (days) {
+            if (typeof days === 'object')
+                this.highLight = days;
+        },
+
         isInvalidDate: function() {
             return false;
         },
@@ -795,6 +817,12 @@
                     //highlight today's date
                     if (calendar[row][col].isSame(new Date(), "day"))
                         classes.push('today');
+
+                    //highlight custom Dates
+                    if (this.highLight.length) {
+                        if ($.inArray(calendar[row][col].format(this.locale.format), this.highLight) > -1)
+                            classes.push('highLightDay');
+                    }
 
                     //highlight weekends
                     if (calendar[row][col].isoWeekday() > 5)
