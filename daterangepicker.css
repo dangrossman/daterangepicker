@@ -89,6 +89,12 @@
     border: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer; }
+    .daterangepicker td.highLightDay {
+        background-color: #F0FF81;
+        border-color: transparent;
+        color: #000;
+        border-radius: 0;
+    }
     .daterangepicker td.available:hover, .daterangepicker th.available:hover {
       background-color: #eee;
       border-color: transparent;
