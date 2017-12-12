@@ -1170,6 +1170,8 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
+            this.lastclickStartDate = this.startDate; // last clicked startDate 
+            this.lastclickEndDate = this.endDate; // last clicked endDate
             this.hide();
             this.element.trigger('outsideClick.daterangepicker', this);
         },
