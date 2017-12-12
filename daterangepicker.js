@@ -389,7 +389,7 @@
         }
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
-            this.container.addClass('show-calendar');
+            this.container.addClass('show-calendar notranslate'); // 'notranslate' class is to solve issue of change date number to word (Ex. 11 To Eleven) when we use Google Tranlator to the website.
         }
 
         this.container.addClass('opens' + this.opens);
@@ -1174,7 +1174,7 @@
         },
 
         showCalendars: function() {
-            this.container.addClass('show-calendar');
+            this.container.addClass('show-calendar notranslate'); // 'notranslate' class is to solve issue of change date number to word (Ex. 11 To Eleven) when we use Google Tranlator to the website.
             this.move();
             this.element.trigger('showCalendar.daterangepicker', this);
         },
