@@ -44,6 +44,7 @@
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
         this.showCustomRangeLabel = true;
+        this.timeInRanges = false;
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
@@ -242,6 +243,9 @@
             if (this.singleDatePicker)
                 this.endDate = this.startDate.clone();
         }
+        
+        if (typeof options.timeInRanges === 'boolean')
+            this.timeInRanges = options.timeInRanges;
 
         if (typeof options.timePicker === 'boolean')
             this.timePicker = options.timePicker;
@@ -1213,7 +1217,7 @@
                 this.startDate = dates[0];
                 this.endDate = dates[1];
 
-                if (!this.timePicker) {
+                if (!this.timePicker && !this.timeInRanges) {
                     this.startDate.startOf('day');
                     this.endDate.endOf('day');
                 }
