@@ -137,6 +137,12 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="endpointCalendars"> endpointCalendars
+                </label>
+              </div>
+
             </div>
             <div class="col-md-4">
 
@@ -325,6 +331,9 @@
 
           if ($('#alwaysShowCalendars').is(':checked'))
             options.alwaysShowCalendars = true;
+
+          if ($('#endpointCalendars').is(':checked'))
+            options.endpointCalendars = true;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();
