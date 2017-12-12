@@ -1566,7 +1566,6 @@
         elementChanged: function() {
             if (!this.element.is('input')) return;
             if (!this.element.val().length) return;
-            if (!moment(this.element.val().trim(), this.locale.format, true).isValid()) return;
 
             var dateString = this.element.val().split(this.locale.separator),
                 start = null,
