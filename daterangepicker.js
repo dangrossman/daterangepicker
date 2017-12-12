@@ -51,6 +51,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.disableInput = false;
+        this.emitChangeOnSameDate = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -261,6 +263,12 @@
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
 
+        if (typeof options.disableInput === 'boolean')
+            this.disableInput = options.disableInput;
+
+        if (typeof options.emitChangeOnSameDate === 'boolean')
+            this.emitChangeOnSameDate = options.emitChangeOnSameDate;
+
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
@@ -390,6 +398,17 @@
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
             this.container.addClass('show-calendar');
+        }
+        
+        if (this.disableInput) {
+            var inputStart = this.container.find('.daterangepicker_input input[name=daterangepicker_start]');
+            if (inputStart) {
+                inputStart.attr('disabled', true);
+            }
+            var inputEnd = this.container.find('.daterangepicker_input input[name=daterangepicker_end]');
+            if (inputEnd) {
+                inputEnd.attr('disabled', true);
+            }
         }
 
         this.container.addClass('opens' + this.opens);
@@ -1138,7 +1157,7 @@
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate) || this.emitChangeOnSameDate)
                 this.callback(this.startDate, this.endDate, this.chosenLabel);
 
             //if picker is attached to a text input, update it

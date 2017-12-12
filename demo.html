@@ -137,6 +137,18 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="disableInput"> disableInput
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="emitChangeOnSameDate"> emitChangeOnSameDate
+                </label>
+              </div>
+
             </div>
             <div class="col-md-4">
 
@@ -325,6 +337,12 @@
 
           if ($('#alwaysShowCalendars').is(':checked'))
             options.alwaysShowCalendars = true;
+
+          if ($('#disableInput').is(':checked'))
+            options.disableInput = true;
+
+          if ($('#emitChangeOnSameDate').is(':checked'))
+            options.emitChangeOnSameDate = true;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();
