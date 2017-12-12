@@ -383,7 +383,7 @@
             this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
             if (this.timePicker) {
                 this.container.find('.ranges ul').hide();
-            } else {
+            } else if(this.autoApply) {
                 this.container.find('.ranges').hide();
             }
         }
