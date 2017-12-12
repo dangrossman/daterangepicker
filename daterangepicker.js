@@ -239,8 +239,10 @@
 
         if (typeof options.singleDatePicker === 'boolean') {
             this.singleDatePicker = options.singleDatePicker;
-            if (this.singleDatePicker)
+            if (this.singleDatePicker) {
                 this.endDate = this.startDate.clone();
+                this.autoApply = true;
+            }
         }
 
         if (typeof options.timePicker === 'boolean')
@@ -383,8 +385,6 @@
             this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
             if (this.timePicker) {
                 this.container.find('.ranges ul').hide();
-            } else {
-                this.container.find('.ranges').hide();
             }
         }
 
@@ -1358,7 +1358,7 @@
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
-                if (!this.timePicker)
+                if (!this.timePicker && this.autoApply)
                     this.clickApply();
             }
 
