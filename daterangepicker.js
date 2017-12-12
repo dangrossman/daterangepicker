@@ -11,7 +11,7 @@
         // AMD. Make globaly available as well
         define(['moment', 'jquery'], function (moment, jquery) {
             if (!jquery.fn) jquery.fn = {}; // webpack server rendering
-            return (root.daterangepicker = factory(moment, jquery));
+            return factory(moment, jquery);
         });
     } else if (typeof module === 'object' && module.exports) {
         // Node / Browserify
