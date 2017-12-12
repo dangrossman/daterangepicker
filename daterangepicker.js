@@ -1264,7 +1264,7 @@
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-            if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
+            if (!this.startDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
                 this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
             } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
                 this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
