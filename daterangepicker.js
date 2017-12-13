@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.27
+* @version: 2.1.28
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2017 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -21,7 +21,10 @@
             jQuery = require('jquery');
             if (!jQuery.fn) jQuery.fn = {};
         }
-        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('moment');
+        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : undefined;
+        if (!moment) {
+            moment = require('moment');
+        }
         module.exports = factory(moment, jQuery);
     } else {
         // Browser globals
