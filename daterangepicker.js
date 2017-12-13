@@ -1,5 +1,5 @@
 /**
-* @version: 2.1.29
+* @version: 2.1.30
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2017 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
