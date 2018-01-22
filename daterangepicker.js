@@ -39,6 +39,7 @@
         this.maxDate = false;
         this.dateLimit = false;
         this.autoApply = false;
+        this.allowEmpty = false;
         this.singleDatePicker = false;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
@@ -257,6 +258,9 @@
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
+
+        if (typeof options.allowEmpty === 'boolean')
+            this.allowEmpty = options.allowEmpty;
 
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
@@ -1620,6 +1624,8 @@
         },
 
         updateElement: function() {
+            if (this.allowEmpty && this.element.val() === "") return;
+
             if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
                 this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
                 this.element.trigger('change');
