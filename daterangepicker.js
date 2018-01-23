@@ -625,6 +625,7 @@
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
+            this.element.trigger('update.daterangepicker', this);
         },
 
         renderCalendar: function(side) {
