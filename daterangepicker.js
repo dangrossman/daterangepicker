@@ -1122,7 +1122,7 @@
             this.previousRightTime = this.endDate.clone();
 
             this.updateView();
-            this.container.show();
+            this.container.css({'display': 'flex'});
             this.move();
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
