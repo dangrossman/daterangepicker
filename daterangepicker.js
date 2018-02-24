@@ -52,6 +52,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.autoApplyRanges = true;
+        this.revertOnCancel = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -276,6 +277,9 @@
 
         if (typeof options.autoApplyRanges === 'boolean')
             this.autoApplyRanges = options.autoApplyRanges;
+
+        if (typeof options.revertOnCancel === 'boolean')
+            this.revertOnCancel = options.revertOnCancel;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -627,6 +631,7 @@
 
             //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
+            this.element.trigger('calendarsUpdated.daterangepicker', this);
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
@@ -1138,22 +1143,30 @@
 
             //incomplete date selection, revert to last values
             if (!this.endDate) {
-                this.startDate = this.oldStartDate.clone();
-                this.endDate = this.oldEndDate.clone();
+                this.revertChanges();
             }
 
-            //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.callback(this.startDate, this.endDate, this.chosenLabel);
-
-            //if picker is attached to a text input, update it
-            this.updateElement();
+            this.handleElementUpdate();
 
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
             this.container.hide();
             this.element.trigger('hide.daterangepicker', this);
             this.isShowing = false;
+        },
+
+        revertChanges: function () {
+            this.startDate = this.oldStartDate.clone();
+            this.endDate = this.oldEndDate.clone();
+        },
+
+        handleElementUpdate: function () {
+            //if a new date range was selected, invoke the user callback function
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+                this.callback(this.startDate, this.endDate, this.chosenLabel);
+
+            //if picker is attached to a text input, update it
+            this.updateElement();
         },
 
         toggle: function(e) {
@@ -1175,6 +1188,9 @@
                 target.closest(this.container).length ||
                 target.closest('.calendar-table').length
                 ) return;
+            if (this.revertOnCancel) {
+                this.revertChanges();
+            }
             this.hide();
             this.element.trigger('outsideClick.daterangepicker', this);
         },
@@ -1229,6 +1245,10 @@
                     this.clickApply();
                 } else {
                     this.updateView();
+
+                    if (this.revertOnCancel) {
+                        this.handleElementUpdate();
+                    }
                 }
             }
         },
@@ -1364,6 +1384,9 @@
                   this.calculateChosenLabel();
                   this.clickApply();
                 }
+                if (this.revertOnCancel) {
+                  this.handleElementUpdate();
+                }
             }
 
             if (this.singleDatePicker) {
@@ -1417,8 +1440,7 @@
         },
 
         clickCancel: function(e) {
-            this.startDate = this.oldStartDate;
-            this.endDate = this.oldEndDate;
+            this.revertChanges();
             this.hide();
             this.element.trigger('cancel.daterangepicker', this);
         },
