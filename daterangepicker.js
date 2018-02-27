@@ -275,6 +275,9 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.allowCalendarsOverlapping === 'boolean')
+            this.allowCalendarsOverlapping = options.allowCalendarsOverlapping;
+
         if (typeof options.autoApplyRanges === 'boolean')
             this.autoApplyRanges = options.autoApplyRanges;
 
