@@ -51,7 +51,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
-        this.calendarOverlapping = true;
+        this.allowCalendarsOverlapping = true;
         this.autoApplyRanges = true;
         this.ranges = {};
 
@@ -652,13 +652,13 @@
             var lastYear = moment(firstDay).subtract(1, 'month').year();
             var daysInLastMonth = moment([lastYear, lastMonth]).daysInMonth();
             var dayOfWeek = firstDay.day();
-            var isLeftCalendarOverlapping = side === 'left' || this.calendarOverlapping ||
+            var canLeftCalendarOverlap = this.allowCalendarsOverlapping || (side === 'left' ||
                 year !== this.leftCalendar.month.year() ||
-                (side === 'right' && month > this.leftCalendar.month.month() + 1 && !this.calendarOverlapping);
+                (side === 'right' && month > this.leftCalendar.month.month() + 1));
 
-            var isRightCalendarOverlapping = side === 'right' || this.calendarOverlapping ||
+            var canRightCalendarOverlap = this.allowCalendarsOverlapping || (side === 'right' ||
                 year !== this.rightCalendar.month.year() ||
-                (side === 'left' && month < this.rightCalendar.month.month() - 1 && !this.calendarOverlapping);
+                (side === 'left' && month < this.rightCalendar.month.month() - 1));
 
             //initialize a 6 rows x 7 columns array for the calendar
             var calendar = [];
@@ -722,7 +722,7 @@
             if (this.showWeekNumbers || this.showISOWeekNumbers)
                 html += '<th></th>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left') && isLeftCalendarOverlapping) {
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left') && canLeftCalendarOverlap) {
                    html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
             } else {
                 html += '<th></th>';
@@ -764,7 +764,7 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker) && isRightCalendarOverlapping) {
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker) && canRightCalendarOverlap) {
                     html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
             } else {
                 html += '<th></th>';
