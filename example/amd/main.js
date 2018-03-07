@@ -31,6 +31,16 @@ $(document).ready(function() {
     startDate: moment()
   });
 
+  $('#startDateCompare').daterangepicker({
+    singleDatePicker: true,
+    startDate: moment().subtract(14, 'days')
+  });
+
+  $('#endDateCompare').daterangepicker({
+    singleDatePicker: true,
+    startDate: moment().subtract(7, 'days')
+  });
+
   updateConfig();
 
   function updateConfig() {
@@ -38,6 +48,9 @@ $(document).ready(function() {
 
     if ($('#singleDatePicker').is(':checked'))
       options.singleDatePicker = true;
+
+    if ($('#comparisonPicker').is(':checked'))
+      options.comparisonPicker = true;
 
     if ($('#showDropdowns').is(':checked'))
       options.showDropdowns = true;
@@ -109,6 +122,12 @@ $(document).ready(function() {
 
     if ($('#endDate').val().length)
       options.endDate = $('#endDate').val();
+
+    if ($('#startDateCompare').val().length)
+      options.startDateCompare = $('#startDateCompare').val();
+
+    if ($('#endDateCompare').val().length)
+      options.endDateCompare = $('#endDateCompare').val();
 
     if ($('#minDate').val().length)
       options.minDate = $('#minDate').val();
