@@ -1353,8 +1353,8 @@
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
             } else if (label == this.locale.previousRangeLabel) {
-                this.container.find('input[name=daterangepicker_start_compare]').val(moment(this.startDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day').format(this.locale.format));
-                this.container.find('input[name=daterangepicker_end_compare]').val(moment(this.endDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day').format(this.locale.format));
+                this.container.find('input[name=daterangepicker_start_compare]').val(this.claculatePreviousRange().start.format(this.locale.format));
+                this.container.find('input[name=daterangepicker_end_compare]').val(this.claculatePreviousRange().end.format(this.locale.format));
             } else {
                 var dates = this.ranges[label];
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
@@ -1363,11 +1363,23 @@
 
         },
 
+        claculatePreviousRange: function() {
+            return {start:moment(this.startDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day'), end: moment(this.endDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day') }
+        },
+
         clickRange: function(e) {
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
                 this.showCalendars();
+            } else if (label == this.locale.previousRangeLabel) {
+                
+                this.startDateCompare = this.claculatePreviousRange().start
+                this.endDateCompare = this.claculatePreviousRange().end
+
+                this.currentRangeSelection = 0;
+                this.clickApply();
+
             } else {
                 var dates = this.ranges[label];
                 this.startDate = dates[0];
