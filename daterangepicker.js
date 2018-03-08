@@ -48,6 +48,7 @@
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
         this.showCustomRangeLabel = true;
+        this.showPreviousRangeLabel = false;
         this.timePicker = false;
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
@@ -77,6 +78,7 @@
             cancelLabel: 'Cancel',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
+            previousRangeLabel: 'Previous Range',
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
             firstDay: moment.localeData().firstDayOfWeek()
@@ -189,6 +191,14 @@
                 var rangeHtml = elem.value;
                 this.locale.customRangeLabel = rangeHtml;
             }
+
+            if (typeof options.locale.previousRangeLabel === 'string'){
+                //Support unicode chars in the custom range name.
+                var elem = document.createElement('textarea');
+                elem.innerHTML = options.locale.previousRangeLabel;
+                var rangeHtml = elem.value;
+                this.locale.previousRangeLabel = rangeHtml;
+            }
         }
         this.container.addClass(this.locale.direction);
 
@@ -276,6 +286,10 @@
 
         if (typeof options.showCustomRangeLabel === 'boolean')
             this.showCustomRangeLabel = options.showCustomRangeLabel;
+
+        
+        if (typeof options.showPreviousRangeLabel === 'boolean')
+            this.showPreviousRangeLabel = options.showPreviousRangeLabel;
 
         if (typeof options.singleDatePicker === 'boolean') {
             this.singleDatePicker = options.singleDatePicker;
@@ -391,9 +405,13 @@
             for (range in this.ranges) {
                 list += '<li data-range-key="' + range + '">' + range + '</li>';
             }
+            if (this.showPreviousRangeLabel) {
+                list += '<li data-range-key="' + this.locale.previousRangeLabel + '">' + this.locale.previousRangeLabel + '</li>';
+            }
             if (this.showCustomRangeLabel) {
                 list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             }
+
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
         }
@@ -1334,6 +1352,9 @@
 
             if (label == this.locale.customRangeLabel) {
                 this.updateView();
+            } else if (label == this.locale.previousRangeLabel) {
+                this.container.find('input[name=daterangepicker_start_compare]').val(moment(this.startDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day').format(this.locale.format));
+                this.container.find('input[name=daterangepicker_end_compare]').val(moment(this.endDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day').format(this.locale.format));
             } else {
                 var dates = this.ranges[label];
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
