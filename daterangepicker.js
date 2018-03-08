@@ -35,14 +35,15 @@
         this.element = $(element);
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
-        this.startDateCompare = moment().startOf('day');
-        this.endDateCompare = moment().startOf('day');
+        this.startDateCompare = this.claculatePreviousRange().start;
+        this.endDateCompare = this.claculatePreviousRange().end;
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
         this.autoApply = false;
         this.singleDatePicker = false;
         this.comparisonPicker = false;
+        this.autoSelectPreviousRange = true;
         this.currentRangeSelection = 0;
         this.showDropdowns = false;
         this.showWeekNumbers = false;
@@ -1364,13 +1365,19 @@
         },
 
         claculatePreviousRange: function() {
-            return {start:moment(this.startDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day'), end: moment(this.endDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day') }
+            return { start: moment(this.startDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day'), end: moment(this.endDate).subtract(this.endDate.diff(this.startDate, 'day'), 'day').subtract(1, 'day') }
         },
 
         clickRange: function(e) {
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
+
+                if (this.comparisonPicker) {
+                    this.autoSelectPreviousRange = false;
+                    this.currentRangeSelection = 0;
+                }
+
                 this.showCalendars();
             } else if (label == this.locale.previousRangeLabel) {
                 
@@ -1378,7 +1385,11 @@
                 this.endDateCompare = this.claculatePreviousRange().end
 
                 this.currentRangeSelection = 0;
-                this.clickApply();
+                // this.clickApply();
+
+                this.autoSelectPreviousRange = true;
+
+                this.showCalendars();
 
             } else {
                 var dates = this.ranges[label];
@@ -1593,8 +1604,14 @@
                     this.setEndDate(date.clone());             
                     
                     if (this.comparisonPicker) {
-                        this.nextPicker();
-                    }
+                        if (this.autoSelectPreviousRange) {
+                            this.setComparisonEndDate(this.claculatePreviousRange().end)
+                            this.setComparisonStartDate(this.claculatePreviousRange().start)
+    
+                        } else {
+                            this.nextPicker();
+                        } 
+                    } 
     
                     if (this.autoApply) {
                       this.calculateChosenLabel();
@@ -1657,15 +1674,16 @@
                         this.chosenLabel = null;
                     }
                     this.showCalendars();
+                } else if (customRange) {
+                    if (this.showCustomRangeLabel) {
+                        this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                    } else {
+                        this.chosenLabel = null;
+                    }
+                    this.showCalendars();
                 }
-            } else if (customRange) {
-                if (this.showCustomRangeLabel) {
-                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
-                } else {
-                    this.chosenLabel = null;
-                }
-                this.showCalendars();
-            }
+            } 
+            
         },
 
         clickApply: function(e) {
