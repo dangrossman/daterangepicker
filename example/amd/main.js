@@ -31,6 +31,16 @@ $(document).ready(function() {
     startDate: moment()
   });
 
+  $('#startDateCompare').daterangepicker({
+    singleDatePicker: true,
+    startDate: moment().subtract(14, 'days')
+  });
+
+  $('#endDateCompare').daterangepicker({
+    singleDatePicker: true,
+    startDate: moment().subtract(7, 'days')
+  });
+
   updateConfig();
 
   function updateConfig() {
@@ -38,6 +48,9 @@ $(document).ready(function() {
 
     if ($('#singleDatePicker').is(':checked'))
       options.singleDatePicker = true;
+
+    if ($('#comparisonPicker').is(':checked'))
+      options.comparisonPicker = true;
 
     if ($('#showDropdowns').is(':checked'))
       options.showDropdowns = true;
@@ -68,13 +81,17 @@ $(document).ready(function() {
 
     if ($('#ranges').is(':checked')) {
       options.ranges = {
-        'Today': [moment(), moment()],
-        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-        'This Month': [moment().startOf('month'), moment().endOf('month')],
-        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        // 'Today': [moment(), moment()],
+        // 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        // 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+        // 'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+        // 'This Month': [moment().startOf('month'), moment().endOf('month')],
+        // 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
       };
+    }
+
+    if ($('#showPreviousRangeLabel').is(':checked')) {
+      options.showPreviousRangeLabel = true
     }
 
     if ($('#locale').is(':checked')) {
@@ -109,6 +126,12 @@ $(document).ready(function() {
 
     if ($('#endDate').val().length)
       options.endDate = $('#endDate').val();
+
+    if ($('#startDateCompare').val().length)
+      options.startDateCompare = $('#startDateCompare').val();
+
+    if ($('#endDateCompare').val().length)
+      options.endDateCompare = $('#endDateCompare').val();
 
     if ($('#minDate').val().length)
       options.minDate = $('#minDate').val();

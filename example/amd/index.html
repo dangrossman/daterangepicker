@@ -4,6 +4,7 @@
       <meta charset="UTF-8" />
       <title>A date range picker for Bootstrap</title>
       <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       <link rel="stylesheet" type="text/css" media="all" href="../../daterangepicker.css" />
       <style type="text/css">
       .demo { position: relative; }
@@ -41,6 +42,16 @@
               </div>
 
               <div class="form-group">
+                <label for="startDateCompare">startDateCompare</label>
+                <input type="text" class="form-control" id="startDateCompare" value="07/01/2015">
+              </div>
+
+              <div class="form-group">
+                <label for="endDateCompare">endDateCompare</label>
+                <input type="text" class="form-control" id="endDateCompare" value="07/15/2015">
+              </div>
+
+              <div class="form-group">
                 <label for="minDate">minDate</label>
                 <input type="text" class="form-control" id="minDate" value="" placeholder="MM/DD/YYYY">
               </div>
@@ -62,6 +73,12 @@
               <div class="checkbox">
                 <label>
                   <input type="checkbox" id="singleDatePicker"> singleDatePicker
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input checked type="checkbox" id="comparisonPicker"> comparisonPicker
                 </label>
               </div>
 
@@ -114,7 +131,13 @@
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="ranges"> ranges (with example predefined ranges)
+                  <input type="checkbox" id="ranges"> ranges
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input checked type="checkbox" id="showPreviousRangeLabel"> showPreviousRangeLabel
                 </label>
               </div>
 

@@ -34,9 +34,17 @@ $daterangepicker-in-range-color:             #000 !default;
 $daterangepicker-in-range-border-color:      transparent !default;
 $daterangepicker-in-range-bg-color:          #ebf4f8 !default;
 
+$daterangepicker-in-range-compare-color:             #000 !default;
+$daterangepicker-in-range-compare-border-color:      transparent !default;
+$daterangepicker-in-range-compare-bg-color:          #f6ebf8 !default;
+
 $daterangepicker-active-color:               #fff !default;
 $daterangepicker-active-bg-color:            #357ebd !default;
 $daterangepicker-active-border-color:        transparent !default;
+
+$daterangepicker-active-compare-color:               #fff !default;
+$daterangepicker-active-compare-bg-color:            #b635bd !default;
+$daterangepicker-active-compare-border-color:        transparent !default;
 
 $daterangepicker-unselected-color:           #999 !default;
 $daterangepicker-unselected-border-color:    transparent !default;
@@ -88,6 +96,10 @@ $daterangepicker-control-border-radius:        4px !default;
 $daterangepicker-control-active-border-size:   1px !default;
 $daterangepicker-control-active-border-color:  #08c !default;
 $daterangepicker-control-active-border-radius: $daterangepicker-control-border-radius !default;
+
+$daterangepicker-control-active-compare-border-size:   1px !default;
+$daterangepicker-control-active-compare-border-color:  #cc00bb !default;
+$daterangepicker-control-active-compare-border-radius: $daterangepicker-control-border-radius !default;
 
 $daterangepicker-control-disabled-color:       #ccc !default;
 
@@ -289,7 +301,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 
   td {
     &.off {
-      &, &.in-range, &.start-date, &.end-date {
+      &, &.in-range, &.in-range-compare, &.start-date, &.end-date {
         background-color: $daterangepicker-unselected-bg-color;
         border-color: $daterangepicker-unselected-border-color;
         color: $daterangepicker-unselected-color;
@@ -302,6 +314,14 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       background-color: $daterangepicker-in-range-bg-color;
       border-color: $daterangepicker-in-range-border-color;
       color: $daterangepicker-in-range-color;
+
+      // TODO: Should this be static or should it be parameterized?
+      border-radius: 0;
+    }
+    &.in-range-compare {
+      background-color: $daterangepicker-in-range-compare-bg-color;
+      border-color: $daterangepicker-in-range-compare-border-color;
+      color: $daterangepicker-in-range-compare-color;
 
       // TODO: Should this be static or should it be parameterized?
       border-radius: 0;
@@ -324,6 +344,14 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
         background-color: $daterangepicker-active-bg-color;
         border-color: $daterangepicker-active-border-color;
         color: $daterangepicker-active-color;
+      }
+    }
+
+    &.active-compare {
+      &, &:hover {
+        background-color: $daterangepicker-active-compare-bg-color;
+        border-color: $daterangepicker-active-compare-border-color;
+        color: $daterangepicker-active-compare-color;
       }
     }
   }
@@ -390,6 +418,11 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       border: $daterangepicker-control-active-border-size solid $daterangepicker-control-active-border-color;
       border-radius: $daterangepicker-control-active-border-radius;
     }
+
+    &.active-compare {
+      border: $daterangepicker-control-active-compare-border-size solid $daterangepicker-control-active-compare-border-color;
+      border-radius: $daterangepicker-control-active-border-radius;
+    }
   }
 
   .daterangepicker_input {
@@ -414,6 +447,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     }
   }
 
+  .daterangepicker_input_compare  {
+    @extend .daterangepicker_input;
+  }
+
   //
   // Time Picker
   //
@@ -430,6 +467,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
         cursor: not-allowed;
       }
     }
+  }
+
+  .calendar-vs {
+    margin-top: -4px;
   }
 }
 
