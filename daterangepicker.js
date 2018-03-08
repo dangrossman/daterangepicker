@@ -406,7 +406,7 @@
                 list += '<li data-range-key="' + range + '">' + range + '</li>';
             }
             if (this.showPreviousRangeLabel) {
-                list += '<li data-range-key="' + this.locale.previousRangeLabel + '">' + this.locale.previousRangeLabel + '</li>';
+                list += '<li id="previous-range-label" data-range-key="' + this.locale.previousRangeLabel + '">' + this.locale.previousRangeLabel + '</li>';
             }
             if (this.showCustomRangeLabel) {
                 list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
@@ -1649,7 +1649,14 @@
                 }
                 i++;
             }
-            if (customRange) {
+            if (this.endDateCompare.isSame(this.claculatePreviousRange().end) && this.startDateCompare.isSame(this.claculatePreviousRange().start)) {
+                if (this.showPreviousRangeLabel) {
+                    this.chosenLabel = this.container.find('#previous-range-label').addClass('active').html();
+                } else {
+                    this.chosenLabel = null;
+                }
+                this.showCalendars();
+            } else if (customRange) {
                 if (this.showCustomRangeLabel) {
                     this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
                 } else {
