@@ -1649,13 +1649,15 @@
                 }
                 i++;
             }
-            if (this.endDateCompare.isSame(this.claculatePreviousRange().end) && this.startDateCompare.isSame(this.claculatePreviousRange().start)) {
-                if (this.showPreviousRangeLabel) {
-                    this.chosenLabel = this.container.find('#previous-range-label').addClass('active').html();
-                } else {
-                    this.chosenLabel = null;
+            if (this.startCompare !== null && this.endDateCompare !== null) {
+                if (this.endDateCompare.isSame(this.claculatePreviousRange().end) && this.startDateCompare.isSame(this.claculatePreviousRange().start)) {
+                    if (this.showPreviousRangeLabel) {
+                        this.chosenLabel = this.container.find('#previous-range-label').addClass('active').html();
+                    } else {
+                        this.chosenLabel = null;
+                    }
+                    this.showCalendars();
                 }
-                this.showCalendars();
             } else if (customRange) {
                 if (this.showCustomRangeLabel) {
                     this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
