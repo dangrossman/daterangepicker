@@ -972,14 +972,14 @@
                     if (this.comparisonPicker) {
                         //highlight dates in-between the selected dates
                         if (this.endDateCompare != null && calendar[row][col] > this.startDateCompare && calendar[row][col] < this.endDateCompare)
-                        classes.push('in-range-compare');
+                            classes.push('in-range-compare');
                         //highlight the currently selected start date
                         if (calendar[row][col].format('YYYY-MM-DD') == this.startDateCompare.format('YYYY-MM-DD'))
-                        classes.push('active-compare', 'start-date');
+                            classes.push('active-compare', 'start-date');
 
                         //highlight the currently selected end date
                         if (this.endDateCompare != null && calendar[row][col].format('YYYY-MM-DD') == this.endDateCompare.format('YYYY-MM-DD'))
-                        classes.push('active-compare', 'end-date');
+                            classes.push('active-compare', 'end-date');
                     }
 
                     //apply custom classes for this date
@@ -1382,6 +1382,8 @@
                 if (this.comparisonPicker) {
                     this.autoSelectPreviousRange = false;
                     this.currentRangeSelection = 0;
+                    this.container.find('.ranges li:last').addClass('active');
+                    this.container.find('#previous-range-label').removeClass('active');
                 }
 
                 this.showCalendars();
@@ -1672,8 +1674,9 @@
                 }
                 i++;
             }
+
             if (this.startCompare !== null && this.endDateCompare !== null) {
-                if (this.endDateCompare.isSame(this.claculatePreviousRange('end')) && this.startDateCompare.isSame(this.claculatePreviousRange('start'))) {
+                if (this.autoSelectPreviousRange === true && this.endDateCompare.isSame(this.claculatePreviousRange('end')) && this.startDateCompare.isSame(this.claculatePreviousRange('start'))) {
                     if (this.showPreviousRangeLabel) {
                         this.chosenLabel = this.container.find('#previous-range-label').addClass('active').html();
                     } else {
