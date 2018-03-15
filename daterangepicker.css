@@ -6,6 +6,7 @@
   width: 278px;
   padding: 4px;
   margin-top: 1px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
   top: 100px;
   left: 20px;
   /* Calendars */ }
@@ -24,6 +25,8 @@
     border-right: 6px solid transparent;
     border-bottom: 6px solid #fff;
     border-left: 6px solid transparent; }
+  .daterangepicker.hidden {
+    display: none; }
   .daterangepicker.opensleft:before {
     right: 9px; }
   .daterangepicker.opensleft:after {
@@ -258,6 +261,7 @@
       .daterangepicker.rtl .ranges, .daterangepicker.rtl .calendar {
         text-align: right;
         float: right; } }
+
 @media (min-width: 730px) {
   .daterangepicker .ranges {
     width: auto; }
@@ -267,3 +271,4 @@
     float: right; }
   .daterangepicker .calendar.left {
     clear: none !important; } }
+

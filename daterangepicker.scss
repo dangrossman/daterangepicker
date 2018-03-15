@@ -121,6 +121,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   width: $daterangepicker-width;
   padding: $daterangepicker-padding;
   margin-top: $daterangepicker-border-size;
+  box-shadow: 0 0 20px rgba(#000, 0.15);
 
   // TODO: Should these be parameterized??
   top: 100px;
@@ -151,6 +152,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     border-right: $arrow-suffix-size solid transparent;
     border-bottom: $arrow-suffix-size solid $daterangepicker-bg-color;
     border-left: $arrow-suffix-size solid transparent;
+  }
+
+  &.hidden {
+    display: none;
   }
 
   &.opensleft {
