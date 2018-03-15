@@ -151,7 +151,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     top: -$arrow-suffix-size;
 
     border-right: $arrow-suffix-size solid transparent;
-    border-bottom: $arrow-suffix-size solid $daterangepicker-bg-color;
+    border-bottom: $arrow-suffix-size solid $daterangepicker-in-range-bg-color;
     border-left: $arrow-suffix-size solid transparent;
   }
 
@@ -369,20 +369,6 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     &.show-calendar .container {
       padding: 20px;
     }
-
-    // .calendar {
-    //   margin: 0;
-    // }
-
-    // .calendar.left {
-    //   padding: 20px;
-    //   padding-right: 0;
-    // }
-
-    // .calendar.right {
-    //   padding: 20px;
-    //   padding-left: 0;
-    // }
 
     th {
       &.month {

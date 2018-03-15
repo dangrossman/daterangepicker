@@ -24,7 +24,7 @@
   .daterangepicker:after {
     top: -6px;
     border-right: 6px solid transparent;
-    border-bottom: 6px solid #fff;
+    border-bottom: 6px solid #EDF2F5;
     border-left: 6px solid transparent; }
   .daterangepicker.hidden {
     display: none; }
