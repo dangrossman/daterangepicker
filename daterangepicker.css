@@ -1,5 +1,6 @@
 .daterangepicker {
   position: absolute;
+  display: flex;
   color: inherit;
   background-color: #fff;
   border-radius: 4px;
@@ -64,8 +65,10 @@
     z-index: 3001; }
   .daterangepicker.single .ranges, .daterangepicker.single .calendar {
     float: none; }
-  .daterangepicker.show-calendar .calendar {
+  .daterangepicker.show-calendar .calendar, .daterangepicker.show-calendar .actions {
     display: block; }
+  .daterangepicker:not(.show-calendar) .actions {
+    display: none; }
   .daterangepicker .calendar {
     display: none;
     max-width: 270px;
@@ -130,7 +133,11 @@
     padding: 5px 0;
     font-weight: 300; }
   .daterangepicker:not(.single) {
-    padding: 20px; }
+    padding: 0; }
+    .daterangepicker:not(.single).show-calendar {
+      display: flex !important; }
+    .daterangepicker:not(.single).show-calendar .container {
+      padding: 20px; }
     .daterangepicker:not(.single) th.month {
       font-weigth: 600;
       text-align: right; }
@@ -166,7 +173,7 @@
     padding: 0 6px 0 28px;
     width: 100%; }
     .daterangepicker .input-mini.active {
-      border: 1px solid #08c;
+      border: 1px solid #81b5d0;
       border-radius: 4px; }
   .daterangepicker .daterangepicker_input {
     position: relative; }
@@ -191,10 +198,11 @@
       cursor: not-allowed; }
 
 .ranges {
+  padding: 15px 0;
   font-size: 11px;
   float: none;
-  margin: 4px;
-  text-align: left; }
+  text-align: left;
+  background-color: #EDF2F5; }
   .ranges ul {
     list-style: none;
     margin: 0 auto;
@@ -202,21 +210,13 @@
     width: 100%; }
   .ranges li {
     font-size: 13px;
-    background-color: #f5f5f5;
-    border: 1px solid #f5f5f5;
-    border-radius: 4px;
-    color: #08c;
-    padding: 3px 12px;
-    margin-bottom: 8px;
+    color: rgba(0, 0, 0, 0.54);
+    padding: 9px 30px;
     cursor: pointer; }
     .ranges li:hover {
-      background-color: #08c;
-      border: 1px solid #08c;
-      color: #fff; }
+      color: rgba(0, 0, 0, 0.75); }
     .ranges li.active {
-      background-color: #08c;
-      border: 1px solid #08c;
-      color: #fff; }
+      color: rgba(0, 0, 0, 0.75); }
 
 .actions {
   text-align: right; }

@@ -61,7 +61,7 @@
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
 
-        this.buttonClasses = 'ui button small';
+        this.buttonClasses = 'ui button tiny';
         this.applyClass = 'ui button positive';
         this.cancelClass = 'ui button basic';
 
@@ -96,33 +96,35 @@
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker hidden">' +
-                '<div class="calendar left">' +
-                    '<div class="daterangepicker_input left icon ui input fluid">' +
-                      '<input class="" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="icon calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="icon clock"></i>' +
-                      '</div>' +
+                '<div class="container">' +
+                    '<div class="calendar left">' +
+                        '<div class="daterangepicker_input left icon ui input fluid small">' +
+                          '<input class="" type="text" name="daterangepicker_start" value="" />' +
+                          '<i class="icon calendar"></i>' +
+                          '<div class="calendar-time">' +
+                            '<div></div>' +
+                            '<i class="icon clock"></i>' +
+                          '</div>' +
+                        '</div>' +
+                        '<div class="calendar-table"></div>' +
                     '</div>' +
-                    '<div class="calendar-table"></div>' +
-                '</div>' +
-                '<div class="calendar right">' +
-                    '<div class="daterangepicker_input left icon ui input fluid">' +
-                      '<input class="" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="icon calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="icon clock"></i>' +
-                      '</div>' +
+                    '<div class="calendar right">' +
+                        '<div class="daterangepicker_input left icon ui input fluid small">' +
+                          '<input class="" type="text" name="daterangepicker_end" value="" />' +
+                          '<i class="icon calendar"></i>' +
+                          '<div class="calendar-time">' +
+                            '<div></div>' +
+                            '<i class="icon clock"></i>' +
+                          '</div>' +
+                        '</div>' +
+                        '<div class="calendar-table"></div>' +
                     '</div>' +
-                    '<div class="calendar-table"></div>' +
+                    '<div class="actions">' +
+                        '<button class="cancelBtn" type="button"></button>' +
+                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
+                    '</div>' +
                 '</div>' +
                 '<div class="ranges">' +
-                '</div>' +
-                '<div class="actions">' +
-                    '<button class="cancelBtn" type="button"></button>' +
-                    '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '</div>' +
             '</div>';
 
@@ -397,7 +399,7 @@
 
         //swap the position of the predefined ranges if opens right
         if (typeof options.ranges !== 'undefined' && this.opens == 'right') {
-            this.container.find('.ranges').prependTo( this.container.find('.calendar.left').parent() );
+            this.container.find('.ranges').prependTo( this.container.find('.container').parent() );
         }
 
         //apply CSS classes and labels to buttons

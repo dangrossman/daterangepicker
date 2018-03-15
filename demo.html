@@ -14,15 +14,21 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+      <style>
+        body {
+          margin: 60px 0;
+          background-color: #f5f6f7;
+        }
+      </style>
    </head>
-   <body style="margin: 60px 0">
+   <body>
 
       <div class="ui container">
 
         <h1 class="ui header">Configuration Builder</h1>
 
-        <form class="ui form">
-          <div class="ui segment very padded">
+        <form class="ui form configurator">
+          <div class="ui segment basic">
             <div class="ui grid equal width stackable">
               <div class="column">
                 <div class="field">
@@ -202,9 +208,12 @@
             <div class="ten wide column">
               <h4 class="ui header">Configuration</h4>
 
-              <div class="ui segment very padded">
-                <textarea id="config-text" style="height: 300px; width: 100%; padding: 10px"></textarea>
+              <div class="ui form">
+                <div class="field">
+                  <textarea id="config-text" style="height: 300px; width: 100%; padding: 10px"></textarea>
+                </div>
               </div>
+
             </div>
           </div>
 
@@ -350,7 +359,9 @@
 
           $('#config-text').val("$('#demo').daterangepicker(" + JSON.stringify(options, null, '    ') + ", function(start, end, label) {\n  console.log(\"New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')\");\n});");
 
-          $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
+          $('#config-demo').daterangepicker(options, function(start, end, label) {
+            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+          });
 
         }
 
