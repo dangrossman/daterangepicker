@@ -88,6 +88,7 @@
     text-align: center;
     width: 20px;
     height: 20px;
+    color: #666;
     border-radius: 4px;
     border: 1px solid transparent;
     white-space: nowrap;
@@ -99,15 +100,18 @@
     .daterangepicker td.week, .daterangepicker th.week {
       font-size: 80%;
       color: #ccc; }
+  .daterangepicker td {
+    color: #8b8b8b;
+    padding: 5px;
+    font-size: 12px; }
   .daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
     background-color: #fff;
     border-color: transparent;
-    color: #999;
-    visibility: hidden; }
+    color: #ddd; }
   .daterangepicker td.in-range {
-    background-color: #ebf4f8;
+    background-color: #EDF2F5;
     border-color: transparent;
-    color: #000;
+    color: #8b8b8b;
     border-radius: 0; }
   .daterangepicker td.start-date {
     border-radius: 4px 0 0 4px; }
@@ -116,7 +120,7 @@
   .daterangepicker td.start-date.end-date {
     border-radius: 4px; }
   .daterangepicker td.active, .daterangepicker td.active:hover {
-    background-color: #357ebd;
+    background-color: #82b4d0;
     border-color: transparent;
     color: #fff; }
   .daterangepicker th.month {
@@ -213,6 +217,11 @@
       background-color: #08c;
       border: 1px solid #08c;
       color: #fff; }
+
+.actions {
+  text-align: right; }
+  .actions button.ui.button {
+    margin: 0 5px; }
 
 /*  Larger Screen Styling */
 @media (min-width: 564px) {

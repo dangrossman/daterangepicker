@@ -30,15 +30,15 @@ $daterangepicker-cell-hover-color:           $daterangepicker-color !default;
 $daterangepicker-cell-hover-border-color:    $daterangepicker-cell-border-color !default;
 $daterangepicker-cell-hover-bg-color:        #eee !default;
 
-$daterangepicker-in-range-color:             #000 !default;
+$daterangepicker-in-range-color:             #8b8b8b !default;
 $daterangepicker-in-range-border-color:      transparent !default;
-$daterangepicker-in-range-bg-color:          #ebf4f8 !default;
+$daterangepicker-in-range-bg-color:          #EDF2F5 !default;
 
 $daterangepicker-active-color:               #fff !default;
-$daterangepicker-active-bg-color:            #357ebd !default;
+$daterangepicker-active-bg-color:            #82b4d0 !default;
 $daterangepicker-active-border-color:        transparent !default;
 
-$daterangepicker-unselected-color:           #999 !default;
+$daterangepicker-unselected-color:           #ddd !default;
 $daterangepicker-unselected-border-color:    transparent !default;
 $daterangepicker-unselected-bg-color:        #fff !default;
 
@@ -273,6 +273,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     text-align: center;
     width: $daterangepicker-cell-width;
     height: $daterangepicker-cell-height;
+    color: #666;
     border-radius: $daterangepicker-cell-border-radius;
     border: $daterangepicker-cell-border-size solid $daterangepicker-cell-border-color;
     white-space: nowrap;
@@ -293,12 +294,17 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   }
 
   td {
+    color: #8b8b8b;
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  td {
     &.off {
       &, &.in-range, &.start-date, &.end-date {
         background-color: $daterangepicker-unselected-bg-color;
         border-color: $daterangepicker-unselected-border-color;
         color: $daterangepicker-unselected-color;
-        visibility: hidden;
       }
     }
 
@@ -499,6 +505,18 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       border: $daterangepicker-ranges-hover-border-size solid $daterangepicker-ranges-hover-border-color;
       color: $daterangepicker-ranges-hover-color;
     }
+  }
+}
+
+//
+// Actions buttons
+//
+
+.actions {
+  text-align: right;
+
+  button.ui.button {
+    margin: 0 5px;
   }
 }
 

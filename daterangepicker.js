@@ -119,10 +119,10 @@
                     '<div class="calendar-table"></div>' +
                 '</div>' +
                 '<div class="ranges">' +
-                    '<div class="range_inputs">' +
-                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                        '<button class="cancelBtn" type="button"></button>' +
-                    '</div>' +
+                '</div>' +
+                '<div class="actions">' +
+                    '<button class="cancelBtn" type="button"></button>' +
+                    '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '</div>' +
             '</div>';
 
@@ -384,7 +384,7 @@
             if (this.timePicker) {
                 this.container.find('.ranges ul').hide();
             } else {
-                this.container.find('.ranges').hide();
+                this.container.find('.ranges, .actions').hide();
             }
         }
 
@@ -429,11 +429,13 @@
             .on('keydown.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsKeydown, this));
 
         this.container.find('.ranges')
-            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
-            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
+
+        this.container.find('.actions')
+            .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
+            .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this));
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
