@@ -24,7 +24,7 @@
   .daterangepicker:after {
     top: -6px;
     border-right: 6px solid transparent;
-    border-bottom: 6px solid #EDF2F5;
+    border-bottom: 6px solid #fff;
     border-left: 6px solid transparent; }
   .daterangepicker.hidden {
     display: none; }
@@ -209,7 +209,7 @@
     padding: 0;
     width: 100%; }
   .ranges li {
-    font-size: 13px;
+    font-size: 14px;
     color: rgba(0, 0, 0, 0.54);
     padding: 9px 30px;
     cursor: pointer; }
