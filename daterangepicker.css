@@ -102,7 +102,8 @@
   .daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
     background-color: #fff;
     border-color: transparent;
-    color: #999; }
+    color: #999;
+    visibility: hidden; }
   .daterangepicker td.in-range {
     background-color: #ebf4f8;
     border-color: transparent;
@@ -119,7 +120,18 @@
     border-color: transparent;
     color: #fff; }
   .daterangepicker th.month {
-    width: auto; }
+    width: auto;
+    padding: 10px; }
+  .daterangepicker th:not(.month) {
+    padding: 5px 0;
+    font-weight: 300; }
+  .daterangepicker:not(.single) {
+    padding: 20px; }
+    .daterangepicker:not(.single) th.month {
+      font-weigth: 600;
+      text-align: right; }
+    .daterangepicker:not(.single) th.prev + .month {
+      text-align: left; }
   .daterangepicker td.disabled, .daterangepicker option.disabled {
     color: #999;
     cursor: not-allowed;

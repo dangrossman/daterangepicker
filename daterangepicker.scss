@@ -298,6 +298,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
         background-color: $daterangepicker-unselected-bg-color;
         border-color: $daterangepicker-unselected-border-color;
         color: $daterangepicker-unselected-color;
+        visibility: hidden;
       }
     }
 
@@ -336,6 +337,28 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   th {
     &.month {
       width: auto;
+      padding: 10px;
+    }
+
+    &:not(.month) {
+      padding: 5px 0;
+      font-weight: 300;
+    }
+  }
+
+  &:not(.single) {
+    padding: 20px;
+
+    th {
+      &.month {
+        font-weigth: 600;
+        text-align: right;
+      }
+      &.prev {
+        + .month {
+          text-align: left;
+        }
+      }
     }
   }
 
