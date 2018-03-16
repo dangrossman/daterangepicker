@@ -374,7 +374,7 @@
         if (this.autoApply && typeof options.ranges !== 'object') {
             this.container.find('.ranges').hide();
         } else if (this.autoApply) {
-            this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+            this.container.find('.applyBtn, .cancelBtn').addClass('hidden');
         }
 
         if (this.singleDatePicker) {
@@ -1127,7 +1127,7 @@
             this.previousRightTime = this.endDate.clone();
 
             this.updateView();
-            this.container.show();
+            this.container.css('display', 'flex');
             this.move();
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
@@ -1417,7 +1417,7 @@
         clickCancel: function(e) {
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
-            this.hide();
+            this.container.hide();
             this.element.trigger('cancel.daterangepicker', this);
         },
 

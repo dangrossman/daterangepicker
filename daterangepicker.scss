@@ -155,10 +155,6 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     border-left: $arrow-suffix-size solid transparent;
   }
 
-  &.hidden {
-    display: none;
-  }
-
   &.opensleft {
     &:before {
       // TODO: Make this relative to prefix size.
@@ -223,6 +219,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   &.dropdown-menu {
     max-width: none;
     z-index: $daterangepicker-dropdown-z-index;
+  }
+
+  &.hidden {
+    display: none;
   }
 
   &.single {
@@ -362,10 +362,6 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   &:not(.single) {
     padding: 0;
 
-    &.show-calendar {
-      display: flex !important;
-    }
-
     &.show-calendar .container {
       padding: 20px;
     }
@@ -491,7 +487,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   font-size: 11px;
   float: none;
   text-align: left;
-  background-color: #EDF2F5;
+  background-color: #fff;
 
   ul {
     list-style: none;
@@ -526,6 +522,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   button.ui.button {
     margin: 0 5px;
   }
+}
+
+button.hidden {
+  display: none !important;
 }
 
 /*  Larger Screen Styling */
