@@ -440,13 +440,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   .daterangepicker_input {
     position: relative;
 
-    i {
-      position: absolute;
 
-      // NOTE: These appear to be eyeballed to me...
-      left: 8px;
-      top: 8px;
-    }
   }
   &.rtl {
     .input-mini {
@@ -463,13 +457,25 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   // Time Picker
   //
   .calendar-time {
+    margin: 15px auto 0;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
     text-align: center;
-    margin: 5px auto;
-    line-height: $daterangepicker-control-line-height;
-    position: relative;
-    padding-left: 28px;
+    color: #999;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    .icon {
+      height: auto;
+    }
 
     select {
+      height: auto;
+      color: rgba(0,0,0,.87);
+      background-color: #fff;
+      border: none;
+
       &.disabled {
         color: $daterangepicker-control-disabled-color;
         cursor: not-allowed;

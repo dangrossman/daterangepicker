@@ -98,23 +98,27 @@
             options.template = '<div class="daterangepicker hidden">' +
                 '<div class="container">' +
                     '<div class="calendar left">' +
-                        '<div class="daterangepicker_input left icon ui input fluid small">' +
-                          '<input class="" type="text" name="daterangepicker_start" value="" />' +
-                          '<i class="icon calendar"></i>' +
+                        '<div class="daterangepicker_input">' +
+                          '<div class="left icon ui input fluid small">' +
+                            '<input class="" type="text" name="daterangepicker_start" value="" />' +
+                            '<i class="icon calendar"></i>' +
+                          '</div>' +
                           '<div class="calendar-time">' +
-                            '<div></div>' +
                             '<i class="icon clock"></i>' +
+                            '<div></div>' +
                           '</div>' +
                         '</div>' +
                         '<div class="calendar-table"></div>' +
                     '</div>' +
                     '<div class="calendar right">' +
-                        '<div class="daterangepicker_input left icon ui input fluid small">' +
-                          '<input class="" type="text" name="daterangepicker_end" value="" />' +
-                          '<i class="icon calendar"></i>' +
+                        '<div class="daterangepicker_input">' +
+                          '<div class="left icon ui input fluid small">' +
+                            '<input class="" type="text" name="daterangepicker_end" value="" />' +
+                            '<i class="icon calendar"></i>' +
+                          '</div>' +
                           '<div class="calendar-time">' +
-                            '<div></div>' +
                             '<i class="icon clock"></i>' +
+                            '<div></div>' +
                           '</div>' +
                         '</div>' +
                         '<div class="calendar-table"></div>' +
@@ -730,7 +734,7 @@
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
-                var monthHtml = '<select class="monthselect">';
+                var monthHtml = '<select class="monthselect ui dropdown small">';
                 for (var m = 0; m < 12; m++) {
                     if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
                         monthHtml += "<option value='" + m + "'" +
@@ -744,7 +748,7 @@
                 }
                 monthHtml += "</select>";
 
-                var yearHtml = '<select class="yearselect">';
+                var yearHtml = '<select class="yearselect ui dropdown small">';
                 for (var y = minYear; y <= maxYear; y++) {
                     yearHtml += '<option value="' + y + '"' +
                         (y === currentYear ? ' selected="selected"' : '') +
@@ -914,7 +918,7 @@
             // hours
             //
 
-            html = '<select class="hourselect">';
+            html = '<select class="hourselect ui dropdown">';
 
             var start = this.timePicker24Hour ? 0 : 1;
             var end = this.timePicker24Hour ? 23 : 12;
@@ -946,7 +950,7 @@
             // minutes
             //
 
-            html += ': <select class="minuteselect">';
+            html += ': <select class="minuteselect ui dropdown">';
 
             for (var i = 0; i < 60; i += this.timePickerIncrement) {
                 var padded = i < 10 ? '0' + i : i;
@@ -974,7 +978,7 @@
             //
 
             if (this.timePickerSeconds) {
-                html += ': <select class="secondselect">';
+                html += ': <select class="secondselect ui dropdown">';
 
                 for (var i = 0; i < 60; i++) {
                     var padded = i < 10 ? '0' + i : i;

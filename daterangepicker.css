@@ -175,10 +175,6 @@
       border-radius: 4px; }
   .daterangepicker .daterangepicker_input {
     position: relative; }
-    .daterangepicker .daterangepicker_input i {
-      position: absolute;
-      left: 8px;
-      top: 8px; }
   .daterangepicker.rtl .input-mini {
     padding-right: 28px;
     padding-left: 6px; }
@@ -186,14 +182,24 @@
     left: auto;
     right: 8px; }
   .daterangepicker .calendar-time {
+    margin: 15px auto 0;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
     text-align: center;
-    margin: 5px auto;
-    line-height: 30px;
-    position: relative;
-    padding-left: 28px; }
-    .daterangepicker .calendar-time select.disabled {
-      color: #ccc;
-      cursor: not-allowed; }
+    color: #999;
+    border: 1px solid #ddd;
+    border-radius: 4px; }
+    .daterangepicker .calendar-time .icon {
+      height: auto; }
+    .daterangepicker .calendar-time select {
+      height: auto;
+      color: rgba(0, 0, 0, 0.87);
+      background-color: #fff;
+      border: none; }
+      .daterangepicker .calendar-time select.disabled {
+        color: #ccc;
+        cursor: not-allowed; }
 
 .ranges {
   padding: 15px 0;
