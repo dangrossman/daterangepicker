@@ -1,3 +1,5 @@
+import './styles/daterangepicker.scss';
+
 (function () {
   var DateRangePicker = function(element, options, cb) {
     //default settings for options
