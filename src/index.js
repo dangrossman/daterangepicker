@@ -112,42 +112,42 @@ import './styles/daterangepicker.scss';
     //
 
     if (typeof options.locale === 'object') {
+      if (typeof options.locale.direction === 'string')
+        this.locale.direction = options.locale.direction;
 
-        if (typeof options.locale.direction === 'string')
-          this.locale.direction = options.locale.direction;
+      if (typeof options.locale.format === 'string')
+        this.locale.format = options.locale.format;
 
-        if (typeof options.locale.format === 'string')
-          this.locale.format = options.locale.format;
+      if (typeof options.locale.separator === 'string')
+        this.locale.separator = options.locale.separator;
 
-        if (typeof options.locale.separator === 'string')
-          this.locale.separator = options.locale.separator;
+      if (typeof options.locale.daysOfWeek === 'object')
+        this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
 
-        if (typeof options.locale.daysOfWeek === 'object')
-          this.locale.daysOfWeek = options.locale.daysOfWeek.slice();
+      if (typeof options.locale.monthNames === 'object')
+        this.locale.monthNames = options.locale.monthNames.slice();
 
-        if (typeof options.locale.monthNames === 'object')
-          this.locale.monthNames = options.locale.monthNames.slice();
+      if (typeof options.locale.firstDay === 'number')
+        this.locale.firstDay = options.locale.firstDay;
 
-        if (typeof options.locale.firstDay === 'number')
-          this.locale.firstDay = options.locale.firstDay;
+      if (typeof options.locale.applyLabel === 'string')
+        this.locale.applyLabel = options.locale.applyLabel;
 
-        if (typeof options.locale.applyLabel === 'string')
-          this.locale.applyLabel = options.locale.applyLabel;
+      if (typeof options.locale.cancelLabel === 'string')
+        this.locale.cancelLabel = options.locale.cancelLabel;
 
-        if (typeof options.locale.cancelLabel === 'string')
-          this.locale.cancelLabel = options.locale.cancelLabel;
+      if (typeof options.locale.weekLabel === 'string')
+        this.locale.weekLabel = options.locale.weekLabel;
 
-        if (typeof options.locale.weekLabel === 'string')
-          this.locale.weekLabel = options.locale.weekLabel;
-
-        if (typeof options.locale.customRangeLabel === 'string'){
-          //Support unicode chars in the custom range name.
-          var elem = document.createElement('textarea');
-          elem.innerHTML = options.locale.customRangeLabel;
-          var rangeHtml = elem.value;
-          this.locale.customRangeLabel = rangeHtml;
-        }
+      if (typeof options.locale.customRangeLabel === 'string'){
+        //Support unicode chars in the custom range name.
+        var elem = document.createElement('textarea');
+        elem.innerHTML = options.locale.customRangeLabel;
+        var rangeHtml = elem.value;
+        this.locale.customRangeLabel = rangeHtml;
+      }
     }
+
     this.container.addClass(this.locale.direction);
 
     if (typeof options.startDate === 'string')
