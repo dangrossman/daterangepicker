@@ -7,6 +7,12 @@ const config = {
     path: path.resolve(__dirname, 'dist')
   },
   mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+   contentBase: './',
+   watchContentBase: true,
+   publicPath: "http://localhost:8080/dist/"
+  },
   module: {
     rules: [{
         test: /\.scss$/,
