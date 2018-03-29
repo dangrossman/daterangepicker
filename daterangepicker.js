@@ -1379,14 +1379,14 @@
                     //ignore times when comparing dates if time picker seconds is not enabled
                     if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').getAttribute('data-range-key');
                         break;
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').getAttribute('data-range-key');
                         break;
                     }
                 }
@@ -1394,7 +1394,7 @@
             }
             if (customRange) {
                 if (this.showCustomRangeLabel) {
-                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').getAttribute('data-range-key');
                 } else {
                     this.chosenLabel = null;
                 }
