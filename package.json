@@ -35,6 +35,7 @@
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "node-sass": "^3.13.1",
+    "optimize-css-assets-webpack-plugin": "^4.0.0",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "webpack": "^4.2.0",
