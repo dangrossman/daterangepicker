@@ -1,6 +1,6 @@
 import './styles/daterangepicker.scss';
 
-(function () {
+(function ($, moment) {
   var DateRangePicker = function(element, options, cb) {
     //default settings for options
     this.parentEl = 'body';
@@ -1620,4 +1620,4 @@ import './styles/daterangepicker.scss';
   };
 
   return DateRangePicker;
-})();
+})(jQuery, moment);
