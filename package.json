@@ -33,6 +33,7 @@
     "babel-preset-env": "^1.6.1",
     "clean-webpack-plugin": "^0.1.19",
     "css-loader": "^0.28.11",
+    "csso-webpack-plugin": "^1.0.0-beta.12",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "node-sass": "^3.13.1",
     "optimize-css-assets-webpack-plugin": "^4.0.0",
