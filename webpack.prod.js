@@ -2,6 +2,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const UnminifiedWebpackPlugin = require('unminified-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
   filename: "daterangepicker.css",
@@ -33,7 +34,9 @@ const config = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     extractSass,
-    new UglifyJSPlugin()
+    new UnminifiedWebpackPlugin({
+      test: /\.js$/
+    })
   ],
    output: {
     filename: 'daterangepicker.min.js',

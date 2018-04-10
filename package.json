@@ -38,6 +38,7 @@
     "optimize-css-assets-webpack-plugin": "^4.0.0",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
+    "unminified-webpack-plugin": "^2.0.0",
     "webpack": "^4.2.0",
     "webpack-cli": "^2.0.13",
     "webpack-dev-server": "^3.1.1",
