@@ -325,8 +325,8 @@
                     start = this.minDate.clone();
 
                 var maxDate = this.maxDate;
-                if (this.dateLimit && maxDate && start.clone().add(this.dateLimit).isAfter(maxDate))
-                    maxDate = start.clone().add(this.dateLimit);
+                if (this.dateLimit && maxDate && start.clone().add(this.dateLimit).subtract(1, 'day').endOf('day').isAfter(maxDate))
+                    maxDate = start.clone().add(this.dateLimit).subtract(1, 'day').endOf('day');
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
 
@@ -514,8 +514,8 @@
             if (this.maxDate && this.endDate.isAfter(this.maxDate))
                 this.endDate = this.maxDate.clone();
 
-            if (this.dateLimit && this.startDate.clone().add(this.dateLimit).isBefore(this.endDate))
-                this.endDate = this.startDate.clone().add(this.dateLimit);
+            if (this.dateLimit && this.startDate.clone().add(this.dateLimit).subtract(1, 'day').endOf('day').isBefore(this.endDate))
+                this.endDate = this.startDate.clone().add(this.dateLimit).subtract(1, 'day').endOf('day');
 
             this.previousRightTime = this.endDate.clone();
 
@@ -775,7 +775,7 @@
             //adjust maxDate to reflect the dateLimit setting in order to
             //grey out end dates beyond the dateLimit
             if (this.endDate == null && this.dateLimit) {
-                var maxLimit = this.startDate.clone().add(this.dateLimit).endOf('day');
+                var maxLimit = this.startDate.clone().add(this.dateLimit).subtract(1, 'day').endOf('day');
                 if (!maxDate || maxLimit.isBefore(maxDate)) {
                     maxDate = maxLimit;
                 }
@@ -869,8 +869,8 @@
 
             var html, selected, minDate, maxDate = this.maxDate;
 
-            if (this.dateLimit && (!this.maxDate || this.startDate.clone().add(this.dateLimit).isAfter(this.maxDate)))
-                maxDate = this.startDate.clone().add(this.dateLimit);
+            if (this.dateLimit && (!this.maxDate || this.startDate.clone().add(this.dateLimit).subtract(1, 'day').endOf('day').isAfter(this.maxDate)))
+                maxDate = this.startDate.clone().add(this.dateLimit).subtract(1, 'day').endOf('day');
 
             if (side == 'left') {
                 selected = this.startDate.clone();
