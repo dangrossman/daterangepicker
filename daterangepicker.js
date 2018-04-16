@@ -51,6 +51,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.alwaysToggle = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -258,6 +259,9 @@
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
 
+        if (typeof options.alwaysToggle === 'boolean')
+            this.alwaysToggle = options.alwaysToggle;
+
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
 
@@ -434,7 +438,7 @@
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        if (this.element.is('input') || this.element.is('button')) {
+        if (!this.alwaysToggle && (this.element.is('input') || this.element.is('button'))) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
