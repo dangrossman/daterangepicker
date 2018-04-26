@@ -307,6 +307,8 @@
         }
 
         if (typeof options.ranges === 'object') {
+            this.rangeTooltips = {};
+            this.rangeClasses = {};
             for (range in options.ranges) {
 
                 if (typeof options.ranges[range][0] === 'string')
@@ -332,9 +334,17 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
-                  || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
-                    continue;
+
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
+                    || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day'))) {
+                    if (!options.showUnavailableRanges) {
+                        continue;
+                    }
+                    else {
+                        this.rangeTooltips[range] = options.unavailableRangeTooltip;
+                        this.rangeClasses[range] = 'disabled';
+                    }
+                }
 
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
@@ -346,13 +356,17 @@
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li data-range-key="' + range + '">' + range + '</li>';
+                list += '<li data-range-key="' + range + '" title="'+ (this.rangeTooltips[range]||'') + '" class="'+ (this.rangeClasses[range]||'') +'">' + range + '</li>';
             }
             if (this.showCustomRangeLabel) {
                 list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
+        }
+
+        if (typeof options.unavailableRangeTooltip === 'string') {
+            this.unavailableRangeTooltip = options.unavailableRangeTooltip;
         }
 
         if (typeof cb === 'function') {
@@ -793,6 +807,7 @@
                 for (var col = 0; col < 7; col++) {
 
                     var classes = [];
+                    var tooltip = '';
 
                     //highlight today's date
                     if (calendar[row][col].isSame(new Date(), "day"))
@@ -807,16 +822,22 @@
                         classes.push('off');
 
                     //don't allow selection of dates before the minimum date
-                    if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
+                    if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day')) {
+                        tooltip = this.unavailableRangeTooltip;
                         classes.push('off', 'disabled');
+                    }
 
                     //don't allow selection of dates after the maximum date
-                    if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
+                    if (maxDate && calendar[row][col].isAfter(maxDate, 'day')) {
+                        tooltip = this.unavailableRangeTooltip;
                         classes.push('off', 'disabled');
+                    }
 
                     //don't allow selection of date if a custom function decides it's invalid
-                    if (this.isInvalidDate(calendar[row][col]))
+                    if (this.isInvalidDate(calendar[row][col])) {
+                        tooltip = this.unavailableRangeTooltip;
                         classes.push('off', 'disabled');
+                    }
 
                     //highlight the currently selected start date
                     if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
@@ -848,7 +869,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" title="' + tooltip +'">' + calendar[row][col].date() + '</td>';
 
                 }
                 html += '</tr>';
@@ -1534,7 +1555,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
@@ -1573,7 +1594,7 @@
             // Other browsers and versions of IE are untested and the behaviour is unknown.
             if (e.keyCode === 13) {
                 // Prevent the calendar from being updated twice on Chrome/Firefox/Edge
-                e.preventDefault(); 
+                e.preventDefault();
                 this.formInputsChanged(e);
             }
         },
