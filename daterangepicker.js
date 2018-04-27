@@ -332,7 +332,7 @@
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day'))
                   || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
 
@@ -591,6 +591,7 @@
             if (this.timePicker) {
                 var hour, minute, second;
                 if (this.endDate) {
+                    year = parseInt(this.container.find('.left .yearselect').val(), 10);
                     hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
                     second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
@@ -600,6 +601,10 @@
                             hour += 12;
                         if (ampm === 'AM' && hour === 12)
                             hour = 0;
+                    }
+                    if (year){
+                      this.leftCalendar.month.year(year);
+                      this.rightCalendar.month.year(parseInt(this.container.find('.right .yearselect').val(), 10));
                     }
                 } else {
                     hour = parseInt(this.container.find('.right .hourselect').val(), 10);
@@ -721,7 +726,7 @@
                 var currentMonth = calendar[1][1].month();
                 var currentYear = calendar[1][1].year();
                 var maxYear = (maxDate && maxDate.year()) || (currentYear + 5);
-                var minYear = (minDate && minDate.year()) || (currentYear - 50);
+                var minYear = (side == "right" ? this.leftCalendar.month.year() : ((minDate && minDate.year()) || (currentYear - 50)));
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
@@ -1534,7 +1539,7 @@
             this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
             $(e.target).addClass('active');
 
-            // Set the state such that if the user goes back to using a mouse, 
+            // Set the state such that if the user goes back to using a mouse,
             // the calendars are aware we're selecting the end of the range, not
             // the start. This allows someone to edit the end of a date range without
             // re-selecting the beginning, by clicking on the end date input then
