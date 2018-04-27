@@ -1,11 +1,11 @@
 /**
-* @version: 2.1.30
+* @version: 3.0.0 Beta
 * @author: Dan Grossman http://www.dangrossman.info/
-* @copyright: Copyright (c) 2012-2017 Dan Grossman. All rights reserved.
+* @copyright: Copyright (c) 2012-2018 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: http://www.daterangepicker.com/
 */
-// Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
+// Following the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Make globaly available as well
@@ -95,34 +95,20 @@
 
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
-            options.template = '<div class="daterangepicker dropdown-menu">' +
+            options.template = 
+            '<div class="daterangepicker">' +
+                '<div class="ranges"></div>' +
                 '<div class="calendar left">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
                     '<div class="calendar-table"></div>' +
+                    '<div class="calendar-time"></div>' +
                 '</div>' +
                 '<div class="calendar right">' +
-                    '<div class="daterangepicker_input">' +
-                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
-                      '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
-                      '<div class="calendar-time">' +
-                        '<div></div>' +
-                        '<i class="fa fa-clock-o glyphicon glyphicon-time"></i>' +
-                      '</div>' +
-                    '</div>' +
                     '<div class="calendar-table"></div>' +
+                    '<div class="calendar-time"></div>' +
                 '</div>' +
-                '<div class="ranges">' +
-                    '<div class="range_inputs">' +
-                        '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
-                        '<button class="cancelBtn" type="button"></button>' +
-                    '</div>' +
+                '<div class="drp-buttons">' +
+                    '<button class="cancelBtn" type="button"></button>' +
+                    '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '</div>' +
             '</div>';
 
@@ -372,7 +358,7 @@
         if (this.autoApply && typeof options.ranges !== 'object') {
             this.container.find('.ranges').hide();
         } else if (this.autoApply) {
-            this.container.find('.applyBtn, .cancelBtn').addClass('hide');
+            this.container.addClass('auto-apply');
         }
 
         if (this.singleDatePicker) {
@@ -380,11 +366,9 @@
             this.container.find('.calendar.left').addClass('single');
             this.container.find('.calendar.left').show();
             this.container.find('.calendar.right').hide();
-            this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
-            if (this.timePicker) {
-                this.container.find('.ranges ul').hide();
-            } else {
-                this.container.find('.ranges').hide();
+            this.container.find('.ranges').hide();
+            if (!this.timePicker) {
+                this.container.addClass('auto-apply');
             }
         }
 
@@ -393,11 +377,6 @@
         }
 
         this.container.addClass('opens' + this.opens);
-
-        //swap the position of the predefined ranges if opens right
-        if (typeof options.ranges !== 'undefined' && this.opens == 'right') {
-            this.container.find('.ranges').prependTo( this.container.find('.calendar.left').parent() );
-        }
 
         //apply CSS classes and labels to buttons
         this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
@@ -416,23 +395,16 @@
             .on('click.daterangepicker', '.prev', $.proxy(this.clickPrev, this))
             .on('click.daterangepicker', '.next', $.proxy(this.clickNext, this))
             .on('mousedown.daterangepicker', 'td.available', $.proxy(this.clickDate, this))
-            .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
-            .on('mouseleave.daterangepicker', 'td.available', $.proxy(this.updateFormInputs, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this))
-            .on('click.daterangepicker', '.daterangepicker_input input', $.proxy(this.showCalendars, this))
-            .on('focus.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsFocused, this))
-            .on('blur.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsBlurred, this))
-            .on('change.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsChanged, this))
-            .on('keydown.daterangepicker', '.daterangepicker_input input', $.proxy(this.formInputsKeydown, this));
 
         this.container.find('.ranges')
+            .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
+
+        this.container.find('.drp-buttons')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
-            .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
-            .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
-            .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
@@ -542,13 +514,6 @@
                 } else {
                     this.container.find('.right .calendar-time select').removeAttr('disabled').removeClass('disabled');
                 }
-            }
-            if (this.endDate) {
-                this.container.find('input[name="daterangepicker_end"]').removeClass('active');
-                this.container.find('input[name="daterangepicker_start"]').addClass('active');
-            } else {
-                this.container.find('input[name="daterangepicker_end"]').addClass('active');
-                this.container.find('input[name="daterangepicker_start"]').removeClass('active');
             }
             this.updateMonthsInView();
             this.updateCalendars();
@@ -710,7 +675,7 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
+                html += '<th class="prev available"><span></span></th>';
             } else {
                 html += '<th></th>';
             }
@@ -752,7 +717,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
+                html += '<th class="next available"><span></span></th>';
             } else {
                 html += '<th></th>';
             }
@@ -880,12 +845,12 @@
                 minDate = this.startDate;
 
                 //Preserve the time already selected
-                var timeSelector = this.container.find('.calendar.right .calendar-time div');
+                var timeSelector = this.container.find('.calendar.right .calendar-time');
                 if (timeSelector.html() != '') {
 
-                    selected.hour(timeSelector.find('.hourselect option:selected').val() || selected.hour());
-                    selected.minute(timeSelector.find('.minuteselect option:selected').val() || selected.minute());
-                    selected.second(timeSelector.find('.secondselect option:selected').val() || selected.second());
+                    selected.hour(selected.hour() || timeSelector.find('.hourselect option:selected').val());
+                    selected.minute(selected.minute() || timeSelector.find('.minuteselect option:selected').val());
+                    selected.second(selected.second() || timeSelector.find('.secondselect option:selected').val());
 
                     if (!this.timePicker24Hour) {
                         var ampm = timeSelector.find('.ampmselect option:selected').val();
@@ -1018,19 +983,11 @@
                 html += '</select>';
             }
 
-            this.container.find('.calendar.' + side + ' .calendar-time div').html(html);
+            this.container.find('.calendar.' + side + ' .calendar-time').html(html);
 
         },
 
         updateFormInputs: function() {
-
-            //ignore mouse movements while an above-calendar text input has focus
-            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
-                return;
-
-            this.container.find('input[name=daterangepicker_start]').val(this.startDate.format(this.locale.format));
-            if (this.endDate)
-                this.container.find('input[name=daterangepicker_end]').val(this.endDate.format(this.locale.format));
 
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
                 this.container.find('button.applyBtn').removeAttr('disabled');
@@ -1185,24 +1142,6 @@
             this.element.trigger('hideCalendar.daterangepicker', this);
         },
 
-        hoverRange: function(e) {
-
-            //ignore mouse movements while an above-calendar text input has focus
-            if (this.container.find('input[name=daterangepicker_start]').is(":focus") || this.container.find('input[name=daterangepicker_end]').is(":focus"))
-                return;
-
-            var label = e.target.getAttribute('data-range-key');
-
-            if (label == this.locale.customRangeLabel) {
-                this.updateView();
-            } else {
-                var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
-            }
-
-        },
-
         clickRange: function(e) {
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
@@ -1263,12 +1202,6 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
-
-            if (this.endDate && !this.container.find('input[name=daterangepicker_start]').is(":focus")) {
-                this.container.find('input[name=daterangepicker_start]').val(date.format(this.locale.format));
-            } else if (!this.endDate && !this.container.find('input[name=daterangepicker_end]').is(":focus")) {
-                this.container.find('input[name=daterangepicker_end]').val(date.format(this.locale.format));
-            }
 
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
@@ -1379,14 +1312,14 @@
                     //ignore times when comparing dates if time picker seconds is not enabled
                     if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
                         break;
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
                         break;
                     }
                 }
@@ -1394,7 +1327,7 @@
             }
             if (customRange) {
                 if (this.showCustomRangeLabel) {
-                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('data-range-key');
                 } else {
                     this.chosenLabel = null;
                 }
@@ -1503,81 +1436,6 @@
             this.renderTimePicker('right');
 
         },
-
-        formInputsChanged: function(e) {
-            var isRight = $(e.target).closest('.calendar').hasClass('right');
-            var start = moment(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.format);
-            var end = moment(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.format);
-
-            if (start.isValid() && end.isValid()) {
-
-                if (isRight && end.isBefore(start))
-                    start = end.clone();
-
-                this.setStartDate(start);
-                this.setEndDate(end);
-
-                if (isRight) {
-                    this.container.find('input[name="daterangepicker_start"]').val(this.startDate.format(this.locale.format));
-                } else {
-                    this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.format));
-                }
-
-            }
-
-            this.updateView();
-        },
-
-        formInputsFocused: function(e) {
-
-            // Highlight the focused input
-            this.container.find('input[name="daterangepicker_start"], input[name="daterangepicker_end"]').removeClass('active');
-            $(e.target).addClass('active');
-
-            // Set the state such that if the user goes back to using a mouse, 
-            // the calendars are aware we're selecting the end of the range, not
-            // the start. This allows someone to edit the end of a date range without
-            // re-selecting the beginning, by clicking on the end date input then
-            // using the calendar.
-            var isRight = $(e.target).closest('.calendar').hasClass('right');
-            if (isRight) {
-                this.endDate = null;
-                this.setStartDate(this.startDate.clone());
-                this.updateView();
-            }
-
-        },
-
-        formInputsBlurred: function(e) {
-
-            // this function has one purpose right now: if you tab from the first
-            // text input to the second in the UI, the endDate is nulled so that
-            // you can click another, but if you tab out without clicking anything
-            // or changing the input value, the old endDate should be retained
-
-            if (!this.endDate) {
-                var val = this.container.find('input[name="daterangepicker_end"]').val();
-                var end = moment(val, this.locale.format);
-                if (end.isValid()) {
-                    this.setEndDate(end);
-                    this.updateView();
-                }
-            }
-
-        },
-
-        formInputsKeydown: function(e) {
-            // This function ensures that if the 'enter' key was pressed in the input, then the calendars
-            // are updated with the startDate and endDate.
-            // This behaviour is automatic in Chrome/Firefox/Edge but not in IE 11 hence why this exists.
-            // Other browsers and versions of IE are untested and the behaviour is unknown.
-            if (e.keyCode === 13) {
-                // Prevent the calendar from being updated twice on Chrome/Firefox/Edge
-                e.preventDefault(); 
-                this.formInputsChanged(e);
-            }
-        },
-
 
         elementChanged: function() {
             if (!this.element.is('input')) return;
