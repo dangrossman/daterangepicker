@@ -547,7 +547,7 @@
             return false;
         },
 
-        updateView: function() {
+        updateView: function(isHover) {
             if (this.timePicker) {
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
@@ -565,7 +565,7 @@
                 this.container.find('input[name="daterangepicker_start"]').removeClass('active');
             }
             this.updateMonthsInView();
-            this.updateCalendars();
+            this.updateCalendars(isHover);
             this.updateFormInputs();
         },
 
@@ -600,7 +600,7 @@
             }
         },
 
-        updateCalendars: function() {
+        updateCalendars: function(isHover) {
 
             if (this.timePicker) {
                 var hour, minute, second;
@@ -634,11 +634,13 @@
             this.renderCalendar('left');
             this.renderCalendar('right');
 
-            //highlight any predefined range matching the current start and end dates
-            this.container.find('.ranges li').removeClass('active');
-            if (this.endDate == null) return;
+            if (!isHover) {
+                //highlight any predefined range matching the current start and end dates
+                this.container.find('.ranges li').removeClass('active');
+                if (this.endDate == null) return;
 
-            this.calculateChosenLabel();
+                this.calculateChosenLabel();
+            }
         },
 
         renderCalendar: function(side) {
@@ -1215,7 +1217,7 @@
             var label = e.target.getAttribute('data-range-key');
 
             if (label == this.locale.customRangeLabel) {
-                this.updateView();
+                this.updateView(true);
             } else {
                 var dates = this.ranges[label];
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
@@ -1225,6 +1227,9 @@
         },
 
         clickRange: function(e) {
+            if ($(e.currentTarget).hasClass('disabled')) {
+                return;
+            }
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
