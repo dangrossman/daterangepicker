@@ -392,6 +392,10 @@
             this.container.addClass('show-calendar');
         }
 
+        if ((!this.autoApply || typeof options.ranges === 'object') && (!this.singleDatePicker || this.timePicker)) {
+          this.container.addClass('show-ranges');
+        }
+
         this.container.addClass('opens' + this.opens);
 
         //swap the position of the predefined ranges if opens right
