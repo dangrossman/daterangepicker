@@ -1,5 +1,6 @@
 {
-  "name": "bootstrap-daterangepicker",
+  "name": "bootstrap-daterangepicker-labworks",
+  "version": "2.1.33",
   "main": [
     "daterangepicker.js",
     "daterangepicker.css"
