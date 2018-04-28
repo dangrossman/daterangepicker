@@ -91,6 +91,10 @@
   float: none;
 }
 
+.daterangepicker.single .drp-selected {
+  display: none;
+}
+
 .daterangepicker.show-calendar .calendar {
   display: block;
 }
@@ -243,6 +247,7 @@
   border: 1px solid #eee;
   padding: 2px;
   outline: 0;
+  font-size: 12px;
 }
 
 .daterangepicker .calendar-time {
@@ -263,6 +268,14 @@
   padding: 8px 12px;
   border-top: 1px solid #ddd;
   display: none;
+  line-height: 12px;
+  vertical-align: middle;
+}
+
+.daterangepicker .drp-selected {
+  display: inline-block;
+  font-size: 12px;
+  padding-right: 8px;
 }
 
 .daterangepicker .drp-buttons .btn {
@@ -272,23 +285,8 @@
   padding: 4px 8px;
 }
 
-.daterangepicker .cancelBtn {
-  background: #ddd;
-  border: 1px solid #ddd;
-}
-
-.daterangepicker .applyBtn {
-  color: #fff;
-  background-color: #08c;
-  border: 1px solid #08c;
-}
-
-.daterangepicker .calendar.left {
+.daterangepicker.show-ranges .calendar.left {
   border-left: 1px solid #ddd;
-}
-
-.daterangepicker.single .calendar.left {
-  border: none;
 }
 
 .daterangepicker .ranges {
