@@ -15,11 +15,6 @@ a single date picker mode, a time picker, and predefined date ranges.
 
 ## License
 
-This code is made available under the same license as Bootstrap. Moment.js is included in this repository
-for convenience. It is available under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
-
---
-
 The MIT License (MIT)
 
 Copyright (c) 2012-2018 Dan Grossman
