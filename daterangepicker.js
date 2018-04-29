@@ -1110,6 +1110,18 @@
         hide: function(e) {
             if (!this.isShowing) return;
 
+             // ***start*** validation when user click out datepicker without unfocus any date input
+            var inputStartDateVal = moment(this.container.find('input[name=daterangepicker_start]').val(), this.locale.format);
+            var inputEndDateVal = moment(this.container.find('input[name=daterangepicker_end]').val(), this.locale.format);
+           
+            //ensure the comparison is right, if user type 20012018 when he/she means 20/01/2018
+            if (inputStartDateVal.isValid() && inputStartDateVal.format(this.locale.format) != this.startDate.format(this.locale.format))
+                this.startDate = moment(inputStartDateVal.format(this.locale.format), this.locale.format);
+
+            if (inputEndDateVal.isValid() && inputEndDateVal.format(this.locale.format) != this.endDate.format(this.locale.format))
+                this.entDate = moment(inputEndDateVal.format(this.locale.format), this.locale.format);
+            // ***end*** validation when user click out datepicker without unfocus any date input
+            
             //incomplete date selection, revert to last values
             if (!this.endDate) {
                 this.startDate = this.oldStartDate.clone();
