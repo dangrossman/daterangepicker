@@ -14,6 +14,7 @@
   display: none;
   font-family: arial;
   font-size: 15px;
+  line-height: 1em;
 }
 
 .daterangepicker:before, .daterangepicker:after {
@@ -69,18 +70,18 @@
   left: 10px;
 }
 
-.daterangepicker.dropup {
+.daterangepicker.drop-up {
   margin-top: -7px;
 }
 
-.daterangepicker.dropup:before {
+.daterangepicker.drop-up:before {
   top: initial;
   bottom: -7px;
   border-bottom: initial;
   border-top: 7px solid #ccc;
 }
 
-.daterangepicker.dropup:after {
+.daterangepicker.drop-up:after {
   top: initial;
   bottom: -6px;
   border-bottom: initial;
@@ -292,7 +293,11 @@
 .daterangepicker .ranges {
   float: none;
   text-align: left;
-  margin: 12px 0;
+  margin: 0;
+}
+
+.daterangepicker.show-calendar .ranges {
+  margin-top: 12px;
 }
 
 .daterangepicker .ranges ul {
