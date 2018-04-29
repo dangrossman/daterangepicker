@@ -53,6 +53,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.autoApplyRanges = true;
         this.ranges = {};
 
         this.opens = 'right';
@@ -276,6 +277,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.autoApplyRanges === 'boolean')
+            this.autoApplyRanges = options.autoApplyRanges;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -540,6 +544,7 @@
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
+            this.element.trigger('viewUpdated.daterangepicker', this);
         },
 
         updateMonthsInView: function() {
@@ -1181,7 +1186,11 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                this.clickApply();
+                if (this.autoApplyRanges) {
+                    this.clickApply();
+                } else {
+                    this.updateView();
+                }
             }
         },
 
