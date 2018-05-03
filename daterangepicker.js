@@ -316,7 +316,10 @@
 
         if (typeof options.ranges === 'object') {
             for (range in options.ranges) {
-
+if(range === 'Today') {
+    console.log(options.ranges['Today']);
+    console.log(this);
+}
                 if (typeof options.ranges[range][0] === 'string')
                     start = moment(options.ranges[range][0], this.locale.format);
                 else
@@ -335,6 +338,16 @@
                 var maxDate = this.maxDate;
                 if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isAfter(maxDate))
                     maxDate = start.clone().add(this.maxSpan);
+
+                // If minSpan exceeds maxSpan, use maxSpan instead.
+                if(this.minSpan && this.maxSpan && this.minSpan > this.maxSpan)
+                    this.minSpan = this.maxSpan;
+
+                // If end date does not equal or exceed start date + minSpan,
+                // use the start date + minSpan as end date.
+                if (this.minSpan && end.clone().isBefore(start.clone().add(this.minSpan).subtract(1, 'day').endOf('day')))
+                    end = start.clone().add(this.minSpan).subtract(1, 'day').endOf('day');
+
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
 
