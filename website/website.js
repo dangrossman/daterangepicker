@@ -60,6 +60,9 @@ $(document).ready(function() {
       if ($('#autoApply').is(':checked'))
         options.autoApply = true;
 
+      if ($('#minSpan').is(':checked'))
+        options.minSpan = { days: 3 };
+
       if ($('#maxSpan').is(':checked'))
         options.maxSpan = { days: 7 };
 
