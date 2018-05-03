@@ -316,10 +316,6 @@
 
         if (typeof options.ranges === 'object') {
             for (range in options.ranges) {
-if(range === 'Today') {
-    console.log(options.ranges['Today']);
-    console.log(this);
-}
                 if (typeof options.ranges[range][0] === 'string')
                     start = moment(options.ranges[range][0], this.locale.format);
                 else
