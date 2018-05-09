@@ -411,6 +411,74 @@
                         </li>
                     </ul>
 
+                    <h1 style="margin-top: 30px"><a id="methods" href="#methods">Methods</a></h1>
+
+                    <p>
+                        You can programmatically update the <code>startDate</code> and <code>endDate</code>
+                        in the picker using the <code>setStartDate</code> and <code>setEndDate</code> methods.
+                        You can access the Date Range Picker object and its functions and properties through 
+                        data properties of the element you attached it to.
+                    </p>
+
+                    <script src="https://web.archive.org/web/20180303234927js_/https://gist.github.com/dangrossman/8ff9b1220c9b5682e8bd.js"></script>
+
+                    <br/>
+                    
+                    <ul class="nobullets">
+                        <li>
+                            <code>setStartDate(Date or string)</code>: Sets the date range picker's currently selected start date to the provided date
+                        </li>
+                        <li>
+                            <code>setEndDate(Date or string)</code>: Sets the date range picker's currently selected end date to the provided date
+                        </li>
+                    </ul>
+
+                    <p style="margin: 0"><b>Example usage:</b></p>
+
+                    <script src="https://web.archive.org/web/20180303234927js_/https://gist.github.com/dangrossman/e1a8effbaeacb50a1e31.js"></script>
+
+                    <h1 style="margin-top: 30px"><a id="events" href="#events">Events</a></h1>
+
+                    <p>
+                        Several events are triggered on the element you attach the picker to, which you can listen for.
+                    </p>
+
+                    <ul class="nobullets">
+                        <li>
+                            <code>show.daterangepicker</code>: Triggered when the picker is shown
+                        </li>
+                        <li>
+                            <code>hide.daterangepicker</code>: Triggered when the picker is hidden
+                        </li>
+                        <li>
+                            <code>showCalendar.daterangepicker</code>: Triggered when the calendar(s) are shown
+                        </li>
+                        <li>
+                            <code>hideCalendar.daterangepicker</code>: Triggered when the calendar(s) are hidden
+                        </li>
+                        <li>
+                            <code>apply.daterangepicker</code>: Triggered when the apply button is clicked,
+                            or when a predefined range is clicked
+                        </li>
+                        <li>
+                            <code>cancel.daterangepicker</code>: Triggered when the cancel button is clicked
+                        </li>
+                    </ul>
+
+                    <p>
+                        Some applications need a "clear" instead of a "cancel" functionality, which can be achieved by changing the button label and watching for the cancel event:
+                    </p>
+
+                    <script src="https://web.archive.org/web/20180303234927js_/https://gist.github.com/dangrossman/1bea78da703f2896564d.js"></script>
+
+                    <br/>
+
+                    <p>
+                        While passing in a callback to the constructor is the easiest way to listen for changes in the selected date range, you can also do something every time the apply button is clicked even if the selection hasn't changed:
+                    </p>
+
+                    <script src="https://web.archive.org/web/20180303234927js_/https://gist.github.com/dangrossman/0c6c911fea1459b5fd13.js"></script>
+
                     <h1 style="margin-top: 30px"><a id="config" href="#config">Configuration Generator</a></h1>
 
                     <div class="well configurator">
@@ -616,7 +684,7 @@
 
                     <!-- License -->
 
-                    <h1 style="margin-top: 30px"><a id="config" href="#license">License</a></h1>
+                    <h1 style="margin-top: 30px"><a id="license" href="#license">License</a></h1>
 
                     <p>The MIT License (MIT)</p>
 
