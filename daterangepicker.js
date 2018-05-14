@@ -54,6 +54,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.colorTheme = '#03A9F4';
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -94,6 +95,10 @@
         //allow setting options with data attributes
         //data-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
+
+        if (typeof options.colorTheme === 'string'){
+            this.colorTheme = options.colorTheme;
+        }
 
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
@@ -603,6 +608,7 @@
 
             //highlight any predefined range matching the current start and end dates
             this.container.find('.ranges li').removeClass('active');
+            this.container.find('.ranges li:not(.active)').css('background-color', '');
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
@@ -839,6 +845,7 @@
             html += '</table>';
 
             this.container.find('.drp-calendar.' + side + ' .calendar-table').html(html);
+            this.container.find('td.active').css('background-color', this.colorTheme);
 
         },
 
@@ -1349,6 +1356,7 @@
                 }
                 this.showCalendars();
             }
+            this.container.find('.ranges li.active').css('background-color', this.colorTheme);
         },
 
         clickApply: function(e) {
