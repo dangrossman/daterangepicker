@@ -1163,6 +1163,8 @@
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
+                this.container.find('.ranges li').removeClass('active');
+                this.container.find('.ranges li:last').addClass('active');
                 this.showCalendars();
             } else {
                 var dates = this.ranges[label];
