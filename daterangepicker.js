@@ -603,9 +603,11 @@
             this.renderCalendar('right');
 
             //highlight any predefined range matching the current start and end dates
-            this.container.find('.ranges li').removeClass('active');
-            if (this.endDate == null) return;
-
+            if (this.endDate == null) {
+                return;
+            } else {
+                this.container.find('.ranges li').removeClass('active');
+            }
             this.calculateChosenLabel();
         },
 
