@@ -53,6 +53,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.selectBackwards = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -276,6 +277,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.selectBackwards === 'boolean')
+            this.selectBackwards = options.selectBackwards;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1219,6 +1223,7 @@
             var leftCalendar = this.leftCalendar;
             var rightCalendar = this.rightCalendar;
             var startDate = this.startDate;
+            var selectBackwards = this.selectBackwards;
             if (!this.endDate) {
                 this.container.find('.drp-calendar tbody td').each(function(index, el) {
 
@@ -1232,6 +1237,8 @@
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
 
                     if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
+                        $(el).addClass('in-range');
+                    } else if( selectBackwards && (dt.isBefore(startDate) && dt.isAfter(date))) {
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
@@ -1261,7 +1268,7 @@
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
 
-            if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
+            if (this.endDate || (!this.selectBackwards && date.isBefore(this.startDate, 'day'))) { //picking start
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     if (!this.timePicker24Hour) {
@@ -1280,7 +1287,13 @@
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
-                this.setEndDate(this.startDate.clone());
+                if(this.selectBackwards) {
+                    var tmpStart = date;
+                    this.setEndDate(this.startDate);
+                    this.setStartDate(tmpStart);
+                } else {
+                    this.setEndDate(this.startDate.clone());
+                }
             } else { // picking end
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
