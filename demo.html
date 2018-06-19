@@ -162,6 +162,12 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="selectBackwards"> selectBackwards
+                </label>
+              </div>
+
               <div class="form-group">
                 <label for="opens">opens</label>
                 <select id="opens" class="form-control">
@@ -327,6 +333,9 @@
 
           if (!$('#showCustomRangeLabel').is(':checked'))
             options.showCustomRangeLabel = false;
+
+          if ($('#selectBackwards').is(':checked'))
+            options.selectBackwards = true;
 
           if ($('#alwaysShowCalendars').is(':checked'))
             options.alwaysShowCalendars = true;
