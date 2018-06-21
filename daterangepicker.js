@@ -40,6 +40,7 @@
         this.maxSpan = false;
         this.autoApply = false;
         this.singleDatePicker = false;
+        this.singleRangePicker = false;
         this.showDropdowns = false;
         this.minYear = moment().subtract(100, 'year').format('YYYY');
         this.maxYear = moment().add(100, 'year').format('YYYY');
@@ -241,9 +242,12 @@
         if (typeof options.showCustomRangeLabel === 'boolean')
             this.showCustomRangeLabel = options.showCustomRangeLabel;
 
+        if (typeof options.singleRangePicker === 'boolean')
+            this.singleRangePicker = options.singleRangePicker;
+
         if (typeof options.singleDatePicker === 'boolean') {
             this.singleDatePicker = options.singleDatePicker;
-            if (this.singleDatePicker)
+            if (this.singleDatePicker && !this.singleRangePicker)
                 this.endDate = this.startDate.clone();
         }
 
@@ -385,7 +389,7 @@
             this.container.find('.drp-calendar.left').addClass('single');
             this.container.find('.drp-calendar.left').show();
             this.container.find('.drp-calendar.right').hide();
-            if (!this.timePicker) {
+            if (!this.timePicker && (this.singleRangePicker && this.autoApply)) {
                 this.container.addClass('auto-apply');
             }
         }
@@ -1302,7 +1306,7 @@
                 }
             }
 
-            if (this.singleDatePicker) {
+            if (this.singleDatePicker && !this.singleRangePicker) {
                 this.setEndDate(this.startDate);
                 if (!this.timePicker)
                     this.clickApply();
@@ -1424,7 +1428,7 @@
                 start.minute(minute);
                 start.second(second);
                 this.setStartDate(start);
-                if (this.singleDatePicker) {
+                if (this.singleDatePicker && this.singleRangePicker) {
                     this.endDate = this.startDate.clone();
                 } else if (this.endDate && this.endDate.format('YYYY-MM-DD') == start.format('YYYY-MM-DD') && this.endDate.isBefore(start)) {
                     this.setEndDate(start.clone());
@@ -1462,7 +1466,7 @@
                 end = moment(dateString[1], this.locale.format);
             }
 
-            if (this.singleDatePicker || start === null || end === null) {
+            if ((this.singleDatePicker && !this.singleRangePicker) || start === null || end === null) {
                 start = moment(this.element.val(), this.locale.format);
                 end = start;
             }
