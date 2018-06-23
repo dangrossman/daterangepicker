@@ -286,7 +286,19 @@
   padding: 4px 8px;
 }
 
-.daterangepicker.show-ranges .drp-calendar.left {
+.daterangepicker.show-ranges.single.rtl .drp-calendar.left {
+  border-right: 1px solid #ddd;
+}
+
+.daterangepicker.show-ranges.single.ltr .drp-calendar.left {
+  border-left: 1px solid #ddd;
+}
+
+.daterangepicker.show-ranges.rtl .drp-calendar.right {
+  border-right: 1px solid #ddd;
+}
+
+.daterangepicker.show-ranges.ltr .drp-calendar.left {
   border-left: 1px solid #ddd;
 }
 
@@ -325,64 +337,74 @@
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   .daterangepicker {
-    width: auto; }
-    .daterangepicker .ranges ul {
-      width: 140px; }
-    .daterangepicker.single .ranges ul {
-      width: 100%; }
-    .daterangepicker.single .drp-calendar.left {
-      clear: none; }
-    .daterangepicker.single.ltr .ranges, .daterangepicker.single.ltr .drp-calendar {
-      float: left; }
-    .daterangepicker.single.rtl .ranges, .daterangepicker.single.rtl .drp-calendar {
-      float: right; }
-    .daterangepicker.ltr {
-      direction: ltr;
-      text-align: left; }
-      .daterangepicker.ltr .drp-calendar.left {
-        clear: left;
-        margin-right: 0; }
-        .daterangepicker.ltr .drp-calendar.left .calendar-table {
-          border-right: none;
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0; }
-      .daterangepicker.ltr .drp-calendar.right {
-        margin-left: 0; }
-        .daterangepicker.ltr .drp-calendar.right .calendar-table {
-          border-left: none;
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0; }
-      .daterangepicker.ltr .drp-calendar.left .calendar-table {
-        padding-right: 8px; }
-      .daterangepicker.ltr .ranges, .daterangepicker.ltr .drp-calendar {
-        float: left; }
-    .daterangepicker.rtl {
-      direction: rtl;
-      text-align: right; }
-      .daterangepicker.rtl .drp-calendar.left {
-        clear: right;
-        margin-left: 0; }
-        .daterangepicker.rtl .drp-calendar.left .calendar-table {
-          border-left: none;
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0; }
-      .daterangepicker.rtl .drp-calendar.right {
-        margin-right: 0; }
-        .daterangepicker.rtl .drp-calendar.right .calendar-table {
-          border-right: none;
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0; }
-      .daterangepicker.rtl .drp-calendar.left .calendar-table {
-        padding-left: 12px; }
-      .daterangepicker.rtl .ranges, .daterangepicker.rtl .drp-calendar {
-        text-align: right;
-        float: right; } }
+    width: auto;
+  }
+
+  .daterangepicker .ranges ul {
+    width: 140px;
+  }
+
+  .daterangepicker.single .ranges ul {
+    width: 100%;
+  }
+
+  .daterangepicker.single .drp-calendar.left {
+    clear: none;
+  }
+
+  .daterangepicker.single .ranges, .daterangepicker.single .drp-calendar {
+    float: left;
+  }
+
+  .daterangepicker {
+    direction: ltr;
+    text-align: left;
+  }
+
+  .daterangepicker .drp-calendar.left {
+    clear: left;
+    margin-right: 0;
+  }
+
+  .daterangepicker .drp-calendar.left .calendar-table {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .daterangepicker .drp-calendar.right {
+    margin-left: 0;
+  }
+
+  .daterangepicker .drp-calendar.right .calendar-table {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .daterangepicker .drp-calendar.left .calendar-table {
+    padding-right: 8px;
+  }
+
+  .daterangepicker .ranges, .daterangepicker .drp-calendar {
+    float: left;
+  }
+}
+
 @media (min-width: 730px) {
   .daterangepicker .ranges {
-    width: auto; }
-  .daterangepicker.ltr .ranges {
-    float: left; }
+    width: auto;
+  }
+
+  .daterangepicker .ranges {
+    float: left;
+  }
+
   .daterangepicker.rtl .ranges {
-    float: right; }
+    float: right;
+  }
+
   .daterangepicker .drp-calendar.left {
-    clear: none !important; } }
+    clear: none !important;
+  }
+}
