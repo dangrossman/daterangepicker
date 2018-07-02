@@ -771,7 +771,9 @@
                     html += '<td class="week">' + calendar[row][0].week() + '</td>';
                 else if (this.showISOWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].isoWeek() + '</td>';
-
+                
+                var weekHasEnabledDays = false;
+                var weekHtml = '';
                 for (var col = 0; col < 7; col++) {
 
                     var classes = [];
@@ -830,8 +832,13 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
-
+                    if (classes.indexOf('off') === -1) {
+                        weekHasEnabledDays = true;
+                    }
+                    weekHtml += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                }
+                if (weekHasEnabledDays) {
+                    html += weekHtml;
                 }
                 html += '</tr>';
             }
