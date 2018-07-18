@@ -55,6 +55,8 @@
         this.alwaysShowCalendars = false;
         this.ranges = {};
 
+        this.element.attr('autocomplete', 'off');
+
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
