@@ -449,6 +449,22 @@
 
         constructor: DateRangePicker,
 
+        setMaxDate: function (maxDate) {
+            if (typeof maxDate === 'string')
+                this.maxDate = moment(maxDate, this.locale.format);
+
+            if (typeof maxDate === 'object')
+                this.maxDate = moment(maxDate);
+
+            if (!this.timePicker)
+                this.maxDate = this.maxDate.startOf('day');
+
+            if (!this.isShowing)
+                this.updateElement();
+
+            this.updateMonthsInView();
+        },
+
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
                 this.startDate = moment(startDate, this.locale.format);
