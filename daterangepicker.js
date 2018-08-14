@@ -1283,6 +1283,11 @@
                     // end date selected first
                     this.setEndDate(this.startDate.clone());
                     this.setStartDate(date.clone());
+
+                    if (this.autoApply) {
+                      this.calculateChosenLabel();
+                      this.clickApply();
+                    }
                 }
                 else
                 {
