@@ -53,6 +53,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.allowEndDateFirst = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -276,6 +277,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.allowEndDateFirst === 'boolean')
+            this.allowEndDateFirst = options.allowEndDateFirst;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1260,8 +1264,7 @@
             // * if single date picker mode, and time picker isn't enabled, apply the selection immediately
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
-
-            if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
+            if (this.endDate || date.isBefore(this.startDate, 'day')) {
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     if (!this.timePicker24Hour) {
@@ -1275,8 +1278,17 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.endDate = null;
-                this.setStartDate(date.clone());
+
+                if (date.isBefore(this.startDate, 'day') && this.allowEndDateFirst && !(this.startDate && this.endDate)) {
+                    // end date selected first
+                    this.setEndDate(this.startDate.clone());
+                    this.setStartDate(date.clone());
+                }
+                else
+                {
+                    this.endDate = null;
+                    this.setStartDate(date.clone());
+                }
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date

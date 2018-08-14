@@ -263,7 +263,7 @@
                                     }, cb);
 
                                     cb(start, end);
-                                    
+
                                 });
                                 </script>
 
@@ -282,7 +282,7 @@
                             <div class="col-4">
                                 <label>Produces:</label>
                                 <input type="text" name="datefilter" class="form-control pull-right" value="" />
-                                 
+
                                 <script type="text/javascript">
                                 $(function() {
 
@@ -364,6 +364,9 @@
                             <code>alwaysShowCalendars</code>: (true/false) Normally, if you use the <code>ranges</code> option to specify pre-defined date ranges, calendars for choosing a custom date range are not shown until the user clicks "Custom Range". When this option is set to true, the calendars for choosing a custom date range are always shown instead.
                         </li>
                         <li>
+                            <code>allowEndDateFirst</code>: (true/false) Allows the end date to be selected before the start date.
+                        </li>
+                        <li>
                             <code>opens</code>: ('left'/'right'/'center') Whether the picker appears aligned to the left, to the right, or centered under the HTML element it's attached to.
                         </li>
                         <li>
@@ -416,14 +419,14 @@
                     <p>
                         You can programmatically update the <code>startDate</code> and <code>endDate</code>
                         in the picker using the <code>setStartDate</code> and <code>setEndDate</code> methods.
-                        You can access the Date Range Picker object and its functions and properties through 
+                        You can access the Date Range Picker object and its functions and properties through
                         data properties of the element you attached it to.
                     </p>
 
                     <script src="https://gist.github.com/dangrossman/8ff9b1220c9b5682e8bd.js"></script>
 
                     <br/>
-                    
+
                     <ul class="nobullets">
                         <li>
                             <code>setStartDate(Date or string)</code>: Sets the date range picker's currently selected start date to the provided date
@@ -482,7 +485,7 @@
                     <h1 style="margin-top: 30px"><a id="config" href="#config">Configuration Generator</a></h1>
 
                     <div class="well configurator">
-                                       
+
                       <form>
                           <div class="row">
 
@@ -737,7 +740,7 @@
         </script>
 
         <div id="footer">
-            Copyright &copy; 2012-2018 <a href="http://www.dangrossman.info/">Dan Grossman</a>. 
+            Copyright &copy; 2012-2018 <a href="http://www.dangrossman.info/">Dan Grossman</a>.
         </div>
 
     </body>

@@ -101,6 +101,9 @@ $(document).ready(function() {
     if ($('#alwaysShowCalendars').is(':checked'))
       options.alwaysShowCalendars = true;
 
+    if ($('#allowEndDateFirst').is(':checked'))
+      options.allowEndDateFirst = true;
+
     if ($('#parentEl').val().length)
       options.parentEl = $('#parentEl').val();
 
