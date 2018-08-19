@@ -54,6 +54,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.disabledDates = [];
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -181,6 +182,9 @@
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
+
+        if (typeof options.disabledDates === 'object')
+            this.disabledDates = options.disabledDates;
 
         if (typeof options.maxDate === 'object')
             this.maxDate = moment(options.maxDate);
@@ -791,6 +795,15 @@
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
                         classes.push('off', 'disabled');
+
+                    //don't allow selection of dates in disabledDates
+                    if (this.disabledDates.length > 0) {
+                        for (var i = 0; i < this.disabledDates.length; i++) {
+                            if(calendar[row][col].isSame(this.disabledDates[i], 'day'))
+                                classes.push('off', 'disabled');
+                        }
+                    }
+
 
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
