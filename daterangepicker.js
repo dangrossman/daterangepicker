@@ -37,6 +37,7 @@
         this.endDate = moment().endOf('day');
         this.minDate = false;
         this.maxDate = false;
+        this.minSpan = false;
         this.maxSpan = false;
         this.autoApply = false;
         this.singleDatePicker = false;
@@ -205,6 +206,9 @@
         if (typeof options.cancelClass === 'string') //backwards compat
             this.cancelButtonClasses = options.cancelClass;
 
+        if (typeof options.minSpan === 'object')
+            this.minSpan = options.minSpan;
+
         if (typeof options.maxSpan === 'object')
             this.maxSpan = options.maxSpan;
 
@@ -312,7 +316,6 @@
 
         if (typeof options.ranges === 'object') {
             for (range in options.ranges) {
-
                 if (typeof options.ranges[range][0] === 'string')
                     start = moment(options.ranges[range][0], this.locale.format);
                 else
@@ -331,6 +334,16 @@
                 var maxDate = this.maxDate;
                 if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isAfter(maxDate))
                     maxDate = start.clone().add(this.maxSpan);
+
+                // If minSpan exceeds maxSpan, use maxSpan instead.
+                if(this.minSpan && this.maxSpan && this.minSpan > this.maxSpan)
+                    this.minSpan = this.maxSpan;
+
+                // If end date does not equal or exceed start date + minSpan,
+                // use the start date + minSpan as end date.
+                if (this.minSpan && end.clone().isBefore(start.clone().add(this.minSpan).subtract(1, 'day').endOf('day')))
+                    end = start.clone().add(this.minSpan).subtract(1, 'day').endOf('day');
+
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
 
@@ -495,6 +508,10 @@
 
             if (this.endDate.isBefore(this.startDate))
                 this.endDate = this.startDate.clone();
+
+            if (this.minSpan && this.endDate.clone().isBefore(this.startDate.clone().add(this.minSpan))) {
+                this.endDate = this.startDate.clone().add(this.minSpan).subtract(1, 'day').endOf('day');
+            }
 
             if (this.maxDate && this.endDate.isAfter(this.maxDate))
                 this.endDate = this.maxDate.clone();

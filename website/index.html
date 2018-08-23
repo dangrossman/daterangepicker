@@ -323,6 +323,9 @@
                             <code>maxDate</code>: (Date or string) The latest date a user may select.
                         </li>
                         <li>
+                            <code>minSpan</code>: (object) The minimum span between the selected start and end dates. Check off <code>minSpan</code> in the configuration generator for an example of how to use this. You can provide any object the <code>moment</code> library would let you add to a date.
+                        </li>
+                        <li>
                             <code>maxSpan</code>: (object) The maximum span between the selected start and end dates. Check off <code>maxSpan</code> in the configuration generator for an example of how to use this. You can provide any object the <code>moment</code> library would let you add to a date.
                         </li>
                         <li>
@@ -587,6 +590,12 @@
                               <div class="checkbox">
                                 <label>
                                   <input type="checkbox" id="timePickerSeconds"> timePickerSeconds
+                                </label>
+                              </div>
+
+                              <div class="checkbox">
+                                <label>
+                                  <input type="checkbox" id="minSpan"> minSpan (example value)
                                 </label>
                               </div>
 
