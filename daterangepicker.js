@@ -54,6 +54,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.emptyDate = false; // meant to be used with singleDatePickerg
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -276,6 +277,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.emptyDate === 'boolean')
+            this.emptyDate = options.emptyDate; // allow date input to be empty on initial load
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1112,7 +1116,7 @@
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate) || this.emptyDate)
                 this.callback(this.startDate.clone(), this.endDate.clone(), this.chosenLabel);
 
             //if picker is attached to a text input, update it
@@ -1348,6 +1352,7 @@
         },
 
         clickApply: function(e) {
+            this.emptyDate = false; // date has been populated and can no longer be empty
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
         },
@@ -1495,7 +1500,7 @@
                 if (!this.singleDatePicker) {
                     newValue += this.locale.separator + this.endDate.format(this.locale.format);
                 }
-                if (newValue !== this.element.val()) {
+                if (newValue !== this.element.val() && !this.emptyDate) {
                     this.element.val(newValue).trigger('change');
                 }
             }
