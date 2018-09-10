@@ -34,7 +34,7 @@
 }(this, function(root, daterangepicker, moment, $) {
 
     var DateRangePicker = function (element, options, cb) {
-
+        this.first_time = true;
         // by default, the daterangepicker element is placed at the bottom of HTML body
         this.parentEl = 'body';
 
@@ -917,8 +917,17 @@
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')')
-                            .addClass('active').html();
+                        if(this.first_time){
+                            this.first_time = false;
+                            // set initial value from text input only onload picker
+                            if (this.element.val() && this.container.find('.ranges li:contains("' + this.element.val()+ '")').length === 1){
+                                this.chosenLabel = this.container.find('.ranges li:contains("' + this.element.val()+ '")').addClass('active').html()
+                            } else {
+                                this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                            }
+                        }else{
+                            this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').html();
+                        }
                     }
                 }
                 i++;
