@@ -273,6 +273,10 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.userClass === 'string') {
+            this.userClass = options.userClass;
+        }
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -388,6 +392,10 @@
         } else if (this.autoApply) {
             this.container.find('.applyBtn, .cancelBtn').addClass('hide');
         }
+
+        if (this.userClass && this.userClass.length) {
+			this.container.addClass(this.userClass);
+		}
 
         if (this.singleDatePicker) {
             this.container.addClass('single');
