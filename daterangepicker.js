@@ -394,8 +394,8 @@
         }
 
         if (this.userClass && this.userClass.length) {
-			this.container.addClass(this.userClass);
-		}
+            this.container.addClass(this.userClass);
+        }
 
         if (this.singleDatePicker) {
             this.container.addClass('single');
