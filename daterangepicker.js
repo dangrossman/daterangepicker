@@ -52,6 +52,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.applyOnEnter = true;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -277,6 +278,10 @@
             this.userClass = options.userClass;
         }
 
+        if (typeof options.applyOnEnter === 'boolean') {
+            this.applyOnEnter = options.applyOnEnter;
+        }
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -466,6 +471,9 @@
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
             this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));
+        }
+        if (this.applyOnEnter) {
+            $(document).keydown($.proxy(this.applyIfEnabled, this));
         }
 
         //
@@ -1650,6 +1658,18 @@
                 e.stopPropagation();
 
                 this.hide();
+            }
+        },
+
+        applyIfEnabled: function (e) {
+            if (e.keyCode !== 13 || this.container.is(':hidden')) {
+                return true;
+            }
+            if (!this.autoApply) {
+                var applyButton = this.container.find('.applyBtn');
+                if (applyButton && !applyButton[0].disabled) {
+                    this.clickApply();
+                }
             }
         },
 
