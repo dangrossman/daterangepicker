@@ -53,6 +53,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.fixedPicker = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -277,6 +278,9 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.fixedPicker === 'boolean')
+            this.fixedPicker = options.fixedPicker;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -373,9 +377,11 @@
         if (this.timePicker && this.autoApply)
             this.autoApply = false;
 
-        if (this.autoApply) {
+        if (this.autoApply)
             this.container.addClass('auto-apply');
-        }
+        
+        if (this.fixedPicker)
+            this.container.addClass('fixed-picker');
 
         if (typeof options.ranges === 'object')
             this.container.addClass('show-ranges');
@@ -425,7 +431,10 @@
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
 
-        if (this.element.is('input') || this.element.is('button')) {
+        // if need the fixed picker, open it once ready
+        if (this.fixedPicker){
+            this.show();
+        } else if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
@@ -1032,7 +1041,9 @@
                 containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
             this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('drop-up');
 
-            if (this.opens == 'left') {
+            if (this.fixedPicker){
+                this.container.offset(parentOffset);
+            } else if (this.opens == 'left') {
                 this.container.css({
                     top: containerTop,
                     right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
@@ -1118,11 +1129,13 @@
             //if picker is attached to a text input, update it
             this.updateElement();
 
-            $(document).off('.daterangepicker');
-            $(window).off('.daterangepicker');
-            this.container.hide();
-            this.element.trigger('hide.daterangepicker', this);
-            this.isShowing = false;
+            if (!this.fixedPicker){
+                $(document).off('.daterangepicker');
+                $(window).off('.daterangepicker');
+                this.container.hide();
+                this.element.trigger('hide.daterangepicker', this);
+                this.isShowing = false;
+            }
         },
 
         toggle: function(e) {
