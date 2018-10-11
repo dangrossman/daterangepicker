@@ -1129,13 +1129,14 @@
             //if picker is attached to a text input, update it
             this.updateElement();
 
-            if (!this.fixedPicker){
-                $(document).off('.daterangepicker');
-                $(window).off('.daterangepicker');
-                this.container.hide();
-                this.element.trigger('hide.daterangepicker', this);
-                this.isShowing = false;
-            }
+            $(document).off('.daterangepicker');
+            $(window).off('.daterangepicker');
+            this.container.hide();
+            this.element.trigger('hide.daterangepicker', this);
+            this.isShowing = false;
+
+            if (this.fixedPicker)
+                this.show();
         },
 
         toggle: function(e) {
