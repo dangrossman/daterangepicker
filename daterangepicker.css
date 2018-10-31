@@ -108,6 +108,14 @@
   display: none;
 }
 
+.daterangepicker.fixed-picker{
+  width: max-content;
+}
+
+.daterangepicker.fixed-picker:before{
+  display: none;
+}
+
 .daterangepicker .drp-calendar {
   display: none;
   max-width: 270px;
