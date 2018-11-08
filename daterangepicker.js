@@ -53,6 +53,7 @@
         this.alwaysShowCalendars = false;
         this.ranges = {};
         this.applyOnEnter = true;
+        this.appendToElementParent = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -127,7 +128,21 @@
                 '</div>' +
             '</div>';
 
-        this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
+        if (typeof options.appendToElementParent === 'boolean') {
+            this.appendToElementParent = options.appendToElementParent;
+        }
+
+        if (options.parentEl && $(options.parentEl).length) {
+            this.parentEl = $(options.parentEl);
+        }
+        else if (this.appendToElementParent && this.element && this.element[0] &&
+                $(this.element[0].parentElement).length && $(this.element[0].parentElement).css('position') === 'relative') {
+            this.parentEl = $(this.element[0].parentElement);
+        }
+        else {
+            this.parentEl = $(this.parentEl);
+        }
+        
         this.container = $(options.template).appendTo(this.parentEl);
 
         //
