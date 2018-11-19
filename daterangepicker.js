@@ -488,7 +488,7 @@
             this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));
         }
         if (this.applyOnEnter) {
-            $(document).keydown($.proxy(this.applyIfEnabled, this));
+            $('body').keydown($.proxy(this.applyIfEnabled, this));
         }
 
         //
