@@ -41,6 +41,7 @@
         this.maxSpan = false;
         this.autoApply = false;
         this.singleDatePicker = false;
+        this.singleCalendar = false;
         this.showDropdowns = false;
         this.minYear = moment().subtract(100, 'year').format('YYYY');
         this.maxYear = moment().add(100, 'year').format('YYYY');
@@ -248,6 +249,9 @@
                 this.endDate = this.startDate.clone();
         }
 
+        if (typeof options.singleCalendar === 'boolean')
+            this.singleCalendar = options.singleCalendar;
+
         if (typeof options.timePicker === 'boolean')
             this.timePicker = options.timePicker;
 
@@ -381,7 +385,7 @@
         if (typeof options.ranges === 'object')
             this.container.addClass('show-ranges');
 
-        if (this.singleDatePicker) {
+        if (this.singleDatePicker || this.singleCalendar) {
             this.container.addClass('single');
             this.container.find('.drp-calendar.left').addClass('single');
             this.container.find('.drp-calendar.left').show();
@@ -734,7 +738,7 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker || this.singleCalendar)) {
                 html += '<th class="next available"><span></span></th>';
             } else {
                 html += '<th></th>';
