@@ -54,6 +54,7 @@
         this.ranges = {};
         this.applyOnEnter = true;
         this.appendToElementParent = false;
+        this.showOnFocus = true;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -297,6 +298,10 @@
             this.applyOnEnter = options.applyOnEnter;
         }
 
+        if (typeof options.showOnFocus === 'boolean') {
+            this.showOnFocus = options.showOnFocus;
+        }
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -479,10 +484,14 @@
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
-                'focus.daterangepicker': $.proxy(this.show, this),
                 'keyup.daterangepicker': $.proxy(this.elementChanged, this),
                 'keydown.daterangepicker': $.proxy(this.keydown, this) //IE 11 compatibility
             });
+            if (this.showOnFocus) {
+                this.element.on({
+                    'focus.daterangepicker': $.proxy(this.show, this),
+                });
+            }
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
             this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));
