@@ -1664,7 +1664,7 @@
         keydown: function(e) {
             //if applyOnEnter=true then clickApply would do the job
             //this helps to overcome MS Edge elements visibility detection problems
-            if (e.keyCode === 13 && this.applyOnEnter && !this.autoApply) {
+            if (e.keyCode === 13 && this.applyOnEnter && !this.autoApply || this.container.is(':hidden')) {
                 return;
             }
             //hide on tab or enter
