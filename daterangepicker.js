@@ -496,9 +496,7 @@
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
             this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));
         }
-        if (this.applyOnEnter) {
-            $('body').keydown($.proxy(this.applyIfEnabled, this));
-        }
+        $('body').keydown($.proxy(this.bodyKeydown, this));
 
         //
         // if attached to a text input, set the initial value
@@ -1671,9 +1669,16 @@
         },
 
         keydown: function(e) {
-            //if applyOnEnter=true then clickApply would do the job
+            if (this.container.is(':hidden')) {
+                return;
+            }
+            //if applyOnEnter=true then bodyKeydown & clickApply would do the job
             //this helps to overcome MS Edge elements visibility detection problems
-            if (e.keyCode === 13 && this.applyOnEnter && !this.autoApply || this.container.is(':hidden')) {
+            //also it can cause bubbling conflict with ng-enter, that's why we're stopping propagation
+            if (e.keyCode === 13 && this.applyOnEnter && !this.autoApply) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.bodyKeydown(e);
                 return;
             }
             //hide on tab or enter
@@ -1690,11 +1695,18 @@
             }
         },
 
-        applyIfEnabled: function (e) {
+        bodyKeydown: function (e) {
+            if (e.keyCode === 27 && this.container.is(':visible')) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                this.clickCancel();
+                return;
+            }
             if (e.keyCode !== 13 || this.container.is(':hidden')) {
                 return true;
             }
-            if (!this.autoApply) {
+            if (this.applyOnEnter && !this.autoApply) {
                 var applyButton = this.container.find('.applyBtn');
                 if (applyButton && !applyButton[0].disabled) {
                     e.stopPropagation();
