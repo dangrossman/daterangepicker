@@ -791,11 +791,11 @@
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day'))
-                        classes.push('off', 'disabled');
+                        classes.push('disabled');
 
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
-                        classes.push('off', 'disabled');
+                        classes.push('disabled');
 
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
