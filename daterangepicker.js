@@ -143,7 +143,7 @@
         else {
             this.parentEl = $(this.parentEl);
         }
-        
+
         this.container = $(options.template).appendTo(this.parentEl);
 
         //
@@ -1682,8 +1682,14 @@
                 return;
             }
             //hide on tab or enter
-            if ((e.keyCode === 9) || (e.keyCode === 13)) {
+            if (e.keyCode === 9) {
                 this.hide();
+                this.element.trigger('outsideClick.daterangepicker', this);
+                return;
+            }
+            if (e.keyCode === 13) {
+                this.hide();
+                return;
             }
 
             //hide on esc and prevent propagation
