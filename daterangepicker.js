@@ -55,6 +55,7 @@
         this.applyOnEnter = true;
         this.appendToElementParent = false;
         this.showOnFocus = true;
+        this.dropdownAdditionalClass = "";
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -294,6 +295,10 @@
             this.userClass = options.userClass;
         }
 
+        if (typeof options.dropdownAdditionalClass === 'string') {
+            this.dropdownAdditionalClass = options.dropdownAdditionalClass;
+        }
+
         if (typeof options.applyOnEnter === 'boolean') {
             this.applyOnEnter = options.applyOnEnter;
         }
@@ -398,6 +403,14 @@
             this.unavailableRangeTooltip = options.unavailableRangeTooltip;
         }
 
+        if (typeof options.unavailableLessThanMinRangeTooltip === 'string') {
+            this.unavailableLessThanMinRangeTooltip = options.unavailableLessThanMinRangeTooltip;
+        }
+
+        if (typeof options.unavailableMoreThanMaxRangeTooltip === 'string') {
+            this.unavailableMoreThanMaxRangeTooltip = options.unavailableMoreThanMaxRangeTooltip;
+        }
+
         if (typeof cb === 'function') {
             this.callback = cb;
         }
@@ -483,7 +496,8 @@
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
-                'click.daterangepicker': $.proxy(this.show, this),
+                'mousedown.daterangepicker': $.proxy(this.show, this),
+                'touchstart.daterangepicker': $.proxy(this.show, this),
                 'keyup.daterangepicker': $.proxy(this.elementChanged, this),
                 'keydown.daterangepicker': $.proxy(this.keydown, this) //IE 11 compatibility
             });
@@ -779,7 +793,7 @@
                 var inMinYear = currentYear == minYear;
                 var inMaxYear = currentYear == maxYear;
 
-                var monthHtml = '<select class="monthselect">';
+                var monthHtml = '<select class="monthselect ' + this.dropdownAdditionalClass + '">';
                 for (var m = 0; m < 12; m++) {
                     if ((!inMinYear || m >= minDate.month()) && (!inMaxYear || m <= maxDate.month())) {
                         monthHtml += "<option value='" + m + "'" +
@@ -793,7 +807,7 @@
                 }
                 monthHtml += "</select>";
 
-                var yearHtml = '<select class="yearselect">';
+                var yearHtml = '<select class="yearselect ' + this.dropdownAdditionalClass + '">';
                 for (var y = minYear; y <= maxYear; y++) {
                     yearHtml += '<option value="' + y + '"' +
                         (y === currentYear ? ' selected="selected"' : '') +
@@ -863,13 +877,13 @@
 
                     //don't allow selection of dates before the minimum date
                     if (this.minDate && calendar[row][col].isBefore(this.minDate, 'day')) {
-                        tooltip = this.unavailableRangeTooltip;
+                        tooltip = this.unavailableLessThanMinRangeTooltip || this.unavailableRangeTooltip;
                         classes.push('off', 'disabled');
                     }
 
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day')) {
-                        tooltip = this.unavailableRangeTooltip;
+                        tooltip = this.unavailableMoreThanMaxRangeTooltip || this.unavailableRangeTooltip;
                         classes.push('off', 'disabled');
                     }
 
@@ -970,7 +984,7 @@
             // hours
             //
 
-            html = '<select class="hourselect">';
+            html = '<select class="hourselect ' + this.dropdownAdditionalClass + '">';
 
             var start = this.timePicker24Hour ? 0 : 1;
             var end = this.timePicker24Hour ? 23 : 12;
@@ -1002,7 +1016,7 @@
             // minutes
             //
 
-            html += ': <select class="minuteselect">';
+            html += ': <select class="minuteselect ' + this.dropdownAdditionalClass + '">';
 
             for (var i = 0; i < 60; i += this.timePickerIncrement) {
                 var padded = i < 10 ? '0' + i : i;
@@ -1030,7 +1044,7 @@
             //
 
             if (this.timePickerSeconds) {
-                html += ': <select class="secondselect">';
+                html += ': <select class="secondselect ' + this.dropdownAdditionalClass + '">';
 
                 for (var i = 0; i < 60; i++) {
                     var padded = i < 10 ? '0' + i : i;
@@ -1059,7 +1073,7 @@
             //
 
             if (!this.timePicker24Hour) {
-                html += '<select class="ampmselect">';
+                html += '<select class="ampmselect ' + this.dropdownAdditionalClass + '">';
 
                 var am_html = '';
                 var pm_html = '';
