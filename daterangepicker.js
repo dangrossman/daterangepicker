@@ -54,6 +54,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.rangeDaysLimit = 0;
         this.ranges = {};
 
         this.opens = 'right';
@@ -67,6 +68,7 @@
         this.buttonClasses = 'btn btn-sm';
         this.applyButtonClasses = 'btn-primary';
         this.cancelButtonClasses = 'btn-default';
+        this.resetButtonClasses = 'btn-default';
 
         this.locale = {
             direction: 'ltr',
@@ -74,6 +76,7 @@
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
+            resetLabel: 'Reset',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
@@ -112,6 +115,7 @@
                 '<div class="drp-buttons">' +
                     '<span class="drp-selected"></span>' +
                     '<button class="cancelBtn" type="button"></button>' +
+                    '<button class="resetBtn" type="button"></button>' +
                     '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '</div>' +
             '</div>';
@@ -148,6 +152,9 @@
 
             if (typeof options.locale.cancelLabel === 'string')
               this.locale.cancelLabel = options.locale.cancelLabel;
+
+            if (typeof options.locale.resetLabel === 'string')
+                this.locale.resetLabel = options.locale.resetLabel;
 
             if (typeof options.locale.weekLabel === 'string')
               this.locale.weekLabel = options.locale.weekLabel;
@@ -278,6 +285,9 @@
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
+        if (typeof options.rangeDaysLimit === 'number')
+            this.rangeDaysLimit = options.rangeDaysLimit;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -391,6 +401,13 @@
             }
         }
 
+        console.log(this.rangeDaysLimit);
+
+        if (this.rangeDaysLimit)
+            this.container.find('.cancelBtn').hide();
+        else
+            this.container.find('.resetBtn').hide();
+
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
             this.container.addClass('show-calendar');
         }
@@ -398,13 +415,16 @@
         this.container.addClass('opens' + this.opens);
 
         //apply CSS classes and labels to buttons
-        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+        this.container.find('.applyBtn, .cancelBtn, .resetBtn').addClass(this.buttonClasses);
         if (this.applyButtonClasses.length)
             this.container.find('.applyBtn').addClass(this.applyButtonClasses);
         if (this.cancelButtonClasses.length)
             this.container.find('.cancelBtn').addClass(this.cancelButtonClasses);
+        if (this.resetButtonClasses.length)
+            this.container.find('.resetBtn').addClass(this.resetButtonClasses);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
-        this.container.find('.cancelBtn').html(this.locale.cancelLabel);
+        this.container.find('.cancelBtn').html(this.locale.cancelLabel)
+        this.container.find('.resetBtn').html(this.locale.resetLabel);
 
         //
         // event listeners
@@ -425,6 +445,7 @@
         this.container.find('.drp-buttons')
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this))
+            .on('click.daterangepicker', 'button.resetBtn', $.proxy(this.clickReset, this))
 
         if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
@@ -477,6 +498,10 @@
 
             if (!this.isShowing)
                 this.updateElement();
+
+            if (this.rangeDaysLimit) {
+                this.maxDate = this.startDate.clone().add(this.rangeDaysLimit, 'days');
+            }
 
             this.updateMonthsInView();
         },
@@ -563,7 +588,7 @@
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
             }
-            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
+            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate && !this.rangeDaysLimit) {
               this.rightCalendar.month = this.maxDate.clone().date(2);
               this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
             }
@@ -1354,10 +1379,19 @@
         },
 
         clickCancel: function(e) {
-            this.startDate = this.oldStartDate;
-            this.endDate = this.oldEndDate;
+            this.clickReset(e);
             this.hide();
             this.element.trigger('cancel.daterangepicker', this);
+        },
+
+        clickReset: function(e) {
+            this.startDate = this.oldStartDate;
+            this.endDate = this.oldEndDate;
+
+            if (this.rangeDaysLimit)
+                this.maxDate = null;
+            
+            this.updateView();
         },
 
         monthOrYearChanged: function(e) {

@@ -163,6 +163,11 @@
               </div>
 
               <div class="form-group">
+                <label for="rangeDaysLimit">rangeDaysLimit</label>
+                <input type="text" class="form-control" id="rangeDaysLimit" value="0">
+              </div>
+
+              <div class="form-group">
                 <label for="opens">opens</label>
                 <select id="opens" class="form-control">
                   <option value="right" selected>right</option>
@@ -327,6 +332,9 @@
 
           if (!$('#showCustomRangeLabel').is(':checked'))
             options.showCustomRangeLabel = false;
+
+          if ($('#rangeDaysLimit').val() > 0)
+            options.rangeDaysLimit = parseInt($('#rangeDaysLimit').val());
 
           if ($('#alwaysShowCalendars').is(':checked'))
             options.alwaysShowCalendars = true;
