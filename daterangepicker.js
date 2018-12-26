@@ -489,7 +489,7 @@
                 this.endDate = moment(endDate);
 
             if (!this.timePicker)
-                this.endDate = this.endDate.add(1,'d').startOf('day').subtract(1,'second');
+                this.endDate = this.endDate.endOf('day');
 
             if (this.timePicker && this.timePickerIncrement)
                 this.endDate.minute(Math.round(this.endDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
