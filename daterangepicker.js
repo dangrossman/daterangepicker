@@ -33,8 +33,8 @@
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
-        this.startDate = moment().startOf('day');
-        this.endDate = moment().endOf('day');
+        this.startDate = moment().startOf('minute');
+        this.endDate = moment().endOf('minute');
         this.minDate = false;
         this.maxDate = false;
         this.dateLimit = false;
@@ -599,8 +599,20 @@
             return false;
         },
 
-        updateView: function(isHover) {
+        updateView: function(isHover, ignoreDateChange) {
+            var currentTime = moment();
             if (this.timePicker) {
+                if (!ignoreDateChange && this.singleDatePicker &&
+                    this.element.is('input') && !moment(this.element.val(), this.locale.format, true).isValid()) {
+                    if (this.maxDate && currentTime.endOf('minute').isAfter(this.maxDate)) {
+                        this.startDate = this.maxDate.startOf('minute');
+                        this.endDate = this.maxDate.endOf('minute');
+                    }
+                    else {
+                        this.startDate = currentTime.startOf('minute');
+                        this.endDate = currentTime.endOf('minute');
+                    }
+                }
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
                 if (!this.endDate) {
@@ -1269,7 +1281,7 @@
             var label = e.target.getAttribute('data-range-key');
 
             if (label == this.locale.customRangeLabel) {
-                this.updateView(true);
+                this.updateView(true, true);
             } else {
                 var dates = this.ranges[label];
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
@@ -1441,7 +1453,7 @@
                     this.clickApply();
             }
 
-            this.updateView();
+            this.updateView(false, true);
 
             //This is to cancel the blur event handler if the mouse was in one of the inputs
             e.stopPropagation();
