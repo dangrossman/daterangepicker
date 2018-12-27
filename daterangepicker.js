@@ -80,7 +80,6 @@
             firstDay: moment.localeData().firstDayOfWeek()
         };
 
-        // addkeys
         this.keys = {
             tab: 9,
             enter: 13,
@@ -366,12 +365,12 @@
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li tabindex="-1" data-range-key="' + range + '">' + range + '</li>';  // addkeys
+                list += '<li tabindex="-1" data-range-key="' + range + '">' + range + '</li>';
             }
             if (this.showCustomRangeLabel) {
                 console.log('showCustomRangeLabel');
                 console.log(this.locale.customRangeLabel);
-                list += '<li tabindex="-1" data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>'; // addkeys
+                list += '<li tabindex="-1" data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
@@ -448,15 +447,11 @@
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
                 'keyup.daterangepicker': $.proxy(this.elementChanged, this)
-                // 'keydown.daterangepicker': $.proxy(this.keydown, this) //IE 11 compatibility  // addkeys
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
-            // this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));  // addkeys
         }
 
-
-        // addkeys
         this.container
             // tab should apply to the entire container
             .on('keydown.daterangepicker', $.proxy(this.handleTabNavigationKeyDown, this))
@@ -727,7 +722,7 @@
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
                 // html += '<th class="prev available"><span></span></th>';
-                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '" tabindex="0" id="prev_mo"></i></th>'; // addkeys
+                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '" tabindex="0" id="prev_mo"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -769,8 +764,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                // html += '<th class="next available"><span></span></th>';
-                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '" tabindex="0" id="next_mo"></i></th>'; // addkeys
+                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '" tabindex="0" id="next_mo"></i></th>'; 
             } else {
                 html += '<th></th>';
             }
@@ -810,10 +804,9 @@
 
                 for (var col = 0; col < 7; col++) {
 
-                    // var classes = [];
-                    var classes = ['day'];  // addkeys
-                    var tabindex = '-1';  // addkeys
-                    var elId = 'calendar_' + side + '-row_' + row + '-day_' + col;  // addkeys
+                    var classes = ['day'];
+                    var tabindex = '-1'; 
+                    var elId = 'calendar_' + side + '-row_' + row + '-day_' + col; 
 
 
                     //highlight today's date
@@ -841,18 +834,15 @@
                         classes.push('off', 'disabled');
 
                     //highlight the currently selected start date
-                    // addkeys
                     if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
                         classes.push('active', 'start-date');
 
-                        // addkeys
                         if (side === 'left') {
                             tabindex = 0;
                         }
                     }
 
                     //highlight the currently selected end date
-                    // addkeys
                     if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
                         classes.push('active', 'end-date'); 
 
@@ -884,8 +874,6 @@
                     if (!disabled)
                         cname += 'available';
 
-                    // html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
-                    // addkeys
                     html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" tabindex="' + tabindex + '" id="' + elId + '">' + calendar[row][col].date() + '</td>';
 
 
@@ -1159,7 +1147,6 @@
             this.isShowing = true;
 
             // pass focus to calendar
-            // addkeys -- whole block
             if (this.container.find('.active.start-date').filter(':visible').length) {
                 this.container.find('.active.start-date').focus();
             } else if (this.container.find('li.active').filter(':visible').length) {
@@ -1384,29 +1371,21 @@
         calculateChosenLabel: function () {
             var customRange = true;
             var i = 0;
-            this.container.find('.ranges li').attr('tabindex', '-1'); // addkeys
+            this.container.find('.ranges li').attr('tabindex', '-1');
             for (var range in this.ranges) {
               if (this.timePicker) {
                     var format = this.timePickerSeconds ? "YYYY-MM-DD hh:mm:ss" : "YYYY-MM-DD hh:mm";
                     //ignore times when comparing dates if time picker seconds is not enabled
                     if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
                         customRange = false;
-                        // addkeys
-                        // this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key').attr('tabindex', '0'); //.html();
-                        // original from pull request:
-                        // this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('tabindex', '0').html();
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key').attr('tabindex', '0');
                         break;
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
-                        // addkeys
-                        // this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key').attr('tabindex', '0'); //.html();
-                        // original from pull request:
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('tabindex', '0').html();
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key').attr('tabindex', '0');
                         break;
                     }
                 }
@@ -1414,13 +1393,7 @@
             }
             if (customRange) {
                 if (this.showCustomRangeLabel) {
-                    // this.chosenLabel = this.container.find('.ranges li:last').addClass('active').html();
-                    // addkeys
-                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('tabindex', '0'); // .html();
-
-                    // original from pull request:
-                    // this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('tabindex', '0').html();
-                    
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('tabindex', '0');                    
                 } else {
                     this.chosenLabel = null;
                 }
