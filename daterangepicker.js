@@ -368,8 +368,6 @@
                 list += '<li tabindex="-1" data-range-key="' + range + '">' + range + '</li>';
             }
             if (this.showCustomRangeLabel) {
-                console.log('showCustomRangeLabel');
-                console.log(this.locale.customRangeLabel);
                 list += '<li tabindex="-1" data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             }
             list += '</ul>';
