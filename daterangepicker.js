@@ -1497,6 +1497,10 @@
                     newValue += this.locale.separator + this.endDate.format(this.locale.format);
                 }
                 if (newValue !== this.element.val()) {
+                    var formatstr=this.locale.format.toLowerCase();
+                    if(formatstr.indexOf("y")>-1&&formatstr.indexOf("w")>-1){
+                        newValue=this.formatWeek(this.startDate)
+                    }
                     this.element.val(newValue).trigger('change');
                 }
             }
@@ -1506,6 +1510,19 @@
             this.container.remove();
             this.element.off('.daterangepicker');
             this.element.removeData();
+        },
+        formatWeek:function(startDate){
+            var day=startDate.format("MMDD");
+            var year=Number(startDate.format("YYYY"));
+            var week=startDate.format("ww");
+            //The last three days are the first week
+            if(day>'1228'&&week=='01'){
+                startDate=moment(year+1+day);
+            }else if(day<'0104'&&week!='01') {
+                //The first three days were not the first week
+                startDate=moment(year-1+day);
+            }
+            return startDate.format(this.locale.format);
         }
 
     };
