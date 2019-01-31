@@ -1497,9 +1497,9 @@
                     newValue += this.locale.separator + this.endDate.format(this.locale.format);
                 }
                 if (newValue !== this.element.val()) {
-                    var formatstr=this.locale.format.toLowerCase();
-                    if(formatstr.indexOf("y")>-1&&formatstr.indexOf("w")>-1){
-                        newValue=this.formatWeek(this.startDate)
+                    var formatstr = this.locale.format.toLowerCase();
+                    if (formatstr.indexOf("y") > -1 && formatstr.indexOf("w") > -1) {
+                        newValue = this.formatWeek(this.startDate)
                     }
                     this.element.val(newValue).trigger('change');
                 }
@@ -1512,12 +1512,12 @@
             this.element.removeData();
         },
 
-        formatWeek:function(startDate){
-            var day=startDate.format("MMDD");
-            var year=Number(startDate.format("YYYY"));
-            var week=startDate.format("ww");
-            if(day>'1224'&&week=='01'){
-                startDate=moment(year+1+"年"+week+"周","YYYY年ww周").add('days',6);
+       formatWeek:function(startDate){
+            var day = startDate.format("MMDD");
+            var year = Number(startDate.format("YYYY"));
+            var week = startDate.format("ww");
+            if (day > '1224' && week === '01') {
+                startDate = moment(year + 1 + "年" + week + "周", "YYYY年ww周").add('days', 6);
             }
             return startDate.format(this.locale.format);
         }
