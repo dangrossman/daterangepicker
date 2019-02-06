@@ -93,6 +93,18 @@
 
               <div class="checkbox">
                 <label>
+                  <input type="checkbox" id="showFortnightNumbers"> showFortnightNumbers
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="fullWidthTitle"> fullWidthTitle
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
                   <input type="checkbox" id="timePicker" checked="checked"> timePicker
                 </label>
               </div>
@@ -270,6 +282,12 @@
 
           if ($('#showISOWeekNumbers').is(':checked'))
             options.showISOWeekNumbers = true;
+
+          if ($('#showFortnightNumbers').is(':checked'))
+            options.showFortnightNumbers = true;
+
+          if ($('#fullWidthTitle').is(':checked'))
+            options.fullWidthTitle = true;
 
           if ($('#timePicker').is(':checked'))
             options.timePicker = true;
