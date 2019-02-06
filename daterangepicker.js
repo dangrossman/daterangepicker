@@ -758,7 +758,8 @@
 
             // add fortnight label
             if(this.showFortnightNumbers)
-                html += '<th class="week">' + this.locale.weekLabel + '</th>';
+                html += '<th class="fort">F</th>';
+
             // add week number label
             if (this.showWeekNumbers || this.showISOWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
@@ -782,6 +783,17 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
+
+                // add fortnight number
+                if(this.showFortnightNumbers) {
+                    var weekNumber = calendar[row][0].week();
+                    var fortNum = (weekNumber + 1) / 2;
+                    if( weekNumber % 2 == 0) {
+                        html += '<th class="fort">' + fortNum + '</th>';
+                    } else {
+                        html += '<th class="fort"></th>';
+                    }
+                }
 
                 // add week number
                 if (this.showWeekNumbers)
