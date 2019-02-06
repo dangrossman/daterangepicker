@@ -703,7 +703,7 @@
                 if((this.showISOWeekNumbers || this.showWeekNumbers) && this.showFortnightNumbers) {
                     titleOffset = 2;
                     html += '<th></th><th></th>';
-                } else {
+                } else if (this.showISOWeekNumbers || this.showWeekNumbers || this.showFortnightNumbers) {
                     titleOffset = 1;
                     html += '<th></th>';
                 }
