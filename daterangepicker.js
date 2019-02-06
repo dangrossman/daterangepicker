@@ -46,6 +46,8 @@
         this.maxYear = moment().add(100, 'year').format('YYYY');
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
+        this.showFortnightNumbers = false;
+        this.fullWidthTitle = false;
         this.showCustomRangeLabel = true;
         this.timePicker = false;
         this.timePicker24Hour = false;
@@ -223,6 +225,12 @@
 
         if (typeof options.showISOWeekNumbers === 'boolean')
             this.showISOWeekNumbers = options.showISOWeekNumbers;
+
+        if (typeof options.showFortnightNumbers === 'boolean')
+            this.showFortnightNumbers = options.showFortnightNumbers;
+
+        if (typeof options.fullWidthTitle === 'boolean')
+            this.fullWidthTitle = options.fullWidthTitle;
 
         if (typeof options.buttonClasses === 'string')
             this.buttonClasses = options.buttonClasses;
@@ -684,13 +692,22 @@
             var selected = side == 'left' ? this.startDate : this.endDate;
             var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
 
+            var titleOffset = 0;
+
             var html = '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
 
             // add empty cell for week number
-            if (this.showWeekNumbers || this.showISOWeekNumbers)
-                html += '<th></th>';
+            if (!this.fullWidthTitle) {
+                if((this.showISOWeekNumbers || this.showWeekNumbers) && this.showFortnightNumbers) {
+                    titleOffset = 2;
+                    html += '<th></th><th></th>';
+                } else if (this.showISOWeekNumbers || this.showWeekNumbers || this.showFortnightNumbers) {
+                    titleOffset = 1;
+                    html += '<th></th>';
+                }
+            }
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
                 html += '<th class="prev available"><span></span></th>';
@@ -733,7 +750,19 @@
                 dateHtml = monthHtml + yearHtml;
             }
 
-            html += '<th colspan="5" class="month">' + dateHtml + '</th>';
+            // Add correct colspan for title
+
+            if ((this.showWeekNumbers || this.showISOWeekNumbers) && this.showFortnightNumbers) {
+                var titleSpan = 7 - titleOffset;
+            }
+            else if (this.showWeekNumbers || this.showISOWeekNumbers || this.showFortnightNumbers) {
+                var titleSpan = 6 - titleOffset;
+            } else {
+                var titleSpan = 5 - titleOffset;
+            }
+
+
+            html += '<th colspan="' + titleSpan + '" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
                 html += '<th class="next available"><span></span></th>';
             } else {
@@ -742,6 +771,11 @@
 
             html += '</tr>';
             html += '<tr>';
+
+
+            // add fortnight label
+            if(this.showFortnightNumbers)
+                html += '<th class="fort">F</th>';
 
             // add week number label
             if (this.showWeekNumbers || this.showISOWeekNumbers)
@@ -766,6 +800,23 @@
 
             for (var row = 0; row < 6; row++) {
                 html += '<tr>';
+
+                // add fortnight number
+                if(this.showFortnightNumbers) {
+
+                    // Only matters if ISO Week is set. If not, whether showWeek is set or not, use week()
+                    if (this.showISOWeekNumbers)
+                        var weekNumber = calendar[row][0].isoWeek();
+                    else
+                        var weekNumber = calendar[row][0].week();
+
+                    var fortNum = (weekNumber + 1) / 2;
+                    if( weekNumber % 2 != 0) {
+                        html += '<td class="fort">' + fortNum + '</td>';
+                    } else {
+                        html += '<td class="fort"></td>';
+                    }
+                }
 
                 // add week number
                 if (this.showWeekNumbers)
