@@ -803,10 +803,12 @@
 
                 // add fortnight number
                 if(this.showFortnightNumbers) {
-                    if (this.showWeekNumbers)
-                        var weekNumber = calendar[row][0].week();
-                    else if (this.showISOWeekNumbers)
+
+                    // Only matters if ISO Week is set. If not, whether showWeek is set or not, use week()
+                    if (this.showISOWeekNumbers)
                         var weekNumber = calendar[row][0].isoWeek();
+                    else
+                        var weekNumber = calendar[row][0].week();
 
                     var fortNum = (weekNumber + 1) / 2;
                     if( weekNumber % 2 != 0) {
