@@ -386,7 +386,7 @@
             this.container.find('.drp-calendar.left').addClass('single');
             this.container.find('.drp-calendar.left').show();
             this.container.find('.drp-calendar.right').hide();
-            if (!this.timePicker) {
+            if (!this.timePicker && this.autoApply) {
                 this.container.addClass('auto-apply');
             }
         }
@@ -1305,7 +1305,7 @@
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
-                if (!this.timePicker)
+                if (!this.timePicker && this.autoApply)
                     this.clickApply();
             }
 
