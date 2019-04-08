@@ -1196,16 +1196,16 @@
 
             // Bind global datepicker mousedown for hiding and
             $(document)
-              .on('mousedown.daterangepicker.' + this.id, this._outsideClickProxy)
+              .on(`mousedown.daterangepicker.${this.id}`, this._outsideClickProxy)
               // also support mobile devices
-              .on('touchend.daterangepicker.' + this.id, this._outsideClickProxy)
+              .on(`touchend.daterangepicker.${this.id}` + this.id, this._outsideClickProxy)
               // also explicitly play nice with Bootstrap dropdowns, which stopPropagation when clicking them
-              .on('click.daterangepicker.' + this.id, '[data-toggle=dropdown]', this._outsideClickProxy)
+              .on(`click.daterangepicker.${this.id}` + this.id, '[data-toggle=dropdown]', this._outsideClickProxy)
               // and also close when focus changes to outside the picker (eg. tabbing between controls)
-              .on('focusin.daterangepicker.' + this.id, this._outsideClickProxy);
+              .on(`focusin.daterangepicker.${this.id}` + this.id, this._outsideClickProxy);
 
             // Reposition the picker if the window is resized while it's open
-            $(window).on('resize.daterangepicker.' + this.id, $.proxy(function(e) { this.move(e); }, this));
+            $(window).on(`resize.daterangepicker.${this.id}`, $.proxy(function(e) { this.move(e); }, this));
 
             this.oldStartDate = this.startDate.clone();
             this.oldEndDate = this.endDate.clone();
@@ -1234,8 +1234,8 @@
             //if picker is attached to a text input, update it
             this.updateElement();
 
-	        $(document).off('.' + this.id);
-	        $(window).off('.' + this.id);
+	        $(document).off(`.${this.id}`);
+	        $(window).off(`.${this.id}`);
             this.container.hide();
             this.element.trigger('hide.daterangepicker', this);
             this.isShowing = false;
