@@ -1037,43 +1037,67 @@
                 containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
             else
                 containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+
+            // Force the container to it's actual width
+            this.container.css({
+              top: 0,
+              left: 0,
+              right: 'auto'
+            });
+            var containerWidth = this.container.outerWidth();
+
             this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('drop-up');
 
             if (this.opens == 'left') {
-                this.container.css({
-                    top: containerTop,
-                    right: parentRightEdge - this.element.offset().left - this.element.outerWidth(),
-                    left: 'auto'
-                });
-                if (this.container.offset().left < 0) {
+                var containerRight = parentRightEdge - this.element.offset().left - this.element.outerWidth();
+                if (containerWidth + containerRight > $(window).width()) {
                     this.container.css({
+                        top: containerTop,
                         right: 'auto',
                         left: 9
+                    });
+                } else {
+                    this.container.css({
+                        top: containerTop,
+                        right: containerRight,
+                        left: 'auto'
                     });
                 }
             } else if (this.opens == 'center') {
-                this.container.css({
-                    top: containerTop,
-                    left: this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
-                            - this.container.outerWidth() / 2,
-                    right: 'auto'
-                });
-                if (this.container.offset().left < 0) {
+                var containerLeft = this.element.offset().left - parentOffset.left + this.element.outerWidth() / 2
+                                        - containerWidth / 2;
+                if (containerLeft < 0) {
                     this.container.css({
+                        top: containerTop,
                         right: 'auto',
                         left: 9
                     });
-                }
-            } else {
-                this.container.css({
-                    top: containerTop,
-                    left: this.element.offset().left - parentOffset.left,
-                    right: 'auto'
-                });
-                if (this.container.offset().left + this.container.outerWidth() > $(window).width()) {
+                } else if (containerLeft + containerWidth > $(window).width()) {
                     this.container.css({
+                        top: containerTop,
                         left: 'auto',
                         right: 0
+                    });
+                } else {
+                    this.container.css({
+                        top: containerTop,
+                        left: containerLeft,
+                        right: 'auto'
+                    });
+                }
+            } else {
+                var containerLeft = this.element.offset().left - parentOffset.left;
+                if (containerLeft + containerWidth > $(window).width()) {
+                    this.container.css({
+                        top: containerTop,
+                        left: 'auto',
+                        right: 0
+                    });
+                } else {
+                    this.container.css({
+                        top: containerTop,
+                        left: containerLeft,
+                        right: 'auto'
                     });
                 }
             }
