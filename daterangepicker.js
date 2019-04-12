@@ -11,7 +11,6 @@
         // AMD. Make globaly available as well
         define(['moment', 'jquery'], function (moment, jquery) {
             if (!jquery.fn) jquery.fn = {}; // webpack server rendering
-            if (typeof moment !== 'function' && moment.default) moment = moment.default
             return factory(moment, jquery);
         });
     } else if (typeof module === 'object' && module.exports) {
@@ -79,6 +78,21 @@
             daysOfWeek: moment.weekdaysMin(),
             monthNames: moment.monthsShort(),
             firstDay: moment.localeData().firstDayOfWeek()
+        };
+
+        this.keys = {
+            tab: 9,
+            enter: 13,
+            esc: 27,
+            space: 32,
+            pageup: 33,
+            pagedown: 34,
+            end: 35,
+            home: 36,
+            left: 37,
+            up: 38,
+            right: 39,
+            down: 40
         };
 
         this.callback = function() { };
@@ -351,10 +365,10 @@
 
             var list = '<ul>';
             for (range in this.ranges) {
-                list += '<li data-range-key="' + range + '">' + range + '</li>';
+                list += '<li tabindex="-1" data-range-key="' + range + '">' + range + '</li>';
             }
             if (this.showCustomRangeLabel) {
-                list += '<li data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
+                list += '<li tabindex="-1" data-range-key="' + this.locale.customRangeLabel + '">' + this.locale.customRangeLabel + '</li>';
             }
             list += '</ul>';
             this.container.find('.ranges').prepend(list);
@@ -430,13 +444,25 @@
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
-                'keyup.daterangepicker': $.proxy(this.elementChanged, this),
-                'keydown.daterangepicker': $.proxy(this.keydown, this) //IE 11 compatibility
+                'keyup.daterangepicker': $.proxy(this.elementChanged, this)
             });
         } else {
             this.element.on('click.daterangepicker', $.proxy(this.toggle, this));
-            this.element.on('keydown.daterangepicker', $.proxy(this.toggle, this));
         }
+
+        this.container
+            // tab should apply to the entire container
+            .on('keydown.daterangepicker', $.proxy(this.handleTabNavigationKeyDown, this))
+            .on('keypress.daterangepicker', $.proxy(this.handleGridKeyPress, this))
+            // specific elements have specific keyboard shortcuts 
+            .on('keydown.daterangepicker', 'td', $.proxy(this.handleGridKeyDown, this))
+            .on('keypress.daterangepicker', 'td', $.proxy(this.handleGridKeyPress, this))
+            .on('keydown.daterangepicker', '.prev', $.proxy(this.handleGridKeyDown, this))
+            .on('keypress.daterangepicker', '.prev', $.proxy(this.handleGridKeyPress, this))
+            .on('keydown.daterangepicker', '.next', $.proxy(this.handleGridKeyDown, this))
+            .on('keypress.daterangepicker', '.next', $.proxy(this.handleGridKeyPress, this))
+            .on('keydown.daterangepicker', 'li', $.proxy(this.handleGridKeyDown, this))
+            .on('keypress.daterangepicker', 'li', $.proxy(this.handleGridKeyPress, this));
 
         //
         // if attached to a text input, set the initial value
@@ -699,7 +725,8 @@
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><span></span></th>';
+                // html += '<th class="prev available"><span></span></th>';
+                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '" tabindex="0" id="prev_mo"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -741,7 +768,7 @@
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><span></span></th>';
+                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '" tabindex="0" id="next_mo"></i></th>'; 
             } else {
                 html += '<th></th>';
             }
@@ -781,7 +808,10 @@
 
                 for (var col = 0; col < 7; col++) {
 
-                    var classes = [];
+                    var classes = ['day'];
+                    var tabindex = '-1'; 
+                    var elId = 'calendar_' + side + '-row_' + row + '-day_' + col; 
+
 
                     //highlight today's date
                     if (calendar[row][col].isSame(new Date(), "day"))
@@ -808,12 +838,23 @@
                         classes.push('off', 'disabled');
 
                     //highlight the currently selected start date
-                    if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD'))
+                    if (calendar[row][col].format('YYYY-MM-DD') == this.startDate.format('YYYY-MM-DD')) {
                         classes.push('active', 'start-date');
 
+                        if (side === 'left') {
+                            tabindex = 0;
+                        }
+                    }
+
                     //highlight the currently selected end date
-                    if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD'))
-                        classes.push('active', 'end-date');
+                    if (this.endDate != null && calendar[row][col].format('YYYY-MM-DD') == this.endDate.format('YYYY-MM-DD')) {
+                        classes.push('active', 'end-date'); 
+
+                        if (side === 'right') {                     
+                            tabindex = 0;
+                        }
+                    }
+
 
                     //highlight dates in-between the selected dates
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
@@ -837,7 +878,8 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" tabindex="' + tabindex + '" id="' + elId + '">' + calendar[row][col].date() + '</td>';
+
 
                 }
                 html += '</tr>';
@@ -1131,6 +1173,14 @@
             this.move();
             this.element.trigger('show.daterangepicker', this);
             this.isShowing = true;
+
+            // pass focus to calendar
+            if (this.container.find('.active.start-date').filter(':visible').length) {
+                this.container.find('.active.start-date').focus();
+            } else if (this.container.find('li.active').filter(':visible').length) {
+                this.container.find('li.active').focus();
+            }
+
         },
 
         hide: function(e) {
@@ -1355,20 +1405,21 @@
         calculateChosenLabel: function () {
             var customRange = true;
             var i = 0;
+            this.container.find('.ranges li').attr('tabindex', '-1');
             for (var range in this.ranges) {
               if (this.timePicker) {
-                    var format = this.timePickerSeconds ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD HH:mm";
+                    var format = this.timePickerSeconds ? "YYYY-MM-DD hh:mm:ss" : "YYYY-MM-DD hh:mm";
                     //ignore times when comparing dates if time picker seconds is not enabled
                     if (this.startDate.format(format) == this.ranges[range][0].format(format) && this.endDate.format(format) == this.ranges[range][1].format(format)) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key').attr('tabindex', '0');
                         break;
                     }
                 } else {
                     //ignore times when comparing dates if time picker is not enabled
                     if (this.startDate.format('YYYY-MM-DD') == this.ranges[range][0].format('YYYY-MM-DD') && this.endDate.format('YYYY-MM-DD') == this.ranges[range][1].format('YYYY-MM-DD')) {
                         customRange = false;
-                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key');
+                        this.chosenLabel = this.container.find('.ranges li:eq(' + i + ')').addClass('active').attr('data-range-key').attr('tabindex', '0');
                         break;
                     }
                 }
@@ -1376,7 +1427,7 @@
             }
             if (customRange) {
                 if (this.showCustomRangeLabel) {
-                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('data-range-key');
+                    this.chosenLabel = this.container.find('.ranges li:last').addClass('active').attr('tabindex', '0');                    
                 } else {
                     this.chosenLabel = null;
                 }
@@ -1514,20 +1565,349 @@
             this.updateView();
         },
 
-        keydown: function(e) {
-            //hide on tab or enter
-            if ((e.keyCode === 9) || (e.keyCode === 13)) {
-                this.hide();
-            }
+                handleGridKeyDown: function(e) { // return false if handling event on our own, true if propagating elsewhere  
+                    var currentlySelectedDate;
+                    var newDateToSelect;
+                                
+                    if (e.target.className.includes('day')) {               
+                        var gridParts = e.target.id.split('-');
+                        var cal = gridParts[0].split('_')[1];
+                        var row = gridParts[1].split('_')[1];
+                        var col = gridParts[2].split('_')[1];
+                        currentlySelectedDate = cal === 'left' ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+                    } else if (e.target.className.includes('prev') || e.target.className.includes('fa-chevron-left')) {
+                        currentlySelectedDate = this.endDate ? this.endDate : this.startDate;
+                    } else if (e.target.className.includes('next') || e.target.className.includes('fa-chevron-right')) {
+                        currentlySelectedDate = this.endDate ? this.endDate : this.startDate;
+                    }           
 
-            //hide on esc and prevent propagation
-            if (e.keyCode === 27) {
-                e.preventDefault();
-                e.stopPropagation();
+                    newDateToSelect = currentlySelectedDate;
+                    
+                    // ignore keys pressed while the alt key is also depressed
+                    if (e.altKey) {
+                        return true;
+                    }
+                    
+                    // react based upon key pressed
+                    switch (e.keyCode) {
+                        // one day before the current selection
+                        case this.keys.left:
+                        {
+                            // handle day by day navigation
+                            if (e.target.className.includes('day')) {
+                                newDateToSelect = currentlySelectedDate.subtract(1, 'days');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // one day after the current selection
+                        case this.keys.right:
+                        {
+                            // handle day by day navigation
+                            if (e.target.className.includes('day')) {
+                                newDateToSelect = currentlySelectedDate.add(1, 'days');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);                    
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // one week before the current selection
+                        case this.keys.up:
+                        {
+                            if (e.target.className.includes('day')) {
+                                // handle day by day navigation
+                                newDateToSelect = currentlySelectedDate.subtract(7, 'days');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else if (e.target.tagName === 'LI') {
+                                // move up through the ranges
+                                var selected = this.container.find("li.active");
+                                $('li').removeClass('active');
 
-                this.hide();
-            }
-        },
+                                // if there is no element before the selected one, we select the last one
+                                selected.attr('tabindex','-1');
+                                if (selected.prev().length == 0) {
+                                    selected.siblings().last().addClass('active').attr('tabindex','0').focus();
+                                } else { // otherwise we just select the previous one
+                                    selected.prev().addClass('active').attr('tabindex','0').focus();
+                                }   
+                                e.stopPropagation();
+                                return false;                   
+                            } else {
+                                return true;
+                            }
+                        }
+                        // one week after the current selection
+                        case this.keys.down:
+                        {
+                            if (e.target.className.includes('day')) {
+                                // handle day by day navigation
+                                newDateToSelect = currentlySelectedDate.add(7, 'days');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else if (e.target.tagName === 'LI') {
+                                // move up through the ranges
+                                var selected = this.container.find('li.active');
+                                $('li').removeClass('active');
+
+                                // if there is no element after the selected one, we select the first one
+                                selected.attr('tabindex','-1');
+                                if (selected.next().length == 0) {
+                                    selected.siblings().first().addClass('active').attr('tabindex','0').focus();
+                                } else { // otherwise we just select the next one
+                                    selected.next().addClass('active').attr('tabindex','0').focus();
+                                }
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // the first day of the month (based upon the current selection)
+                        case this.keys.home:
+                        {
+                            // handle day by day navigation
+                            if (e.target.className.includes('day')) {
+                                newDateToSelect = currentlySelectedDate.startOf('month');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // the last day of the month (based upon the current selection)
+                        case this.keys.end:
+                        {
+                            // handle day by day navigation
+                            if (e.target.className.includes('day')) {
+                                newDateToSelect = currentlySelectedDate.endOf('month');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // navigate backwards a month or a year at a time (dependent on addition of control key)
+                        case this.keys.pageup:
+                        {
+                            // handle day by day navigation
+                            if (e.target.className.includes('day')) {
+                                if (e.shiftKey) {
+                                    // ctrl+pageup: the same day of the previous year (based upon the current selection)
+                                    newDateToSelect = currentlySelectedDate.subtract(1, 'years');
+                                } else {
+                                    // pageup: the same day of the previous month (based upon the current selection)
+                                    newDateToSelect = currentlySelectedDate.subtract(1, 'months');
+                                }
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // navigate forward a month or a year at a time (dependent on addition of control key)
+                        case this.keys.pagedown:
+                        {
+                            // handle day by day navigation
+                            if (e.target.className.includes('day')) {
+                                if (e.shiftKey) {
+                                    // ctrl+pageup: the same day of the next year (based upon the current selection)
+                                    newDateToSelect = currentlySelectedDate.add(1, 'years');
+                                } else {
+                                    // pageup: the same day of the next month (based upon the current selection)
+                                    newDateToSelect = currentlySelectedDate.add(1, 'months');
+                                }
+                                newDateToSelect = currentlySelectedDate.add(1, 'months');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                        // select this date
+                        case this.keys.space:
+                        case this.keys.enter:
+                        {
+                            if (e.target.className.includes('day')) {
+                                // handle day by day navigation
+                                this.clickDate(e);
+                                e.stopPropagation();
+                                return false;
+                            } else if (e.target.className.includes('prev') || e.target.className.includes('fa-chevron-left')) {
+                                // move back a month
+                                newDateToSelect = currentlySelectedDate.subtract(1, 'months');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else if (e.target.className.includes('next') || e.target.className.includes('fa-chevron-right')) {
+                                // move forward a month
+                                newDateToSelect = currentlySelectedDate.add(1, 'months');
+                                this.updateSelectedDate(currentlySelectedDate, newDateToSelect);
+                                e.stopPropagation();
+                                return false;
+                            } else if (e.target.tagName === 'LI') {
+                                // select new range
+                                this.clickRange(e);
+                                e.stopPropagation();
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                    }
+                    return true;
+                },
+                
+                handleGridKeyPress: function(e) {
+                    // consume keypress events for browsers that use keypress to scroll the screen and manipulate tabs
+                    // return false if handling event on our own, true if propagating elsewhere
+                    if (e.altKey) {
+                        return true;
+                    }
+                    switch (e.keyCode) {
+                        case this.keys.tab:
+                        case this.keys.enter:
+                        case this.keys.space:
+                        case this.keys.esc:
+                        case this.keys.left:
+                        case this.keys.right:
+                        case this.keys.up:
+                        case this.keys.down:
+                        case this.keys.pageup:
+                        case this.keys.pagedown:
+                        case this.keys.home:
+                        case this.keys.end:
+                            {
+                                e.stopPropagation();
+                                return false;
+                            }
+                    }
+                    return true;
+                },
+                
+                handleTabNavigationKeyDown: function(e) { // return false if handling event on our own, true if propagating elsewhere           
+                    // ignore keys pressed while the alt key is also depressed
+                    if (e.altKey) {
+                        return true;
+                    }
+                    
+                    // react based upon key pressed
+                    switch (e.keyCode) {
+                        // close the date picker
+                        case this.keys.esc:
+                        {
+                            // dismiss the dialog box
+                            this.hide();
+                            e.stopPropagation();
+                            return false;
+                        }
+                        // navigate within the calendar
+                        case this.keys.tab:
+                        {   
+                            // which sort of elements should count?
+                            var focusableElementsString = "a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), iframe, object, embed, *[tabindex=0], *[contenteditable]";
+                            // Get list of focusable items
+                            var calendarItems = this.container.find("*");
+                            var focusableItems = calendarItems.filter(focusableElementsString).filter(":visible");
+                            // Get currently focused item
+                            var focusedItem = $(":focus");
+                            // Get the number of focusable items
+                            var numberOfFocusableItems = focusableItems.length;
+                            // Get the index of the currently focused item
+                            var focusedItemIndex = focusableItems.index(focusedItem);
+                            // If calendar doesn't contain focusable elements, ignore this
+                            if (numberOfFocusableItems === 0) {
+                                return true;
+                            } else {
+                                // tab backwards
+                                if (e.shiftKey) {
+                                    // If focused on first item and user presses back-tab (or not yet focused within calendar), go to the last focusable item
+                                    if (focusedItemIndex === -1 || focusedItemIndex === 0) {
+                                        focusableItems.get(numberOfFocusableItems - 1).focus();
+                                        e.stopPropagation();
+                                        return false;
+                                    }
+
+                                } else {
+                                    // If focused on the last item and user presses tab (or not yet focused within calendar), go to the first focusable item
+                                    if (focusedItemIndex === -1 || focusedItemIndex == numberOfFocusableItems - 1) {
+                                        focusableItems.get(0).focus();
+                                        e.stopPropagation();
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                },
+                        
+                updateSelectedDate: function(oldDate, date) {        
+                    // TODO: Refactor this logic out, then reuse both here and clickDate()?
+                    var dateToFocus = 'start-date';
+
+                    if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
+                        if (this.timePicker) {
+                            var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
+                            if (!this.timePicker24Hour) {
+                                var ampm = this.container.find('.left .ampmselect').val();
+                                if (ampm === 'PM' && hour < 12)
+                                    hour += 12;
+                                if (ampm === 'AM' && hour === 12)
+                                    hour = 0;
+                            }
+                            var minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
+                            var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+                            date = date.clone().hour(hour).minute(minute).second(second);
+                        }
+                        this.endDate = null;
+                        this.setStartDate(date.clone());
+                    } else if (!this.endDate && date.isBefore(this.startDate)) {
+                        //special case: clicking the same date for start/end,
+                        //but the time of the end date is before the start date
+                        this.setEndDate(this.startDate.clone());
+                    } else { // picking end
+                        dateToFocus = 'end-date';
+                        if (this.timePicker) {
+                            var hour = parseInt(this.container.find('.right .hourselect').val(), 10);
+                            if (!this.timePicker24Hour) {
+                                var ampm = this.container.find('.right .ampmselect').val();
+                                if (ampm === 'PM' && hour < 12)
+                                    hour += 12;
+                                if (ampm === 'AM' && hour === 12)
+                                    hour = 0;
+                            }
+                            var minute = parseInt(this.container.find('.right .minuteselect').val(), 10);
+                            var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
+                            date = date.clone().hour(hour).minute(minute).second(second);
+                        }
+                        this.setEndDate(date.clone());
+                    }
+
+                    if (this.singleDatePicker) {
+                        this.setEndDate(this.startDate);
+                    }
+                    
+                    // re-render the calendar as appropriate
+                    this.updateView();
+                    if (this.startDate && this.endDate) {
+                      this.updateElement();
+                    }
+                    // set focus on the date that they were manipulating
+                    this.container.find('.' + dateToFocus).focus();
+                },
+
 
         updateElement: function() {
             if (this.element.is('input') && this.autoUpdateInput) {
