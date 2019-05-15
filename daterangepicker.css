@@ -196,6 +196,10 @@
   border-radius: 0;
 }
 
+.daterangepicker td.range-end {
+  border-right-color: #357ebd;
+}
+
 .daterangepicker td.start-date {
   border-radius: 4px 0 0 4px;
 }
@@ -332,6 +336,14 @@
 .daterangepicker .ranges li.active {
   background-color: #08c;
   color: #fff;
+}
+
+.calendar_section_color--one {
+  background-color: #f7fff7;
+}
+
+.calendar_section_color--two {
+  background-color: #f7f7ff;
 }
 
 /*  Larger Screen Styling */

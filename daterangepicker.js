@@ -54,6 +54,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.selectInSection = [];
         this.ranges = {};
 
         this.opens = 'right';
@@ -277,6 +278,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.selectInSection === 'object')
+            this.selectInSection = options.selectInSection
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -518,6 +522,15 @@
         },
 
         isCustomDate: function() {
+            return false;
+        },
+
+        getSection: function(date, sections) {
+            var i;
+            for (i = 0; i < sections.length; i++) {
+                if (sections[i].startDate < date && sections[i].endDate >= date)
+                    return sections[i];
+            }
             return false;
         },
 
@@ -818,6 +831,15 @@
                     //highlight dates in-between the selected dates
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
+
+                    //highlight sections
+                    if (this.selectInSection.length) {
+                        for (var s = 0; s < this.selectInSection.length; s++) {
+                            if (calendar[row][col] >= this.selectInSection[s].startDate
+                                && calendar[row][col] <= this.selectInSection[s].endDate)
+                                classes.push(s%2 === 0 ? 'calendar_section_color--one' : 'calendar_section_color--two');
+                        }
+                    }
 
                     //apply custom classes for this date
                     var isCustom = this.isCustomDate(calendar[row][col]);
@@ -1250,7 +1272,14 @@
             var leftCalendar = this.leftCalendar;
             var rightCalendar = this.rightCalendar;
             var startDate = this.startDate;
+            var sections = this.selectInSection;
+            var bfSectionEndDate = false;
+            if (sections.length > 0) {
+                var section = this.getSection(startDate, sections);
+                var bfSectionEndDate = section ? section.endDate : false;
+            }
             if (!this.endDate) {
+                var _this = this;
                 this.container.find('.drp-calendar tbody td').each(function(index, el) {
 
                     //skip week numbers, only look at dates
@@ -1263,9 +1292,18 @@
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
 
                     if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
+                        if (_this.selectInSection.length) {
+                            if (bfSectionEndDate && dt.isSame(bfSectionEndDate))
+                                $(el).addClass('range-end');
+                            if (bfSectionEndDate && dt.isAfter(bfSectionEndDate)) {
+                                setEndDate(bfSectionEndDate);
+                                return;
+                            }
+                        }
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
+                        $(el).removeClass('range-end');
                     }
 
                 });
@@ -1332,7 +1370,13 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.setEndDate(date.clone());
+                var section = this.selectInSection.length ? this.getSection(this.startDate, this.selectInSection) : false;
+                var bfSectionEndDate = section ? section.endDate : false;
+                if (bfSectionEndDate && date.isAfter(bfSectionEndDate))
+                    this.setEndDate(bfSectionEndDate);
+                else {
+                    this.setEndDate(date.clone());
+                }
                 if (this.autoApply) {
                   this.calculateChosenLabel();
                   this.clickApply();

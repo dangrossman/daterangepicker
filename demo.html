@@ -27,7 +27,7 @@
         <h1 style="margin: 0 0 20px 0">Configuration Builder</h1>
 
         <div class="well configurator">
-           
+
           <form>
           <div class="row">
 
@@ -235,7 +235,7 @@
         $('#config-text').keyup(function() {
           eval($(this).val());
         });
-        
+
         $('.configurator input, .configurator select').change(function() {
           updateConfig();
         });
@@ -261,7 +261,7 @@
 
           if ($('#singleDatePicker').is(':checked'))
             options.singleDatePicker = true;
-          
+
           if ($('#showDropdowns').is(':checked'))
             options.showDropdowns = true;
 
@@ -273,7 +273,7 @@
 
           if ($('#timePicker').is(':checked'))
             options.timePicker = true;
-          
+
           if ($('#timePicker24Hour').is(':checked'))
             options.timePicker24Hour = true;
 
@@ -282,7 +282,7 @@
 
           if ($('#timePickerSeconds').is(':checked'))
             options.timePickerSeconds = true;
-          
+
           if ($('#autoApply').is(':checked'))
             options.autoApply = true;
 
@@ -334,12 +334,12 @@
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();
 
-          if ($('#startDate').val().length) 
+          if ($('#startDate').val().length)
             options.startDate = $('#startDate').val();
 
           if ($('#endDate').val().length)
             options.endDate = $('#endDate').val();
-          
+
           if ($('#minDate').val().length)
             options.minDate = $('#minDate').val();
 
