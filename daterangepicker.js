@@ -71,6 +71,7 @@
         this.locale = {
             direction: 'ltr',
             format: moment.localeData().longDateFormat('L'),
+            rangeCounter: false, //['days', 'year', 'month']
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
@@ -130,6 +131,9 @@
 
             if (typeof options.locale.format === 'string')
                 this.locale.format = options.locale.format;
+            
+            if (typeof options.locale.rangeCounter === 'string')
+                this.locale.rangeCounter = options.locale.rangeCounter;
 
             if (typeof options.locale.separator === 'string')
                 this.locale.separator = options.locale.separator;
@@ -504,8 +508,14 @@
                 this.endDate = this.startDate.clone().add(this.maxSpan);
 
             this.previousRightTime = this.endDate.clone();
+            
+            if(!this.locale.rangeCounter){
+                this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            } else {
+                this.container.find('.drp-selected').html((this.endDate.diff(this.startDate, this.locale.rangeCounter)).toString() + " " + this.locale.rangeCounter);
+            }
 
-            this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+
 
             if (!this.isShowing)
                 this.updateElement();
@@ -533,6 +543,10 @@
             }
             if (this.endDate)
                 this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+
+            if(!!this.locale.rangeCounter)
+                this.container.find('.drp-selected').html((this.endDate.diff(this.startDate, this.locale.rangeCounter)).toString() + " " + this.locale.rangeCounter);
+
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();

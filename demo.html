@@ -133,6 +133,15 @@
                 <label id="rtl-wrap">
                   <input type="checkbox" id="rtl"> RTL (right-to-left)
                 </label>
+                <label id="rangeCounter-wrap"> 
+                <select id="rangeCounter" class="form-control">
+                  <option value="none" selected>none</option>
+                  <option value="days">days</option>
+                  <option value="month">month</option>
+                  <option value="year">year</option>
+                </select>
+                rangeCounter
+                </label>
               </div>
 
               <div class="checkbox">
@@ -302,6 +311,7 @@
 
           if ($('#locale').is(':checked')) {
             $('#rtl-wrap').show();
+            $('#rangeCounter-wrap').show();
             options.locale = {
               direction: $('#rtl').is(':checked') ? 'rtl' : 'ltr',
               format: 'MM/DD/YYYY HH:mm',
@@ -317,7 +327,16 @@
             };
           } else {
             $('#rtl-wrap').hide();
+            $('#rangeCounter-wrap').hide();
           }
+          
+          if ($('#rangeCounter').val().length && $('#rangeCounter').val() != 'none')
+            if ($('#rangeCounter').val() === 'none'){
+              options.locale.rangeCounter = false
+            } else {
+              options.locale.rangeCounter = $('#rangeCounter').val();
+            }
+
 
           if (!$('#linkedCalendars').is(':checked'))
             options.linkedCalendars = false;
