@@ -614,6 +614,8 @@
             if (this.endDate == null) return;
 
             this.calculateChosenLabel();
+            //trigger apply.daterangepicker event when the user only change the dates in the input and not click anywhere else
+            this.element.trigger('apply.daterangepicker', this);
         },
 
         renderCalendar: function(side) {
