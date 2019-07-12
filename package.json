@@ -1,11 +1,10 @@
 {
   "name": "daterangepicker",
-  "version": "3.0.3",
+  "version": "3.0.5",
   "description": "Date range picker component for Bootstrap",
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
   "scripts": {
-    "scss": "node-sass daterangepicker.scss > daterangepicker.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,8 +24,5 @@
   "dependencies": {
     "jquery": ">=1.10",
     "moment": "^2.9.0"
-  },
-  "devDependencies": {
-    "node-sass": "^3.4.2"
   }
 }
