@@ -117,6 +117,10 @@
             '</div>';
 
         this.parentEl = (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
+        var getParentEl = function () {
+            return (options.parentEl && $(options.parentEl).length) ? $(options.parentEl) : $(this.parentEl);
+        };
+        this.getParentEl = getParentEl.bind(this);
         this.container = $(options.template).appendTo(this.parentEl);
 
         //
@@ -1025,6 +1029,7 @@
             var parentOffset = { top: 0, left: 0 },
                 containerTop;
             var parentRightEdge = $(window).width();
+            this.parentEl = this.getParentEl();
             if (!this.parentEl.is('body')) {
                 parentOffset = {
                     top: this.parentEl.offset().top - this.parentEl.scrollTop(),
