@@ -522,6 +522,8 @@
         },
 
         updateView: function() {
+            console.log('@updateView');
+            
             if (this.timePicker) {
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
