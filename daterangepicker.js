@@ -29,6 +29,8 @@
         root.daterangepicker = factory(root.moment, root.jQuery);
     }
 }(this, function(moment, $) {
+    var CUSTOM_FORMAT = 'MM/DD/YYYY';
+
     var DateRangePicker = function(element, options, cb) {
 
         //default settings for options
@@ -418,6 +420,11 @@
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this))
+            // INPUTS START
+            .on('mouseout', '.calendar-table', $.proxy(this.calendarTableMouseOut, this))
+            .on('keypress', '.full-date input', $.proxy(this.inputKeyPress, this))
+            .on('focusout', '.full-date input', $.proxy(this.inputFocusOut, this))
+            // INPUTS END
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
@@ -692,7 +699,18 @@
             var selected = side == 'left' ? this.startDate : this.endDate;
             var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
 
-            var html = '<table class="table-condensed">';
+            // INPUTS START
+            var html = '';
+
+            var value = selected ? selected.format(CUSTOM_FORMAT) : '';
+
+            html += '<div class="full-date">'
+            html += '<input value="' + value + '" type="text" />';
+            html += '<i class="fas fa-calendar"></i>';
+            html += '</div>'
+            // INPUTS END
+
+            html += '<table class="table-condensed">';
             html += '<thead>';
             html += '<tr>';
 
@@ -1238,7 +1256,6 @@
         },
 
         hoverDate: function(e) {
-
             //ignore dates that can't be selected
             if (!$(e.target).hasClass('available')) return;
 
@@ -1273,6 +1290,20 @@
                 });
             }
 
+            // INPUTS START
+
+            // Do not change the date in the input if some of inputs has focus
+            if ($('.drp-calendar .full-date input').is(":focus")) return;
+
+            if (this.endDate) {
+                $('.drp-calendar.left .full-date input').val(date.format(CUSTOM_FORMAT));
+            }
+
+            if (!this.endDate) {
+                $('.drp-calendar.right .full-date input').val(date.format(CUSTOM_FORMAT));
+            }
+
+            // INPUTS END
         },
 
         clickDate: function(e) {
@@ -1547,8 +1578,33 @@
             this.container.remove();
             this.element.off('.daterangepicker');
             this.element.removeData();
-        }
+        },
 
+        calendarTableMouseOut: function(e) {
+            var isFocus = $('.drp-calendar .full-date input').is(":focus");
+            // Do nothing if input has focus
+            if (isFocus) return;
+
+            var startDate = this.startDate ? this.startDate.format(CUSTOM_FORMAT) : '';
+            $('.drp-calendar.left .full-date input').val(startDate);
+        },
+
+        inputKeyPress: function(e) {
+            // Do nothing if key is not enter
+            if (e.keyCode !== 13) return;
+
+            $('.drp-calendar .full-date input').each(function cb(index, input) { input.blur(); });
+        },
+
+        inputFocusOut: function(e) {
+            var calendarName = e.delegateTarget.className.split(' ')[1];
+            var date = moment(e.target.value, CUSTOM_FORMAT);
+
+            if (date.isValid() && calendarName === 'left') this.setStartDate(date);
+            if (date.isValid() && calendarName === 'right') this.setEndDate(date);
+
+            this.updateView();
+        }
     };
 
     $.fn.daterangepicker = function(options, callback) {
