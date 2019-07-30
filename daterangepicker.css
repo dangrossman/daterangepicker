@@ -334,6 +334,26 @@
   color: #fff;
 }
 
+/* INPUTS START */
+
+.daterangepicker .full-date {
+  position: relative;
+}
+
+.daterangepicker .full-date input {
+  height: 28px;
+  width: 100%;
+  padding-left: 22px;
+}
+
+.daterangepicker .full-date .fa-calendar {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+}
+
+/* INPUTS END */
+
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   .daterangepicker {
