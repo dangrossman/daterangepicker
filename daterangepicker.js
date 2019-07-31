@@ -38,6 +38,7 @@
         this.element = $(element);
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
+        this.prevEndDate = null;
         this.minDate = false;
         this.maxDate = false;
         this.maxSpan = false;
@@ -98,16 +99,43 @@
         //data-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
 
+        // INPUTS START
+
+        if (typeof options.startDate === 'string')
+            this.startDate = moment(options.startDate, this.locale.format);
+
+        if (typeof options.endDate === 'string')
+            this.endDate = moment(options.endDate, this.locale.format);
+
+        if (typeof options.startDate === 'object')
+            this.startDate = moment(options.startDate);
+
+        if (typeof options.endDate === 'object')
+            this.endDate = moment(options.endDate);
+
+        var startDate = options.startDate ? this.startDate.format(CUSTOM_FORMAT) : '';
+        var endDate = options.endDate ? this.endDate.format(CUSTOM_FORMAT) : '';
+
+        // INPUTS END
+
         //html template for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template =
             '<div class="daterangepicker">' +
                 '<div class="ranges"></div>' +
                 '<div class="drp-calendar left">' +
+                    '<div class="full-date">' +
+                    '<input class="input-start" value="' + startDate + '" type="text" />' +
+                    '<i class="fas fa-calendar"></i>' +
+                    '</div>' +
                     '<div class="calendar-table"></div>' +
                     '<div class="calendar-time"></div>' +
                 '</div>' +
                 '<div class="drp-calendar right">' +
+                    '<div class="full-date">' +
+                    '<input class="input-end" value="' + endDate + '" type="text" />' +
+                    '<i class="fas fa-calendar"></i>' +
+                    '</div>' +
                     '<div class="calendar-table"></div>' +
                     '<div class="calendar-time"></div>' +
                 '</div>' +
@@ -164,23 +192,11 @@
         }
         this.container.addClass(this.locale.direction);
 
-        if (typeof options.startDate === 'string')
-            this.startDate = moment(options.startDate, this.locale.format);
-
-        if (typeof options.endDate === 'string')
-            this.endDate = moment(options.endDate, this.locale.format);
-
         if (typeof options.minDate === 'string')
             this.minDate = moment(options.minDate, this.locale.format);
 
         if (typeof options.maxDate === 'string')
             this.maxDate = moment(options.maxDate, this.locale.format);
-
-        if (typeof options.startDate === 'object')
-            this.startDate = moment(options.startDate);
-
-        if (typeof options.endDate === 'object')
-            this.endDate = moment(options.endDate);
 
         if (typeof options.minDate === 'object')
             this.minDate = moment(options.minDate);
@@ -529,8 +545,6 @@
         },
 
         updateView: function() {
-            console.log('@updateView');
-            
             if (this.timePicker) {
                 this.renderTimePicker('left');
                 this.renderTimePicker('right');
@@ -545,6 +559,17 @@
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
+            this.updateInputs();
+        },
+
+        updateInputs: function() {
+            if (this.startDate && this.startDate.isValid()) {
+                $('.input-start').val(this.startDate.format(CUSTOM_FORMAT));
+            }
+            
+            if (this.endDate && this.endDate.isValid()) {
+                $('.input-end').val(this.endDate.format(CUSTOM_FORMAT));
+            }
         },
 
         updateMonthsInView: function() {
@@ -699,16 +724,7 @@
             var selected = side == 'left' ? this.startDate : this.endDate;
             var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
 
-            // INPUTS START
             var html = '';
-
-            var value = selected ? selected.format(CUSTOM_FORMAT) : '';
-
-            html += '<div class="full-date">'
-            html += '<input value="' + value + '" type="text" />';
-            html += '<i class="fas fa-calendar"></i>';
-            html += '</div>'
-            // INPUTS END
 
             html += '<table class="table-condensed">';
             html += '<thead>';
@@ -1307,6 +1323,8 @@
         },
 
         clickDate: function(e) {
+            var isFocus = $('.drp-calendar .full-date input').is(":focus");
+            if (isFocus) return;
 
             if (!$(e.target).hasClass('available')) return;
 
@@ -1600,8 +1618,20 @@
             var calendarName = e.delegateTarget.className.split(' ')[1];
             var date = moment(e.target.value, CUSTOM_FORMAT);
 
-            if (date.isValid() && calendarName === 'left') this.setStartDate(date);
-            if (date.isValid() && calendarName === 'right') this.setEndDate(date);
+            if (date.isValid() && calendarName === 'left') {
+                if (date.diff(this.endDate) > 0) {
+                    this.setStartDate(this.endDate);
+                } else {
+                    this.setStartDate(date);
+                }   
+            }
+            if (date.isValid() && calendarName === 'right') {
+                if (date.diff(this.startDate) < 0) {
+                    this.setEndDate(this.startDate);
+                } else {
+                    this.setEndDate(date);
+                }
+            }
 
             this.updateView();
         }
