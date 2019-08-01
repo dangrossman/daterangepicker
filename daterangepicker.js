@@ -38,7 +38,6 @@
         this.element = $(element);
         this.startDate = moment().startOf('day');
         this.endDate = moment().endOf('day');
-        this.prevEndDate = null;
         this.minDate = false;
         this.maxDate = false;
         this.maxSpan = false;
