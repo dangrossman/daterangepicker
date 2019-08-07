@@ -1033,11 +1033,15 @@
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
 
-            if (this.drops == 'up')
+            if (this.drops == 'up') {
                 containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
-            else
-                containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
-
+            } else {
+                if(this.element.css('position') == 'fixed') {
+                     containerTop = this.element.position().top + this.element.outerHeight(true)
+                } else {
+                    containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+                }
+            }
             // Force the container to it's actual width
             this.container.css({
               top: 0,
