@@ -334,6 +334,24 @@
   color: #fff;
 }
 
+.daterangepicker-single td.start-date,
+.daterangepicker-single td.start-date {
+  border-radius: 4px;
+}
+
+.daterangepicker-single td.in-range {
+  border-radius: 4px;
+  color: inherit;
+  background-color: transparent;
+}
+
+.daterangepicker-single .drp-calendar td.active,
+.daterangepicker-single .drp-calendar td.active:hover {
+  background-color: #357ebd;
+  border-color: transparent;
+  color: #fff;
+}
+
 /*  Larger Screen Styling */
 @media (min-width: 564px) {
   .daterangepicker {
