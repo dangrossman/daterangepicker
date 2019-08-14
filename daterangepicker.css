@@ -346,7 +346,9 @@
   padding-left: 22px;
 }
 
-.daterangepicker .full-date .fa-calendar {
+.daterangepicker .full-date svg {
+  height: auto;
+  width: 15px;
   position: absolute;
   top: 6px;
   left: 6px;
