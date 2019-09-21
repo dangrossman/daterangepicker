@@ -29,7 +29,6 @@
         root.daterangepicker = factory(root.moment, root.jQuery);
     }
 }(this, function(moment, $) {
-    var CUSTOM_FORMAT = 'MM/DD/YYYY';
 
     var DateRangePicker = function(element, options, cb) {
 
@@ -113,8 +112,8 @@
         if (typeof options.endDate === 'object')
             this.endDate = moment(options.endDate);
 
-        var startDate = options.startDate ? this.startDate.format(CUSTOM_FORMAT) : '';
-        var endDate = options.endDate ? this.endDate.format(CUSTOM_FORMAT) : '';
+        var startDate = options.startDate ? this.startDate.format(this.locale.format) : '';
+        var endDate = options.endDate ? this.endDate.format(this.locale.format) : '';
 
         // INPUTS END
 
@@ -566,11 +565,11 @@
 
         updateInputs: function() {
             if (this.startDate && this.startDate.isValid()) {
-                $('.input-start').val(this.startDate.format(CUSTOM_FORMAT));
+                $('.input-start').val(this.startDate.format(this.locale.format));
             }
             
             if (this.endDate && this.endDate.isValid()) {
-                $('.input-end').val(this.endDate.format(CUSTOM_FORMAT));
+                $('.input-end').val(this.endDate.format(this.locale.format));
             }
         },
 
@@ -1314,11 +1313,11 @@
             if ($('.drp-calendar .full-date input').is(":focus")) return;
 
             if (this.endDate) {
-                $('.drp-calendar.left .full-date input').val(date.format(CUSTOM_FORMAT));
+                $('.drp-calendar.left .full-date input').val(date.format(this.locale.format));
             }
 
             if (!this.endDate) {
-                $('.drp-calendar.right .full-date input').val(date.format(CUSTOM_FORMAT));
+                $('.drp-calendar.right .full-date input').val(date.format(this.locale.format));
             }
 
             // INPUTS END
@@ -1605,7 +1604,7 @@
             // Do nothing if input has focus
             if (isFocus) return;
 
-            var startDate = this.startDate ? this.startDate.format(CUSTOM_FORMAT) : '';
+            var startDate = this.startDate ? this.startDate.format(this.locale.format) : '';
             $('.drp-calendar.left .full-date input').val(startDate);
         },
 
@@ -1618,7 +1617,7 @@
 
         inputFocusOut: function(e) {
             var calendarName = e.delegateTarget.className.split(' ')[1];
-            var date = moment(e.target.value, CUSTOM_FORMAT);
+            var date = moment(e.target.value, this.locale.format);
 
             if (date.isValid() && calendarName === 'left') {
                 if (date.diff(this.endDate) > 0) {
