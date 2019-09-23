@@ -1157,7 +1157,7 @@
         },
 
         toggle: function(e) {
-            if (this.isShowing) {
+            if (this.isShowing && !this.alwaysShowCalendars) {
                 this.hide();
             } else {
                 this.show();
