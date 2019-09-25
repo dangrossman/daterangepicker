@@ -15,15 +15,16 @@
             return factory(moment, jquery);
         });
     } else if (typeof module === 'object' && module.exports) {
-        // Node / Browserify
-        //isomorphic issue
-        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;
-        if (!jQuery) {
-            jQuery = require('jquery');
-            if (!jQuery.fn) jQuery.fn = {};
+        module.exports = function(moment, jQuery) {
+            if (!moment) {
+                moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('moment');
+            }
+            if ( !jQuery ) {
+                jQuery = (typeof window != 'undefined' && typeof window.jQuery != 'undefined') ? window.jQuery : require('jquery')
+            }
+
+            return factory( moment, jQuery);
         }
-        var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('moment');
-        module.exports = factory(moment, jQuery);
     } else {
         // Browser globals
         root.daterangepicker = factory(root.moment, root.jQuery);
