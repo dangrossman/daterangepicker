@@ -1499,6 +1499,9 @@
                 if (!this.singleDatePicker) {
                     newValue += this.locale.separator + this.endDate.format(this.locale.format);
                 }
+                if (this.singleDatePicker && this.singleRangePicker) {
+                    newValue += this.locale.separator + this.endDate.format(this.locale.format);
+                }
                 if (newValue !== this.element.val()) {
                     this.element.val(newValue).trigger('change');
                 }
