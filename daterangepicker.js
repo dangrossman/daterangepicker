@@ -51,6 +51,9 @@
         this.timePicker24Hour = false;
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
+        this.timePickerSecondsIncrement = 1;
+        this.timePickerMilliSeconds = false;
+        this.timePickerMilliSecondsIncrement = 100;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
@@ -248,14 +251,35 @@
                 this.endDate = this.startDate.clone();
         }
 
-        if (typeof options.timePicker === 'boolean')
-            this.timePicker = options.timePicker;
 
         if (typeof options.timePickerSeconds === 'boolean')
             this.timePickerSeconds = options.timePickerSeconds;
 
+        if (typeof options.timePickerMilliSeconds === 'boolean')
+            this.timePickerMilliSeconds = options.timePickerMilliSeconds;
+
+        if ( this.timePickerMilliSeconds ) {
+            this.timePickerSeconds = true ;
+        }
+        if ( this.timePickerSeconds ) {
+            this.timePicker = true ;
+        }
+
+        if (typeof options.timePicker === 'boolean')
+            this.timePicker = options.timePicker;
+
         if (typeof options.timePickerIncrement === 'number')
             this.timePickerIncrement = options.timePickerIncrement;
+
+        if (typeof options.timePickerSecondsIncrement === 'number')
+            this.timePickerSecondsIncrement = options.timePickerSecondsIncrement;
+
+        if (typeof options.timePickerMilliSecondsIncrement === 'number')
+            this.timePickerMilliSecondsIncrement = options.timePickerMilliSecondsIncrement;
+
+        if ( this.timePickerMilliSecondsIncrement < 50 ) {
+            this.timePickerMilliSecondsIncrement = 50 ;
+        }
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
@@ -417,7 +441,7 @@
             .on('mouseenter.daterangepicker', 'td.available', $.proxy(this.hoverDate, this))
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
-            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this))
+            .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.millisecondselect,select.ampmselect', $.proxy(this.timeChanged, this))
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this))
@@ -572,7 +596,7 @@
         updateCalendars: function() {
 
             if (this.timePicker) {
-                var hour, minute, second;
+                var hour, minute, second, millisecond;
                 if (this.endDate) {
                     hour = parseInt(this.container.find('.left .hourselect').val(), 10);
                     minute = parseInt(this.container.find('.left .minuteselect').val(), 10);
@@ -580,6 +604,7 @@
                         minute = parseInt(this.container.find('.left .minuteselect option:last').val(), 10);
                     }
                     second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
+                    millisecond = this.timePickerMilliSeconds ? parseInt(this.container.find('.left .millisecondselect').val(), 10) : 0;
                     if (!this.timePicker24Hour) {
                         var ampm = this.container.find('.left .ampmselect').val();
                         if (ampm === 'PM' && hour < 12)
@@ -594,6 +619,7 @@
                         minute = parseInt(this.container.find('.right .minuteselect option:last').val(), 10);
                     }
                     second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
+                    millisecond = this.timePickerMilliSeconds ? parseInt(this.container.find('.right .millisecondselect').val(), 10) : 0;
                     if (!this.timePicker24Hour) {
                         var ampm = this.container.find('.right .ampmselect').val();
                         if (ampm === 'PM' && hour < 12)
@@ -602,8 +628,8 @@
                             hour = 0;
                     }
                 }
-                this.leftCalendar.month.hour(hour).minute(minute).second(second);
-                this.rightCalendar.month.hour(hour).minute(minute).second(second);
+                this.leftCalendar.month.hour(hour).minute(minute).second(second).millisecond(millisecond);
+                this.rightCalendar.month.hour(hour).minute(minute).second(second).millisecond(millisecond);
             }
 
             this.renderCalendar('left');
@@ -628,6 +654,7 @@
             var hour = calendar.month.hour();
             var minute = calendar.month.minute();
             var second = calendar.month.second();
+            var millisecond = calendar.month.millisecond();
             var daysInMonth = moment([year, month]).daysInMonth();
             var firstDay = moment([year, month, 1]);
             var lastDay = moment([year, month, daysInMonth]);
@@ -653,7 +680,7 @@
             if (dayOfWeek == this.locale.firstDay)
                 startDay = daysInLastMonth - 6;
 
-            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second]);
+            var curDate = moment([lastYear, lastMonth, startDay, 12, minute, second, millisecond]);
 
             var col, row;
             for (var i = 0, col = 0, row = 0; i < 42; i++, col++, curDate = moment(curDate).add(24, 'hour')) {
@@ -661,7 +688,7 @@
                     col = 0;
                     row++;
                 }
-                calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second);
+                calendar[row][col] = curDate.clone().hour(hour).minute(minute).second(second).millisecond(millisecond);
                 curDate.hour(12);
 
                 if (this.minDate && calendar[row][col].format('YYYY-MM-DD') == this.minDate.format('YYYY-MM-DD') && calendar[row][col].isBefore(this.minDate) && side == 'left') {
@@ -875,6 +902,7 @@
                     selected.hour(!isNaN(selected.hour()) ? selected.hour() : timeSelector.find('.hourselect option:selected').val());
                     selected.minute(!isNaN(selected.minute()) ? selected.minute() : timeSelector.find('.minuteselect option:selected').val());
                     selected.second(!isNaN(selected.second()) ? selected.second() : timeSelector.find('.secondselect option:selected').val());
+                    selected.millisecond(!isNaN(selected.millisecond()) ? selected.millisecond() : timeSelector.find('.millisecondselect option:selected').val());
 
                     if (!this.timePicker24Hour) {
                         var ampm = timeSelector.find('.ampmselect option:selected').val();
@@ -960,7 +988,7 @@
             if (this.timePickerSeconds) {
                 html += ': <select class="secondselect">';
 
-                for (var i = 0; i < 60; i++) {
+                for (var i = 0; i < 60; i+=this.timePickerSecondsIncrement) {
                     var padded = i < 10 ? '0' + i : i;
                     var time = selected.clone().second(i);
 
@@ -982,6 +1010,32 @@
                 html += '</select> ';
             }
 
+            if (this.timePickerMilliSeconds) {
+                html += ': <select class="millisecondselect">';
+
+                for (var i = 0; i < 1000; i+=this.timePickerMilliSecondsIncrement) {
+                    var padded = i < 10 ? '00' + i : (i < 100 ? '0' + i : i);
+                    var time = selected.clone().millisecond(i);
+
+                    var disabled = false;
+                    if (minDate && time.isBefore(minDate))
+                        disabled = true;
+                    if (maxDate && time.isAfter(maxDate))
+                        disabled = true;
+
+                    if (selected.millisecond() == i && !disabled) {
+                        html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
+                    } else if (disabled) {
+                    } else if (disabled) {
+                        html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
+                    } else {
+                        html += '<option value="' + i + '">' + padded + '</option>';
+                    }
+                }
+
+                html += '</select> ';
+            }
+
             //
             // AM/PM
             //
@@ -992,10 +1046,10 @@
                 var am_html = '';
                 var pm_html = '';
 
-                if (minDate && selected.clone().hour(12).minute(0).second(0).isBefore(minDate))
+                if (minDate && selected.clone().hour(12).minute(0).second(0).millisecond(0).isBefore(minDate))
                     am_html = ' disabled="disabled" class="disabled"';
 
-                if (maxDate && selected.clone().hour(0).minute(0).second(0).isAfter(maxDate))
+                if (maxDate && selected.clone().hour(0).minute(0).second(0).millisecond(0).isAfter(maxDate))
                     pm_html = ' disabled="disabled" class="disabled"';
 
                 if (selected.hour() >= 12) {
@@ -1307,7 +1361,8 @@
                         minute = parseInt(this.container.find('.left .minuteselect option:last').val(), 10);
                     }
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
+                    var millisecond = this.timePickerMilliSeconds ? parseInt(this.container.find('.left .millisecondselect').val(), 10) : 0;
+                    date = date.clone().hour(hour).minute(minute).second(second).millisecond(millisecond);
                 }
                 this.endDate = null;
                 this.setStartDate(date.clone());
@@ -1330,7 +1385,8 @@
                         minute = parseInt(this.container.find('.right .minuteselect option:last').val(), 10);
                     }
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
-                    date = date.clone().hour(hour).minute(minute).second(second);
+                    var millisecond = this.timePickerMilliSeconds ? parseInt(this.container.find('.left .millisecondselect').val(), 10) : 0;
+                    date = date.clone().hour(hour).minute(minute).second(second).millisecond(millisecond);
                 }
                 this.setEndDate(date.clone());
                 if (this.autoApply) {
@@ -1449,6 +1505,7 @@
                 minute = parseInt(cal.find('.minuteselect option:last').val(), 10);
             }
             var second = this.timePickerSeconds ? parseInt(cal.find('.secondselect').val(), 10) : 0;
+            var millisecond = this.timePickerMilliSeconds ? parseInt(cal.find('.millisecondselect').val(), 10) : 0;
 
             if (!this.timePicker24Hour) {
                 var ampm = cal.find('.ampmselect').val();
@@ -1463,6 +1520,7 @@
                 start.hour(hour);
                 start.minute(minute);
                 start.second(second);
+                start.millisecond(millisecond);
                 this.setStartDate(start);
                 if (this.singleDatePicker) {
                     this.endDate = this.startDate.clone();
@@ -1474,6 +1532,7 @@
                 end.hour(hour);
                 end.minute(minute);
                 end.second(second);
+                end.millisecond(millisecond);
                 this.setEndDate(end);
             }
 

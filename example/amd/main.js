@@ -60,6 +60,15 @@ $(document).ready(function() {
     if ($('#timePickerSeconds').is(':checked'))
       options.timePickerSeconds = true;
 
+    if ($('#timePickerSecondsIncrement').val().length && $('#timePickerSecondsIncrement').val() != 1)
+      options.timePickerSecondsIncrement = parseInt($('#timePickerSecondsIncrement').val(), 10);
+
+    if ($('#timePickerMilliSeconds').is(':checked'))
+      options.timePickerMilliSeconds = true;
+
+    if ($('#timePickerMilliSecondsIncrement').val().length && $('#timePickerMilliSecondsIncrement').val() != 1)
+      options.timePickerMilliSecondsIncrement = parseInt($('#timePickerMilliSecondsIncrement').val(), 10);
+
     if ($('#autoApply').is(':checked'))
       options.autoApply = true;
 
