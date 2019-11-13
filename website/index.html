@@ -344,13 +344,22 @@
                             <code>timePicker</code>: (true/false) Adds select boxes to choose times in addition to dates.
                         </li>
                         <li>
-                            <code>timePickerIncrement</code>: (number) Increment of the minutes selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30).
+                            <code>timePickerIncrement</code>: (number) Increment of the minutes selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30). Default is 1.
                         </li>
                         <li>
                             <code>timePicker24Hour</code>: (true/false) Use 24-hour instead of 12-hour times, removing the AM/PM selection.
                         </li>
                         <li>
                             <code>timePickerSeconds</code>: (true/false) Show seconds in the timePicker.
+                        </li>
+                        <li>
+                            <code>timePickerSecondsIncrement</code>: (number) Increment of the seconds selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30). Default is 1.
+                        </li>
+                        <li>
+                            <code>timePickerMilliSeconds</code>: (true/false) Show milliseconds in the timePicker. Default is false, true implies timePickerSeconds = true.
+                        </li>
+                        <li>
+                            <code>timePickerMilliSecondsIncrement</code>: (number) Increment of the milliseconds selection list for times (i.e. 30 to allow only selection of times ending in 0 or 30). Default is 100, minimum value is 50.
                         </li>
                         <li>
                             <code>ranges</code>: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range. Click <code>ranges</code> in the configuration generator for examples.
@@ -590,6 +599,24 @@
                                 </label>
                               </div>
 
+                                <div class="form-group">
+                                    <label for="timePickerSecondsIncrement">timePickerSecondsIncrement (in seconds)</label>
+                                    <input type="text" class="form-control" id="timePickerSecondsIncrement" value="1">
+                                </div>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="timePickerMilliSeconds"> timePickerMilliSeconds
+                                    </label>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="timePickerMilliSecondsIncrement">timePickerMilliSecondsIncrement (in milliseconds)</label>
+                                    <input type="text" class="form-control" id="timePickerMilliSecondsIncrement" value="100">
+                                </div>
+                            </div>
+                              <div class="col-md-4">
+
                               <div class="checkbox">
                                 <label>
                                   <input type="checkbox" id="maxSpan"> maxSpan (example value)
@@ -608,8 +635,6 @@
                                 </label>
                               </div>
 
-                            </div>
-                            <div class="col-md-4">
 
                               <div class="form-group">
                                 <label for="buttonClasses">buttonClasses</label>
