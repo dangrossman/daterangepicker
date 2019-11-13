@@ -1385,7 +1385,7 @@
                         minute = parseInt(this.container.find('.right .minuteselect option:last').val(), 10);
                     }
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
-                    var millisecond = this.timePickerMilliSeconds ? parseInt(this.container.find('.left .millisecondselect').val(), 10) : 0;
+                    var millisecond = this.timePickerMilliSeconds ? parseInt(this.container.find('.right .millisecondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second).millisecond(millisecond);
                 }
                 this.setEndDate(date.clone());
