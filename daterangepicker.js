@@ -479,6 +479,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            this.element.trigger('startDateChange.daterangepicker', this);
         },
 
         setEndDate: function(endDate) {
@@ -511,6 +512,7 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+            this.element.trigger('endDateChange.daterangepicker', this);
         },
 
         isInvalidDate: function() {
