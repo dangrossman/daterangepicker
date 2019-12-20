@@ -1023,7 +1023,9 @@
 
         move: function() {
             var parentOffset = { top: 0, left: 0 },
-                containerTop;
+                containerTop,
+                drops = this.drops;
+
             var parentRightEdge = $(window).width();
             if (!this.parentEl.is('body')) {
                 parentOffset = {
@@ -1033,10 +1035,21 @@
                 parentRightEdge = this.parentEl[0].clientWidth + this.parentEl.offset().left;
             }
 
-            if (this.drops == 'up')
-                containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
-            else
+            switch (drops) {
+            case 'auto':
                 containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+                if (containerTop + this.container.outerHeight() >= this.parentEl[0].scrollHeight) {
+                    containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+                    drops = 'up';
+                }
+                break;
+            case 'up':
+                containerTop = this.element.offset().top - this.container.outerHeight() - parentOffset.top;
+                break;
+            default:
+                containerTop = this.element.offset().top + this.element.outerHeight() - parentOffset.top;
+                break;
+            }
 
             // Force the container to it's actual width
             this.container.css({
@@ -1046,7 +1059,7 @@
             });
             var containerWidth = this.container.outerWidth();
 
-            this.container[this.drops == 'up' ? 'addClass' : 'removeClass']('drop-up');
+            this.container.toggleClass('drop-up', drops == 'up');
 
             if (this.opens == 'left') {
                 var containerRight = parentRightEdge - this.element.offset().left - this.element.outerWidth();
