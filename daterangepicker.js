@@ -55,6 +55,7 @@
         this.autoUpdateInput = true;
         this.dontUpdateOnStart = false;
         this.alwaysShowCalendars = false;
+	this.forceUpdateOnApply = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -88,6 +89,8 @@
         this.isShowing = false;
         this.leftCalendar = {};
         this.rightCalendar = {};
+
+		this.clickedApply = false;
 
         //custom options from user
         if (typeof options !== 'object' || options === null)
@@ -269,6 +272,9 @@
 
         if (typeof options.dontUpdateOnStart === 'boolean')
             this.dontUpdateOnStart = options.dontUpdateOnStart;
+
+        if (typeof options.forceUpdateOnApply === 'boolean')
+            this.forceUpdateOnApply = options.forceUpdateOnApply;
 
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
@@ -1391,6 +1397,7 @@
         },
 
         clickApply: function(e) {
+			this.clickedApply = true;
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
         },
@@ -1536,7 +1543,8 @@
         },
 
         updateElement: function() {
-            if (this.element.is('input') && this.autoUpdateInput) {
+            if (this.element.is('input') && ( this.autoUpdateInput || ( this.clickedApply === true && this.forceUpdateOnApply) ) ) {
+				this.clickedApply = false;
                 var newValue = this.startDate.format(this.locale.format);
                 if (!this.singleDatePicker) {
                     newValue += this.locale.separator + this.endDate.format(this.locale.format);
