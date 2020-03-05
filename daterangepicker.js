@@ -53,6 +53,7 @@
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
+        this.dontUpdateOnStart = false;
         this.alwaysShowCalendars = false;
         this.ranges = {};
 
@@ -266,6 +267,9 @@
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
 
+        if (typeof options.dontUpdateOnStart === 'boolean')
+            this.dontUpdateOnStart = options.dontUpdateOnStart;
+
         if (typeof options.linkedCalendars === 'boolean')
             this.linkedCalendars = options.linkedCalendars;
 
@@ -442,7 +446,9 @@
         // if attached to a text input, set the initial value
         //
 
-        this.updateElement();
+		if(!this.dontUpdateOnStart){
+			this.updateElement();
+		}
 
     };
 
