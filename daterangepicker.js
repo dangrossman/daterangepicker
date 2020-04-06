@@ -49,6 +49,7 @@
         this.showCustomRangeLabel = true;
         this.timePicker = false;
         this.timePicker24Hour = false;
+        this.timePickerHours = [];
         this.timePickerIncrement = 1;
         this.timePickerSeconds = false;
         this.linkedCalendars = true;
@@ -259,6 +260,13 @@
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
+
+        if (Array.isArray(options.timePickerHours) &&
+            options.timePickerHours.every(hour => typeof hour == 'number' && hour >= 0 && hour <= 23)) {
+            this.timePickerHours = options.timePickerHours;
+            // Force timePicker24Hour at true
+            this.timePicker24Hour = true;
+        }
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
@@ -900,29 +908,33 @@
 
             html = '<select class="hourselect">';
 
-            var start = this.timePicker24Hour ? 0 : 1;
-            var end = this.timePicker24Hour ? 23 : 12;
+            if (this.timePickerHours.length === 0 && !this.timePicker24Hour) {
+                this.timePickerHours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            }
+            if (this.timePickerHours.length === 0 && this.timePicker24Hour) {
+                this.timePickerHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+            }
 
-            for (var i = start; i <= end; i++) {
-                var i_in_24 = i;
+            this.timePickerHours.map(i => {
+                let i_in_24 = i;
                 if (!this.timePicker24Hour)
-                    i_in_24 = selected.hour() >= 12 ? (i == 12 ? 12 : i + 12) : (i == 12 ? 0 : i);
+                    i_in_24 = selected.hour() >= 12 ? (i === 12 ? 12 : i + 12) : (i === 12 ? 0 : i);
 
-                var time = selected.clone().hour(i_in_24);
-                var disabled = false;
+                const time = selected.clone().hour(i_in_24);
+                let disabled = false;
                 if (minDate && time.minute(59).isBefore(minDate))
                     disabled = true;
                 if (maxDate && time.minute(0).isAfter(maxDate))
                     disabled = true;
 
-                if (i_in_24 == selected.hour() && !disabled) {
-                    html += '<option value="' + i + '" selected="selected">' + i + '</option>';
+                if (i_in_24 === selected.hour() && !disabled) {
+                    html += `<option value="${i}" selected="selected">${i}</option>`;
                 } else if (disabled) {
-                    html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + '</option>';
+                    html += `<option value="${i}" disabled="disabled" class="disabled">${i}</option>`;
                 } else {
-                    html += '<option value="' + i + '">' + i + '</option>';
+                    html += `<option value="${i}">${i}</option>`;
                 }
-            }
+            })
 
             html += '</select> ';
 

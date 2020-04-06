@@ -51,6 +51,13 @@ $(document).ready(function() {
       if ($('#timePicker24Hour').is(':checked'))
         options.timePicker24Hour = true;
 
+      if ($('#timePickerHours').val().length){
+        const hoursString = $('#timePickerHours').val();
+        const hours = hoursString.split(',');
+        options.timePickerHours = hours.map(hour => parseInt(hour, 10)).filter(hour => hour >= 0 && hour <= 23);
+        options.timePicker24Hour = options.timePickerHours.length > 0 ? true : options.timePicker24Hour;
+      }
+
       if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
         options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
 

@@ -350,6 +350,9 @@
                             <code>timePicker24Hour</code>: (true/false) Use 24-hour instead of 12-hour times, removing the AM/PM selection.
                         </li>
                         <li>
+                            <code>timePickerHours</code>: (array with numbers between 0 and 23) List of selectable hours, force timePicker24Hour at true (i.e. [8,9,10,11,12,14,15,16,17,18] for availability during a working day with break at 1 pm)
+                        </li>
+                        <li>
                             <code>timePickerSeconds</code>: (true/false) Show seconds in the timePicker.
                         </li>
                         <li>
@@ -578,6 +581,12 @@
                                   <input type="checkbox" id="timePicker24Hour"> timePicker24Hour
                                 </label>
                               </div>
+
+                                <div class="form-group">
+                                    <label for="timePickerHours">timePickerHours (number between 0 and 23 separate by a comma)</label>
+                                    <input type="text" class="form-control" id="timePickerHours" value=""
+                                           placeholder="8,9,10,11,12,14,15,16,17,18">
+                                </div>
 
                               <div class="form-group">
                                 <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
