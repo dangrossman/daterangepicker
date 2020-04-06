@@ -908,33 +908,33 @@
 
             html = '<select class="hourselect">';
 
-            if (this.timePickerHours.length === 0 && !this.timePicker24Hour) {
+            if (this.timePickerHours.length == 0 && !this.timePicker24Hour) {
                 this.timePickerHours = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             }
-            if (this.timePickerHours.length === 0 && this.timePicker24Hour) {
+            if (this.timePickerHours.length == 0 && this.timePicker24Hour) {
                 this.timePickerHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
             }
 
-            this.timePickerHours.map(i => {
-                let i_in_24 = i;
+            this.timePickerHours.map(function (hour) {
+                var i_in_24 = hour;
                 if (!this.timePicker24Hour)
-                    i_in_24 = selected.hour() >= 12 ? (i === 12 ? 12 : i + 12) : (i === 12 ? 0 : i);
+                    i_in_24 = selected.hour() >= 12 ? (hour == 12 ? 12 : hour + 12) : (hour == 12 ? 0 : hour);
 
-                const time = selected.clone().hour(i_in_24);
-                let disabled = false;
+                var time = selected.clone().hour(i_in_24);
+                var disabled = false;
                 if (minDate && time.minute(59).isBefore(minDate))
                     disabled = true;
                 if (maxDate && time.minute(0).isAfter(maxDate))
                     disabled = true;
 
-                if (i_in_24 === selected.hour() && !disabled) {
-                    html += `<option value="${i}" selected="selected">${i}</option>`;
+                if (i_in_24 == selected.hour() && !disabled) {
+                    html += '<option value="' + hour + '" selected="selected">' + hour + '</option>';
                 } else if (disabled) {
-                    html += `<option value="${i}" disabled="disabled" class="disabled">${i}</option>`;
+                    html += '<option value="' + hour + '" disabled="disabled" class="disabled">' + hour + '</option>';
                 } else {
-                    html += `<option value="${i}">${i}</option>`;
+                    html += '<option value="' + hour + '">' + hour + '</option>';
                 }
-            })
+            });
 
             html += '</select> ';
 
