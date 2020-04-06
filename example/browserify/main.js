@@ -52,10 +52,14 @@ $(document).ready(function() {
     if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
       options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
 
-    if ($('#timePickerHours').val().length){
+    if ($('#timePickerHours').val().length) {
       const hoursString = $('#timePickerHours').val();
       const hours = hoursString.split(',');
-      options.timePickerHours = hours.map(hour => parseInt(hour, 10)).filter(hour => hour >= 0 && hour <= 23);
+      options.timePickerHours = hours.map(function (hour) {
+        return parseInt(hour, 10)
+      }).filter(function (hour) {
+        return hour >= 0 && hour <= 23
+      });
       options.timePicker24Hour = options.timePickerHours.length > 0 ? true : options.timePicker24Hour;
     }
 

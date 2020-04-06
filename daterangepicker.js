@@ -262,7 +262,8 @@
             this.timePicker24Hour = options.timePicker24Hour;
 
         if (Array.isArray(options.timePickerHours) &&
-            options.timePickerHours.every(hour => typeof hour == 'number' && hour >= 0 && hour <= 23)) {
+            options.timePickerHours.every(function (hour) {
+                return typeof hour == 'number' && hour >= 0 && hour <= 23} )) {
             this.timePickerHours = options.timePickerHours;
             // Force timePicker24Hour at true
             this.timePicker24Hour = true;
