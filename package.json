@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/dangrossman/daterangepicker",
   "dependencies": {
-    "inputmask": "^5.0.3",
-    "jquery": ">=1.10",
-    "moment": "^2.9.0"
+    "inputmask": "5.0.3",
+    "jquery": "3.4.1",
+    "moment": "2.24.0"
   },
   "directories": {
     "example": "example"
