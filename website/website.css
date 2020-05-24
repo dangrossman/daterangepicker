@@ -3,6 +3,7 @@ body {
     line-height: 1.6em;
     position: relative;
     margin: 0;
+    min-width: fit-content;
 }
 
 .navbar .nav-item {

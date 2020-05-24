@@ -1024,7 +1024,7 @@
         move: function() {
             var parentOffset = { top: 0, left: 0 },
                 containerTop;
-            var parentRightEdge = $(window).width();
+            var parentRightEdge = $(document).width();
             if (!this.parentEl.is('body')) {
                 parentOffset = {
                     top: this.parentEl.offset().top - this.parentEl.scrollTop(),
@@ -1050,7 +1050,7 @@
 
             if (this.opens == 'left') {
                 var containerRight = parentRightEdge - this.element.offset().left - this.element.outerWidth();
-                if (containerWidth + containerRight > $(window).width()) {
+                if (containerWidth + containerRight > $(document).width()) {
                     this.container.css({
                         top: containerTop,
                         right: 'auto',
@@ -1072,7 +1072,7 @@
                         right: 'auto',
                         left: 9
                     });
-                } else if (containerLeft + containerWidth > $(window).width()) {
+                } else if (containerLeft + containerWidth > $(document).width()) {
                     this.container.css({
                         top: containerTop,
                         left: 'auto',
@@ -1087,7 +1087,7 @@
                 }
             } else {
                 var containerLeft = this.element.offset().left - parentOffset.left;
-                if (containerLeft + containerWidth > $(window).width()) {
+                if (containerLeft + containerWidth > $(document).width()) {
                     this.container.css({
                         top: containerTop,
                         left: 'auto',
