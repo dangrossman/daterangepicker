@@ -1534,7 +1534,7 @@
 
     },
 
-    formInputsChanged: function (e) {
+    formInputsChanged: function (e, applyIfValid = false) {
       var isRight = $(e.target).closest('.calendar').hasClass('right');
       var start = moment.utc(this.container.find('input[name="daterangepicker_start"]').val(), this.locale.inputFormat);
       var end = moment.utc(this.container.find('input[name="daterangepicker_end"]').val(), this.locale.inputFormat);
@@ -1553,6 +1553,9 @@
           this.container.find('input[name="daterangepicker_end"]').val(this.endDate.format(this.locale.inputFormat));
         }
 
+        if (applyIfValid) {
+          return this.clickApply();
+        }
       }
 
       this.updateView();
@@ -1566,7 +1569,7 @@
       if (e.keyCode === 13) {
         // Prevent the calendar from being updated twice on Chrome/Firefox/Edge
         e.preventDefault();
-        this.formInputsChanged(e);
+        this.formInputsChanged(e, true);
       }
 
       // Tab
