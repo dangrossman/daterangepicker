@@ -847,7 +847,7 @@
             html += '</table>';
 
             this.container.find('.drp-calendar.' + side + ' .calendar-table').html(html);
-
+            this.element.trigger("calendarRendered.daterangepicker", [this.container.find('.drp-calendar.' + side + ' .calendar-table')]);
         },
 
         renderTimePicker: function(side) {
