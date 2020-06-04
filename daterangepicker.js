@@ -623,6 +623,9 @@
             //
 
             var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
+            if (!calendar.month.isValid()) {
+                calendar.month = moment();
+            }
             var month = calendar.month.month();
             var year = calendar.month.year();
             var hour = calendar.month.hour();
@@ -637,7 +640,7 @@
             var dayOfWeek = firstDay.day();
 
             //initialize a 6 rows x 7 columns array for the calendar
-            var calendar = [];
+            calendar = [];
             calendar.firstDay = firstDay;
             calendar.lastDay = lastDay;
 
@@ -836,7 +839,6 @@
                     }
                     if (!disabled)
                         cname += 'available';
-
                     html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
 
                 }
@@ -1544,12 +1546,19 @@
 
         updateElement: function() {
             if (this.element.is('input') && this.autoUpdateInput) {
-                var newValue = this.startDate.format(this.locale.format);
-                if (!this.singleDatePicker) {
-                    newValue += this.locale.separator + this.endDate.format(this.locale.format);
-                }
-                if (newValue !== this.element.val()) {
-                    this.element.val(newValue).trigger('change');
+                if (this.startDate.isValid()) {
+                    var newValue = this.startDate.format(this.locale.format);
+                    if (!this.singleDatePicker) {
+                        newValue += this.locale.separator + this.endDate.format(this.locale.format);
+                    }
+                    if (newValue !== this.element.val()) {
+                        this.element.val(newValue).trigger('change');
+                    }
+                } else {
+                    var newValue = null;
+                    if (newValue !== this.element.val()) {
+                        this.element.val(newValue).trigger('change');
+                    }
                 }
             }
         },
