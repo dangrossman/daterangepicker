@@ -558,14 +558,20 @@
                 }
 
             } else {
-                if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
+                if (!this.leftCalendar.month.isSame(this.startDate, 'month') && !this.rightCalendar.month.isSame(this.startDate, 'month')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
-                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                    if (this.linkedCalendars) {
+                        this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                    }
                 }
             }
-            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
-              this.rightCalendar.month = this.maxDate.clone().date(2);
-              this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+
+            if (this.maxDate && !this.singleDatePicker && this.rightCalendar.month.isAfter(this.maxDate)) {
+                this.rightCalendar.month = this.maxDate.clone().date(2);
+            }
+
+            if (this.linkedCalendars || this.leftCalendar.month.isSame(this.rightCalendar.month, 'month')) {
+                this.leftCalendar.month = this.rightCalendar.month.clone().date(2).subtract(1, 'month');
             }
         },
 
@@ -698,7 +704,7 @@
             if (this.showWeekNumbers || this.showISOWeekNumbers)
                 html += '<th></th>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars && !this.leftCalendar.month.isSame(this.rightCalendar.month.clone().subtract(1, 'months'), 'month') || side == 'left')) {
                 html += '<th class="prev available"><span></span></th>';
             } else {
                 html += '<th></th>';
@@ -740,7 +746,7 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
-            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+            if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars && !this.leftCalendar.month.isSame(this.rightCalendar.month.clone().subtract(1, 'months'), 'month') || side == 'right' || this.singleDatePicker)) {
                 html += '<th class="next available"><span></span></th>';
             } else {
                 html += '<th></th>';
