@@ -5,7 +5,7 @@
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "artifactregistry-login": "npx google-artifactregistry-auth"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,5 @@
     "url": "https://github.com/chattermill/daterangepicker/issues"
   },
   "homepage": "https://github.com/chattermill/daterangepicker",
-  "dependencies": {
-    "inputmask": "5.0.3"
-  }
+  "dependencies": {}
 }
