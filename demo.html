@@ -104,6 +104,12 @@
               </div>
 
               <div class="form-group">
+                <label for="timePickerHours">timePickerHours (number between 0 and 23 separated by a comma)</label>
+                <input type="text" class="form-control" id="timePickerHours" value=""
+                       placeholder="8,9,10,11,12,14,15,16,17,18">
+              </div>
+
+              <div class="form-group">
                 <label for="timePickerIncrement">timePickerIncrement (in minutes)</label>
                 <input type="text" class="form-control" id="timePickerIncrement" value="1">
               </div>
@@ -276,6 +282,17 @@
           
           if ($('#timePicker24Hour').is(':checked'))
             options.timePicker24Hour = true;
+
+          if ($('#timePickerHours').val().length) {
+            const hoursString = $('#timePickerHours').val();
+            const hours = hoursString.split(',');
+            options.timePickerHours = hours.map(function (hour) {
+              return parseInt(hour, 10)
+            }).filter(function (hour) {
+              return hour >= 0 && hour <= 23
+            });
+            options.timePicker24Hour = options.timePickerHours.length > 0 ? true : options.timePicker24Hour;
+          }
 
           if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
             options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
