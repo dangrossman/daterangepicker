@@ -70,6 +70,11 @@
 
         this.locale = {
             direction: 'ltr',
+            headerDateFormat: 'MMM YYYY',
+            dateFormat: moment.localeData().longDateFormat('L'),
+            /** @deprecated
+             * `format` is Deprecated, Use `dateFormat`
+             * */
             format: moment.localeData().longDateFormat('L'),
             separator: ' - ',
             applyLabel: 'Apply',
@@ -128,8 +133,20 @@
             if (typeof options.locale.direction === 'string')
                 this.locale.direction = options.locale.direction;
 
-            if (typeof options.locale.format === 'string')
+            /** @deprecated */
+            if (typeof options.locale.format === 'string'){
                 this.locale.format = options.locale.format;
+                // Compatible with legacy variables.
+                this.locale.dateFormat = options.locale.format;
+                if ('warn' in console)
+                  console.warn('Use the `format` option instead of `dateFormat`.')
+            }
+
+            if (typeof options.locale.dateFormat === 'string')
+                this.locale.dateFormat = options.locale.dateFormat;
+
+            if (typeof options.locale.headerDateFormat === 'string')
+                this.locale.headerDateFormat = options.locale.headerDateFormat;
 
             if (typeof options.locale.separator === 'string')
                 this.locale.separator = options.locale.separator;
@@ -163,16 +180,16 @@
         this.container.addClass(this.locale.direction);
 
         if (typeof options.startDate === 'string')
-            this.startDate = moment(options.startDate, this.locale.format);
+            this.startDate = moment(options.startDate, this.locale.dateFormat);
 
         if (typeof options.endDate === 'string')
-            this.endDate = moment(options.endDate, this.locale.format);
+            this.endDate = moment(options.endDate, this.locale.dateFormat);
 
         if (typeof options.minDate === 'string')
-            this.minDate = moment(options.minDate, this.locale.format);
+            this.minDate = moment(options.minDate, this.locale.dateFormat);
 
         if (typeof options.maxDate === 'string')
-            this.maxDate = moment(options.maxDate, this.locale.format);
+            this.maxDate = moment(options.maxDate, this.locale.dateFormat);
 
         if (typeof options.startDate === 'object')
             this.startDate = moment(options.startDate);
@@ -298,11 +315,11 @@
                 start = end = null;
 
                 if (split.length == 2) {
-                    start = moment(split[0], this.locale.format);
-                    end = moment(split[1], this.locale.format);
+                    start = moment(split[0], this.locale.dateFormat);
+                    end = moment(split[1], this.locale.dateFormat);
                 } else if (this.singleDatePicker && val !== "") {
-                    start = moment(val, this.locale.format);
-                    end = moment(val, this.locale.format);
+                    start = moment(val, this.locale.dateFormat);
+                    end = moment(val, this.locale.dateFormat);
                 }
                 if (start !== null && end !== null) {
                     this.setStartDate(start);
@@ -315,12 +332,12 @@
             for (range in options.ranges) {
 
                 if (typeof options.ranges[range][0] === 'string')
-                    start = moment(options.ranges[range][0], this.locale.format);
+                    start = moment(options.ranges[range][0], this.locale.dateFormat);
                 else
                     start = moment(options.ranges[range][0]);
 
                 if (typeof options.ranges[range][1] === 'string')
-                    end = moment(options.ranges[range][1], this.locale.format);
+                    end = moment(options.ranges[range][1], this.locale.dateFormat);
                 else
                     end = moment(options.ranges[range][1]);
 
@@ -452,7 +469,7 @@
 
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
-                this.startDate = moment(startDate, this.locale.format);
+                this.startDate = moment(startDate, this.locale.dateFormat);
 
             if (typeof startDate === 'object')
                 this.startDate = moment(startDate);
@@ -483,7 +500,7 @@
 
         setEndDate: function(endDate) {
             if (typeof endDate === 'string')
-                this.endDate = moment(endDate, this.locale.format);
+                this.endDate = moment(endDate, this.locale.dateFormat);
 
             if (typeof endDate === 'object')
                 this.endDate = moment(endDate);
@@ -505,7 +522,7 @@
 
             this.previousRightTime = this.endDate.clone();
 
-            this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+            this.container.find('.drp-selected').html(this.startDate.format(this.locale.dateFormat) + this.locale.separator + this.endDate.format(this.locale.dateFormat));
 
             if (!this.isShowing)
                 this.updateElement();
@@ -532,7 +549,7 @@
                 }
             }
             if (this.endDate)
-                this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+                this.container.find('.drp-selected').html(this.startDate.format(this.locale.dateFormat) + this.locale.separator + this.endDate.format(this.locale.dateFormat));
             this.updateMonthsInView();
             this.updateCalendars();
             this.updateFormInputs();
@@ -704,7 +721,7 @@
                 html += '<th></th>';
             }
 
-            var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+            var dateHtml = calendar[1][1].format(this.locale.headerDateFormat);
 
             if (this.showDropdowns) {
                 var currentMonth = calendar[1][1].month();
@@ -915,7 +932,7 @@
                 if (maxDate && time.minute(0).isAfter(maxDate))
                     disabled = true;
 
-                if (i_in_24 == selected.hour() && !disabled) {
+              if (i_in_24 == selected.hour() && !disabled) {
                     html += '<option value="' + i + '" selected="selected">' + i + '</option>';
                 } else if (disabled) {
                     html += '<option value="' + i + '" disabled="disabled" class="disabled">' + i + '</option>';
@@ -1511,12 +1528,12 @@
                 end = null;
 
             if (dateString.length === 2) {
-                start = moment(dateString[0], this.locale.format);
-                end = moment(dateString[1], this.locale.format);
+                start = moment(dateString[0], this.locale.dateFormat);
+                end = moment(dateString[1], this.locale.dateFormat);
             }
 
             if (this.singleDatePicker || start === null || end === null) {
-                start = moment(this.element.val(), this.locale.format);
+                start = moment(this.element.val(), this.locale.dateFormat);
                 end = start;
             }
 
@@ -1544,9 +1561,9 @@
 
         updateElement: function() {
             if (this.element.is('input') && this.autoUpdateInput) {
-                var newValue = this.startDate.format(this.locale.format);
+                var newValue = this.startDate.format(this.locale.dateFormat);
                 if (!this.singleDatePicker) {
-                    newValue += this.locale.separator + this.endDate.format(this.locale.format);
+                    newValue += this.locale.separator + this.endDate.format(this.locale.dateFormat);
                 }
                 if (newValue !== this.element.val()) {
                     this.element.val(newValue).trigger('change');

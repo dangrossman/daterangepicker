@@ -4,3 +4,9 @@ npm-debug.log
 *.sublime-workspace
 *.sublime-project
 *.sw[onp]
+
+## MacOS
+.DS_Store
+
+## JetBrain
+.idea
