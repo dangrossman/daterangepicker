@@ -1220,7 +1220,12 @@
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                this.clickApply();
+                if (this.autoApply){
+                    this.clickApply(); // close picker 
+                }
+                else {
+                    this.updateCalendars(); // update displayed dateranges in calendar for further selection (e.g. time)
+                }
             }
         },
 
