@@ -102,6 +102,9 @@ $(document).ready(function() {
       if ($('#alwaysShowCalendars').is(':checked'))
         options.alwaysShowCalendars = true;
 
+      if ($('#selectBackwards').is(':checked'))
+        options.selectBackwards = true;
+
       if ($('#parentEl').val().length)
         options.parentEl = $('#parentEl').val();
 
@@ -110,7 +113,7 @@ $(document).ready(function() {
 
       if ($('#endDate').val().length)
         options.endDate = $('#endDate').val();
-      
+
       if ($('#minDate').val().length)
         options.minDate = $('#minDate').val();
 

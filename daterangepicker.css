@@ -200,6 +200,10 @@
   border-radius: 4px 0 0 4px;
 }
 
+.daterangepicker td.in-range + td.start-date {
+  border-radius: 0 4px 4px 0;
+}
+
 .daterangepicker td.end-date {
   border-radius: 0 4px 4px 0;
 }
