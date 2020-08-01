@@ -224,6 +224,9 @@
         if (typeof options.showISOWeekNumbers === 'boolean')
             this.showISOWeekNumbers = options.showISOWeekNumbers;
 
+        if (typeof options.dayoffset === 'number')
+            this.dayoffset = options.dayoffset;
+
         if (typeof options.buttonClasses === 'string')
             this.buttonClasses = options.buttonClasses;
 
@@ -418,6 +421,8 @@
             .on('change.daterangepicker', 'select.yearselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.monthselect', $.proxy(this.monthOrYearChanged, this))
             .on('change.daterangepicker', 'select.hourselect,select.minuteselect,select.secondselect,select.ampmselect', $.proxy(this.timeChanged, this));
+
+        this.container.on('mousedown', 'td.week', $.proxy(this.clickWeek, this))
 
         this.container.find('.ranges')
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this));
@@ -775,9 +780,9 @@
 
                 // add week number
                 if (this.showWeekNumbers)
-                    html += '<td class="week">' + calendar[row][0].week() + '</td>';
+                    html += '<td class="week" data-weeknum="' + calendar[row][0].week() + '" data-year="' + calendar[row][0].year() + '">' + calendar[row][0].week() + '</td>';
                 else if (this.showISOWeekNumbers)
-                    html += '<td class="week">' + calendar[row][0].isoWeek() + '</td>';
+                    html += '<td class="week" data-weeknum="' + calendar[row][0].isoWeek() + '" data-year="' + calendar[row][0].year() + '">' + calendar[row][0].isoWeek() + '</td>';
 
                 for (var col = 0; col < 7; col++) {
 
@@ -1284,6 +1289,22 @@
                 });
             }
 
+        },
+
+        clickWeek: function(e) {
+            var weeknum = $(e.target).attr('data-weeknum');
+            var year = $(e.target).attr('data-year');
+            var startdate = moment().year(year).day("Monday").isoWeek(weeknum).hour(this.dayoffset).minute('00').second('00').toDate();
+            var enddate = moment(startdate).add(7, 'day').subtract(1, 'second').toDate();
+            console.log(startdate + ' | ' + enddate);
+
+            this.setStartDate(startdate);
+            this.setEndDate(enddate);
+
+            this.updateView();
+
+            //This is to cancel the blur event handler if the mouse was in one of the inputs
+            //e.stopPropagation();
         },
 
         clickDate: function(e) {
