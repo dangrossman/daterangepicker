@@ -55,6 +55,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.keepSelected = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -281,6 +282,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.keepSelected === 'boolean')
+            this.keepSelected = options.keepSelected;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1311,6 +1315,36 @@
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
 
+            if (this.keepSelected && !this.singleDatePicker) {
+                if (cal.hasClass('left')) { // click 'left' panel
+                    if (date.isAfter(this.endDate, 'day')) {
+                        // pick:2001/01/01
+                        // old: l:1958/01/01 - r:2000/01/01,
+                        // new: l:1958/01/01 - r:2001/01/01
+                        this.setStartDate(this.endDate.clone());
+                        this.setEndDate(date.clone());
+                    } else {
+                        // pick:1959/01/01
+                        // old: l:1958/01/01 - r:2000/01/01,
+                        // new: l:1959/01/01 - r:2000/01/01
+                        this.setStartDate(date.clone());
+                    }
+                } else if (cal.hasClass('right')) { // click 'right' panel
+                    if (date.isBefore(this.startDate, 'day')) {
+                        // Before the 'start' date, 'start' changed to 'end'
+                        // old: l:1998/01/01 - r:2000/01/01, input:1997/01/01
+                        // new: l:1997/01/01 - r:1998/01/01
+                        this.setEndDate(this.startDate.clone());
+                        this.setStartDate(date.clone());
+                    } else {
+                        // After the 'start' date, normal setting
+                        // old: l:1998/01/01 - r:2000/01/01, input:1999/01/01
+                        // new: l:1997/01/01 - r:1999/01/01
+                        this.setEndDate(date.clone());
+                    }
+                }
+            }
+
             if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1328,9 +1362,12 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.left .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.endDate = null;
-                this.setStartDate(date.clone());
-            } else if (!this.endDate && date.isBefore(this.startDate)) {
+
+                if (!this.keepSelected){
+                    this.endDate = null;
+                    this.setStartDate(date.clone());
+                }
+            } else if (!this.keepSelected && !this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
                 this.setEndDate(this.startDate.clone());
@@ -1351,7 +1388,11 @@
                     var second = this.timePickerSeconds ? parseInt(this.container.find('.right .secondselect').val(), 10) : 0;
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
-                this.setEndDate(date.clone());
+
+                if (!this.keepSelected) {
+                    this.setEndDate(date.clone());
+                }
+
                 if (this.autoApply) {
                   this.calculateChosenLabel();
                   this.clickApply();
