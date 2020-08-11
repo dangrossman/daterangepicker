@@ -64,6 +64,7 @@
         if (this.element.hasClass('dropup'))
             this.drops = 'up';
 
+        this.wrapperClass = '';
         this.buttonClasses = 'btn btn-sm';
         this.applyButtonClasses = 'btn-primary';
         this.cancelButtonClasses = 'btn-default';
@@ -193,6 +194,9 @@
         // sanity check for bad options
         if (this.maxDate && this.endDate.isAfter(this.maxDate))
             this.endDate = this.maxDate.clone();
+
+        if (typeof options.wrapperClass  === 'string') // add custom styles
+            this.wrapperClass  = options.wrapperClass ;
 
         if (typeof options.applyButtonClasses === 'string')
             this.applyButtonClasses = options.applyButtonClasses;
@@ -399,6 +403,8 @@
 
         //apply CSS classes and labels to buttons
         this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
+        if (this.wrapperClass.length)
+            this.container.addClass(this.wrapperClass);
         if (this.applyButtonClasses.length)
             this.container.find('.applyBtn').addClass(this.applyButtonClasses);
         if (this.cancelButtonClasses.length)
