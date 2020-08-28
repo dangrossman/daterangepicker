@@ -157,8 +157,9 @@
                                 $(function() {
                                   $('input[name="daterange"]').daterangepicker({
                                     opens: 'left'
-                                  }, function(start, end, label) {
+                                  }, function(start, end, label, flags) {
                                     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                                    console.log("Flags are: ", flags);
                                   });
                                 });
                                 </script>
@@ -213,7 +214,7 @@
                                     showDropdowns: true,
                                     minYear: 1901,
                                     maxYear: parseInt(moment().format('YYYY'),10)
-                                  }, function(start, end, label) {
+                                  }, function(start, end, label, flags) {
                                     var years = moment().diff(start, 'years');
                                     alert("You are " + years + " years old!");
                                   });

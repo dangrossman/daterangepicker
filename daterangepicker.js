@@ -82,6 +82,10 @@
         };
 
         this.callback = function() { };
+        this.callbackFlags = {
+            rangeClick: false,
+            applyClick: false
+        };
 
         //some state information
         this.isShowing = false;
@@ -1139,6 +1143,9 @@
             this.oldEndDate = this.endDate.clone();
             this.previousRightTime = this.endDate.clone();
 
+            this.callbackFlags.rangeClick = false;
+            this.callbackFlags.applyClick = false;
+
             this.updateView();
             this.container.show();
             this.move();
@@ -1146,7 +1153,7 @@
             this.isShowing = true;
         },
 
-        hide: function(e) {
+        hide: function() {
             if (!this.isShowing) return;
 
             //incomplete date selection, revert to last values
@@ -1156,8 +1163,10 @@
             }
 
             //if a new date range was selected, invoke the user callback function
-            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate))
-                this.callback(this.startDate.clone(), this.endDate.clone(), this.chosenLabel);
+            if (!this.startDate.isSame(this.oldStartDate) || !this.endDate.isSame(this.oldEndDate)) {
+                var clonedFlags = JSON.parse(JSON.stringify(this.callbackFlags));
+                this.callback(this.startDate.clone(), this.endDate.clone(), this.chosenLabel, clonedFlags);
+            }
 
             //if picker is attached to a text input, update it
             this.updateElement();
@@ -1218,9 +1227,11 @@
                     this.endDate.endOf('day');
                 }
 
+                this.callbackFlags.rangeClick = true;
+
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
-                this.clickApply();
+                this.apply();
             }
         },
 
@@ -1348,14 +1359,14 @@
                 this.setEndDate(date.clone());
                 if (this.autoApply) {
                   this.calculateChosenLabel();
-                  this.clickApply();
+                    this.apply();
                 }
             }
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
                 if (!this.timePicker && this.autoApply)
-                    this.clickApply();
+                    this.apply();
             }
 
             this.updateView();
@@ -1397,12 +1408,17 @@
             }
         },
 
-        clickApply: function(e) {
+        apply: function() {
             this.hide();
             this.element.trigger('apply.daterangepicker', this);
         },
 
-        clickCancel: function(e) {
+        clickApply: function() {
+            this.callbackFlags.applyClick = true;
+            this.apply();
+        },
+
+        clickCancel: function() {
             this.startDate = this.oldStartDate;
             this.endDate = this.oldEndDate;
             this.hide();
