@@ -525,6 +525,10 @@
             return false;
         },
 
+        isOpen: function() {
+            return this.isShowing;
+        },
+
         updateView: function() {
             if (this.timePicker) {
                 this.renderTimePicker('left');
