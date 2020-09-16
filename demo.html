@@ -286,8 +286,8 @@
           if ($('#autoApply').is(':checked'))
             options.autoApply = true;
 
-          if ($('#dateLimit').is(':checked'))
-            options.dateLimit = { days: 7 };
+            if ($('#dateLimit').is(':checked'))
+                options.dateLimit = {min: {days: 3}, max: {days: 7}};
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {

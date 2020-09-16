@@ -59,7 +59,7 @@ $(document).ready(function() {
       options.autoApply = true;
 
     if ($('#dateLimit').is(':checked'))
-      options.dateLimit = { days: 7 };
+      options.dateLimit = { min: { days: 3 }, max: { days: 7 } };
 
     if ($('#ranges').is(':checked')) {
       options.ranges = {
