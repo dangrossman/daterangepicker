@@ -304,6 +304,12 @@
                     start = moment(val, this.locale.format);
                     end = moment(val, this.locale.format);
                 }
+                if (!start.isValid()) {
+                    start = null;
+                }
+                if (!end.isValid()) {
+                    end = null;
+                }
                 if (start !== null && end !== null) {
                     this.setStartDate(start);
                     this.setEndDate(end);
