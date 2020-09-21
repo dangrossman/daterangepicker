@@ -304,10 +304,10 @@
                     start = moment(val, this.locale.format);
                     end = moment(val, this.locale.format);
                 }
-                if (!start.isValid()) {
+                if (start != null && !start.isValid()) {
                     start = null;
                 }
-                if (!end.isValid()) {
+                if (end != null && !end.isValid()) {
                     end = null;
                 }
                 if (start !== null && end !== null) {
