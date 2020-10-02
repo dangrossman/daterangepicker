@@ -1012,11 +1012,13 @@
         },
 
         updateFormInputs: function() {
+            const valid = this.endDate !== null && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate));
+            this.element.trigger('updateFormInputs',{valid: valid,start:this.startDate,end:this.endDate});
 
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
-                this.container.find('button.applyBtn').prop('disabled', false);
+                this.container.find('button.applyBtn').removeAttr('disabled');
             } else {
-                this.container.find('button.applyBtn').prop('disabled', true);
+                this.container.find('button.applyBtn').attr('disabled', 'disabled');
             }
 
         },
