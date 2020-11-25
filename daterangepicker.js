@@ -1282,6 +1282,11 @@
                     }
 
                 });
+
+                this.container.find('.drp-calendar tbody td').removeClass('end-date');
+                if (date.isAfter(startDate) || date.isSame(startDate, 'day')) {
+                    $(e.target).addClass('end-date');
+                }
             }
 
         },
