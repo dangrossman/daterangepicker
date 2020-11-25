@@ -198,10 +198,14 @@
 
 .daterangepicker td.start-date {
   border-radius: 4px 0 0 4px;
+  background-color: #357ebd;
+  color: #fff;
 }
 
 .daterangepicker td.end-date {
   border-radius: 0 4px 4px 0;
+  background-color: #357ebd;
+  color: #fff;
 }
 
 .daterangepicker td.start-date.end-date {
@@ -213,6 +217,12 @@
   border-color: transparent;
   color: #fff;
 }
+
+.daterangepicker td.start-date:hover, .daterangepicker td.end-date:hover {
+  background-color: #357ebd;
+  color: #fff;
+}
+
 
 .daterangepicker th.month {
   width: auto;
