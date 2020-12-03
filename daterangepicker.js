@@ -42,6 +42,7 @@
         this.autoApply = false;
         this.singleDatePicker = false;
         this.singleDateRangePicker = false;
+        this.switchYearMonth = false;
         this.showDropdowns = false;
         this.minYear = moment().subtract(100, 'year').format('YYYY');
         this.maxYear = moment().add(100, 'year').format('YYYY');
@@ -251,6 +252,9 @@
         
         if (typeof options.singleDateRangePicker === 'boolean')
             this.singleDateRangePicker = options.singleDateRangePicker;
+            
+        if (typeof options.switchYearMonth === 'boolean')
+            this.switchYearMonth = options.switchYearMonth;
 
         if (typeof options.timePicker === 'boolean')
             this.timePicker = options.timePicker;
@@ -739,8 +743,11 @@
                         '>' + y + '</option>';
                 }
                 yearHtml += '</select>';
-
-                dateHtml = monthHtml + yearHtml;
+                
+                if (this.switchYearMonth)
+                    dateHtml = yearHtml + monthHtml;
+                else
+                    dateHtml = monthHtml + yearHtml;
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
