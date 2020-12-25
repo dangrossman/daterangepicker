@@ -56,6 +56,7 @@
         this.appendToElementParent = false;
         this.showOnFocus = true;
         this.dropdownAdditionalClass = "";
+        this.isAlwaysShowing = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -307,6 +308,9 @@
             this.showOnFocus = options.showOnFocus;
         }
 
+        if (typeof options.isAlwaysShowing === 'boolean')
+            this.isAlwaysShowing = options.isAlwaysShowing;
+
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
             var iterator = this.locale.firstDay;
@@ -419,6 +423,11 @@
             this.startDate = this.startDate.startOf('day');
             this.endDate = this.endDate.endOf('day');
             this.container.find('.calendar-time').hide();
+        }
+
+        if (this.isAlwaysShowing) {
+            this.show()
+            this.container.addClass('daterangepicker--without-input')
         }
 
         //can't be used together for now
@@ -789,10 +798,12 @@
             if (this.showWeekNumbers || this.showISOWeekNumbers)
                 html += '<th></th>';
 
-            if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
-            } else {
-                html += '<th></th>';
+            if (!this.isAlwaysShowing) {
+                if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+                    html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
+                } else {
+                    html += '<th></th>';
+                }
             }
 
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
@@ -831,6 +842,15 @@
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
+
+            if (this.isAlwaysShowing) {
+                if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
+                    html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
+                } else {
+                    html += '<th></th>';
+                }
+            }
+
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
                 html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
             } else {
@@ -916,6 +936,10 @@
                     //highlight dates in-between the selected dates
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
+
+                    //highlight the current date for always showing
+                    if (this.isAlwaysShowing && calendar[row][col].format('YYYY-MM-DD') == moment().startOf('minute').format('YYYY-MM-DD'))
+                        classes.push('blueDate');
 
                     //apply custom classes for this date
                     var isCustom = this.isCustomDate(calendar[row][col]);
@@ -1219,7 +1243,7 @@
         },
 
         hide: function(e) {
-            if (!this.isShowing) return;
+            if (!this.isShowing || this.isAlwaysShowing) return;
 
             //incomplete date selection, revert to last values
             if (!this.endDate) {
