@@ -72,6 +72,12 @@
                   <input type="checkbox" id="singleDatePicker"> singleDatePicker
                 </label>
               </div>
+              
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="singleDateRangePicker" checked="checked"> singleDateRangePicker
+                </label>
+              </div>
 
               <div class="checkbox">
                 <label>
@@ -261,6 +267,9 @@
 
           if ($('#singleDatePicker').is(':checked'))
             options.singleDatePicker = true;
+
+          if ($('#singleDateRangePicker').is(':checked'))
+            options.singleDateRangePicker = true;
           
           if ($('#showDropdowns').is(':checked'))
             options.showDropdowns = true;
