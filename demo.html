@@ -40,12 +40,12 @@
 
               <div class="form-group">
                 <label for="startDate">startDate</label>
-                <input type="text" class="form-control" id="startDate" value="07/01/2015">
+                <input type="text" class="form-control" id="startDate" value="11/11/2021">
               </div>
 
               <div class="form-group">
                 <label for="endDate">endDate</label>
-                <input type="text" class="form-control" id="endDate" value="07/15/2015">
+                <input type="text" class="form-control" id="endDate" value="11/14/2021">
               </div>
 
               <div class="form-group">
@@ -113,10 +113,16 @@
                   <input type="checkbox" id="timePickerSeconds"> timePickerSeconds
                 </label>
               </div>
+              
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="minSpan" checked="checked"> minSpan (with example value)
+                </label>
+              </div>
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="dateLimit"> dateLimit (with example date range span)
+                  <input type="checkbox" id="maxSpan" checked="checked"> maxSpan (with example value)
                 </label>
               </div>
 
@@ -286,8 +292,11 @@
           if ($('#autoApply').is(':checked'))
             options.autoApply = true;
 
-          if ($('#dateLimit').is(':checked'))
-            options.dateLimit = { days: 7 };
+          if ($('#minSpan').is(':checked'))
+            options.minSpan = { days: 3 };
+          
+          if ($('#maxSpan').is(':checked'))
+            options.maxSpan = { days: 7 };
 
           if ($('#ranges').is(':checked')) {
             options.ranges = {

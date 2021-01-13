@@ -189,7 +189,11 @@
   color: #999;
 }
 
-.daterangepicker td.in-range {
+.daterangepicker td.off.in-range-min-span {
+  cursor: not-allowed;
+}
+
+.daterangepicker td.in-range, .daterangepicker td.off.in-range-min-span {
   background-color: #ebf4f8;
   border-color: transparent;
   color: #000;
