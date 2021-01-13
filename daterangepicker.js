@@ -38,6 +38,7 @@
         this.endDate = moment().endOf('day');
         this.minDate = false;
         this.maxDate = false;
+        this.minSpan = false;
         this.maxSpan = false;
         this.autoApply = false;
         this.singleDatePicker = false;
@@ -205,6 +206,9 @@
 
         if (typeof options.cancelClass === 'string') //backwards compat
             this.cancelButtonClasses = options.cancelClass;
+        
+        if (typeof options.minSpan === 'object')
+            this.minSpan = options.minSpan;
 
         if (typeof options.maxSpan === 'object')
             this.maxSpan = options.maxSpan;
@@ -330,6 +334,8 @@
                     start = this.minDate.clone();
 
                 var maxDate = this.maxDate;
+                if (this.minSpan && start.clone().add(this.minSpan).isAfter(end))
+                    end = start.clone().add(this.minSpan);
                 if (this.maxSpan && maxDate && start.clone().add(this.maxSpan).isAfter(maxDate))
                     maxDate = start.clone().add(this.maxSpan);
                 if (maxDate && end.isAfter(maxDate))
@@ -499,6 +505,9 @@
 
             if (this.maxDate && this.endDate.isAfter(this.maxDate))
                 this.endDate = this.maxDate.clone();
+            
+            if (this.minSpan && this.startDate.clone().add(this.minSpan).isAfter(this.endDate))
+                this.endDate = this.startDate.clone().add(this.minSpan);
 
             if (this.maxSpan && this.startDate.clone().add(this.maxSpan).isBefore(this.endDate))
                 this.endDate = this.startDate.clone().add(this.maxSpan);
@@ -802,6 +811,10 @@
                     //don't allow selection of dates after the maximum date
                     if (maxDate && calendar[row][col].isAfter(maxDate, 'day'))
                         classes.push('off', 'disabled');
+                    
+                    //don't allow selection of dates between startDate and minSpan
+                    if (this.minSpan && this.startDate && calendar[row][col].isAfter(this.startDate, 'day') && calendar[row][col].isBefore(this.startDate.clone().add(this.minSpan), 'day'))
+                        classes.push('off', 'in-range-min-span');
 
                     //don't allow selection of date if a custom function decides it's invalid
                     if (this.isInvalidDate(calendar[row][col]))
