@@ -1114,6 +1114,8 @@
                     });
                 }
             }
+			// Raise an event, so other layout can happen if needed
+            this.element.trigger('moved.daterangepicker', this);
         },
 
         show: function(e) {
