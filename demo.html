@@ -93,7 +93,13 @@
 
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" id="timePicker" checked="checked"> timePicker
+                  <input type="checkbox" id="showCustomWeekNumbers"> showCustomWeekNumbers (with example predefined ranges)
+                </label>
+              </div>
+
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="timePicker"> timePicker
                 </label>
               </div>
 
@@ -267,6 +273,15 @@
 
           if ($('#showWeekNumbers').is(':checked'))
             options.showWeekNumbers = true;
+
+          if ($('#showCustomWeekNumbers').is(':checked')) {
+            options.showCustomWeekNumbers = {
+              'T1W': ['01/27/2021', '04/01/2021'],
+              'T2W': ['04/19/2021', '06/25/2021'],
+              'T3W': ['07/12/2021', '09/17/2021'],
+              'T4W': ['10/04/2021', '12/17/2021']
+            }
+          }
 
           if ($('#showISOWeekNumbers').is(':checked'))
             options.showISOWeekNumbers = true;
