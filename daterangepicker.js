@@ -81,6 +81,8 @@
             firstDay: moment.localeData().firstDayOfWeek()
         };
 
+        this.showCustomWeekNumbers = {};
+
         this.callback = function() { };
 
         //some state information
@@ -223,6 +225,12 @@
 
         if (typeof options.showISOWeekNumbers === 'boolean')
             this.showISOWeekNumbers = options.showISOWeekNumbers;
+
+        if (typeof options.showCustomWeekNumbers === 'object') {
+            this.showCustomWeekNumbers = options.showCustomWeekNumbers;
+        } else {
+            this.showCustomWeekNumbers = false;
+        }
 
         if (typeof options.buttonClasses === 'string')
             this.buttonClasses = options.buttonClasses;
@@ -616,6 +624,17 @@
             this.calculateChosenLabel();
         },
 
+        getCustomWeek: function (date) {
+            for (customWeeks in this.showCustomWeekNumbers) {
+                var startFirstWeek = moment(this.showCustomWeekNumbers[customWeeks][0]).startOf('week');
+                var endLastWeek = moment(this.showCustomWeekNumbers[customWeeks][1]).endOf('week');
+                if (date.isBetween(startFirstWeek, endLastWeek)) {;
+                    return customWeeks + (date.diff(startFirstWeek, 'week') + 1);
+                }
+            }
+            return '';
+        },
+
         renderCalendar: function(side) {
 
             //
@@ -695,7 +714,7 @@
             html += '<tr>';
 
             // add empty cell for week number
-            if (this.showWeekNumbers || this.showISOWeekNumbers)
+            if (this.showWeekNumbers || this.showISOWeekNumbers || this.showCustomWeekNumbers)
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
@@ -750,7 +769,7 @@
             html += '<tr>';
 
             // add week number label
-            if (this.showWeekNumbers || this.showISOWeekNumbers)
+            if (this.showWeekNumbers || this.showISOWeekNumbers || this.showCustomWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
 
             $.each(this.locale.daysOfWeek, function(index, dayOfWeek) {
@@ -778,6 +797,9 @@
                     html += '<td class="week">' + calendar[row][0].week() + '</td>';
                 else if (this.showISOWeekNumbers)
                     html += '<td class="week">' + calendar[row][0].isoWeek() + '</td>';
+                else if (this.showCustomWeekNumbers) {
+                    html += '<td class="week">' + this.getCustomWeek(calendar[row][0]) + '</td>'
+                }
 
                 for (var col = 0; col < 7; col++) {
 
