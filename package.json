@@ -1,6 +1,6 @@
 {
   "name": "bootstrap-daterangepicker-labworks",
-  "version": "2.1.47",
+  "version": "2.1.48",
   "description": "Date range picker component for Bootstrap",
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
