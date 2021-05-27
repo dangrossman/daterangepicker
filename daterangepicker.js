@@ -959,7 +959,7 @@
                     if (!disabled)
                         cname += 'available';
 
-                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" title="' + tooltip +'">' + calendar[row][col].date() + '</td>';
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-fulldate="' + calendar[row][col].toISOString() +  '" data-title="' + 'r' + row + 'c' + col + '" title="' + tooltip +'">' + calendar[row][col].date() + '</td>';
 
                 }
                 html += '</tr>';
