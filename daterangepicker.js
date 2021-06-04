@@ -57,6 +57,7 @@
         this.showOnFocus = true;
         this.dropdownAdditionalClass = "";
         this.isAlwaysShowing = false;
+        this.doNotChangeDisplayedMonth = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -567,6 +568,9 @@
             if (!this.isShowing)
                 this.updateElement();
 
+            if (this.doNotChangeDisplayedMonth) {
+                return;
+            }
             this.updateMonthsInView();
         },
 
@@ -597,6 +601,9 @@
             if (!this.isShowing)
                 this.updateElement();
 
+            if (this.doNotChangeDisplayedMonth) {
+                return;
+            }
             this.updateMonthsInView();
         },
 
@@ -637,7 +644,9 @@
                 this.container.find('input[name="daterangepicker_end"]').addClass('active');
                 this.container.find('input[name="daterangepicker_start"]').removeClass('active');
             }
-            this.updateMonthsInView();
+            if (!this.doNotChangeDisplayedMonth) {
+                this.updateMonthsInView();
+            }
             this.updateCalendars(isHover);
             this.updateFormInputs();
         },
@@ -1414,10 +1423,11 @@
 
         },
 
-        clickDate: function(e) {
+        clickDate: function(e, opts) {
 
             if (!$(e.target).hasClass('available')) return;
 
+            this.doNotChangeDisplayedMonth = this.isAlwaysShowing && opts && opts.manuallyTriggered || false;
             var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
             var col = title.substr(3, 1);
