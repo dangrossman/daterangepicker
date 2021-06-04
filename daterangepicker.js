@@ -55,6 +55,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.autoHide = true;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -1162,11 +1163,13 @@
             //if picker is attached to a text input, update it
             this.updateElement();
 
-            $(document).off('.daterangepicker');
-            $(window).off('.daterangepicker');
-            this.container.hide();
-            this.element.trigger('hide.daterangepicker', this);
-            this.isShowing = false;
+            if (this.autoHide) {
+                $(document).off('.daterangepicker');
+                $(window).off('.daterangepicker');
+                this.container.hide();
+                this.element.trigger('hide.daterangepicker', this);
+                this.isShowing = false;
+            }
         },
 
         toggle: function(e) {
