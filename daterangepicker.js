@@ -74,6 +74,7 @@
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
+            panaTodayLabel: 'Today',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
             daysOfWeek: moment.weekdaysMin(),
@@ -111,6 +112,7 @@
                 '</div>' +
                 '<div class="drp-buttons">' +
                     '<span class="drp-selected"></span>' +
+                    '<button class="panaTodayBtn" type="button"></button> ' +
                     '<button class="cancelBtn" type="button"></button>' +
                     '<button class="applyBtn" disabled="disabled" type="button"></button> ' +
                 '</div>' +
@@ -145,6 +147,9 @@
 
             if (typeof options.locale.applyLabel === 'string')
               this.locale.applyLabel = options.locale.applyLabel;
+
+            if (typeof options.locale.panaTodayLabel === 'string')
+              this.locale.panaTodayLabel = options.locale.panaTodayLabel;
 
             if (typeof options.locale.cancelLabel === 'string')
               this.locale.cancelLabel = options.locale.cancelLabel;
@@ -398,11 +403,14 @@
         this.container.addClass('opens' + this.opens);
 
         //apply CSS classes and labels to buttons
-        this.container.find('.applyBtn, .cancelBtn').addClass(this.buttonClasses);
-        if (this.applyButtonClasses.length)
+        this.container.find('.applyBtn, .cancelBtn, .panaTodayBtn').addClass(this.buttonClasses);
+        if (this.applyButtonClasses.length) {
             this.container.find('.applyBtn').addClass(this.applyButtonClasses);
+            this.container.find('.panaTodayBtn').addClass(this.applyButtonClasses);
+        }
         if (this.cancelButtonClasses.length)
             this.container.find('.cancelBtn').addClass(this.cancelButtonClasses);
+        this.container.find('.panaTodayBtn').html(this.locale.panaTodayLabel);
         this.container.find('.applyBtn').html(this.locale.applyLabel);
         this.container.find('.cancelBtn').html(this.locale.cancelLabel);
 
@@ -423,6 +431,7 @@
             .on('click.daterangepicker', 'li', $.proxy(this.clickRange, this));
 
         this.container.find('.drp-buttons')
+            .on('click.daterangepicker', 'button.panaTodayBtn', $.proxy(this.clickPanaToday, this))
             .on('click.daterangepicker', 'button.applyBtn', $.proxy(this.clickApply, this))
             .on('click.daterangepicker', 'button.cancelBtn', $.proxy(this.clickCancel, this));
 
@@ -1014,6 +1023,7 @@
         updateFormInputs: function() {
 
             if (this.singleDatePicker || (this.endDate && (this.startDate.isBefore(this.endDate) || this.startDate.isSame(this.endDate)))) {
+                this.container.find('button.panaTodayBtn').prop('disabled', false);
                 this.container.find('button.applyBtn').prop('disabled', false);
             } else {
                 this.container.find('button.applyBtn').prop('disabled', true);
@@ -1395,6 +1405,12 @@
                 }
                 this.showCalendars();
             }
+        },
+
+        clickPanaToday: function(e) {
+            this.setEndDate(new Date());
+            this.hide();
+            this.element.trigger('apply.daterangepicker', this);
         },
 
         clickApply: function(e) {
