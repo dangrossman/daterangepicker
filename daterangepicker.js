@@ -58,6 +58,9 @@
         this.dropdownAdditionalClass = "";
         this.isAlwaysShowing = false;
         this.doNotChangeDisplayedMonth = false;
+        this.dblClickWatcherIsActive = false;
+        this.dblClickWatcherTime = 500;
+        this.listenToDblClicks = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -311,6 +314,10 @@
 
         if (typeof options.isAlwaysShowing === 'boolean')
             this.isAlwaysShowing = options.isAlwaysShowing;
+
+
+        if (typeof options.listenToDblClicks === 'boolean')
+            this.listenToDblClicks = options.listenToDblClicks;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1423,6 +1430,13 @@
 
         },
 
+        dblClick: function(e) {
+            const datePicker = document.querySelector('.daterangepicker')
+            const event = new Event('dblclick')
+            Object.defineProperty(event, 'target', { value: e.target, enumerable: true });
+            datePicker.dispatchEvent(event)
+        },
+
         clickDate: function(e, opts) {
 
             if (!$(e.target).hasClass('available')) return;
@@ -1433,6 +1447,18 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+
+            if (this.listenToDblClicks) {
+                if (this.dblClickWatcherIsActive) {
+                    if (this.startDate.toISOString() === date.toISOString()) this.dblClick(e)
+                    this.dblClickWatcherIsActive = false;
+                } else {
+                    this.dblClickWatcherIsActive = true;
+                    setTimeout(() => {
+                        this.dblClickWatcherIsActive = false;
+                    }, this.dblClickWatcherTime)
+                }
+            }
 
             //
             // this function needs to do a few things:
