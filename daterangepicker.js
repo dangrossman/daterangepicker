@@ -60,6 +60,7 @@
         this.doNotChangeDisplayedMonth = false;
         this.dblClickWatcherIsActive = false;
         this.dblClickWatcherTime = 500;
+        this.listenToDblClicks = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -313,6 +314,10 @@
 
         if (typeof options.isAlwaysShowing === 'boolean')
             this.isAlwaysShowing = options.isAlwaysShowing;
+
+
+        if (typeof options.listenToDblClicks === 'boolean')
+            this.listenToDblClicks = options.listenToDblClicks;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1443,14 +1448,16 @@
             var cal = $(e.target).parents('.calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
-            if (this.dblClickWatcherIsActive) {
-                if (this.startDate.toISOString() === date.toISOString()) this.dblClick(e)
-                this.dblClickWatcherIsActive = false;
-            } else {
-                this.dblClickWatcherIsActive = true;
-                setTimeout(() => {
+            if (this.listenToDblClicks) {
+                if (this.dblClickWatcherIsActive) {
+                    if (this.startDate.toISOString() === date.toISOString()) this.dblClick(e)
                     this.dblClickWatcherIsActive = false;
-                }, this.dblClickWatcherTime)
+                } else {
+                    this.dblClickWatcherIsActive = true;
+                    setTimeout(() => {
+                        this.dblClickWatcherIsActive = false;
+                    }, this.dblClickWatcherTime)
+                }
             }
 
             //
