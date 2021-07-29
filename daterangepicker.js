@@ -1430,15 +1430,16 @@
 
         },
 
-        dblClick: function(e) {
-            const datePicker = document.querySelector('.daterangepicker')
-            const event = new Event('dblclick')
+        dblClick: function(e, opts) {
+            const datePicker = document.querySelector('.daterangepicker');
+            const event = new Event('dblclick');
             Object.defineProperty(event, 'target', { value: e.target, enumerable: true });
-            datePicker.dispatchEvent(event)
+            datePicker.dispatchEvent(event);
+
+            setTimeout(() => this.singleClick(e, opts));
         },
 
         clickDate: function(e, opts) {
-
             if (!$(e.target).hasClass('available')) return;
 
             this.doNotChangeDisplayedMonth = this.isAlwaysShowing && opts && opts.manuallyTriggered || false;
@@ -1450,15 +1451,28 @@
 
             if (this.listenToDblClicks) {
                 if (this.dblClickWatcherIsActive) {
-                    if (this.startDate.toISOString() === date.toISOString()) this.dblClick(e)
+                    clearTimeout(this.singleClickTimeout);
                     this.dblClickWatcherIsActive = false;
+                    if (this.clickedDate.toISOString() === date.toISOString()) this.dblClick(e, opts);
                 } else {
                     this.dblClickWatcherIsActive = true;
-                    setTimeout(() => {
+                    this.clickedDate = date;
+                    this.singleClickTimeout = setTimeout(() => {
                         this.dblClickWatcherIsActive = false;
-                    }, this.dblClickWatcherTime)
+                        this.singleClick(e, opts);
+                    }, this.dblClickWatcherTime);
                 }
+                return;
             }
+            this.singleClick(e, opts);
+        },
+
+        singleClick: function (e, opts) {
+            var title = $(e.target).attr('data-title');
+            var row = title.substr(1, 1);
+            var col = title.substr(3, 1);
+            var cal = $(e.target).parents('.calendar');
+            var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
             //
             // this function needs to do a few things:
@@ -1505,8 +1519,8 @@
                 }
                 this.setEndDate(date.clone());
                 if (this.autoApply) {
-                  this.calculateChosenLabel();
-                  this.clickApply();
+                    this.calculateChosenLabel();
+                    this.clickApply();
                 }
             }
 
@@ -1520,7 +1534,6 @@
 
             //This is to cancel the blur event handler if the mouse was in one of the inputs
             e.stopPropagation();
-
         },
 
         calculateChosenLabel: function () {
