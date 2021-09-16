@@ -1324,6 +1324,8 @@
                 }
                 this.endDate = null;
                 this.setStartDate(date.clone());
+
+                this.element.trigger('selected.date.start', this);
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
@@ -1349,6 +1351,8 @@
                 if (this.autoApply) {
                   this.calculateChosenLabel();
                   this.clickApply();
+                } else {
+                    this.element.trigger('selected.date.end', this);
                 }
             }
 
