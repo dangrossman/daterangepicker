@@ -874,14 +874,14 @@
             }
 
             html += '</tr>';
-            html += '<tr>';
+            html += '<tr class="table-day-names-row">';
 
             // add week number label
             if (this.showWeekNumbers || this.showISOWeekNumbers)
                 html += '<th class="week">' + this.locale.weekLabel + '</th>';
 
             $.each(this.locale.daysOfWeek, function(index, dayOfWeek) {
-                html += '<th>' + dayOfWeek + '</th>';
+                html += '<th class="table-day-name">' + dayOfWeek + '</th>';
             });
 
             html += '</tr>';
@@ -898,7 +898,7 @@
             }
 
             for (var row = 0; row < 6; row++) {
-                html += '<tr>';
+                html += '<tr class="table-row">';
 
                 // add week number
                 if (this.showWeekNumbers)
@@ -908,7 +908,7 @@
 
                 for (var col = 0; col < 7; col++) {
 
-                    var classes = [];
+                    var classes = ['table-day'];
                     var tooltip = '';
 
                     //highlight today's date
