@@ -665,9 +665,9 @@
 
         updateMonthsInView: function() {
             if (this.endDate) {
-
+                const notEqualsStartAndEndDates = this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year()
                 //if both dates are visible already, do nothing
-                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month && notEqualsStartAndEndDates
                     (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
                     &&
                     (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
@@ -676,7 +676,7 @@
                 }
 
                 this.leftCalendar.month = this.startDate.clone().date(2);
-                if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
+                if (!this.linkedCalendars && notEqualsStartAndEndDates) {
                     this.rightCalendar.month = this.endDate.clone().date(2);
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
