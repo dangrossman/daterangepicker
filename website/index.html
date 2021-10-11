@@ -307,6 +307,27 @@
                         </div>
                     </div>
 
+                    <!-- Example 6 -->
+                    <h2><a data-toggle="nothing" href="#example6">Using data attributes</a></h2>
+                    <div class="collapsable" id="example6">
+                        <div class="row">
+                            <div class="col-8">
+                                <label>Code:</label>
+                                <script src="https://gist.github.com/deepakmahakale/a043d7656a14958865740eaba59eb8f4.js"></script>
+                            </div>
+                            <div class="col-4">
+                                <label>Produces:</label>
+                                <input type="text" name="data-attribute-example" class="form-control pull-right" value="" data-drops="up" data-max-date="11/10/2021" />
+
+                                <script type="text/javascript">
+                                $(function() {
+                                  $('input[name="data-attribute-example"]').daterangepicker();
+                                });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+
                     <h1 style="margin-top: 30px"><a id="options" href="#options">Options</a></h1>
 
                     <ul class="nobullets">
@@ -478,6 +499,19 @@
                     </p>
 
                     <script src="https://gist.github.com/dangrossman/0c6c911fea1459b5fd13.js"></script>
+
+                    <h1 style="margin-top: 30px"><a id="data-attributes" href="#data-attributes">Data Attributes</a></h1>
+
+                    <p>
+                        Data attributes can be used to set the options.
+                        The attributes name needs to be used as hyphen separated attributes.
+                    </p>
+
+                    <p>
+                      For Example:
+                      <br>
+                      To set <code>maxDate</code> set <code>data-max-date="10/11/2021"</code>
+                    </p>
 
                     <h1 style="margin-top: 30px"><a id="config" href="#config">Configuration Generator</a></h1>
 
