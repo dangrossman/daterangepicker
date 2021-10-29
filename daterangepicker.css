@@ -233,12 +233,12 @@
 }
 
 .daterangepicker select.monthselect {
-  margin-right: 2%;
-  width: 56%;
+  margin-left: 1rem;
+  width: auto;
 }
 
 .daterangepicker select.yearselect {
-  width: 40%;
+  width: auto;
 }
 
 .daterangepicker select.hourselect, .daterangepicker select.minuteselect, .daterangepicker select.secondselect, .daterangepicker select.ampmselect {

@@ -6,22 +6,72 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
   <script type="text/javascript" src="../daterangepicker.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" type="text/css" href="../daterangepicker.css" />
+  <style>
+    .card {
+      margin-bottom: 2rem;
+    }
+  </style>
 </head>
 
 <body>
 
-  <input type="text" name="birthday" autocomplete="off" />
+  <div class="card">
+    <label for="zhDay">zh-TW Day</label><br>
+    <input type="text" id="zhDay" name="zhDay" autocomplete="off" />
+  </div>
+  <div class="card">
+    <label for="zhMonth">zh-TW Month</label><br>
+    <input type="text" id="zhMonth" name="zhMonth" autocomplete="off" />
+  </div>
+
+  <div class="card">
+    <label for="enDay">en-GB Day</label><br>
+    <input type="text" id="enDay" name="enDay" autocomplete="off" />
+  </div>
+  <div class="card">
+    <label for="enMonth">en-GB Month</label><br>
+    <input type="text" id="enMonth" name="enMonth" autocomplete="off" />
+  </div>
 
   <script>
     $(function () {
-      $('input[name="birthday"]').daterangepicker({
+      $('#zhDay').daterangepicker({
         singleDatePicker: true,
         showDropdowns: true,
         isTwYear: true,
+        viewMode: 'day',
       }, function (start, end, label) {
         console.log(this);
       });
+
+      $('#zhMonth').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        isTwYear: true,
+        viewMode: 'month',
+      }, function (start, end, label) {
+        console.log(this);
+      });
+
+      $('#enDay').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        isTwYear: false,
+        viewMode: 'day',
+      }, function (start, end, label) {
+        console.log(this);
+      });
+
+      $('#enMonth').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        isTwYear: false,
+        viewMode: 'month',
+      }, function (start, end, label) {
+        console.log(this);
+      });
+
     });
   </script>
 
