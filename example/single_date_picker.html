@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Single Date Picker</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="../daterangepicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+
+<body>
+
+  <input type="text" name="birthday" autocomplete="off" />
+
+  <script>
+    $(function () {
+      $('input[name="birthday"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        isTwYear: true,
+      }, function (start, end, label) {
+        console.log(this);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
