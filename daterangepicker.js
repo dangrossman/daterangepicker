@@ -39,11 +39,11 @@
         this.minDate = false;
         this.maxDate = false;
         this.maxSpan = false;
-        this.autoApply = false;
-        this.singleDatePicker = false;
-        this.showDropdowns = false;
-        this.minYear = moment().subtract(100, 'year').format('YYYY');
-        this.maxYear = moment().add(100, 'year').format('YYYY');
+        this.autoApply = true;
+        this.singleDatePicker = true;
+        this.showDropdowns = true;
+        this.minYear = moment().subtract(20, 'year').format('YYYY');
+        this.maxYear = moment().add(20, 'year').format('YYYY');
         this.showWeekNumbers = false;
         this.showISOWeekNumbers = false;
         this.showCustomRangeLabel = true;
@@ -55,8 +55,19 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.isTwYear = true;
+        this.isSelect = false;
 
-        this.opens = 'right';
+        var dat = this.element.val();
+    
+        if (this.isTwYear && dat.length == "7") {
+            var chindat = "";
+            chindat = parseInt(dat.substring(0, 3)) + 1911;
+            chindat = chindat + dat.substring(3);
+            this.element.val(chindat);
+        }
+
+        this.opens = 'left';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
 
@@ -70,14 +81,14 @@
 
         this.locale = {
             direction: 'ltr',
-            format: moment.localeData().longDateFormat('L'),
+            format: 'YYYYMMDD', //moment.localeData().longDateFormat('L'),
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
             weekLabel: 'W',
             customRangeLabel: 'Custom Range',
-            daysOfWeek: moment.weekdaysMin(),
-            monthNames: moment.monthsShort(),
+            daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
             firstDay: moment.localeData().firstDayOfWeek()
         };
 
@@ -247,7 +258,9 @@
             if (this.singleDatePicker)
                 this.endDate = this.startDate.clone();
         }
-
+        if (typeof options.isTwYear === 'boolean') {
+            this.isTwYear = options.isTwYear;
+        }
         if (typeof options.timePicker === 'boolean')
             this.timePicker = options.timePicker;
 
@@ -441,15 +454,12 @@
         //
         // if attached to a text input, set the initial value
         //
-
-        this.updateElement();
+        //this.updateElement();
 
     };
 
     DateRangePicker.prototype = {
-
         constructor: DateRangePicker,
-
         setStartDate: function(startDate) {
             if (typeof startDate === 'string')
                 this.startDate = moment(startDate, this.locale.format);
@@ -475,9 +485,9 @@
                     this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
 
-            if (!this.isShowing)
+            if (!this.isShowing){
                 this.updateElement();
-
+            }
             this.updateMonthsInView();
         },
 
@@ -729,14 +739,20 @@
                 monthHtml += "</select>";
 
                 var yearHtml = '<select class="yearselect">';
+                var twyear = 1911;
+
                 for (var y = minYear; y <= maxYear; y++) {
+                    if (this.isTwYear)
+                    showyear = y - twyear;
+                else
+                    showyear = y;
                     yearHtml += '<option value="' + y + '"' +
                         (y === currentYear ? ' selected="selected"' : '') +
-                        '>' + y + '</option>';
+                        '>' + (showyear) + '</option>';
                 }
                 yearHtml += '</select>';
 
-                dateHtml = monthHtml + yearHtml;
+                dateHtml = yearHtml + monthHtml ;
             }
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
@@ -1160,7 +1176,7 @@
                 this.callback(this.startDate.clone(), this.endDate.clone(), this.chosenLabel);
 
             //if picker is attached to a text input, update it
-            this.updateElement();
+            //this.updateElement();
 
             $(document).off('.daterangepicker');
             $(window).off('.daterangepicker');
@@ -1178,6 +1194,7 @@
         },
 
         outsideClick: function(e) {
+            
             var target = $(e.target);
             // if the page is clicked anywhere except within the daterangerpicker/button
             // itself then call this.hide()
@@ -1193,6 +1210,10 @@
         },
 
         showCalendars: function() {
+
+            if(this.element.val()=="NaNlid date")
+                this.element.val('20211016');
+
             this.container.addClass('show-calendar');
             this.move();
             this.element.trigger('showCalendar.daterangepicker', this);
@@ -1204,6 +1225,7 @@
         },
 
         clickRange: function(e) {
+            
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
@@ -1287,7 +1309,7 @@
         },
 
         clickDate: function(e) {
-
+                
             if (!$(e.target).hasClass('available')) return;
 
             var title = $(e.target).attr('data-title');
@@ -1362,7 +1384,8 @@
 
             //This is to cancel the blur event handler if the mouse was in one of the inputs
             e.stopPropagation();
-
+                //alert("click date");
+                this.updateElement();
         },
 
         calculateChosenLabel: function () {
@@ -1503,6 +1526,8 @@
         },
 
         elementChanged: function() {
+            
+            if(this.element.val().length<7) return ; //this.hide();
             if (!this.element.is('input')) return;
             if (!this.element.val().length) return;
 
@@ -1528,6 +1553,7 @@
         },
 
         keydown: function(e) {
+            
             //hide on tab or enter
             if ((e.keyCode === 9) || (e.keyCode === 13)) {
                 this.hide();
@@ -1543,17 +1569,63 @@
         },
 
         updateElement: function() {
-            if (this.element.is('input') && this.autoUpdateInput) {
-                var newValue = this.startDate.format(this.locale.format);
-                if (!this.singleDatePicker) {
-                    newValue += this.locale.separator + this.endDate.format(this.locale.format);
-                }
-                if (newValue !== this.element.val()) {
-                    this.element.val(newValue).trigger('change');
-                }
-            }
-        },
+           if (this.element.is('input') && this.autoUpdateInput) {
+            
+               var newValue = this.startDate.format(this.locale.format);
 
+               if (!this.singleDatePicker) {
+                   newValue += this.locale.separator + this.endDate.format(this.locale.format);
+               }
+               if (this.isTwYear) {
+                   var updchindat = "";
+                   var chiyear = "";
+                   var string = "";
+                   string = this.startDate.format(this.locale.format);
+                   chiyear = parseInt(string.substring(0, 4)) - 1911;
+                   chiyear.toString();
+                   if (chiyear < "100")
+                       chiyear = '0' + chiyear;
+                   updchindat = chiyear + string.substring(4);
+                        this.element.val(updchindat);
+                   //newValue = updchindat;
+                   //alert(updchindat);
+               }
+               //else{
+               //    this.element.val(newValue).trigger('change');
+               //}
+               //if (newValue !== this.element.val()) {
+                   
+                   //this.element.val(newValue).trigger('change');
+               //}
+           }
+        },
+        // updateElement: function () {
+        //     if (this.element.is('input') && !this.singleDatePicker && this.autoUpdateInput) {
+        //         this.element.val(this.startDate.format(this.locale.format) + this.locale.separator + this.endDate.format(this.locale.format));
+        //         this.element.trigger('change');
+        //     } else if (this.element.is('input') && this.autoUpdateInput) {
+
+        //         if (this.isTwYear) {
+        //             var updchindat = "";
+        //             var chiyear = "";
+        //             var string = "";
+        //             string = this.startDate.format(this.locale.format);
+        //             chiyear = parseInt(string.substring(0, 4)) - 1911;
+        //             chiyear.toString();
+        //             if (chiyear < "100")
+        //                 chiyear = '0' + chiyear;
+        //             updchindat = chiyear + string.substring(4);
+        //             this.element.val(updchindat);
+                    
+        //         }
+        //         else{
+        //             this.element.val(this.startDate.format(this.locale.format));
+                    
+        //         }
+        //         //this.element.trigger('change');
+        //     } 
+
+        // },
         remove: function() {
             this.container.remove();
             this.element.off('.daterangepicker');
