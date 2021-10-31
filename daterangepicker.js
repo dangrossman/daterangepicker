@@ -59,15 +59,6 @@
         this.isTwYear = true;
         this.isSelect = false;
 
-        var dat = this.element.val();
-
-        if (this.isTwYear && dat.length == "7") {
-            var chindat = "";
-            chindat = parseInt(dat.substring(0, 3)) + 1911;
-            chindat = chindat + dat.substring(3);
-            this.element.val(chindat);
-        }
-
         this.opens = 'left';
         if (this.element.hasClass('pull-right'))
             this.opens = 'left';
@@ -308,7 +299,24 @@
                 iterator--;
             }
         }
+        //init default value 
+        var dat = this.element.val();
 
+        if (this.isTwYear && dat.length == "7" && this.viewMode=='day') {
+            var chindat = "";
+            chindat = parseInt(dat.substring(0, 3)) + 1911;
+            chindat = chindat + dat.substring(3);
+            this.element.val(chindat);
+        }
+
+        if (this.isTwYear && dat.length == "5" && this.viewMode=='month') {
+ 
+            var chindat = "";
+            chindat = parseInt(dat.substring(0, 3)) + 1911;
+            chindat = chindat + dat.substring(3);
+            this.element.val(chindat);
+        }
+        
         var start, end, range;
 
         //if no start/end dates set, check if an input element contains initial values
