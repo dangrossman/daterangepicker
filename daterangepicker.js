@@ -23,6 +23,7 @@
             if (!jQuery.fn) jQuery.fn = {};
         }
         var moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('moment');
+        if (typeof moment !== 'function' && moment.hasOwnProperty('default')) moment = moment['default']
         module.exports = factory(moment, jQuery);
     } else {
         // Browser globals
