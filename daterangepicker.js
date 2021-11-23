@@ -271,6 +271,9 @@
 
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
+        
+        if (typeof options.isInvalidTime === 'function')
+            this.isInvalidTime = options.isInvalidTime;
 
         if (typeof options.isCustomDate === 'function')
             this.isCustomDate = options.isCustomDate;
@@ -514,6 +517,10 @@
         },
 
         isInvalidDate: function() {
+            return false;
+        },
+        
+        isInvalidTime: function() {
             return false;
         },
 
@@ -914,6 +921,8 @@
                     disabled = true;
                 if (maxDate && time.minute(0).isAfter(maxDate))
                     disabled = true;
+                if (this.isInvalidTime(time, minDate, maxDate, 'hours'))
+                    disabled = true;
 
                 if (i_in_24 == selected.hour() && !disabled) {
                     html += '<option value="' + i + '" selected="selected">' + i + '</option>';
@@ -940,6 +949,8 @@
                 if (minDate && time.second(59).isBefore(minDate))
                     disabled = true;
                 if (maxDate && time.second(0).isAfter(maxDate))
+                    disabled = true;
+                if (this.isInvalidTime(time, minDate, maxDate, 'minutes'))
                     disabled = true;
 
                 if (selected.minute() == i && !disabled) {
@@ -968,6 +979,8 @@
                     if (minDate && time.isBefore(minDate))
                         disabled = true;
                     if (maxDate && time.isAfter(maxDate))
+                        disabled = true;
+                    if (this.isInvalidTime(time, minDate, maxDate, 'seconds'))
                         disabled = true;
 
                     if (selected.second() == i && !disabled) {
