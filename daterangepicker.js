@@ -921,7 +921,7 @@
                     disabled = true;
                 if (maxDate && time.minute(0).isAfter(maxDate))
                     disabled = true;
-                if (this.isInvalidTime(time, selected, 'hours'))
+                if (this.isInvalidTime(time, minDate, maxDate, 'hours'))
                     disabled = true;
 
                 if (i_in_24 == selected.hour() && !disabled) {
@@ -950,7 +950,7 @@
                     disabled = true;
                 if (maxDate && time.second(0).isAfter(maxDate))
                     disabled = true;
-                if (this.isInvalidTime(time, selected, 'minutes'))
+                if (this.isInvalidTime(time, minDate, maxDate, 'minutes'))
                     disabled = true;
 
                 if (selected.minute() == i && !disabled) {
@@ -980,7 +980,7 @@
                         disabled = true;
                     if (maxDate && time.isAfter(maxDate))
                         disabled = true;
-                    if (this.isInvalidTime(time, selected, 'seconds'))
+                    if (this.isInvalidTime(time, minDate, maxDate, 'seconds'))
                         disabled = true;
 
                     if (selected.second() == i && !disabled) {
