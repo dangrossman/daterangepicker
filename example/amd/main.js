@@ -80,6 +80,7 @@ $(document).ready(function() {
     if ($('#locale').is(':checked')) {
       options.locale = {
         format: 'MM/DD/YYYY HH:mm',
+        monthFormat: 'MMMM YYYY',
         separator: ' - ',
         applyLabel: 'Apply',
         cancelLabel: 'Cancel',

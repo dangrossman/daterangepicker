@@ -71,6 +71,7 @@
         this.locale = {
             direction: 'ltr',
             format: moment.localeData().longDateFormat('L'),
+            monthFormat: null,
             separator: ' - ',
             applyLabel: 'Apply',
             cancelLabel: 'Cancel',
@@ -130,6 +131,9 @@
 
             if (typeof options.locale.format === 'string')
                 this.locale.format = options.locale.format;
+
+            if (typeof options.locale.monthFormat === 'string')
+                this.locale.monthFormat = options.locale.monthFormat;
 
             if (typeof options.locale.separator === 'string')
                 this.locale.separator = options.locale.separator;
@@ -705,6 +709,8 @@
             }
 
             var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+            if(this.locale.monthFormat !== null)
+                dateHtml = calendar[1][1].format(this.monthFormat);
 
             if (this.showDropdowns) {
                 var currentMonth = calendar[1][1].month();
