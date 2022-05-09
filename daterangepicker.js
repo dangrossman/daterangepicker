@@ -475,6 +475,9 @@
                     this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
             }
 
+            this.container.find('.drp-selected').html(this.startDate.format(this.locale.format) + this.locale.separator +
+                this.container.find('.drp-selected').html().split(this.locale.separator)[1]);
+
             if (!this.isShowing)
                 this.updateElement();
 
