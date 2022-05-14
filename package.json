@@ -1,6 +1,6 @@
 {
   "name": "daterangepicker",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Date range picker component for Bootstrap",
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
