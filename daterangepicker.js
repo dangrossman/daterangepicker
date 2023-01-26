@@ -942,7 +942,7 @@
                 if (maxDate && time.second(0).isAfter(maxDate))
                     disabled = true;
 
-                if (selected.minute() == i && !disabled) {
+                if (Math.floor(selected.minute() / this.timePickerIncrement) * this.timePickerIncrement === i && !disabled) {
                     html += '<option value="' + i + '" selected="selected">' + padded + '</option>';
                 } else if (disabled) {
                     html += '<option value="' + i + '" disabled="disabled" class="disabled">' + padded + '</option>';
