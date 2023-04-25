@@ -1216,6 +1216,10 @@
                 if (!this.timePicker) {
                     this.startDate.startOf('day');
                     this.endDate.endOf('day');
+                } else {
+                    // set the AM/PM selectors to the pre-defined date ranges
+                    this.container.find('.drp-calendar.left .calendar-time .ampmselect').val(this.startDate.format('A'));
+                    this.container.find('.drp-calendar.right .calendar-time .ampmselect').val(this.endDate.format('A'));
                 }
 
                 if (!this.alwaysShowCalendars)
