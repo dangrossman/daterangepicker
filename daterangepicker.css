@@ -159,6 +159,8 @@
       position: absolute;
       left: 8px;
       top: 8px; }
+      .daterangepicker .daterangepicker_input i.bi {
+        top: 0; }
   .daterangepicker.rtl .input-mini {
     padding-right: 28px;
     padding-left: 6px; }
@@ -283,4 +285,3 @@
     float: right; }
   .daterangepicker .calendar.left {
     clear: none !important; } }
-

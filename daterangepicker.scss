@@ -407,6 +407,10 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       // NOTE: These appear to be eyeballed to me...
       left: 8px;
       top: 8px;
+
+      &.bi {
+        top: 0;
+      }
     }
   }
   &.rtl {
