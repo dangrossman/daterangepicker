@@ -28,7 +28,7 @@
         // Browser globals
         root.daterangepicker = factory(root.moment, root.jQuery);
     }
-}(typeof window !== 'undefined' ? window : this, function(moment, $) {
+}(this, function(moment, $) {
     var DateRangePicker = function(element, options, cb) {
 
         //default settings for options
@@ -54,6 +54,8 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.minHour = null;
+        this.maxHour = null;
         this.ranges = {};
 
         this.opens = 'right';
@@ -259,6 +261,12 @@
 
         if (typeof options.timePicker24Hour === 'boolean')
             this.timePicker24Hour = options.timePicker24Hour;
+
+        if (typeof options.minHour === 'number')
+            this.minHour = options.minHour;
+
+        if (typeof options.maxHour === 'number')
+            this.maxHour = options.maxHour;
 
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
@@ -902,6 +910,9 @@
 
             var start = this.timePicker24Hour ? 0 : 1;
             var end = this.timePicker24Hour ? 23 : 12;
+            var limitHour = ((this.minHour || this.maxHour) && this.timePicker24Hour) || false;
+
+            console.log('limitHour', limitHour, this.minHour, this.maxHour, this.timePicker24Hour);
 
             for (var i = start; i <= end; i++) {
                 var i_in_24 = i;
@@ -910,6 +921,15 @@
 
                 var time = selected.clone().hour(i_in_24);
                 var disabled = false;
+
+                if (limitHour) {
+                    if (this.minHour && i_in_24 < this.minHour)
+                        disabled = true;
+
+                    if (this.maxHour && i_in_24 > this.maxHour)
+                        disabled = true;
+                }
+
                 if (minDate && time.minute(59).isBefore(minDate))
                     disabled = true;
                 if (maxDate && time.minute(0).isAfter(maxDate))
