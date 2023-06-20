@@ -912,8 +912,6 @@
             var end = this.timePicker24Hour ? 23 : 12;
             var limitHour = ((this.minHour || this.maxHour) && this.timePicker24Hour) || false;
 
-            console.log('limitHour', limitHour, this.minHour, this.maxHour, this.timePicker24Hour);
-
             for (var i = start; i <= end; i++) {
                 var i_in_24 = i;
                 if (!this.timePicker24Hour)
