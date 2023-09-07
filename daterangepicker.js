@@ -52,6 +52,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.isValidDatePassed=true;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -272,6 +273,8 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        this.setIsValidDatePassedForDates(options.startDate , options.endDate);
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -523,6 +526,16 @@
                 this.updateElement();
 
             this.updateMonthsInView();
+        },
+
+        setIsValidDatePassedForDates: function (startDate , endDate) {
+            if(this.singleDatePicker)
+            {
+                this.isValidDatePassed= ( startDate!=undefined && startDate.isValid() );
+            }
+            else{
+                this.isValidDatePassed= ( startDate!=undefined && startDate.isValid() ) && ( endDate!=undefined && endDate.isValid() );
+            }
         },
 
         isInvalidDate: function() {
@@ -1037,6 +1050,11 @@
             } else {
                 this.container.find('button.applyBtn').attr('disabled', 'disabled');
             }
+            if(this.container.find('input[name=daterangepicker_start]').hasClass('items-disabled'))
+            {
+                this.container.find('input[name=daterangepicker_start]').removeClass('items-disabled');
+                this.container.find('input[name=daterangepicker_end]').removeClass('items-disabled'); 
+            }
 
         },
 
@@ -1197,8 +1215,15 @@
                 this.updateView();
             } else {
                 var dates = this.ranges[label];
-                this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
-                this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
+                if(dates[0].isValid() && dates[1].isValid())
+                {
+                    this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
+                    this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));   
+                }
+                else{
+                    this.container.find('input[name=daterangepicker_start]').val("").addClass('items-disabled');
+                    this.container.find('input[name=daterangepicker_end]').val("").addClass('items-disabled'); 
+                }
             }
 
         },
@@ -1217,6 +1242,7 @@
                     this.startDate.startOf('day');
                     this.endDate.endOf('day');
                 }
+                this.setIsValidDatePassedForDates(this.startDate,this.endDate);
 
                 if (!this.alwaysShowCalendars)
                     this.hideCalendars();
@@ -1352,6 +1378,7 @@
                 }
                 this.setEndDate(date.clone());
                 if (this.autoApply) {
+                    this.setIsValidDatePassedForDates(this.startDate,this.endDate);
                   this.calculateChosenLabel();
                   this.clickApply();
                 }
@@ -1359,6 +1386,7 @@
 
             if (this.singleDatePicker) {
                 this.setEndDate(this.startDate);
+                this.setIsValidDatePassedForDates(this.startDate,this.endDate);
                 if (!this.timePicker)
                     this.clickApply();
             }
@@ -1373,6 +1401,14 @@
         calculateChosenLabel: function () {
             var customRange = true;
             var i = 0;
+
+            if(this.isValidDatePassed == false)
+            {
+                customRange=false;
+                this.chosenLabel = this.container.find('.ranges li:eq(' + 0 + ')').addClass('active').attr('data-range-key');
+                return;
+            } 
+
             for (var range in this.ranges) {
               if (this.timePicker) {
                     var format = this.timePickerSeconds ? "YYYY-MM-DD hh:mm:ss" : "YYYY-MM-DD hh:mm";
