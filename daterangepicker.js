@@ -55,6 +55,7 @@
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
         this.ranges = {};
+        this.openRange = false;
 
         this.opens = 'right';
         if (this.element.hasClass('pull-right'))
@@ -277,6 +278,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.openRange === 'boolean')
+            this.openRange = options.openRange;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -1296,6 +1300,12 @@
             var cal = $(e.target).parents('.drp-calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
 
+            if (this.startDate.isSame(date) && this.openRange) {
+                this.openRange = true;
+            } else if (this.endDate && !this.endDate.isSame(date) && !this.openRange) {
+                this.openRange = false;
+            }
+
             //
             // this function needs to do a few things:
             // * alternate between selecting a start and end date for the range,
@@ -1356,6 +1366,11 @@
                 this.setEndDate(this.startDate);
                 if (!this.timePicker && this.autoApply)
                     this.clickApply();
+            }
+
+            if (!this.openRange) {
+                this.setEndDate(this.startDate.clone());
+                this.openRange = true;
             }
 
             this.updateView();
