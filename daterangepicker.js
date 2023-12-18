@@ -395,7 +395,7 @@
             }
         }
 
-        if(!this.showTwoMonth){
+        if(!this.showTwoMonth && !this.timePicker){
             this.container.find('.drp-calendar.right').hide();
         }
 
@@ -751,7 +751,7 @@
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
                 html += '<th class="next available"><span></span></th>';
             } else {
-                if(side == 'left' && !this.showTwoMonth){
+                if(side == 'left' && !this.showTwoMonth && !this.timePicker){
                     html += '<th class="next available"><span></span></th>';
                 }else{
                     html += '<th></th>';
