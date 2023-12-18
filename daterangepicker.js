@@ -40,6 +40,7 @@
         this.maxDate = false;
         this.maxSpan = false;
         this.autoApply = false;
+        this.showTwoMonth = true;
         this.singleDatePicker = false;
         this.showDropdowns = false;
         this.minYear = moment().subtract(100, 'year').format('YYYY');
@@ -263,6 +264,9 @@
         if (typeof options.autoApply === 'boolean')
             this.autoApply = options.autoApply;
 
+        if (typeof options.showTwoMonth === 'boolean')
+            this.showTwoMonth = options.showTwoMonth;
+
         if (typeof options.autoUpdateInput === 'boolean')
             this.autoUpdateInput = options.autoUpdateInput;
 
@@ -389,6 +393,10 @@
             if (!this.timePicker && this.autoApply) {
                 this.container.addClass('auto-apply');
             }
+        }
+
+        if(!this.showTwoMonth && !this.timePicker){
+            this.container.find('.drp-calendar.right').hide();
         }
 
         if ((typeof options.ranges === 'undefined' && !this.singleDatePicker) || this.alwaysShowCalendars) {
@@ -743,7 +751,11 @@
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
                 html += '<th class="next available"><span></span></th>';
             } else {
-                html += '<th></th>';
+                if(side == 'left' && !this.showTwoMonth && !this.timePicker){
+                    html += '<th class="next available"><span></span></th>';
+                }else{
+                    html += '<th></th>';
+                }
             }
 
             html += '</tr>';
