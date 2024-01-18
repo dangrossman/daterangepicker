@@ -54,7 +54,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
-        this.ensureYearLimitation = false
+        this.ensureYearLimitation = true;
         this.ranges = {};
 
         this.opens = 'right';
