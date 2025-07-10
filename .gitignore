@@ -4,3 +4,6 @@ npm-debug.log
 *.sublime-workspace
 *.sublime-project
 *.sw[onp]
+
+# Memory Bank - Local development documentation
+memory-bank/

@@ -391,6 +391,67 @@
   }
 }
 
+/* Month Range Picker Styles */
+.daterangepicker .month-picker td {
+  width: 25%;
+  min-width: 60px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.daterangepicker .month-picker td:hover {
+  background-color: #eee;
+  border-color: transparent;
+  color: inherit;
+}
+
+.daterangepicker .month-picker td.off {
+  background-color: #fff;
+  border-color: transparent;
+  color: #999;
+}
+
+.daterangepicker .month-picker td.in-range {
+  background-color: #ebf4f8;
+  border-color: transparent;
+  color: #000;
+  border-radius: 0;
+}
+
+.daterangepicker .month-picker td.start-date {
+  border-radius: 4px 0 0 4px;
+}
+
+.daterangepicker .month-picker td.end-date {
+  border-radius: 0 4px 4px 0;
+}
+
+.daterangepicker .month-picker td.start-date.end-date {
+  border-radius: 4px;
+}
+
+.daterangepicker .month-picker td.active {
+  background-color: #357ebd;
+  border-color: transparent;
+  color: #fff;
+}
+
+.daterangepicker .month-picker td.today {
+  font-weight: bold;
+}
+
+.daterangepicker .month-picker td.disabled {
+  color: #999;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
 @media (min-width: 730px) {
   .daterangepicker .ranges {
     width: auto;

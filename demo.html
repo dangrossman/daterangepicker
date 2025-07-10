@@ -141,6 +141,12 @@
                 </label>
               </div>
 
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="isMonthRange"> isMonthRange
+                </label>
+              </div>
+
             </div>
             <div class="col-md-4">
 
@@ -330,6 +336,9 @@
 
           if ($('#alwaysShowCalendars').is(':checked'))
             options.alwaysShowCalendars = true;
+
+          if ($('#isMonthRange').is(':checked'))
+            options.isMonthRange = true;
 
           if ($('#parentEl').val().length)
             options.parentEl = $('#parentEl').val();

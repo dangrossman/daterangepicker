@@ -54,6 +54,7 @@
         this.linkedCalendars = true;
         this.autoUpdateInput = true;
         this.alwaysShowCalendars = false;
+        this.isMonthRange = false;
         this.ranges = {};
 
         this.opens = 'right';
@@ -277,6 +278,9 @@
 
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
+
+        if (typeof options.isMonthRange === 'boolean')
+            this.isMonthRange = options.isMonthRange;
 
         // update day names order to firstDay
         if (this.locale.firstDay != 0) {
@@ -539,33 +543,65 @@
         },
 
         updateMonthsInView: function() {
-            if (this.endDate) {
+            // Handle month range mode differently
+            if (this.isMonthRange) {
+                if (this.endDate) {
+                    // If both dates are visible already, do nothing
+                    if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+                        (this.startDate.format('YYYY') == this.leftCalendar.month.format('YYYY') || this.startDate.format('YYYY') == this.rightCalendar.month.format('YYYY'))
+                        &&
+                        (this.endDate.format('YYYY') == this.leftCalendar.month.format('YYYY') || this.endDate.format('YYYY') == this.rightCalendar.month.format('YYYY'))
+                        ) {
+                        return;
+                    }
 
-                //if both dates are visible already, do nothing
-                if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
-                    (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                    &&
-                    (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
-                    ) {
-                    return;
-                }
-
-                this.leftCalendar.month = this.startDate.clone().date(2);
-                if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
-                    this.rightCalendar.month = this.endDate.clone().date(2);
-                } else {
-                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
-                }
-
-            } else {
-                if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
-                    this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                    if (!this.linkedCalendars && (this.endDate.year() != this.startDate.year())) {
+                        this.rightCalendar.month = this.endDate.clone().date(2);
+                    } else {
+                        this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'year');
+                    }
+                } else {
+                    if (!this.leftCalendar.month || !this.rightCalendar.month || 
+                        (this.leftCalendar.month.format('YYYY') != this.startDate.format('YYYY') && this.rightCalendar.month.format('YYYY') != this.startDate.format('YYYY'))) {
+                        this.leftCalendar.month = this.startDate.clone().date(2);
+                        this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'year');
+                    }
                 }
-            }
-            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
-              this.rightCalendar.month = this.maxDate.clone().date(2);
-              this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+                // Handle max date constraints for month range mode
+                if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month.year() > this.maxDate.year()) {
+                    this.rightCalendar.month = this.maxDate.clone().date(2);
+                    this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'year');
+                }
+            } else {
+                // Original day picker logic
+                if (this.endDate) {
+                    //if both dates are visible already, do nothing
+                    if (!this.singleDatePicker && this.leftCalendar.month && this.rightCalendar.month &&
+                        (this.startDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.startDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                        &&
+                        (this.endDate.format('YYYY-MM') == this.leftCalendar.month.format('YYYY-MM') || this.endDate.format('YYYY-MM') == this.rightCalendar.month.format('YYYY-MM'))
+                        ) {
+                        return;
+                    }
+
+                    this.leftCalendar.month = this.startDate.clone().date(2);
+                    if (!this.linkedCalendars && (this.endDate.month() != this.startDate.month() || this.endDate.year() != this.startDate.year())) {
+                        this.rightCalendar.month = this.endDate.clone().date(2);
+                    } else {
+                        this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                    }
+
+                } else {
+                    if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
+                        this.leftCalendar.month = this.startDate.clone().date(2);
+                        this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
+                    }
+                }
+                if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
+                    this.rightCalendar.month = this.maxDate.clone().date(2);
+                    this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
+                }
             }
         },
 
@@ -617,6 +653,12 @@
         },
 
         renderCalendar: function(side) {
+
+            // If month range mode is enabled, render month picker instead
+            if (this.isMonthRange) {
+                this.renderMonthCalendar(side);
+                return;
+            }
 
             //
             // Build the matrix of dates that will populate the calendar
@@ -839,6 +881,106 @@
 
                     html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '">' + calendar[row][col].date() + '</td>';
 
+                }
+                html += '</tr>';
+            }
+
+            html += '</tbody>';
+            html += '</table>';
+
+            this.container.find('.drp-calendar.' + side + ' .calendar-table').html(html);
+
+        },
+
+        renderMonthCalendar: function(side) {
+
+            var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
+            var year = calendar.month.year();
+
+            var minDate = side == 'left' ? this.minDate : this.startDate;
+            var maxDate = this.maxDate;
+
+            var html = '<table class="table-condensed month-picker">';
+            html += '<thead>';
+            html += '<tr>';
+
+            if ((!minDate || (minDate.year() < year)) && (!this.linkedCalendars || side == 'left')) {
+                html += '<th class="prev available"><span></span></th>';
+            } else {
+                html += '<th></th>';
+            }
+
+            var dateHtml = year;
+
+            if (this.showDropdowns) {
+                var maxYear = (maxDate && maxDate.year()) || (this.maxYear);
+                var minYear = (minDate && minDate.year()) || (this.minYear);
+
+                var yearHtml = '<select class="yearselect">';
+                for (var y = minYear; y <= maxYear; y++) {
+                    yearHtml += '<option value="' + y + '"' +
+                        (y === year ? ' selected="selected"' : '') +
+                        '>' + y + '</option>';
+                }
+                yearHtml += '</select>';
+
+                dateHtml = yearHtml;
+            }
+
+            html += '<th colspan="2" class="month">' + dateHtml + '</th>';
+            if ((!maxDate || (maxDate.year() > year)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
+                html += '<th class="next available"><span></span></th>';
+            } else {
+                html += '<th></th>';
+            }
+
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
+
+            // Create 3x4 grid of months
+            for (var row = 0; row < 3; row++) {
+                html += '<tr>';
+                for (var col = 0; col < 4; col++) {
+                    var monthIndex = row * 4 + col;
+                    var monthMoment = moment([year, monthIndex, 1]);
+                    
+                    var classes = [];
+
+                    // Check if month is in current month
+                    if (monthMoment.isSame(moment(), 'month'))
+                        classes.push('today');
+
+                    // Check if month is before minimum date
+                    if (this.minDate && monthMoment.isBefore(this.minDate, 'month'))
+                        classes.push('off', 'disabled');
+
+                    // Check if month is after maximum date
+                    if (maxDate && monthMoment.isAfter(maxDate, 'month'))
+                        classes.push('off', 'disabled');
+
+                    // Highlight selected start month
+                    if (monthMoment.format('YYYY-MM') == this.startDate.format('YYYY-MM'))
+                        classes.push('active', 'start-date');
+
+                    // Highlight selected end month
+                    if (this.endDate != null && monthMoment.format('YYYY-MM') == this.endDate.format('YYYY-MM'))
+                        classes.push('active', 'end-date');
+
+                    // Highlight months in-between the selected range
+                    if (this.endDate != null && monthMoment.isAfter(this.startDate, 'month') && monthMoment.isBefore(this.endDate, 'month'))
+                        classes.push('in-range');
+
+                    var cname = '', disabled = false;
+                    for (var i = 0; i < classes.length; i++) {
+                        cname += classes[i] + ' ';
+                        if (classes[i] == 'disabled')
+                            disabled = true;
+                    }
+                    if (!disabled)
+                        cname += 'available';
+
+                    html += '<td class="' + cname.replace(/^\s+|\s+$/g, '') + '" data-title="' + 'r' + row + 'c' + col + '" data-month="' + monthIndex + '">' + this.locale.monthNames[monthIndex] + '</td>';
                 }
                 html += '</tr>';
             }
@@ -1226,24 +1368,48 @@
 
         clickPrev: function(e) {
             var cal = $(e.target).parents('.drp-calendar');
-            if (cal.hasClass('left')) {
-                this.leftCalendar.month.subtract(1, 'month');
-                if (this.linkedCalendars)
-                    this.rightCalendar.month.subtract(1, 'month');
+            if (this.isMonthRange) {
+                // In month range mode, navigate by year
+                if (cal.hasClass('left')) {
+                    this.leftCalendar.month.subtract(1, 'year');
+                    if (this.linkedCalendars)
+                        this.rightCalendar.month.subtract(1, 'year');
+                } else {
+                    this.rightCalendar.month.subtract(1, 'year');
+                }
             } else {
-                this.rightCalendar.month.subtract(1, 'month');
+                // Normal day calendar navigation
+                if (cal.hasClass('left')) {
+                    this.leftCalendar.month.subtract(1, 'month');
+                    if (this.linkedCalendars)
+                        this.rightCalendar.month.subtract(1, 'month');
+                } else {
+                    this.rightCalendar.month.subtract(1, 'month');
+                }
             }
             this.updateCalendars();
         },
 
         clickNext: function(e) {
             var cal = $(e.target).parents('.drp-calendar');
-            if (cal.hasClass('left')) {
-                this.leftCalendar.month.add(1, 'month');
+            if (this.isMonthRange) {
+                // In month range mode, navigate by year
+                if (cal.hasClass('left')) {
+                    this.leftCalendar.month.add(1, 'year');
+                } else {
+                    this.rightCalendar.month.add(1, 'year');
+                    if (this.linkedCalendars)
+                        this.leftCalendar.month.add(1, 'year');
+                }
             } else {
-                this.rightCalendar.month.add(1, 'month');
-                if (this.linkedCalendars)
+                // Normal day calendar navigation
+                if (cal.hasClass('left')) {
                     this.leftCalendar.month.add(1, 'month');
+                } else {
+                    this.rightCalendar.month.add(1, 'month');
+                    if (this.linkedCalendars)
+                        this.leftCalendar.month.add(1, 'month');
+                }
             }
             this.updateCalendars();
         },
@@ -1289,6 +1455,43 @@
         clickDate: function(e) {
 
             if (!$(e.target).hasClass('available')) return;
+
+            // Handle month range selection
+            if (this.isMonthRange) {
+                var monthIndex = parseInt($(e.target).attr('data-month'), 10);
+                var cal = $(e.target).parents('.drp-calendar');
+                var side = cal.hasClass('left') ? 'left' : 'right';
+                var calendar = side == 'left' ? this.leftCalendar : this.rightCalendar;
+                var year = calendar.month.year();
+                
+                // Create start and end dates for the selected month
+                var startOfMonth = moment([year, monthIndex, 1]).startOf('month');
+                var endOfMonth = moment([year, monthIndex, 1]).endOf('month');
+                
+                if (this.endDate || startOfMonth.isBefore(this.startDate, 'month')) { //picking start
+                    this.endDate = null;
+                    this.setStartDate(startOfMonth.clone());
+                } else if (!this.endDate && startOfMonth.isBefore(this.startDate, 'month')) {
+                    //special case: clicking the same month for start/end
+                    this.setEndDate(endOfMonth.clone());
+                } else { // picking end
+                    this.setEndDate(endOfMonth.clone());
+                    if (this.autoApply) {
+                        this.calculateChosenLabel();
+                        this.clickApply();
+                    }
+                }
+
+                if (this.singleDatePicker) {
+                    this.setEndDate(endOfMonth.clone());
+                    if (this.autoApply)
+                        this.clickApply();
+                }
+
+                this.updateView();
+                e.stopPropagation();
+                return;
+            }
 
             var title = $(e.target).attr('data-title');
             var row = title.substr(1, 1);
