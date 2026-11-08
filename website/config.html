@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Build a Date Range Picker 4 configuration, try its live preview, and copy the JavaScript.">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9095657276960731" crossorigin="anonymous"></script>
+  <title>Configuration generator · Date Range Picker 4</title>
+  <link rel="stylesheet" href="./daterangepicker.css">
+  <link rel="stylesheet" href="website.css">
+  <style>
+    .docs-mast { display:flex; align-items:center; justify-content:space-between; gap:1rem 2rem; padding-block:1.3rem; border-bottom:1px solid #d5ded6; flex-wrap:wrap; }
+    .docs-mast nav { display:flex; flex-wrap:wrap; gap:.6rem 1.25rem; font-size:.9rem; }
+    .docs-mast nav a { color:#42564d; text-decoration:none; } .docs-mast nav a[aria-current] { color:#155744; font-weight:700; } .docs-mast nav a:hover { text-decoration:underline; }
+    .docs-intro { padding:clamp(2.5rem,6vw,5.5rem) 0 2rem; }
+    .docs-intro h1 { margin:0 0 .65rem; font-size:clamp(2.1rem,6vw,4rem); letter-spacing:-.055em; line-height:1.05; }
+    .docs-intro p { max-width:63ch; color:#42564d; font-size:1.05rem; line-height:1.6; margin:0; }
+    .docs-end { border-top:1px solid #d5ded6; margin-top:3rem; padding-block:1.5rem; display:flex; flex-wrap:wrap; gap:1rem 2rem; font-size:.9rem; }
+    .generator-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.92fr); gap:clamp(1.5rem,4vw,4rem); align-items:start; }
+    .config-tools { display:grid; gap:1.15rem; position:sticky; top:1rem; }
+    .generator-grid :is(h2,h3) { margin:0; line-height:1.15; letter-spacing:-.035em; }
+    .option-block { border:1px solid #d5ded6; border-radius:10px; background:#fff; margin:.7rem 0; }
+    .option-block summary { display:list-item; padding:1.05rem 1.15rem; cursor:pointer; font-weight:650; color:#162a24; }
+    .option-block summary::marker { color:#155744; } .setting-body { padding:0 1.15rem 1.15rem; }
+    .setting-fields,.check-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.85rem; }
+    .setting-body > * + * { margin-top:1rem; }
+    .generator-grid .field { display:grid; gap:.4rem; min-width:0; align-content:start; font-size:.85rem; font-weight:600; }
+    .generator-grid .field input,.generator-grid .field select { width:100%; min-width:0; min-height:2.8rem; padding:.6rem .7rem; border:1px solid #a6b8ac; border-radius:7px; font:inherit; color:#162a24; background:#fff; box-sizing:border-box; }
+    .generator-grid .field input:disabled { background:#f3f5f2; } .check-setting { display:flex; gap:.5rem; align-items:center; font-size:.9rem; line-height:1.35; min-height:2rem; cursor:pointer; }
+    .check-setting input { width:1.05rem; height:1.05rem; accent-color:#155744; margin:0; flex-shrink:0; }
+    .check-setting:has(input:disabled),.field:has(:disabled)>span { color:#68756c; }
+    .generator-grid .panel { border:1px solid #d5ded6; border-radius:12px; padding:clamp(1rem,3vw,1.5rem); min-width:0; }
+    .generator-preview { background:#e9f3e9; position:relative; }
+    .generator-preview h2 { margin-bottom:1rem; }
+    .code-heading,.settings-heading { display:flex; align-items:center; justify-content:space-between; gap:.75rem; flex-wrap:wrap; }
+    .code-heading h2,.settings-heading h2,.generator-preview h2 { font-size:1.3rem; }
+    .code-heading button,.settings-heading button { border:1px solid #9bb3a2; background:white; color:#155744; padding:.45rem .8rem; border-radius:7px; font:inherit; font-size:.85rem; cursor:pointer; }
+    .code-heading button:disabled { opacity:.65; cursor:default; }
+    .config-output pre { margin:1rem 0 0; overflow:auto; max-height:36vh; background:#162a24; color:#eff8f1; padding:1rem; line-height:1.6; border-radius:8px; font-size:.85rem; }
+    .config-output pre code { background:transparent; color:inherit; }
+    #form-status { color:#803e20; line-height:1.5; } #form-status:empty,#copy-status:empty { display:none; }
+    .mobile-preview-link { display:none; }
+    @media(max-width:820px){ .generator-grid { display:flex; flex-direction:column; gap:1.25rem; } .generator-grid>*, .config-tools>.panel { width:100%; }
+      .config-tools { display:contents; } .generator-preview { order:-1; } .config-output { order:2; } .mobile-preview-link { display:inline-block; margin-top:.8rem; } }
+    @media(max-width:500px){ .setting-fields,.check-grid { grid-template-columns:1fr; } .generator-grid .field input,.generator-grid .field select { font-size:16px; } }
+  </style>
+  <script src="./daterangepicker.js" defer></script>
+  <script src="config.js" defer></script>
+</head>
+<body class="subpage">
+  <header class="shell docs-mast">
+    <a class="wordmark" href="index.html">Date Range Picker</a>
+    <nav aria-label="Documentation navigation">
+      <a href="index.html">Overview</a>
+      <a href="reference.html">API reference</a>
+      <a href="config.html" aria-current="page">Configuration generator</a>
+    </nav>
+  </header>
+  <main class="shell" id="config">
+    <div class="docs-intro">
+      <h1>Configuration generator</h1>
+      <p>Adjust the options, try the picker, and copy the JavaScript into a page with an text input with <code>id="date-range"</code>.</p>
+    </div>
+    <noscript>Enable JavaScript to use the generator. The <a href="reference.html">API reference</a> lists every option.</noscript>
+    <div class="generator-grid">
+      <form id="settings" novalidate>
+        <div class="settings-heading"><h2>Options</h2><button type="reset">Reset to defaults</button></div>
+        <details class="option-block" open><summary>Dates and limits</summary>
+                <div class="setting-body"><div class="setting-fields"><label class="field"><span>Start date</span><input name="startDate" type="date" value="" ></label>
+                  <label class="field"><span>End date</span><input name="endDate" type="date" value="" ></label>
+                  <label class="field"><span>Earliest allowed</span><input name="minDate" type="date" value="" ></label>
+                  <label class="field"><span>Latest allowed</span><input name="maxDate" type="date" value="" ></label>
+                  <label class="field"><span>Minimum span (days)</span><input name="minSpan" type="number" value="" min="0" step="1" placeholder="No minimum"></label>
+                  <label class="field"><span>Maximum span (days)</span><input name="maxSpan" type="number" value="" min="0" step="1" placeholder="No maximum"></label></div></div></details>
+        <details class="option-block"><summary>Calendars and presets</summary>
+                <div class="setting-body"><label class="field"><span>Selection mode</span><select name="mode"><option value="range" selected>Range · two calendars</option><option value="singleCalendar">Range · one calendar</option><option value="singleDatePicker">Single date</option></select></label><div class="check-grid"><label class="check-setting"><input type="checkbox" name="ranges"><span>Include common presets</span></label>
+                  <label class="check-setting"><input type="checkbox" name="applyOnRangeClick" checked><span>Apply presets immediately</span></label>
+                  <label class="check-setting"><input type="checkbox" name="showCustomRangeLabel" checked><span>Include Custom Range</span></label>
+                  <label class="check-setting"><input type="checkbox" name="alwaysShowCalendars"><span>Always display calendars</span></label>
+                  <label class="check-setting"><input type="checkbox" name="linkedCalendars" checked><span>Link calendar navigation</span></label>
+                  <label class="check-setting"><input type="checkbox" name="showDropdowns"><span>Month and year dropdowns</span></label>
+                  <label class="check-setting"><input type="checkbox" name="autoApply"><span>Apply completed ranges automatically</span></label>
+                  <label class="check-setting"><input type="checkbox" name="autoUpdateInput" checked><span>Write selection to input</span></label></div><div class="setting-fields"><label class="field"><span>First dropdown year</span><input name="minYear" type="number" value="" min="1" max="9999" step="1"></label>
+                  <label class="field"><span>Last dropdown year</span><input name="maxYear" type="number" value="" min="1" max="9999" step="1"></label>
+                  <label class="field"><span>Week numbers</span><select name="weeks"><option value="" selected>Hidden</option><option value="showWeekNumbers">Locale</option><option value="showISOWeekNumbers">ISO 8601</option></select></label></div></div></details>
+        <details class="option-block"><summary>Time</summary>
+                <div class="setting-body"><div class="check-grid"><label class="check-setting"><input type="checkbox" name="timePicker"><span>Enable time selection</span></label>
+                  <label class="check-setting"><input type="checkbox" name="timePicker24Hour"><span>24-hour time</span></label>
+                  <label class="check-setting"><input type="checkbox" name="timePickerSeconds"><span>Show seconds</span></label></div><label class="field"><span>Minute increment</span><input name="timePickerIncrement" type="number" value="1" min="1" max="60" step="1" required></label></div></details>
+        <details class="option-block"><summary>Format and labels</summary>
+                <div class="setting-body"><div class="setting-fields"><label class="field"><span>Date format</span><input name="format" type="text" value="MM/DD/YYYY" required></label>
+                  <label class="field"><span>Range separator</span><input name="separator" type="text" value=" - " required></label>
+                  <label class="field"><span>First weekday</span><select name="firstDay"><option value="0" selected>Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select></label>
+                  <label class="field"><span>Text direction</span><select name="direction"><option value="ltr" selected>Left to right</option><option value="rtl">Right to left</option></select></label>
+                  <label class="field"><span>Apply button label</span><input name="applyLabel" type="text" value="Apply" required></label>
+                  <label class="field"><span>Cancel button label</span><input name="cancelLabel" type="text" value="Cancel" required></label>
+                  <label class="field"><span>Custom range label</span><input name="customRangeLabel" type="text" value="Custom Range" required></label>
+                  <label class="field"><span>Week label</span><input name="weekLabel" type="text" value="W" required></label></div><label class="field"><span>Weekday labels, starting with Sunday</span><input name="daysOfWeek" type="text" value="Su, Mo, Tu, We, Th, Fr, Sa" ></label><label class="field"><span>Month labels, starting with January</span><input name="monthNames" type="text" value="Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec" ></label></div></details>
+        <details class="option-block"><summary>Placement and classes</summary>
+                <div class="setting-body"><div class="setting-fields"><label class="field"><span>Horizontal opening</span><select name="opens"><option value="right" selected>right</option><option value="center">center</option><option value="left">left</option></select></label>
+                  <label class="field"><span>Vertical opening</span><select name="drops"><option value="down" selected>down</option><option value="auto">auto</option><option value="up">up</option></select></label>
+                  <label class="field"><span>Parent selector</span><input name="parentEl" type="text" value="body" required></label>
+                  <label class="field"><span>Shared button classes</span><input name="buttonClasses" type="text" value="btn btn-sm" ></label>
+                  <label class="field"><span>Apply button classes</span><input name="applyButtonClasses" type="text" value="btn-primary" ></label>
+                  <label class="field"><span>Cancel button classes</span><input name="cancelButtonClasses" type="text" value="btn-default" ></label></div></div></details>
+        <a class="mobile-preview-link" href="#preview">Try this configuration ↑</a>
+      </form>
+      <div class="config-tools">
+        <section id="preview" class="panel generator-preview" aria-labelledby="preview-title">
+          <h2 id="preview-title">Live preview</h2>
+          <label class="field" for="date-range"><span>Date range</span><input id="date-range" type="text" autocomplete="off" placeholder="Choose dates"></label>
+          <p id="form-status" role="status"></p>
+        </section>
+        <section class="panel config-output" aria-labelledby="code-title">
+          <div class="code-heading"><h2 id="code-title">Generated JavaScript</h2><button id="copy-code" type="button">Copy code</button></div>
+          <pre tabindex="0" aria-label="Generated JavaScript"><code id="generated"></code></pre>
+          <p id="copy-status" role="status"></p>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="shell docs-end"><a href="index.html">Documentation</a><a href="reference.html">API reference</a><a href="https://github.com/dangrossman/daterangepicker">GitHub repository</a></footer>
+</body>
+</html>

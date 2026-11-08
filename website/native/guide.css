@@ -1,0 +1,107 @@
+.guide-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 1.3rem;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line, #d4dcd6);
+}
+.guide-page {
+  padding-block: clamp(2rem, 6vw, 5rem);
+  max-width: 56rem;
+}
+.guide-page > section + section {
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+.guide-page > section, .guide-page > nav, .guide-lead {
+  max-width: 56rem;
+}
+.guide-page h1 {
+  margin: 0 0 1rem;
+}
+.guide-lead {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  max-width: 48rem;
+}
+.guide-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin: 1.75rem 0 1.25rem;
+}
+.guide-tabs a {
+  padding: .55rem .9rem;
+  border: 1px solid var(--line, #d4dcd6);
+  border-radius: .55rem;
+  color: inherit;
+  text-decoration: none;
+}
+.guide-tabs a[aria-current], .guide-tabs a:hover {
+  border-color: currentColor;
+}
+.guide-tabs a[aria-current] {
+  font-weight: 700;
+  background: var(--wash, #edf3ed);
+  color: var(--forest, #155744);
+}
+.guide-page .live-panel {
+  padding: clamp(1.2rem, 3.5vw, 2.3rem);
+}
+.live-panel h2 {
+  margin: 0 0 1.2rem;
+}
+.live-panel label {
+  display: block;
+  font-weight: 600;
+  margin: 0 0 .4rem;
+}
+.live-panel input {
+  font: inherit;
+  width: min(100%, 24rem);
+  padding: .7rem .9rem;
+  border: 1px solid var(--line, #a4b4ac);
+  border-radius: .45rem;
+  background: white;
+  color: #152b24;
+}
+.live-panel output {
+  display: block;
+  margin-top: .5rem;
+}
+.live-panel output:empty {
+  display: none;
+}
+.code-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.2rem;
+}
+.code-heading h2 {
+  margin: 0;
+}
+.guide-code {
+  padding: 1.2rem 1.4rem;
+  border-radius: .75rem;
+  overflow-x: auto;
+  font-size: .87rem;
+  line-height: 1.6;
+  font-family: var(--mono, Consolas, monospace);
+  background: var(--code-bg, #162920);
+  color: #f4f6f3;
+}
+.guide-code code {
+  padding: 0;
+  color: inherit;
+  background: none;
+}
+.guide-page p {
+  line-height: 1.65;
+}
+@media (max-width: 550px) {
+  .guide-tabs { gap: .35rem; }
+  .guide-tabs a { font-size: .88rem; }
+  .guide-header { font-size: .94rem; }
+}

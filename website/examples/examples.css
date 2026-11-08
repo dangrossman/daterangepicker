@@ -1,0 +1,10 @@
+.example-page .guide-lead { max-width: 64ch; color: var(--muted); }
+.example-page .demo { padding: clamp(22px, 6vw, 42px); background: var(--wash); border: 1px solid var(--line); border-radius: 12px; }
+.demo label { display: grid; gap: 8px; max-width: 370px; font-size: .9rem; font-weight: 650; }
+.demo input { width: 100%; font: inherit; font-size: 1rem; font-weight: 450; padding: .8rem 1rem; color: var(--ink); background: white; border: 1px solid #91aaa2; border-radius: 7px; }
+.example-page h2 { margin: 32px 0 16px; }
+.example-page details { background: white; border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; }
+.example-page details p { padding-inline: 16px; }
+.example-page summary { padding: 12px 16px; cursor: pointer; font: 600 .87rem/1.5 var(--mono); }
+.example-page pre { margin: 0; padding: 16px; color: #e2f4ed; background: #182d26; border-radius: 0 0 7px 7px; }
+.example-links { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 24px; font-size: .84rem; }

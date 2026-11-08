@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9095657276960731" crossorigin="anonymous"></script>
+  <title>Browser ES module example · Date Range Picker 4</title>
+  <link rel="stylesheet" href="daterangepicker.css">
+  <link rel="stylesheet" href="website.css">
+  <link rel="stylesheet" href="native/guide.css">
+</head>
+<body class="subpage">
+  <header class="shell guide-header">
+    <a class="wordmark" href="index.html">Date Range Picker</a>
+    <a href="index.html#examples">All examples</a>
+  </header>
+  <main class="shell guide-page">
+    <h1>Import a browser module</h1>
+    <p class="guide-lead">Use a relative module import to run the picker directly in the browser. This example lets a visitor choose the start and end times of a booking.</p>
+    <nav aria-label="Browser examples" class="guide-tabs">
+      <a href="native/classic.html">Classic script</a>
+      <a href="native/module.html" aria-current="page">Browser ES module</a>
+      <a href="native/jquery.html">jQuery & Moment</a>
+      <a href="native/amd.html">RequireJS / AMD</a>
+    </nav>
+    <section class="panel live-panel">
+      <h2>Try it</h2>
+      <label class="field" for="dates">Booking window</label>
+      <input id="dates" type="text" autocomplete="off">
+      <output id="selection" for="dates" aria-live="polite"></output>
+    </section>
+    <section>
+      <div class="code-heading">
+        <h2>Complete example</h2>
+        <button class="button" type="button" id="copy" hidden>Copy HTML</button>
+      </div>
+      <p>Save the HTML as <code>index.html</code> beside <a href="daterangepicker.css" download="daterangepicker.css">daterangepicker.css</a> and <a href="daterangepicker.mjs" download="daterangepicker.mjs">daterangepicker.mjs</a>. Serve the folder over HTTP.</p>
+      <pre class="guide-code"><code id="source"></code></pre>
+    </section>
+  </main>
+
+  <script id="app" type="module">
+import DateRangePicker from './daterangepicker.mjs';
+
+const start = new Date();
+start.setHours(9, 0, 0, 0);
+const end = new Date(start);
+end.setHours(17);
+
+new DateRangePicker('#dates', {
+  startDate: start,
+  endDate: end,
+  timePicker: true,
+  timePicker24Hour: true,
+  timePickerIncrement: 15,
+  locale: { format: 'YYYY-MM-DD HH:mm' }
+}, (startDate, endDate) => {
+  document.querySelector('#selection').textContent =
+    startDate.format('D MMM, HH:mm') + ' to ' + endDate.format('D MMM, HH:mm');
+});
+  </script>
+  <script src="native/source.js"></script>
+</body>
+</html>

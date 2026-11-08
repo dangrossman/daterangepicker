@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9095657276960731" crossorigin="anonymous"></script>
+  <title>Angular example · Date Range Picker</title>
+  <link rel="stylesheet" href="../../website.css">
+  <link rel="stylesheet" href="../../native/guide.css">
+  <link rel="stylesheet" href="../../daterangepicker.css">
+  <link rel="stylesheet" href="../examples.css">
+  <script type="module" src="../assets/angular.js"></script>
+</head>
+<body class="subpage">
+  <header class="shell guide-header">
+    <a class="wordmark" href="../../index.html">Date Range Picker</a>
+    <a href="../../index.html#integrations">Integrations</a>
+  </header>
+  <main class="shell guide-page example-page">
+    <h1>Angular</h1>
+    <p class="guide-lead">Read the input with ViewChild after the view initializes. The standalone component removes its picker when Angular destroys the view.</p>
+    <section class="demo" aria-label="Interactive date picker"><report-dates></report-dates></section>
+    <h2>App source</h2>
+    <details open><summary>report-dates.ts</summary><pre><code>import {
+  AfterViewInit, Component, ElementRef, OnDestroy, ViewChild
+} from '@angular/core';
+import DateRangePicker from 'daterangepicker';
+import 'daterangepicker/daterangepicker.css';
+
+@Component({
+  selector: 'report-dates',
+  standalone: true,
+  template: '&lt;label&gt;Report dates&lt;input #dates type="text"&gt;&lt;/label&gt;'
+})
+export class ReportDates implements AfterViewInit, OnDestroy {
+  @ViewChild('dates', { static: true }) input!: ElementRef&lt;HTMLInputElement&gt;;
+  private picker?: DateRangePicker;
+
+  ngAfterViewInit() {
+    this.picker = new DateRangePicker(this.input.nativeElement, { singleCalendar: true });
+  }
+
+  ngOnDestroy() {
+    this.picker?.remove();
+  }
+}</code></pre></details>
+<details><summary>main.ts</summary><pre><code>import '@angular/compiler';
+import { provideZonelessChangeDetection } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { ReportDates } from './report-dates';
+
+bootstrapApplication(ReportDates, {
+  providers: [provideZonelessChangeDetection()]
+}).catch(console.error);</code></pre></details>
+<details><summary>index.html</summary><pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Report dates&lt;/title&gt;
+  &lt;link rel="stylesheet" href="../../daterangepicker.css"&gt;
+  &lt;script type="module" src="../assets/angular.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;report-dates&gt;&lt;/report-dates&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></details>
+    <details><summary>Run this example locally</summary>
+      <p>Serve the <code>website</code> directory over HTTP and open <code>/examples/angular/</code>. To edit the app, change its files in <code>example/integrations/angular</code> and run these commands from <code>example/integrations</code>.</p>
+      <pre><code>npm ci
+npm run build</code></pre>
+    </details>
+    <p class="example-links"><a href="../../index.html#usage">Install the picker</a><a href="../assets/licenses.txt">Third-party licenses</a></p>
+  </main>
+</body>
+</html>

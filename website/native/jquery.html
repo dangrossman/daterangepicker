@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9095657276960731" crossorigin="anonymous"></script>
+  <title>jQuery & Moment example · Date Range Picker 4</title>
+  <link rel="stylesheet" href="daterangepicker.css">
+  <link rel="stylesheet" href="website.css">
+  <link rel="stylesheet" href="native/guide.css">
+</head>
+<body class="subpage">
+  <header class="shell guide-header">
+    <a class="wordmark" href="index.html">Date Range Picker</a>
+    <a href="index.html#examples">All examples</a>
+  </header>
+  <main class="shell guide-page">
+    <h1>Use the jQuery plugin</h1>
+    <p class="guide-lead">Load jQuery and Moment before the version 4 script to keep an existing plugin call, Moment date values and namespaced event handlers.</p>
+    <nav aria-label="Browser examples" class="guide-tabs">
+      <a href="native/classic.html">Classic script</a>
+      <a href="native/module.html">Browser ES module</a>
+      <a href="native/jquery.html" aria-current="page">jQuery & Moment</a>
+      <a href="native/amd.html">RequireJS / AMD</a>
+    </nav>
+    <section class="panel live-panel">
+      <h2>Try it</h2>
+      <label class="field" for="dates">Statement period</label>
+      <input id="dates" type="text" autocomplete="off">
+      <output id="selection" for="dates" aria-live="polite"></output>
+    </section>
+    <section>
+      <div class="code-heading">
+        <h2>Complete example</h2>
+        <button class="button" type="button" id="copy" hidden>Copy HTML</button>
+      </div>
+      <p>Save the HTML as <code>index.html</code> beside <a href="daterangepicker.css" download="daterangepicker.css">daterangepicker.css</a>, <a href="native/vendor/jquery.min.js" download="jquery.min.js">jquery.min.js</a>, <a href="native/vendor/moment.min.js" download="moment.min.js">moment.min.js</a>, and <a href="daterangepicker.js" download="daterangepicker.js">daterangepicker.js</a>. Serve the folder over HTTP.</p>
+      <pre class="guide-code"><code id="source"></code></pre>
+    </section>
+  </main>
+  <script data-file="jquery.min.js" src="native/vendor/jquery.min.js"></script>
+  <script data-file="moment.min.js" src="native/vendor/moment.min.js"></script>
+  <script data-file="daterangepicker.js" src="daterangepicker.js"></script>
+  <script id="app">
+const $dates = $('#dates');
+$dates.daterangepicker({
+  startDate: moment().startOf('month'),
+  endDate: moment().endOf('month')
+});
+
+$dates.on('apply.daterangepicker', function (event, picker) {
+  $('#selection').text(
+    picker.startDate.format('LL') + ' to ' + picker.endDate.format('LL')
+  );
+});
+  </script>
+  <script src="native/source.js"></script>
+</body>
+</html>

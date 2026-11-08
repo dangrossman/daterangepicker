@@ -1,179 +1,113 @@
-$(document).ready(function() {
+(() => {
+  const get = id => document.getElementById(id);
+  const escape = text => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-    $('#config-text').keyup(function() {
-      eval($(this).val());
+  function renderCode(id, source) {
+    // Highlight only tokens from our examples. Escape the text before inserting it.
+    const tokens = source.split(/("[^"\n]*"|'[^'\n]*'|\b(?:const|new|import|from|function|return)\b|<\/?[\w-]+)/g);
+    get(id).innerHTML = tokens.map((token, index) => {
+      if (index % 2 === 0) return escape(token);
+      return '<span class="' + (/^["']/.test(token) ? 'str' : 'token') + '">' + escape(token) + '</span>';
+    }).join('');
+  }
+
+  const start = new Date();
+  start.setDate(12);
+  const end = new Date(start);
+  end.setDate(18);
+  const compact = matchMedia('(max-width: 500px)');
+  function setupPlayground(first, last) {
+    const picker = new DateRangePicker('#hero-range', {
+      parentEl: '#hero-calendar', startDate: first, endDate: last,
+      autoApply: true, singleCalendar: compact.matches,
+      locale: { format: 'MMM D, YYYY', separator: '   →   ' }
     });
-    
-    $('.configurator input, .configurator select').change(function() {
-      updateConfig();
-    });
+    picker.show();
+    return picker;
+  }
+  let playground = setupPlayground(start, end);
+  // This example stays open, so readers can make several selections in a row.
+  get('hero-range').addEventListener('hide.daterangepicker', () => {
+    queueMicrotask(() => { if (!playground.isShowing) playground.show(); });
+  });
+  compact.addEventListener('change', () => {
+    playground = setupPlayground(playground.startDate.toDate(), (playground.endDate || playground.startDate).toDate());
+  });
 
-    $('.demo i').click(function() {
-      $(this).parent().find('input').click();
-    });
+  get('package-manager').addEventListener('change', event => {
+    const command = { npm: 'npm install', pnpm: 'pnpm add', Yarn: 'yarn add', Bun: 'bun add' }[event.target.value];
+    get('install-command').textContent = command + ' ./daterangepicker-4.0.0.tgz';
+  });
+  document.querySelector('.mobile-menu nav').addEventListener('click', () => {
+    document.querySelector('.mobile-menu').open = false;
+  });
+  const basic = get('install-code').textContent;
+  renderCode('hosted-code', get('hosted-code').textContent);
+  const installs = {
+    browser: ['index.html', basic, 'Place the JavaScript and CSS beside your page.', 'native/classic.html'],
+    module: ['index.html', `<link rel="stylesheet" href="./daterangepicker.css">
+<label for="dates">Report dates</label>
+<input id="dates">
 
-    $('#startDate').daterangepicker({
-      singleDatePicker: true,
-      startDate: moment().subtract(6, 'days')
-    });
+<script type="module">
+  import DateRangePicker from './daterangepicker.mjs';
+  new DateRangePicker('#dates');
+</script>`, 'Serve the files over HTTP to load browser modules.', 'native/module.html'],
+    package: ['main.js', `import DateRangePicker from 'daterangepicker';
+import 'daterangepicker/daterangepicker.css';
+new DateRangePicker('#dates');`, 'Mount an input with id="dates" before running this module.', 'examples/esm/index.html']
+  };
+  function selectInstall(button) {
+    for (const tab of document.querySelectorAll('[data-install]')) tab.setAttribute('aria-pressed', tab === button);
+    const [filename, source, note, url] = installs[button.dataset.install];
+    get('package-setup').hidden = button.dataset.install !== 'package';
+    get('code-name').textContent = filename;
+    renderCode('install-code', source);
+    get('install-note').textContent = note;
+    get('install-demo').href = url;
+  }
+  for (const button of document.querySelectorAll('[data-install]')) {
+    button.addEventListener('click', () => selectInstall(button));
+  }
+  selectInstall(document.querySelector('[data-install=browser]'));
 
-    $('#endDate').daterangepicker({
-      singleDatePicker: true,
-      startDate: moment()
-    });
+  for (const sample of document.querySelectorAll('.samples')) {
+    renderCode(sample.querySelector('code').id, sample.querySelector('script').textContent.trim());
+  }
 
-    //updateConfig();
-
-    function updateConfig() {
-      var options = {};
-
-      if ($('#singleDatePicker').is(':checked'))
-        options.singleDatePicker = true;
-      
-      if ($('#showDropdowns').is(':checked'))
-        options.showDropdowns = true;
-
-      if ($('#minYear').val().length && $('#minYear').val() != 1)
-        options.minYear = parseInt($('#minYear').val(), 10);
-
-      if ($('#maxYear').val().length && $('#maxYear').val() != 1)
-        options.maxYear = parseInt($('#maxYear').val(), 10);
-
-      if ($('#showWeekNumbers').is(':checked'))
-        options.showWeekNumbers = true;
-
-      if ($('#showISOWeekNumbers').is(':checked'))
-        options.showISOWeekNumbers = true;
-
-      if ($('#timePicker').is(':checked'))
-        options.timePicker = true;
-      
-      if ($('#timePicker24Hour').is(':checked'))
-        options.timePicker24Hour = true;
-
-      if ($('#timePickerIncrement').val().length && $('#timePickerIncrement').val() != 1)
-        options.timePickerIncrement = parseInt($('#timePickerIncrement').val(), 10);
-
-      if ($('#timePickerSeconds').is(':checked'))
-        options.timePickerSeconds = true;
-      
-      if ($('#autoApply').is(':checked'))
-        options.autoApply = true;
-
-      if ($('#maxSpan').is(':checked'))
-        options.maxSpan = { days: 7 };
-
-      if ($('#ranges').is(':checked')) {
-        options.ranges = {
-          'Today': [moment(), moment()],
-          'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-          'This Month': [moment().startOf('month'), moment().endOf('month')],
-          'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        };
+  for (const button of document.querySelectorAll('[data-copy]')) {
+    button.addEventListener('click', async () => {
+      const code = get(button.dataset.copy);
+      try {
+        await navigator.clipboard.writeText(code.textContent);
+        button.textContent = 'Copied';
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        button.textContent = document.execCommand('copy') ? 'Copied' : 'Select & copy';
       }
+      setTimeout(() => { button.textContent = 'Copy'; }, 1600);
+    });
+  }
 
-      if ($('#locale').is(':checked')) {
-        options.locale = {
-          format: 'MM/DD/YYYY',
-          separator: ' - ',
-          applyLabel: 'Apply',
-          cancelLabel: 'Cancel',
-          fromLabel: 'From',
-          toLabel: 'To',
-          customRangeLabel: 'Custom',
-          weekLabel: 'W',
-          daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-          monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          firstDay: 1
-        };
-      }
-
-      if (!$('#linkedCalendars').is(':checked'))
-        options.linkedCalendars = false;
-
-      if (!$('#autoUpdateInput').is(':checked'))
-        options.autoUpdateInput = false;
-
-      if (!$('#showCustomRangeLabel').is(':checked'))
-        options.showCustomRangeLabel = false;
-
-      if ($('#alwaysShowCalendars').is(':checked'))
-        options.alwaysShowCalendars = true;
-
-      if ($('#parentEl').val().length)
-        options.parentEl = $('#parentEl').val();
-
-      if ($('#startDate').val().length) 
-        options.startDate = $('#startDate').val();
-
-      if ($('#endDate').val().length)
-        options.endDate = $('#endDate').val();
-      
-      if ($('#minDate').val().length)
-        options.minDate = $('#minDate').val();
-
-      if ($('#maxDate').val().length)
-        options.maxDate = $('#maxDate').val();
-
-      if ($('#opens').val().length && $('#opens').val() != 'right')
-        options.opens = $('#opens').val();
-
-      if ($('#drops').val().length && $('#drops').val() != 'down')
-        options.drops = $('#drops').val();
-
-      if ($('#buttonClasses').val().length && $('#buttonClasses').val() != 'btn btn-sm')
-        options.buttonClasses = $('#buttonClasses').val();
-
-      if ($('#applyButtonClasses').val().length && $('#applyButtonClasses').val() != 'btn-primary')
-        options.applyButtonClasses = $('#applyButtonClasses').val();
-
-      if ($('#cancelButtonClasses').val().length && $('#cancelButtonClasses').val() != 'btn-default')
-        options.cancelClass = $('#cancelButtonClasses').val();
-
-      $('#config-demo').daterangepicker(options, function(start, end, label) { console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
-      
-      if (typeof options.ranges !== 'undefined') {
-        options.ranges = {};
-      }
-
-      var option_text = JSON.stringify(options, null, '    ');
-
-      var replacement = "ranges: {\n"
-          + "        'Today': [moment(), moment()],\n"
-          + "        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],\n"
-          + "        'Last 7 Days': [moment().subtract(6, 'days'), moment()],\n"
-          + "        'Last 30 Days': [moment().subtract(29, 'days'), moment()],\n"
-          + "        'This Month': [moment().startOf('month'), moment().endOf('month')],\n"
-          + "        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]\n"
-          + "    }";
-      option_text = option_text.replace(new RegExp('"ranges"\: \{\}', 'g'), replacement);
-
-      $('#config-text').val("$('#demo').daterangepicker(" + option_text + ", function(start, end, label) {\n  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');\n});");
-
+  const sections = [...document.querySelectorAll('.side a[href^="#"]')];
+  const observer = new IntersectionObserver(entries => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      for (const link of sections) link.classList.toggle('current', link.hash === '#' + entry.target.id);
     }
+  }, { rootMargin: '0px 0px -65% 0px' });
+  for (const link of sections) observer.observe(document.querySelector(link.hash));
 
-    $(window).scroll(function (event) {
-        var scroll = $(window).scrollTop();
-        if (scroll > 180) {
-          $('.leftcol').css('position', 'fixed');
-          $('.leftcol').css('top', '10px');
-        } else {
-          $('.leftcol').css('position', 'absolute');
-          $('.leftcol').css('top', '180px');
-        }
-    });
-
-    var bg = new Trianglify({
-      x_colors: ["#e1f3fd", "#eeeeee", "#407dbf"],
-      y_colors: 'match_x',
-      width: document.body.clientWidth,
-      height: 150,
-      stroke_width: 0,
-      cell_size: 20
-    });
-
-    $('#jumbo').css('background-image', 'url(' + bg.png() + ')');
-
-});
+  // Keep links from the v3 documentation usable after the redesign.
+  function followLegacyLink() {
+    const hash = location.hash.slice(1);
+    if (['options', 'events', 'methods'].includes(hash)) location.replace('reference.html#' + hash);
+    if (hash === 'config') location.replace('config.html#config');
+  }
+  window.addEventListener('hashchange', followLegacyLink);
+  followLegacyLink();
+})();

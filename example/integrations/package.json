@@ -1,0 +1,23 @@
+{
+  "name": "date-range-picker-examples",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@angular/common": "~20.3.0",
+    "@angular/compiler": "~20.3.0",
+    "@angular/core": "~20.3.0",
+    "@angular/platform-browser": "~20.3.0",
+    "daterangepicker": "file:../..",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "rxjs": "~7.8.2",
+    "svelte": "^5.40.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "esbuild": "~0.25.12"
+  }
+}

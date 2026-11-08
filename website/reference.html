@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Date Range Picker 4 options, date formats, methods and events.">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9095657276960731" crossorigin="anonymous"></script>
+  <title>API reference · Date Range Picker 4</title>
+  <link rel="stylesheet" href="website.css">
+  <style>
+    .docs-mast { display:flex; align-items:center; justify-content:space-between; gap:1rem 2rem; padding-block:1.3rem; border-bottom:1px solid #d5ded6; flex-wrap:wrap; }
+    .docs-mast nav { display:flex; flex-wrap:wrap; gap:.6rem 1.25rem; font-size:.9rem; }
+    .docs-mast nav a { color:#42564d; text-decoration:none; } .docs-mast nav a[aria-current] { color:#155744; font-weight:700; } .docs-mast nav a:hover { text-decoration:underline; }
+    .docs-intro { padding:clamp(2.5rem,6vw,5.5rem) 0 2rem; }
+    .docs-intro h1 { margin:0 0 .65rem; font-size:clamp(2.1rem,6vw,4rem); letter-spacing:-.055em; line-height:1.05; }
+    .docs-intro p { max-width:63ch; color:#42564d; font-size:1.05rem; line-height:1.6; margin:0; }
+    .docs-end { border-top:1px solid #d5ded6; margin-top:3rem; padding-block:1.5rem; display:flex; flex-wrap:wrap; gap:1rem 2rem; font-size:.9rem; }
+    .ref-layout { display:grid; grid-template-columns:minmax(10rem,14rem) minmax(0,1fr); gap:clamp(2rem,6vw,6rem); align-items:start; }
+    .ref-nav { position:sticky; top:1rem; display:grid; gap:.65rem; padding-block:1.25rem; border-top:1px solid #d5ded6; font-size:.9rem; }
+    .ref-nav a { color:#42564d; } .ref-nav strong { margin-bottom:.35rem; }
+    .ref-body h2 { margin:0 0 1rem; font-size:clamp(1.65rem,3vw,2.4rem); letter-spacing:-.04em; } .ref-body h3 { font-size:1.25rem; }
+    .ref-body p { max-width:70ch; line-height:1.65; } .ref-body section { scroll-margin-top:1.3rem; }
+    .ref-body > section + section { margin-top:3.5rem; } .ref-section { margin-top:2rem; }
+    .api-list { margin:0; } .api-list > div { border-top:1px solid #d5ded6; padding-block:1rem; display:grid; grid-template-columns:minmax(12rem,.9fr) minmax(0,1.5fr); gap:1.1rem; }
+    .api-list > div:last-child { border-bottom:1px solid #d5ded6; } .api-list dt { font-weight:600; }
+    .api-list dt code { overflow-wrap:anywhere; color:#155744; } .api-list dt small { display:block; color:#52665b; font-size:.8rem; line-height:1.4; margin-top:.3rem; font-weight:400; }
+    .api-list dd { margin:0; line-height:1.55; }
+    .ref-body pre { background:#162a24; color:#ebf3ec; border-radius:10px; overflow:auto; padding:1.2rem; line-height:1.6; }
+    .ref-body pre code { color:inherit; background:transparent; } .ref-body :not(pre)>code { overflow-wrap:anywhere; }
+    @media(max-width:850px){ .ref-layout { grid-template-columns:minmax(0,1fr); gap:1.5rem; } .ref-nav { position:static; display:flex; flex-wrap:wrap; gap:.55rem 1.15rem; } .ref-nav strong { width:100%; } }
+    @media(max-width:600px){ .api-list > div { grid-template-columns:1fr; gap:.35rem; } }
+  </style>
+</head>
+<body class="subpage">
+  <header class="shell docs-mast">
+    <a class="wordmark" href="index.html">Date Range Picker</a>
+    <nav aria-label="Documentation navigation">
+      <a href="index.html">Overview</a>
+      <a href="reference.html" aria-current="page">API reference</a>
+      <a href="config.html">Configuration generator</a>
+    </nav>
+  </header>
+  <main class="shell">
+    <div class="docs-intro">
+      <h1>API reference</h1>
+      <p>Configure date selection, update a mounted picker, and listen for selections as they happen.</p>
+    </div>
+    <div class="ref-layout">
+      <nav class="ref-nav" aria-label="Reference contents"><strong>On this page</strong>
+        <a href="#dates">Dates and bounds</a>
+            <a href="#calendars">Calendars and selection</a>
+            <a href="#time">Time selection</a>
+            <a href="#appearance">Appearance and placement</a>
+            <a href="#hooks">Date hooks</a>
+        <a href="#locale">Locale fields</a><a href="#methods">Methods</a><a href="#events">Events</a>
+      </nav>
+      <article class="ref-body">
+      <section id="options">
+        <h2>Options</h2>
+        <p>Pass an options object as the second constructor argument. HTML data attributes such as <code>data-single-calendar="true"</code> also work. Constructor options override attributes on the trigger.</p>
+        <pre><code>const picker = new DateRangePicker('#dates', {
+  locale: { format: 'YYYY-MM-DD' },
+  startDate: '2026-06-01',
+  endDate: '2026-06-07',
+  maxSpan: { days: 30 }
+});</code></pre>
+        <p>Date inputs include a JavaScript <code>Date</code>, a millisecond timestamp, a local date array with a zero-based month, and a string matching <code>locale.format</code>. You can also pass a picker date or a Moment object.</p>
+      <section id="dates" class="ref-section">
+        <h3>Dates and bounds</h3>
+        <dl class="api-list">
+          <div id="option-startDate"><dt><code>startDate</code><small>date input · Today, start of day</small></dt>
+            <dd>Initial start of the selection. A populated text input can supply the starting range when both initial date options are omitted.</dd></div>
+          <div id="option-endDate"><dt><code>endDate</code><small>date input · Today, end of day</small></dt>
+            <dd>Initial end of the selection. Without time selection, dates cover the whole local day.</dd></div>
+          <div id="option-minDate"><dt><code>minDate</code><small>date input or false · false</small></dt>
+            <dd>Earliest selectable date. Include a time to set a lower bound on time selection.</dd></div>
+          <div id="option-maxDate"><dt><code>maxDate</code><small>date input or false · false</small></dt>
+            <dd>Latest selectable date. Include a time to set an upper bound on time selection.</dd></div>
+          <div id="option-minSpan"><dt><code>minSpan</code><small>span object · Unset</small></dt>
+            <dd>Minimum elapsed span for a range. With <code>{ days: 2 }</code>, a Monday start can end on Wednesday or later.</dd></div>
+          <div id="option-maxSpan"><dt><code>maxSpan</code><small>span object · Unset</small></dt>
+            <dd>Maximum elapsed span from the start. Supply a duration object such as <code>{ days: 30 }</code> or <code>{ hours: 8 }</code>. The legacy alias is <code>dateLimit</code>.</dd></div>
+          <div id="option-ranges"><dt><code>ranges</code><small>label → date pair · Unset</small></dt>
+            <dd>Display named presets. Each value is an array of two date inputs. Use <code>setRanges()</code> to replace the list after mounting.</dd></div>
+        </dl>
+      </section>
+      <section id="calendars" class="ref-section">
+        <h3>Calendars and selection</h3>
+        <dl class="api-list">
+          <div id="option-singleDatePicker"><dt><code>singleDatePicker</code><small>boolean · false</small></dt>
+            <dd>Choose a single date in one calendar. Both ends of the selection represent that date.</dd></div>
+          <div id="option-singleCalendar"><dt><code>singleCalendar</code><small>boolean · false</small></dt>
+            <dd>Choose both ends of a range in one calendar. When time selection is enabled, both time selectors remain available.</dd></div>
+          <div id="option-linkedCalendars"><dt><code>linkedCalendars</code><small>boolean · true</small></dt>
+            <dd>Show consecutive months and navigate them together. Set to false for independent month navigation.</dd></div>
+          <div id="option-alwaysShowCalendars"><dt><code>alwaysShowCalendars</code><small>boolean · false</small></dt>
+            <dd>Keep the calendar visible alongside the preset list.</dd></div>
+          <div id="option-showCustomRangeLabel"><dt><code>showCustomRangeLabel</code><small>boolean · true</small></dt>
+            <dd>Include the custom range entry after the presets.</dd></div>
+          <div id="option-applyOnRangeClick"><dt><code>applyOnRangeClick</code><small>boolean · true</small></dt>
+            <dd>Apply a preset as soon as it is chosen. Set to false to allow editing before Apply. Auto-apply in date-only mode still commits a preset immediately.</dd></div>
+          <div id="option-showDropdowns"><dt><code>showDropdowns</code><small>boolean · false</small></dt>
+            <dd>Show month and year selectors in the calendar headers.</dd></div>
+          <div id="option-minYear"><dt><code>minYear</code><small>number · Current year − 100</small></dt>
+            <dd>Earliest year in the year dropdown when no minimum date is set.</dd></div>
+          <div id="option-maxYear"><dt><code>maxYear</code><small>number · Current year + 100</small></dt>
+            <dd>Latest year in the year dropdown when no maximum date is set.</dd></div>
+          <div id="option-showWeekNumbers"><dt><code>showWeekNumbers</code><small>boolean · false</small></dt>
+            <dd>Show locale week numbers in the first column.</dd></div>
+          <div id="option-showISOWeekNumbers"><dt><code>showISOWeekNumbers</code><small>boolean · false</small></dt>
+            <dd>Show ISO week numbers. When both week settings are enabled, locale week numbers take precedence.</dd></div>
+          <div id="option-autoApply"><dt><code>autoApply</code><small>boolean · false</small></dt>
+            <dd>Commit a completed date selection automatically and hide the action buttons. Time selection always uses the action buttons.</dd></div>
+          <div id="option-autoUpdateInput"><dt><code>autoUpdateInput</code><small>boolean · true</small></dt>
+            <dd>Write the formatted selection into the attached input on initialization and update. Set to false to keep an input initially empty or control its text yourself.</dd></div>
+        </dl>
+      </section>
+      <section id="time" class="ref-section">
+        <h3>Time selection</h3>
+        <dl class="api-list">
+          <div id="option-timePicker"><dt><code>timePicker</code><small>boolean · false</small></dt>
+            <dd>Show time selectors alongside the calendars. Include time tokens in <code>locale.format</code> to display the time in the input.</dd></div>
+          <div id="option-timePicker24Hour"><dt><code>timePicker24Hour</code><small>boolean · false</small></dt>
+            <dd>Use 24-hour time instead of AM and PM controls.</dd></div>
+          <div id="option-timePickerSeconds"><dt><code>timePickerSeconds</code><small>boolean · false</small></dt>
+            <dd>Add a seconds selector.</dd></div>
+          <div id="option-timePickerIncrement"><dt><code>timePickerIncrement</code><small>integer, 1–60 · 1</small></dt>
+            <dd>Spacing between minute choices. For example, 15 offers minutes 00, 15, 30 and 45.</dd></div>
+        </dl>
+      </section>
+      <section id="appearance" class="ref-section">
+        <h3>Appearance and placement</h3>
+        <dl class="api-list">
+          <div id="option-locale"><dt><code>locale</code><small>object · Active date locale</small></dt>
+            <dd>Customize labels, formatting, week order and text direction. See the <a href="#locale">locale fields</a>.</dd></div>
+          <div id="option-parentEl"><dt><code>parentEl</code><small>selector or element · body</small></dt>
+            <dd>Append the dropdown inside this container. A positioned wrapper can anchor a picker inside a dialog.</dd></div>
+          <div id="option-opens"><dt><code>opens</code><small>right | left | center · right</small></dt>
+            <dd>Align the dropdown horizontally relative to the trigger. The legacy <code>pull-right</code> class selects left alignment by default.</dd></div>
+          <div id="option-drops"><dt><code>drops</code><small>down | up | auto · down</small></dt>
+            <dd>Open above or below the trigger. Auto uses the available vertical space. A trigger with <code>dropup</code> defaults to up.</dd></div>
+          <div id="option-buttonClasses"><dt><code>buttonClasses</code><small>string or string[] · btn btn-sm</small></dt>
+            <dd>CSS classes shared by the Apply and Cancel buttons.</dd></div>
+          <div id="option-applyButtonClasses"><dt><code>applyButtonClasses</code><small>string · btn-primary</small></dt>
+            <dd>Additional Apply button classes. The legacy alias is <code>applyClass</code>.</dd></div>
+          <div id="option-cancelButtonClasses"><dt><code>cancelButtonClasses</code><small>string · btn-default</small></dt>
+            <dd>Additional Cancel button classes. The legacy alias is <code>cancelClass</code>.</dd></div>
+          <div id="option-template"><dt><code>template</code><small>HTML string or element · Built-in template</small></dt>
+            <dd>Supply custom markup with the same calendar containers, ranges list and button class hooks as the built-in template.</dd></div>
+        </dl>
+      </section>
+      <section id="hooks" class="ref-section">
+        <h3>Date hooks</h3>
+        <dl class="api-list">
+          <div id="option-isInvalidDate"><dt><code>isInvalidDate</code><small>function(date) · Returns false</small></dt>
+            <dd>Return true to disable an endpoint. For example, <code>date =&gt; date.day() === 0</code> disables Sundays.</dd></div>
+          <div id="option-isCustomDate"><dt><code>isCustomDate</code><small>function(date) · Returns false</small></dt>
+            <dd>Return a CSS class, an array of classes, or false for each day cell. Use your stylesheet to style the returned classes.</dd></div>
+        </dl>
+      </section>
+      </section>
+      <section id="locale">
+        <h2>Locale fields</h2>
+        <p>Pass any of these keys inside <code>locale</code>. The standalone defaults use English. With Moment present, the picker reads its default format, weekday and month names, and first day of the week from the active Moment locale.</p>
+        <dl class="api-list">
+          <div><dt><code>format</code><small>string · MM/DD/YYYY in English</small></dt><dd>Date and time format for text inputs and string options. For example, <code>YYYY-MM-DD HH:mm</code> shows a 24-hour time.</dd></div>
+          <div><dt><code>separator</code><small>string · " - "</small></dt><dd>Text between the two formatted endpoints in a range input.</dd></div>
+          <div><dt><code>firstDay</code><small>number · 0 in English</small></dt><dd>First weekday shown. Sunday is 0 and Monday is 1.</dd></div>
+          <div><dt><code>daysOfWeek</code>, <code>monthNames</code><small>string arrays</small></dt><dd>Seven weekday labels starting with Sunday and twelve month labels starting with January. The picker rotates weekday headings to match <code>firstDay</code>.</dd></div>
+          <div><dt><code>applyLabel</code>, <code>cancelLabel</code><small>strings · Apply, Cancel</small></dt><dd>Text on the action buttons.</dd></div>
+          <div><dt><code>weekLabel</code>, <code>customRangeLabel</code><small>strings · W, Custom Range</small></dt><dd>Heading for week numbers and the entry for a custom date range.</dd></div>
+          <div><dt><code>direction</code><small>ltr | rtl · ltr</small></dt><dd>Calendar layout direction. Right-to-left also reverses left and right arrow-key navigation.</dd></div>
+        </dl>
+      </section>
+      <section id="methods">
+        <h2>Methods and state</h2>
+        <p>The constructor returns the picker. Read <code>picker.startDate</code> and <code>picker.endDate</code> for the current selection. Between the two clicks of a range selection, <code>endDate</code> is null. Read <code>chosenLabel</code> for the preset label and <code>isShowing</code> for visibility.</p>
+        <dl class="api-list">
+          <div><dt><code>setStartDate(value)</code><br><code>setEndDate(value)</code></dt><dd>Update an endpoint with a supported date input. Bounds and span limits still apply.</dd></div>
+          <div><dt><code>setRanges(ranges)</code></dt><dd>Replace the preset list with a new object. Pass <code>null</code> to remove the list.</dd></div>
+          <div><dt><code>show()</code>, <code>hide()</code>, <code>toggle()</code></dt><dd>Control visibility. Hiding an incomplete selection restores the previous dates.</dd></div>
+          <div><dt><code>showCalendars()</code>, <code>hideCalendars()</code></dt><dd>Reveal or hide the calendar portion of a preset picker.</dd></div>
+          <div><dt><code>move()</code></dt><dd>Recalculate the dropdown position after a layout change.</dd></div>
+          <div><dt><code>remove()</code></dt><dd>Remove the dropdown and the instance’s event listeners during component teardown.</dd></div>
+          <div><dt><code>DateRangePicker.getInstance(element)</code></dt><dd>Look up an instance from its DOM trigger. Returns <code>undefined</code> after removal.</dd></div>
+          <div><dt><code>DateRangePicker.installJQuery($, moment?)</code></dt><dd>Register the plugin on a module-private jQuery instance. Supply Moment to use its date objects and locale.</dd></div>
+        </dl>
+        <p>Use <code>format()</code> to display a picker date and <code>toDate()</code> for a native date. Date setters, <code>add()</code>, <code>subtract()</code>, <code>startOf()</code> and <code>endOf()</code> mutate the picker date. Call <code>clone()</code> before changing a date you read from the instance.</p>
+      </section>
+      <section id="events">
+        <h2>Events and callbacks</h2>
+        <p>Native events bubble from the trigger. Register the full name, including <code>.daterangepicker</code>, and read the instance from <code>event.detail</code>. jQuery handlers receive the picker as their second argument.</p>
+        <pre><code>const input = document.querySelector('#dates');
+input.addEventListener('apply.daterangepicker', event =&gt; {
+  const { startDate, endDate } = event.detail;
+  console.log(startDate.toDate(), endDate.toDate());
+});</code></pre>
+        <dl class="api-list">
+          <div><dt><code>show.daterangepicker</code><br><code>hide.daterangepicker</code></dt><dd>The dropdown has opened or closed.</dd></div>
+          <div><dt><code>apply.daterangepicker</code></dt><dd>The user applied a range, including a preset that applies immediately. Fires even when the dates match the previous selection.</dd></div>
+          <div><dt><code>cancel.daterangepicker</code></dt><dd>The user canceled the edit and the picker restored its previous dates.</dd></div>
+          <div><dt><code>selectStart.daterangepicker</code><br><code>selectEnd.daterangepicker</code></dt><dd>A calendar interaction selected a start or end date. Listen here for in-progress edits before Apply.</dd></div>
+          <div><dt><code>showCalendar.daterangepicker</code><br><code>hideCalendar.daterangepicker</code></dt><dd>The picker revealed or hid its calendar panels.</dd></div>
+          <div><dt><code>calendarRendered.daterangepicker</code></dt><dd>The picker has redrawn its month grids, including during month navigation.</dd></div>
+          <div><dt><code>outsideClick.daterangepicker</code></dt><dd>An interaction outside the dropdown dismissed it.</dd></div>
+          <div><dt><code>change</code></dt><dd>A bubbling native input event fires when the picker writes a different formatted value with <code>autoUpdateInput</code> enabled.</dd></div>
+        </dl>
+        <p>The optional third constructor argument is a callback. It receives copies of the start and end dates and the chosen label when the picker closes with a changed selection.</p>
+        <pre><code>new DateRangePicker('#dates', {}, (start, end, label) =&gt; {
+  console.log(label, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+});</code></pre>
+      </section>
+      </article>
+    </div>
+  </main>
+  <footer class="shell docs-end"><a href="index.html">Documentation</a><a href="config.html">Configuration generator</a><a href="https://github.com/dangrossman/daterangepicker">GitHub repository</a></footer>
+</body>
+</html>

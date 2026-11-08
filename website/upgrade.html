@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9095657276960731" crossorigin="anonymous"></script>
+  <title>Upgrade from version 3 · Date Range Picker 4</title>
+  <meta name="description" content="Upgrade an existing Date Range Picker installation, keep its jQuery and Moment integration, or move one input to the native version 4 API.">
+  <link rel="stylesheet" href="website.css">
+  <link rel="stylesheet" href="native/guide.css">
+</head>
+<body class="subpage">
+  <header class="shell guide-header">
+    <a class="wordmark" href="index.html">Date Range Picker</a>
+    <a href="index.html#usage">Installation</a>
+  </header>
+  <main class="shell guide-page">
+    <h1>Upgrade from version 3</h1>
+    <p class="guide-lead">An existing jQuery page can move to version 4 by replacing the picker files. You can then migrate individual inputs to the native constructor when you are ready.</p>
+
+    <section>
+      <h2>Replace the files</h2>
+      <p>Use <a href="./daterangepicker.js" download>daterangepicker.js</a> and <a href="./daterangepicker.css" download>daterangepicker.css</a> from the same version 4 checkout. Keep jQuery and Moment ahead of the picker in script order if your application uses them.</p>
+      <pre class="guide-code"><code>&lt;link rel="stylesheet" href="daterangepicker.css"&gt;
+&lt;input id="report" aria-label="Report period"&gt;
+&lt;script src="jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="moment.min.js"&gt;&lt;/script&gt;
+&lt;script src="daterangepicker.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  $('#report').daterangepicker({
+    startDate: moment().startOf('month'),
+    endDate: moment()
+  });
+&lt;/script&gt;</code></pre>
+      <p>The classic build registers both <code>window.daterangepicker</code> and <code>window.DateRangePicker</code>. Your existing options, <code>$.fn.daterangepicker.defaultOptions</code>, chainable plugin calls and <code>.data('daterangepicker')</code> instance lookup continue to work. <a href="native/jquery.html">Run the jQuery example</a>.</p>
+    </section>
+
+    <section>
+      <h2>Check package dependencies and imports</h2>
+      <p>jQuery and Moment are now optional peers. Declare each library your own code imports as an application dependency. For this checkout, run <code>npm pack</code> in the repository and install the resulting version 4 tarball in your application. The examples here load the local build.</p>
+      <p>CommonJS can discover installed peers. If your ES module application imports a private copy of jQuery, register that exact copy before the first plugin call. Pass your imported Moment instance as the second argument when your code uses Moment.</p>
+      <pre class="guide-code"><code>import $ from 'jquery';
+import moment from 'moment';
+import DateRangePicker from 'daterangepicker';
+import 'daterangepicker/daterangepicker.css';
+
+DateRangePicker.installJQuery($, moment);
+$('#report').daterangepicker();</code></pre>
+    </section>
+
+    <section>
+      <h2>Move one input to native JavaScript</h2>
+      <p>Use <code>getInstance(element)</code> to look up a mounted picker. Methods such as <code>setStartDate</code> and <code>setEndDate</code> work with either initialization style. Native listeners receive the picker in <code>event.detail</code>. jQuery handlers receive it as the second argument.</p>
+      <pre class="guide-code"><code>const input = document.querySelector('#report');
+const picker = new DateRangePicker(input, {
+  locale: { format: 'YYYY-MM-DD' }
+});
+
+input.addEventListener('apply.daterangepicker', event =&gt; {
+  const { startDate, endDate } = event.detail;
+  console.log(startDate.toDate(), endDate.toDate());
+});
+
+picker.setStartDate(new Date());</code></pre>
+      <p>Choose one event interface for each action. Both interfaces emit events when the jQuery bridge is active. In a framework component, construct the picker after its input mounts and call <code>picker.remove()</code> when it unmounts. <a href="native/classic.html">Run the native example</a>.</p>
+    </section>
+
+    <section>
+      <h2>Review code that uses Moment</h2>
+      <p>When Moment is loaded before the classic build, callbacks and picker properties use real Moment objects, including the active locale and any plugins. Keep this integration for code that calls Moment-specific APIs or relies on custom locales or parsing.</p>
+      <p>The standalone build includes Day.js and exposes mutable picker dates with methods such as <code>format()</code>, <code>clone()</code>, <code>add()</code>, <code>diff()</code> and <code>toDate()</code>. Clone a picker date before changing it. Use <code>toDate()</code> at an interface that expects a JavaScript <code>Date</code>. For string inputs, supply the matching <code>locale.format</code> and check the formats and languages your application accepts before removing Moment.</p>
+    </section>
+
+    <section>
+      <h2>Behavior to check during an upgrade</h2>
+      <ul>
+        <li>Invalid input and invalid setter values leave the picker with usable dates. Presets outside the allowed dates are omitted. Overlapping presets are trimmed to the configured date and span limits.</li>
+        <li>Each picker now cleans up its own event handlers and stored instance. Application handlers and unrelated data on the input survive removal or reinitialization.</li>
+        <li>Range labels render as text. Replace markup embedded in labels with plain text.</li>
+        <li>The default range picker still displays two calendars. Enable <code>singleCalendar</code> for a one-calendar range, or use <code>singleDatePicker</code> for just one date.</li>
+        <li>Presets still apply immediately by default. Set <code>applyOnRangeClick: false</code> to allow adjustments before Apply, with <code>autoApply</code> turned off.</li>
+      </ul>
+      <p><a href="reference.html">Browse the full API reference</a></p>
+    </section>
+  </main>
+</body>
+</html>

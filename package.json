@@ -1,11 +1,13 @@
 {
   "name": "daterangepicker",
-  "version": "3.1.0",
-  "description": "Date range picker component for Bootstrap",
+  "version": "4.0.0",
+  "description": "Date range and time picker for browsers and JavaScript frameworks",
   "main": "daterangepicker.js",
   "style": "daterangepicker.css",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/*.test.cjs",
+    "docs:build": "npm run build && npm --prefix example/integrations run build && npm pack --pack-destination website/downloads && node scripts/build-docs.mjs"
   },
   "repository": {
     "type": "git",
@@ -21,8 +23,49 @@
     "url": "https://github.com/dangrossman/daterangepicker/issues"
   },
   "homepage": "https://github.com/dangrossman/daterangepicker",
-  "dependencies": {
+  "devDependencies": {
+    "cash-dom": "^8.1.5",
+    "dayjs": "^1.11.23",
+    "esbuild": "^0.25.12",
+    "jquery": "^3.7.1",
+    "jsdom": "^26.1.0",
+    "moment": "^2.31.0",
+    "typescript": "5.8"
+  },
+  "module": "./daterangepicker.mjs",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./daterangepicker.d.mts",
+        "default": "./daterangepicker.mjs"
+      },
+      "require": {
+        "types": "./daterangepicker.d.ts",
+        "default": "./daterangepicker.js"
+      }
+    },
+    "./*": "./*"
+  },
+  "files": [
+    "daterangepicker.js",
+    "daterangepicker.mjs",
+    "daterangepicker.css",
+    "src",
+    "scripts/build.mjs",
+    "daterangepicker.d.ts",
+    "daterangepicker.d.mts"
+  ],
+  "peerDependencies": {
     "jquery": ">=1.10",
     "moment": "^2.9.0"
-  }
+  },
+  "peerDependenciesMeta": {
+    "jquery": {
+      "optional": true
+    },
+    "moment": {
+      "optional": true
+    }
+  },
+  "types": "./daterangepicker.d.ts"
 }
