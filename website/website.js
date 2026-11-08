@@ -36,7 +36,7 @@
 
   get('package-manager').addEventListener('change', event => {
     const command = { npm: 'npm install', pnpm: 'pnpm add', Yarn: 'yarn add', Bun: 'bun add' }[event.target.value];
-    get('install-command').textContent = command + ' ./daterangepicker-4.0.1.tgz';
+    get('install-command').textContent = command + ' ./daterangepicker-4.0.2.tgz';
   });
   document.querySelector('.mobile-menu nav').addEventListener('click', () => {
     document.querySelector('.mobile-menu').open = false;

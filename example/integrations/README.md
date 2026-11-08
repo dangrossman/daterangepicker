@@ -23,4 +23,4 @@ npm run build
 
 The build compiles the Vue and Svelte components, TypeScript and JSX. It bundles each framework locally, generates the demo pages from the matching source files, and links the picker stylesheet from the checkout. Angular's small JIT example imports its compiler at startup. A standard Angular CLI project compiles the component during the app build.
 
-In another app, import `daterangepicker` and `daterangepicker/daterangepicker.css` from your bundler entry or component as shown in the examples. For local development before v4 is published, install the packed checkout in that app. Run `npm pack` at the picker repository root, then run `npm install /path/to/daterangepicker-4.0.1.tgz` in the app.
+In another app, import `daterangepicker` and `daterangepicker/daterangepicker.css` from your bundler entry or component as shown in the examples. For local development before v4 is published, install the packed checkout in that app. Run `npm pack` at the picker repository root, then run `npm install /path/to/daterangepicker-4.0.2.tgz` in the app.
