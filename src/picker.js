@@ -314,6 +314,7 @@ export function createPicker(jquery, date = standaloneDate) {
 
         this.singleCalendar = options.singleCalendar === true && !this.singleDatePicker;
         if (this.singleCalendar) {
+            this.container.find('.drp-buttons .drp-selected').hide();
             this.container.find('.right .calendar-table').hide();
             if (!this.timePicker) this.container.find('.drp-calendar.right').hide();
         }
