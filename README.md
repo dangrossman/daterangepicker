@@ -11,7 +11,7 @@ a single date picker mode, a time picker, and predefined date ranges.
 
 ## Browser setup
 
-Copy `daterangepicker.js` and `daterangepicker.css` to your site. The JavaScript file includes Day.js for dates and Cash for DOM operations.
+Copy `daterangepicker.js` and `daterangepicker.css` to your site. 
 
 ```html
 <link rel="stylesheet" href="daterangepicker.css">
@@ -87,7 +87,7 @@ The public documentation is available at [daterangepicker.com](https://daterange
 
 The MIT License (MIT)
 
-Copyright (c) 2012-2020 Dan Grossman
+Copyright (c) 2012-2026 Dan Grossman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
