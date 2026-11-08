@@ -75,7 +75,7 @@ Edit `src/picker.js` for picker behavior and `src/dates.js` for standalone date 
 
 ## Documentation website
 
-Set the HTTP server's document root to `website/` and open `/` to see [the v4 documentation](website/index.html). The checked-in files serve directly without a build or redirect. The framework demos ship with local browser bundles. Their source and rebuild commands are in the [examples guide](example/integrations/README.md).
+Set the HTTP server's document root to `website/` and open `/` to see [the v4 documentation](https://daterangepicker.com/). The checked-in files serve directly without a build or redirect. The framework demos ship with local browser bundles. Their source and rebuild commands are in the [examples guide](example/integrations/README.md).
 
 Install the documentation build dependencies with `npm ci` and `npm --prefix example/integrations ci`. Run `npm run docs:build` to refresh the library files, demos and downloadable archive in `website/`. The build also exports the same layout to `dist/docs/`.
 

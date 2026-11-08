@@ -136,8 +136,8 @@ for (const [id, app] of Object.entries(apps)) {
 </head>
 <body class="subpage">
   <header class="shell guide-header">
-    <a class="wordmark" href="../../index.html">Date Range Picker</a>
-    <a href="../../index.html#integrations">Integrations</a>
+    <a class="wordmark" href="../../">Date Range Picker</a>
+    <a href="../../#integrations">Integrations</a>
   </header>
   <main class="shell guide-page example-page">
     <h1>${escapeHtml(app.title)}</h1>
@@ -150,7 +150,7 @@ for (const [id, app] of Object.entries(apps)) {
       <pre><code>npm ci
 npm run build</code></pre>
     </details>
-    <p class="example-links"><a href="../../index.html#usage">Install the picker</a><a href="../assets/licenses.txt">Third-party licenses</a></p>
+    <p class="example-links"><a href="../../#usage">Install the picker</a><a href="../assets/licenses.txt">Third-party licenses</a></p>
   </main>
 </body>
 </html>

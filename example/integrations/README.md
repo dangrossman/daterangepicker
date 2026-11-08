@@ -1,6 +1,6 @@
 # Date Range Picker integration examples
 
-Open an example from the [documentation](../../website/index.html#integrations). Each page includes a working input and the source of the app. The checked-in bundles run from any static HTTP server rooted at `website/`.
+Open an example from the [documentation](https://daterangepicker.com/#integrations). Each page includes a working input and the source of the app. The checked-in bundles run from any static HTTP server rooted at `website/`.
 
 ## Run locally
 

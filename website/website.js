@@ -55,7 +55,7 @@
 </script>`, 'Serve the files over HTTP to load browser modules.', 'native/module.html'],
     package: ['main.js', `import DateRangePicker from 'daterangepicker';
 import 'daterangepicker/daterangepicker.css';
-new DateRangePicker('#dates');`, 'Mount an input with id="dates" before running this module.', 'examples/esm/index.html']
+new DateRangePicker('#dates');`, 'Mount an input with id="dates" before running this module.', 'examples/esm/']
   };
   function selectInstall(button) {
     for (const tab of document.querySelectorAll('[data-install]')) tab.setAttribute('aria-pressed', tab === button);
