@@ -256,3 +256,23 @@ test('AMD loads without peers and discovers configured legacy modules', t => {
     }
 });
 
+
+test('a disabled input rejects dates from an already-open picker', t => {
+    const w = page(t);
+    const input = w.document.querySelector('input');
+    let changes = 0;
+    const p = new w.DateRangePicker(input, { ...february, singleDatePicker: true, autoApply: true }, () => changes++);
+    input.click();
+
+    input.disabled = true;
+    const select = day => cell(p, day).dispatchEvent(new w.MouseEvent('mousedown', { bubbles: true }));
+    select(20);
+    assert.equal(input.value, '02/14/2024');
+    assert.equal(p.startDate.format('YYYY-MM-DD'), '2024-02-14');
+    assert.equal(changes, 0);
+
+    input.disabled = false;
+    select(20);
+    assert.equal(input.value, '02/20/2024');
+    assert.equal(changes, 1);
+});
