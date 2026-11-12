@@ -1195,6 +1195,7 @@ export function createPicker(jquery, date = standaloneDate) {
         },
 
         clickRange: function(e) {
+            if (this.element.is(':disabled')) return;
             var label = e.target.getAttribute('data-range-key');
             this.chosenLabel = label;
             if (label == this.locale.customRangeLabel) {
@@ -1285,6 +1286,7 @@ export function createPicker(jquery, date = standaloneDate) {
         },
 
         clickDate: function(e) {
+            if (this.element.is(':disabled')) return;
 
             if (!$(e.target).hasClass('available')) return;
 
@@ -1350,6 +1352,7 @@ export function createPicker(jquery, date = standaloneDate) {
         },
 
         clickApply: function(e) {
+            if (this.element.is(':disabled')) return;
             this.hide();
             this.emit('apply');
         },
@@ -1405,6 +1408,7 @@ export function createPicker(jquery, date = standaloneDate) {
         },
 
         timeChanged: function(e) {
+            if (this.element.is(':disabled')) return;
             if ($(e.target).closest('.drp-calendar').hasClass('left')) {
                 this.setStartDate(this.withSelectedTime(this.startDate, 'left'));
             } else if (this.endDate) {
